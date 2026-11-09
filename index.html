@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full bg-slate-950">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learnex V5 | Modern Glassy Learning Platform</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Chosen Palette: Glassy Obsidian V5 (Obsidian Slate-950, Translucent Frost 4-7%, Indigo/Cyan/Emerald/Amber/Rose Ambient Glows) -->
+  <!-- Application Structure Plan: Bento-Grid V5 Glassy Dashboard with Floating Header Pill Navigation, Interactive Quiz Engine with Fisher-Yates Shuffle, 3-Day T-Konten Intensive Trainer for Nicko, Searchable IKR Account Table, and Glass Achievements Grid. -->
+  <!-- Visualization & Content Choices: Dashboard -> Chart.js Weekly Activity Canvas Bar Chart & Donut Ring. Quiz -> Dynamic Card with Canvas Particle Burst & +50 XP Floating Text. T-Konten Labor -> Interactive T-Account Debit/Credit Balance Inspector & Booking Simulation. Kontenplan -> Filterable Glass Table. Achievements -> Translucent Badge Grid. -->
+  <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+  <style>
+    /* Infinite Moving Grid Background */
+    .bg-grid-pattern {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      animation: gridMove 30s linear infinite;
+    }
+    @keyframes gridMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+
+    /* Ambient Floating Glow Orbs */
+    @keyframes orbFloat1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, -50px) scale(1.15); }
+    }
+    @keyframes orbFloat2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-50px, 40px) scale(1.2); }
+    }
+    .ambient-orb-1 {
+      position: fixed; top: -10%; left: 15%; width: 550px; height: 550px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.16) 0%, rgba(0, 0, 0, 0) 70%);
+      filter: blur(80px); animation: orbFloat1 20s ease-in-out infinite; pointer-events: none; z-index: 0;
+    }
+    .ambient-orb-2 {
+      position: fixed; bottom: 5%; right: 10%; width: 650px; height: 650px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+      filter: blur(90px); animation: orbFloat2 25s ease-in-out infinite; pointer-events: none; z-index: 0;
+    }
+    .ambient-orb-3 {
+      position: fixed; top: 45%; left: 50%; width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.09) 0%, rgba(0, 0, 0, 0) 70%);
+      filter: blur(85px); animation: orbFloat1 22s ease-in-out infinite reverse; pointer-events: none; z-index: 0;
+    }
+
+    /* Glass V5 Design Tokens */
+    .glass-v5 {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    
+    .glass-v5-hover {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-v5-hover:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-3px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.2);
+    }
+
+    .glass-pill {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    /* Floating Header Nav Pills Active State */
+    .nav-pill-active {
+      background: rgba(255, 255, 255, 0.14) !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+      color: #ffffff !important;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.15);
+    }
+
+    /* Responsive Chart Container */
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      height: 240px;
+      max-height: 260px;
+    }
+    @media (min-width: 768px) {
+      .chart-container {
+        height: 280px;
+      }
+    }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.4);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Floating XP Notification Animation */
+    @keyframes floatUpFade {
+      0% { opacity: 0; transform: translateY(10px) scale(0.9); }
+      20% { opacity: 1; transform: translateY(-10px) scale(1.1); }
+      80% { opacity: 1; transform: translateY(-30px) scale(1); }
+      100% { opacity: 0; transform: translateY(-50px) scale(0.95); }
+    }
+    .animate-float-xp {
+      animation: floatUpFade 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Glow Pulse for Correct Answers */
+    @keyframes emeraldPulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+      70% { box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .glow-emerald-pulse {
+      animation: emeraldPulse 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="h-full text-slate-100 font-sans antialiased bg-slate-950 bg-grid-pattern relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+
+  <!-- Ambient Orbs -->
+  <div class="ambient-orb-1"></div>
+  <div class="ambient-orb-2"></div>
+  <div class="ambient-orb-3"></div>
+
+  <!-- Main Wrapper -->
+  <div class="relative z-10 flex flex-col min-h-screen">
+
+    <!-- FLOATING PILL HEADER NAVIGATION -->
+    <header class="sticky top-4 z-40 px-4 sm:px-8 max-w-7xl w-full mx-auto">
+      <div class="glass-v5 rounded-full p-2 flex items-center justify-between shadow-2xl">
+        
+        <!-- Brand Logo & Badge -->
+        <div class="flex items-center space-x-3 pl-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+            <i data-lucide="layers" class="w-5 h-5"></i>
+          </div>
+          <div class="hidden sm:block">
+            <div class="flex items-center space-x-2">
+              <span class="font-extrabold text-white tracking-tight text-base">Learnex</span>
+              <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-widest">V5 Dashboard</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Pills -->
+        <nav class="flex items-center space-x-1 sm:space-x-2">
+          <button onclick="switchView('dashboard')" id="nav-dashboard" class="nav-pill nav-pill-active px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-300 hover:text-white flex items-center space-x-2">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+            <span class="hidden md:inline">Dashboard</span>
+          </button>
+
+          <button onclick="switchView('quiz')" id="nav-quiz" class="nav-pill px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            <span class="hidden md:inline">Lernen & Quiz</span>
+          </button>
+
+          <button onclick="switchView('tkonten')" id="nav-tkonten" class="nav-pill px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-amber-300/90 hover:text-amber-200 flex items-center space-x-2 bg-amber-500/10 border border-amber-500/20">
+            <i data-lucide="scale" class="w-4 h-4 text-amber-400"></i>
+            <span>T-Konten</span>
+            <span class="hidden lg:inline text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.2 rounded-full font-bold uppercase">3-Tage</span>
+          </button>
+
+          <button onclick="switchView('kontenplan')" id="nav-kontenplan" class="nav-pill px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2">
+            <i data-lucide="table" class="w-4 h-4"></i>
+            <span class="hidden md:inline">Kontenplan</span>
+          </button>
+
+          <button onclick="switchView('erfolge')" id="nav-erfolge" class="nav-pill px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2">
+            <i data-lucide="award" class="w-4 h-4"></i>
+            <span class="hidden md:inline">Erfolge</span>
+          </button>
+        </nav>
+
+        <!-- User Profile Pill -->
+        <div class="flex items-center space-x-2 pr-1">
+          <div class="glass-pill px-3 py-1.5 rounded-full flex items-center space-x-2.5">
+            <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 font-bold text-xs shadow-md">
+              N
+            </div>
+            <div class="hidden xl:block text-left">
+              <div class="text-xs font-bold text-white leading-none">Nicko</div>
+              <div class="text-[10px] text-indigo-300 font-medium leading-tight mt-0.5" id="user-pill-level">Lvl 3 &bull; 850 XP</div>
+            </div>
+          </div>
+          <button onclick="resetAppState()" title="Fortschritt zurücksetzen" class="p-2 rounded-full glass-pill hover:bg-rose-500/20 hover:text-rose-300 text-slate-400 transition">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- CONTENT VIEWS CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-8">
+
+      <!-- ========================================== -->
+      <!-- SECTION 1: DASHBOARD (BENTO-GRID V5) -->
+      <!-- ========================================== -->
+      <section id="view-dashboard" class="space-y-6">
+        
+        <!-- Welcome Header Banner -->
+        <div class="glass-v5 rounded-3xl p-6 sm:p-8 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 border-l-4 border-l-indigo-500">
+          <div class="space-y-2 relative z-10">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full glass-pill text-indigo-300 text-xs font-medium">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span id="current-date-badge">Montag, 09. November 2026</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Guten Tag, Nicko!</h1>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              Willkommen zurück in deinem Rechnungswesen &amp; Büromanagement V5 Dashboard. Dein Intensivbereich für T-Konten ist aktuell freigeschaltet.
+            </p>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="flex items-center space-x-3 shrink-0 relative z-10">
+            <button onclick="switchView('tkonten')" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-400 hover:to-indigo-500 text-white text-xs font-bold transition shadow-xl shadow-amber-500/10 flex items-center space-x-2">
+              <i data-lucide="zap" class="w-4 h-4"></i>
+              <span>T-Konten Labor</span>
+            </button>
+            <button onclick="switchView('quiz')" class="px-5 py-3 rounded-2xl glass-pill hover:bg-white/10 text-white text-xs font-semibold transition flex items-center space-x-2">
+              <i data-lucide="play" class="w-4 h-4 text-emerald-400"></i>
+              <span>Schnell-Quiz</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Top 4 KPI Glass Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          
+          <!-- KPI 1: Lernzeit -->
+          <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Lernzeit Heute</span>
+              <div class="p-2.5 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                <i data-lucide="clock" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div>
+              <div class="text-3xl font-black text-white tracking-tight" id="kpi-study-time">42 Min</div>
+              <div class="flex items-center space-x-1.5 text-xs text-emerald-400 font-semibold mt-1">
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                <span>+15% vs. Gestern</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 2: Erfolgsquote -->
+          <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Erfolgsquote</span>
+              <div class="p-2.5 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <i data-lucide="target" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div>
+              <div class="text-3xl font-black text-white tracking-tight" id="kpi-accuracy">88%</div>
+              <div class="flex items-center space-x-1.5 text-xs text-emerald-400 font-semibold mt-1">
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                <span>+8% Positiver Trend</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 3: Total XP -->
+          <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Erfahrungspunkte</span>
+              <div class="p-2.5 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div>
+              <div class="text-3xl font-black text-white tracking-tight" id="kpi-total-xp">850 XP</div>
+              <div class="text-xs text-slate-400 font-semibold mt-1">
+                Stufe <span class="text-amber-300 font-bold" id="kpi-level-title">3 - Bilanz-Experte</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 4: Streak -->
+          <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tages-Streak</span>
+              <div class="p-2.5 rounded-2xl bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                <i data-lucide="flame" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div>
+              <div class="text-3xl font-black text-white tracking-tight" id="kpi-streak">4 Tage</div>
+              <div class="flex items-center space-x-1 text-xs text-rose-400 font-semibold mt-1">
+                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                <span>Aktiv &bull; Exzellent!</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Middle Row: Activity Bar Chart & Learning Ring -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Activity Chart Card (2 cols) -->
+          <div class="lg:col-span-2 glass-v5 rounded-3xl p-6 space-y-4 flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-bold text-white tracking-tight">Wochenaktivität &amp; Fortschritt</h3>
+                <p class="text-xs text-slate-400">Geleistete Lerneinheiten und gesammelte Punkte pro Wochentag.</p>
+              </div>
+              <div class="flex items-center space-x-2 text-xs text-indigo-400 font-bold glass-pill px-3 py-1 rounded-full">
+                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+                <span>Aktive Woche</span>
+              </div>
+            </div>
+
+            <!-- Chart.js Canvas Box -->
+            <div class="chart-container">
+              <canvas id="weeklyActivityChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Learning Ring Progress (1 col) -->
+          <div class="glass-v5 rounded-3xl p-6 flex flex-col justify-between space-y-6">
+            <div>
+              <h3 class="text-base font-bold text-white tracking-tight">Gesamtforschritt</h3>
+              <p class="text-xs text-slate-400">Rechnungswesen &amp; Büromanagement</p>
+            </div>
+
+            <!-- Canvas Progress Ring -->
+            <div class="flex flex-col items-center justify-center relative py-2">
+              <div class="relative w-40 h-40 flex items-center justify-center">
+                <canvas id="progressRingCanvas" width="160" height="160"></canvas>
+                <div class="absolute flex flex-col items-center">
+                  <span class="text-2xl font-black text-white" id="ring-percent-text">72%</span>
+                  <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Meisterschaft</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between text-slate-300">
+                <span class="flex items-center space-x-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                  <span>Bilanz &amp; Buchung</span>
+                </span>
+                <span class="font-bold text-white">85%</span>
+              </div>
+              <div class="flex justify-between text-slate-300">
+                <span class="flex items-center space-x-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                  <span>T-Konten Intensiv</span>
+                </span>
+                <span class="font-bold text-white">60%</span>
+              </div>
+              <div class="flex justify-between text-slate-300">
+                <span class="flex items-center space-x-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                  <span>GuV &amp; Abschluss</span>
+                </span>
+                <span class="font-bold text-white">70%</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Row: 3-Tage T-Konten Special Card Banner -->
+        <div class="glass-v5 rounded-3xl p-6 sm:p-8 border border-amber-500/30 relative overflow-hidden bg-gradient-to-r from-amber-950/20 via-slate-900/40 to-indigo-950/20">
+          <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="space-y-3 max-w-2xl">
+              <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                <i data-lucide="timer" class="w-3.5 h-3.5"></i>
+                <span>Spezial-Feature: Temporärer Fokus (3 Tage)</span>
+              </div>
+              <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">3-Tage T-Konten Intensivlabor für Nicko</h2>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Speziell entwickeltes Interaktiv-Modul zur perfekten Beherrschung von Soll- und Haben-Buchungen, Bestandskonten und Erfolgskonten. Mit Sofort-Validierung und Real-Time Feedback.
+              </p>
+            </div>
+            <button onclick="switchView('tkonten')" class="px-6 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center space-x-2 shrink-0">
+              <span>Labor starten</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SECTION 2: QUIZ & LERNEN (GLASS CARDS) -->
+      <!-- ========================================== -->
+      <section id="view-quiz" class="hidden space-y-6">
+        
+        <!-- Category Selector Filter Pills -->
+        <div class="glass-v5 rounded-3xl p-4 flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar">
+            <button onclick="filterQuizCategory('all', this)" class="quiz-cat-pill bg-indigo-600 text-white px-4 py-2 rounded-full text-xs font-bold transition">Alle Themen</button>
+            <button onclick="filterQuizCategory('bilanz', this)" class="quiz-cat-pill glass-pill text-slate-300 hover:text-white px-4 py-2 rounded-full text-xs font-bold transition">Bilanzierung</button>
+            <button onclick="filterQuizCategory('buchung', this)" class="quiz-cat-pill glass-pill text-slate-300 hover:text-white px-4 py-2 rounded-full text-xs font-bold transition">Buchungssätze</button>
+            <button onclick="filterQuizCategory('guv', this)" class="quiz-cat-pill glass-pill text-slate-300 hover:text-white px-4 py-2 rounded-full text-xs font-bold transition">GuV &amp; Erfolgskonten</button>
+          </div>
+          <div class="text-xs text-slate-400 font-medium">
+            Rotation: <span class="text-indigo-300 font-bold">Fisher-Yates Shuffled</span>
+          </div>
+        </div>
+
+        <!-- Quiz Container Card -->
+        <div id="quiz-card" class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden transition-all duration-300">
+          
+          <!-- Quiz Top Info Bar -->
+          <div class="flex items-center justify-between border-b border-white/10 pb-4">
+            <div class="flex items-center space-x-3">
+              <span id="quiz-category-tag" class="text-[10px] font-extrabold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-widest">
+                BILANZEN
+              </span>
+              <span class="text-xs text-slate-400 font-medium" id="quiz-step-counter">Frage 1 von 5</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1 rounded-full border border-amber-500/30" id="quiz-reward-xp">+50 XP</span>
+            </div>
+          </div>
+
+          <!-- Question Body -->
+          <div class="space-y-2">
+            <h3 id="quiz-question-title" class="text-lg sm:text-xl font-bold text-white leading-relaxed">
+              Frage wird geladen...
+            </h3>
+            <p class="text-xs text-slate-400" id="quiz-question-sub">Wähle die zutreffende Antwortoption aus.</p>
+          </div>
+
+          <!-- Multiple Choice Options Grid -->
+          <div id="quiz-options-grid" class="grid grid-cols-1 gap-3">
+            <!-- Dynamically populated options -->
+          </div>
+
+          <!-- Dynamic Feedback Box -->
+          <div id="quiz-feedback-box" class="hidden p-5 rounded-2xl border space-y-1.5 transition-all duration-300">
+            <div id="quiz-feedback-title" class="font-bold text-xs flex items-center space-x-2"></div>
+            <p id="quiz-feedback-text" class="text-xs leading-relaxed text-slate-300"></p>
+          </div>
+
+          <!-- Quiz Action Footer -->
+          <div class="flex items-center justify-between border-t border-white/10 pt-5">
+            <button onclick="skipQuizQuestion()" class="text-xs text-slate-400 hover:text-slate-200 transition">Überspringen</button>
+            <button onclick="nextQuizQuestion()" id="btn-quiz-next" disabled class="px-6 py-2.5 rounded-2xl bg-slate-800 text-slate-500 font-bold text-xs border border-white/10 transition cursor-not-allowed flex items-center space-x-2">
+              <span>Nächste Frage</span>
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Quiz Completion Summary Screen -->
+        <div id="quiz-summary-card" class="hidden glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 text-center">
+          <div class="w-20 h-20 rounded-3xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center mx-auto text-3xl font-black text-indigo-300 shadow-xl">
+            <i data-lucide="trophy" class="w-10 h-10 text-amber-400"></i>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-2xl font-bold text-white">Quiz-Durchgang abgeschlossen!</h3>
+            <p class="text-xs text-slate-400" id="summary-percentage-text">Du hast 100% der Fragen korrekt beantwortet.</p>
+          </div>
+
+          <div class="max-w-md mx-auto glass-pill p-4 rounded-2xl space-y-2 text-xs">
+            <div class="flex justify-between text-slate-300">
+              <span>Richtige Antworten:</span>
+              <span id="summary-correct-badge" class="font-bold text-emerald-400">5 von 5</span>
+            </div>
+            <div class="flex justify-between text-slate-300">
+              <span>Gesammelte Punkte:</span>
+              <span id="summary-total-xp-gained" class="font-bold text-amber-400">+250 XP</span>
+            </div>
+          </div>
+
+          <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+            <button onclick="restartQuizSession()" class="px-6 py-3 rounded-2xl glass-pill hover:bg-white/10 text-white font-semibold text-xs transition flex items-center justify-center space-x-2">
+              <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+              <span>Neuer Durchlauf</span>
+            </button>
+            <button onclick="switchView('dashboard')" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-indigo-600/20 flex items-center justify-center space-x-2">
+              <span>Zum Dashboard</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SECTION 3: 3-TAGE T-KONTEN INTENSIVLABOR -->
+      <!-- ========================================== -->
+      <section id="view-tkonten" class="hidden space-y-6">
+        
+        <!-- Header & Rules Banner -->
+        <div class="glass-v5 rounded-3xl p-6 border border-amber-500/30 space-y-4">
+          <div class="flex items-center justify-between border-b border-white/10 pb-4">
+            <div class="flex items-center space-x-3">
+              <div class="p-3 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                <i data-lucide="scale" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <h2 class="text-xl font-bold text-white tracking-tight">T-Konten Intensivlabor für Nicko</h2>
+                <p class="text-xs text-slate-400">Interaktives Training für Soll- &amp; Haben-Zuordnungen.</p>
+              </div>
+            </div>
+            <span class="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">Fokus-Phase</span>
+          </div>
+
+          <!-- Rule Cards Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+            <div class="glass-pill p-4 rounded-2xl space-y-1.5">
+              <div class="flex items-center space-x-2 text-indigo-400 font-bold text-xs uppercase tracking-wider">
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                <span>Aktivkonten (Bestand)</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                <strong class="text-white">Zugänge im SOLL</strong> (links), <strong class="text-white">Abgänge im HABEN</strong> (rechts). Beisp.: Kasse, Bank, BMA.
+              </p>
+            </div>
+
+            <div class="glass-pill p-4 rounded-2xl space-y-1.5">
+              <div class="flex items-center space-x-2 text-amber-400 font-bold text-xs uppercase tracking-wider">
+                <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+                <span>Passivkonten (Kapital)</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                <strong class="text-white">Anfangsbestand &amp; Zugänge im HABEN</strong>, <strong class="text-white">Abgänge im SOLL</strong>. Beisp.: Verbindlichkeiten.
+              </p>
+            </div>
+
+            <div class="glass-pill p-4 rounded-2xl space-y-1.5">
+              <div class="flex items-center space-x-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                <span>Erfolgskonten</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                <strong class="text-white">Aufwendungen im SOLL</strong> (EK-Minderung), <strong class="text-white">Erträge im HABEN</strong> (EK-Mehrung).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Booking Workbench Card -->
+        <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-6">
+          <div class="flex items-center justify-between border-b border-white/10 pb-4">
+            <div>
+              <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 uppercase tracking-widest" id="tk-case-badge">
+                FALLSTUDIE 1 VON 3
+              </span>
+              <h3 class="text-lg font-bold text-white mt-2" id="tk-case-title">Kauf einer Büromaschine auf Ziel</h3>
+            </div>
+            <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1 rounded-full border border-amber-500/30">+80 XP</span>
+          </div>
+
+          <p class="text-xs text-slate-300 leading-relaxed" id="tk-case-desc">
+            Das Unternehmen kauft einen neuen Großkopierer im Wert von 4.500 € auf Ziel (Verbindlichkeiten a.LL). Führe den korrekten Buchungssatz durch.
+          </p>
+
+          <!-- Interactive T-Account Visualizer Board -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            
+            <!-- T-Konto 1 -->
+            <div class="glass-pill p-5 rounded-2xl space-y-4 border border-indigo-500/30">
+              <div class="text-center font-extrabold text-indigo-300 border-b border-white/10 pb-2 text-sm uppercase tracking-wider" id="tk-label-1">
+                BGA / Büromaschinen (Aktivkonto)
+              </div>
+              <div class="grid grid-cols-2 gap-4 text-center">
+                <div class="space-y-2 border-r border-white/10 pr-2">
+                  <div class="text-[11px] font-bold text-indigo-400 uppercase">SOLL ( + )</div>
+                  <input type="number" id="tk-input-1-soll" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
+                </div>
+                <div class="space-y-2 pl-2">
+                  <div class="text-[11px] font-bold text-slate-400 uppercase">HABEN ( - )</div>
+                  <input type="number" id="tk-input-1-haben" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
+                </div>
+              </div>
+            </div>
+
+            <!-- T-Konto 2 -->
+            <div class="glass-pill p-5 rounded-2xl space-y-4 border border-amber-500/30">
+              <div class="text-center font-extrabold text-amber-300 border-b border-white/10 pb-2 text-sm uppercase tracking-wider" id="tk-label-2">
+                Verbindlichkeiten a.LL (Passivkonto)
+              </div>
+              <div class="grid grid-cols-2 gap-4 text-center">
+                <div class="space-y-2 border-r border-white/10 pr-2">
+                  <div class="text-[11px] font-bold text-slate-400 uppercase">SOLL ( - )</div>
+                  <input type="number" id="tk-input-2-soll" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
+                </div>
+                <div class="space-y-2 pl-2">
+                  <div class="text-[11px] font-bold text-amber-400 uppercase">HABEN ( + )</div>
+                  <input type="number" id="tk-input-2-haben" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- T-Konten Validation Feedback Box -->
+          <div id="tk-feedback-box" class="hidden p-4 rounded-2xl border space-y-1">
+            <div id="tk-feedback-title" class="font-bold text-xs flex items-center space-x-2"></div>
+            <p id="tk-feedback-text" class="text-xs leading-relaxed text-slate-300"></p>
+          </div>
+
+          <!-- Submit / Stepper Buttons -->
+          <div class="flex items-center justify-between border-t border-white/10 pt-4">
+            <button onclick="resetTKontoInputs()" class="text-xs text-slate-400 hover:text-white transition">Eingaben zurücksetzen</button>
+            <button onclick="validateTKontoCase()" id="btn-tk-submit" class="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 flex items-center space-x-2">
+              <i data-lucide="check-circle" class="w-4 h-4"></i>
+              <span>Buchungssatz prüfen</span>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SECTION 4: IKR KONTENPLAN -->
+      <!-- ========================================== -->
+      <section id="view-kontenplan" class="hidden space-y-6">
+        
+        <div class="glass-v5 rounded-3xl p-6 space-y-4">
+          <div>
+            <h2 class="text-xl font-bold text-white tracking-tight">IKR Kontenplan (Industriekontenrahmen)</h2>
+            <p class="text-xs text-slate-400">Schnellsuche für alle relevanten Kontenklassen, Nummern und Kontenarten.</p>
+          </div>
+
+          <!-- Search & Category Filters -->
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="relative flex-1">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-3.5"></i>
+              <input type="text" id="konten-search-input" oninput="renderFilteredKonten()" placeholder="Konto suchen (z. B. 2800 Bank, Kasse, Umsatzerlöse)..." class="w-full bg-slate-900/80 border border-white/10 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+            </div>
+            <div class="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar">
+              <button onclick="setKontenCat('all', this)" class="konten-cat-btn bg-indigo-600 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Alle</button>
+              <button onclick="setKontenCat('aktiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aktivkonten</button>
+              <button onclick="setKontenCat('passiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Passivkonten</button>
+              <button onclick="setKontenCat('ertrag', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Erträge</button>
+              <button onclick="setKontenCat('aufwand', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aufwendungen</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Glass Table -->
+        <div class="glass-v5 rounded-3xl overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/90 text-slate-400 text-[11px] uppercase tracking-wider border-b border-white/10">
+                <tr>
+                  <th class="px-6 py-4 font-semibold">Konto-Nr.</th>
+                  <th class="px-6 py-4 font-semibold">Bezeichnung</th>
+                  <th class="px-6 py-4 font-semibold">Kontenklasse</th>
+                  <th class="px-6 py-4 font-semibold">Kategorie</th>
+                </tr>
+              </thead>
+              <tbody id="kontenplan-tbody" class="divide-y divide-white/5 text-slate-300">
+                <!-- Dynamically rendered rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SECTION 5: ERFOLGE & BADGES (SAVED-STYLE GRID) -->
+      <!-- ========================================== -->
+      <section id="view-erfolge" class="hidden space-y-6">
+        
+        <div class="glass-v5 rounded-3xl p-6 space-y-2">
+          <h2 class="text-xl font-bold text-white tracking-tight">Erfolge &amp; Freigeschaltete Badges</h2>
+          <p class="text-xs text-slate-400">Schließe Herausforderungen ab, um exklusive Visual-Badges freizuschalten.</p>
+        </div>
+
+        <!-- Achievement Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="achievements-grid">
+          <!-- Dynamically rendered achievement cards -->
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Particle Burst Canvas Layer -->
+  <canvas id="particle-canvas" class="pointer-events-none fixed inset-0 z-50"></canvas>
+
+  <!-- Dynamic XP Float Notification Layer -->
+  <div id="xp-float-container" class="pointer-events-none fixed bottom-12 right-12 z-50 flex flex-col space-y-2"></div>
+
+  <!-- JS APPLICATION ENGINE -->
+  <script>
+    // ==========================================
+    // DATA POOLS & DATA STRUCTURES
+    // ==========================================
+
+    const rawQuizPool = [
+      {
+        id: "q1",
+        cat: "bilanz",
+        catTag: "BILANZIERUNG",
+        question: "Die Bilanzsumme beträgt 350.000 €, das Eigenkapital 210.000 €. Wie hoch ist das Fremdkapital?",
+        options: ["140.000 €", "210.000 €", "560.000 €", "70.000 €"],
+        correct: 0,
+        xp: 50,
+        explanation: "Passiva = Eigenkapital + Fremdkapital. Fremdkapital = Bilanzsumme (350.000 €) - Eigenkapital (210.000 €) = 140.000 €."
+      },
+      {
+        id: "q2",
+        cat: "bilanz",
+        catTag: "BILANZIERUNG",
+        question: "Nach welchem HGB-Strukturprinzip wird die Aktivseite der Bilanz gegliedert?",
+        options: ["Fälligkeit der Verbindlichkeiten", "Zunehmende Liquidität (Flüssigkeit)", "Alphabetische Reihenfolge", "Höhe des Einzelwertes"],
+        correct: 1,
+        xp: 50,
+        explanation: "Die Aktivseite gliedert sich nach der Liquidität: Von Anlagevermögen (schwer liquide) bis Kasse/Bank (sofort liquide)."
+      },
+      {
+        id: "q3",
+        cat: "buchung",
+        catTag: "BUCHUNGSSÄTZE",
+        question: "Wir kaufen Rohstoffe auf Ziel im Wert von 6.000 €. Wie lautet der Buchungssatz?",
+        options: [
+          "Bank an Rohstoffe 6.000 €",
+          "Aufwendungen für Rohstoffe an Verbindlichkeiten a.LL 6.000 €",
+          "Verbindlichkeiten a.LL an Rohstoffe 6.000 €",
+          "Kasse an Umsatzerlöse 6.000 €"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Aufwendungen/Bestand Rohstoffe steigen im SOLL, Schulden (Verbindlichkeiten a.LL) steigen im HABEN."
+      },
+      {
+        id: "q4",
+        cat: "guv",
+        catTag: "GUV & ABSCHLUSS",
+        question: "Auf welcher Seite des GuV-Kontos werden Aufwendungen erfasst?",
+        options: ["SOLL-Seite (links)", "HABEN-Seite (rechts)", "Je nach Ertragslage", "Überhaupt nicht"],
+        correct: 0,
+        xp: 50,
+        explanation: "Im GuV-Konto stehen Aufwendungen stets auf der SOLL-Seite (links) und Erträge auf der HABEN-Seite (rechts)."
+      },
+      {
+        id: "q5",
+        cat: "buchung",
+        catTag: "BUCHUNGSSÄTZE",
+        question: "Ein Kunde gleicht eine offene Rechnung über 1.200 € per Banküberweisung aus. Was passiert?",
+        options: [
+          "Aktiv-Tausch: Bank SOLL 1.200 €, Forderungen a.LL HABEN 1.200 €",
+          "Passiv-Tausch: Eigenkapital steigt",
+          "Bilanzverlängerung: Bank und Eigenkapital steigen",
+          "Bilanzverkürzung: Verbindlichkeiten sinken"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Es handelt sich um einen Aktivtausch: Bankkonto nimmt zu (SOLL), Forderungen nehmen ab (HABEN)."
+      }
+    ];
+
+    const tkontoCases = [
+      {
+        id: 1,
+        badge: "FALLSTUDIE 1 VON 3",
+        title: "Kauf einer Büromaschine auf Ziel",
+        desc: "Das Unternehmen kauft einen neuen Großkopierer im Wert von 4.500 € auf Ziel (Verbindlichkeiten a.LL). Führe den Buchungssatz im T-Konto aus.",
+        konto1: "BGA / Büromaschinen (Aktiv)",
+        konto2: "Verbindlichkeiten a.LL (Passiv)",
+        c1Soll: 4500, c1Haben: 0,
+        c2Soll: 0, c2Haben: 4500,
+        explanation: "Richtig! Büromaschinen (Aktivkonto) nimmt im SOLL zu. Verbindlichkeiten (Passivkonto) nimmt im HABEN zu."
+      },
+      {
+        id: 2,
+        badge: "FALLSTUDIE 2 VON 3",
+        title: "Gehaltszahlung per Banküberweisung",
+        desc: "Die Monatsgehälter in Höhe von 12.000 € werden vom Geschäftskonto überwiesen. Trage die Werte korrekt in die T-Konten ein.",
+        konto1: "Löhne & Gehälter (Aufwand)",
+        konto2: "Bank (Aktivkonto)",
+        c1Soll: 12000, c1Haben: 0,
+        c2Soll: 0, c2Haben: 12000,
+        explanation: "Perfekt! Aufwandskonto (Löhne) steigt im SOLL. Aktivkonto (Bank) sinkt im HABEN."
+      },
+      {
+        id: 3,
+        badge: "FALLSTUDIE 3 VON 3",
+        title: "Barverkauf von Fertigerzeugnissen",
+        desc: "Ein Kunde kauft Fertigerzeugnisse für 850 € und zahlt sofort in bar. Buche den Geschäftsvorfall.",
+        konto1: "Kasse (Aktivkonto)",
+        konto2: "Umsatzerlöse (Ertrag)",
+        c1Soll: 850, c1Haben: 0,
+        c2Soll: 0, c2Haben: 850,
+        explanation: "Ausgezeichnet! Kasse (Aktivkonto) steigt im SOLL. Umsatzerlöse (Ertragskonto) steigen im HABEN."
+      }
+    ];
+
+    const IKR_DATA = [
+      { nr: "0800", name: "Bebaute Grundstücke", klasse: "0 Anlagewerte", art: "Aktiv", cat: "aktiv" },
+      { nr: "0840", name: "Fuhrpark", klasse: "0 Anlagewerte", art: "Aktiv", cat: "aktiv" },
+      { nr: "0870", name: "Büromaschinen & BGA", klasse: "0 Anlagewerte", art: "Aktiv", cat: "aktiv" },
+      { nr: "2400", name: "Forderungen a.LL", klasse: "2 Umlaufvermögen", art: "Aktiv", cat: "aktiv" },
+      { nr: "2800", name: "Bank", klasse: "2 Umlaufvermögen", art: "Aktiv", cat: "aktiv" },
+      { nr: "2880", name: "Kasse", klasse: "2 Umlaufvermögen", art: "Aktiv", cat: "aktiv" },
+      { nr: "3000", name: "Eigenkapital", klasse: "3 Eigenkapital", art: "Passiv", cat: "passiv" },
+      { nr: "4250", name: "Bankverbindlichkeiten", klasse: "4 Fremdkapital", art: "Passiv", cat: "passiv" },
+      { nr: "4400", name: "Verbindlichkeiten a.LL", klasse: "4 Fremdkapital", art: "Passiv", cat: "passiv" },
+      { nr: "5000", name: "Umsatzerlöse", klasse: "5 Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "6000", name: "Löhne und Gehälter", klasse: "6 Aufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6800", name: "Mietaufwendungen", klasse: "6 Aufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "7600", name: "Büromaterial", klasse: "7 Aufwendungen", art: "Aufwand", cat: "aufwand" }
+    ];
+
+    const ACHIEVEMENTS_DATA = [
+      { id: "a1", title: "Erster Durchlauf", desc: "Absolviere dein erstes V5 Quiz", icon: "footprints", color: "indigo", progress: 100, unlocked: true },
+      { id: "a2", title: "T-Konten Meister", desc: "Schließe alle 3 Intensivfälle ab", icon: "scale", color: "amber", progress: 100, unlocked: true },
+      { id: "a3", title: "Streak Champion", desc: "Lerne 4 Tage in Folge", icon: "flame", color: "rose", progress: 100, unlocked: true },
+      { id: "a4", title: "Bilanz-Experte", desc: "Erreiche 800+ Gesamt XP", icon: "sparkles", color: "cyan", progress: 100, unlocked: true },
+      { id: "a5", title: "Perfektions-Run", desc: "100% Score in einer Quiz-Session", icon: "check-check", color: "emerald", progress: 80, unlocked: false },
+      { id: "a6", title: "IKR Nachschläger", desc: "Nutze die IKR Suche", icon: "search", color: "indigo", progress: 100, unlocked: true }
+    ];
+
+    // ==========================================
+    // STATE MANAGEMENT
+    // ==========================================
+
+    let state = {
+      xp: 850,
+      level: 3,
+      streak: 4,
+      studyMinutes: 42,
+      accuracy: 88,
+      seenQuestions: [],
+      activeQuizIndex: 0,
+      quizAnswers: [],
+      currentTKCaseIndex: 0,
+      activeKontenCat: "all"
+    };
+
+    let activeShuffledQuestions = [];
+    let activityChartInstance = null;
+
+    // Fisher-Yates Shuffle Algorithm
+    function fisherYatesShuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // ==========================================
+    // APP INITIALIZATION
+    // ==========================================
+
+    function initApp() {
+      loadState();
+      updateHeaderAndKPIs();
+      initActivityChart();
+      drawProgressRing(72);
+      renderFilteredKonten();
+      renderAchievements();
+      setupQuizSession();
+      loadTKontoCase(0);
+      lucide.createIcons();
+    }
+
+    // Nav Switcher
+    function switchView(viewId) {
+      document.querySelectorAll("main > section").forEach(el => el.classList.add("hidden"));
+      const target = document.getElementById("view-" + viewId);
+      if (target) target.classList.remove("hidden");
+
+      document.querySelectorAll(".nav-pill").forEach(btn => btn.classList.remove("nav-pill-active"));
+      const activeBtn = document.getElementById("nav-" + viewId);
+      if (activeBtn) activeBtn.classList.add("nav-pill-active");
+
+      if (viewId === "dashboard" && activityChartInstance) {
+        activityChartInstance.update();
+      }
+
+      setTimeout(() => lucide.createIcons(), 30);
+    }
+
+    // Local Storage State
+    function saveState() {
+      try {
+        localStorage.setItem("learnex_v5_app_state", JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem("learnex_v5_app_state");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          state = { ...state, ...parsed };
+        }
+      } catch (e) {}
+    }
+
+    function resetAppState() {
+      if (confirm("Möchtest du deinen Lernfortschritt wirklich zurücksetzen?")) {
+        localStorage.removeItem("learnex_v5_app_state");
+        state = {
+          xp: 0,
+          level: 1,
+          streak: 1,
+          studyMinutes: 10,
+          accuracy: 100,
+          seenQuestions: [],
+          activeQuizIndex: 0,
+          quizAnswers: [],
+          currentTKCaseIndex: 0,
+          activeKontenCat: "all"
+        };
+        saveState();
+        location.reload();
+      }
+    }
+
+    function updateHeaderAndKPIs() {
+      document.getElementById("user-pill-level").textContent = `Lvl ${state.level} • ${state.xp} XP`;
+      document.getElementById("kpi-total-xp").textContent = `${state.xp} XP`;
+      document.getElementById("kpi-study-time").textContent = `${state.studyMinutes} Min`;
+      document.getElementById("kpi-accuracy").textContent = `${state.accuracy}%`;
+      document.getElementById("kpi-streak").textContent = `${state.streak} Tage`;
+    }
+
+    function awardXP(amount) {
+      state.xp += amount;
+      if (state.xp >= state.level * 300) {
+        state.level += 1;
+      }
+      saveState();
+      updateHeaderAndKPIs();
+      triggerXPFloatNotification(amount);
+      triggerParticleBurst();
+    }
+
+    // XP Float Animation Pill
+    function triggerXPFloatNotification(amount) {
+      const container = document.getElementById("xp-float-container");
+      const el = document.createElement("div");
+      el.className = "glass-pill px-4 py-2 rounded-full border border-amber-500/40 text-amber-300 font-extrabold text-xs shadow-2xl flex items-center space-x-2 animate-float-xp";
+      el.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i><span>+${amount} XP</span>`;
+      container.appendChild(el);
+      lucide.createIcons();
+      setTimeout(() => el.remove(), 1400);
+    }
+
+    // ==========================================
+    // CHART.JS & PROGRESS RING
+    // ==========================================
+
+    function initActivityChart() {
+      const ctx = document.getElementById("weeklyActivityChart").getContext("2d");
+      
+      const gradientActive = ctx.createLinearGradient(0, 0, 0, 240);
+      gradientActive.addColorStop(0, "rgba(99, 102, 241, 0.9)");
+      gradientActive.addColorStop(1, "rgba(99, 102, 241, 0.2)");
+
+      const gradientNormal = ctx.createLinearGradient(0, 0, 0, 240);
+      gradientNormal.addColorStop(0, "rgba(255, 255, 255, 0.15)");
+      gradientNormal.addColorStop(1, "rgba(255, 255, 255, 0.03)");
+
+      activityChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+          datasets: [{
+            label: "XP",
+            data: [120, 190, 150, 220, 180, 90, 240],
+            backgroundColor: [
+              gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientActive
+            ],
+            borderRadius: 12,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: "#94a3b8", font: { size: 11, weight: "600" } }
+            },
+            y: {
+              grid: { color: "rgba(255, 255, 255, 0.05)" },
+              ticks: { color: "#94a3b8", font: { size: 10 } }
+            }
+          }
+        }
+      });
+    }
+
+    function drawProgressRing(percent) {
+      const canvas = document.getElementById("progressRingCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const x = canvas.width / 2;
+      const y = canvas.height / 2;
+      const radius = 62;
+      const startAngle = -Math.PI / 2;
+      const endAngle = startAngle + (Math.PI * 2 * (percent / 100));
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Track Circle
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+      ctx.lineWidth = 12;
+      ctx.stroke();
+
+      // Active Arc Gradient
+      const grad = ctx.createLinearGradient(0, 0, 160, 160);
+      grad.addColorStop(0, "#6366f1");
+      grad.addColorStop(0.5, "#f59e0b");
+      grad.addColorStop(1, "#10b981");
+
+      ctx.beginPath();
+      ctx.arc(x, y, radius, startAngle, endAngle);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 12;
+      ctx.lineCap = "round";
+      ctx.stroke();
+    }
+
+    // ==========================================
+    // QUIZ ENGINE WITH FISHER-YATES ROTATION
+    // ==========================================
+
+    function setupQuizSession() {
+      activeShuffledQuestions = fisherYatesShuffle(rawQuizPool);
+      state.activeQuizIndex = 0;
+      state.quizAnswers = [];
+      renderQuizQuestion();
+    }
+
+    function filterQuizCategory(cat, btn) {
+      document.querySelectorAll(".quiz-cat-pill").forEach(b => {
+        b.className = "quiz-cat-pill glass-pill text-slate-300 hover:text-white px-4 py-2 rounded-full text-xs font-bold transition";
+      });
+      btn.className = "quiz-cat-pill bg-indigo-600 text-white px-4 py-2 rounded-full text-xs font-bold transition";
+
+      if (cat === "all") {
+        activeShuffledQuestions = fisherYatesShuffle(rawQuizPool);
+      } else {
+        const filtered = rawQuizPool.filter(q => q.cat === cat);
+        activeShuffledQuestions = fisherYatesShuffle(filtered.length ? filtered : rawQuizPool);
+      }
+      state.activeQuizIndex = 0;
+      state.quizAnswers = [];
+      document.getElementById("quiz-summary-card").classList.add("hidden");
+      document.getElementById("quiz-card").classList.remove("hidden");
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      if (!activeShuffledQuestions.length) return;
+      const q = activeShuffledQuestions[state.activeQuizIndex];
+
+      document.getElementById("quiz-category-tag").textContent = q.catTag;
+      document.getElementById("quiz-step-counter").textContent = `Frage ${state.activeQuizIndex + 1} von ${activeShuffledQuestions.length}`;
+      document.getElementById("quiz-reward-xp").textContent = `+${q.xp} XP`;
+      document.getElementById("quiz-question-title").textContent = q.question;
+
+      const fbBox = document.getElementById("quiz-feedback-box");
+      fbBox.classList.add("hidden");
+      fbBox.classList.remove("glow-emerald-pulse");
+
+      const btnNext = document.getElementById("btn-quiz-next");
+      btnNext.disabled = true;
+      btnNext.className = "px-6 py-2.5 rounded-2xl bg-slate-800 text-slate-500 font-bold text-xs border border-white/10 transition cursor-not-allowed flex items-center space-x-2";
+
+      const grid = document.getElementById("quiz-options-grid");
+      grid.innerHTML = "";
+
+      q.options.forEach((optText, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "w-full text-left glass-pill hover:bg-white/10 border border-white/10 p-4 rounded-2xl text-xs font-semibold text-slate-200 transition flex items-center justify-between group";
+        btn.innerHTML = `
+          <span><strong class="text-indigo-400 mr-2.5">${String.fromCharCode(65 + idx)}.</strong> ${optText}</span>
+          <span class="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center group-hover:border-indigo-400"></span>
+        `;
+        btn.onclick = () => selectQuizOption(idx);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectQuizOption(optIdx) {
+      const q = activeShuffledQuestions[state.activeQuizIndex];
+      const grid = document.getElementById("quiz-options-grid");
+      const isCorrect = (optIdx === q.correct);
+
+      Array.from(grid.children).forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.correct) {
+          btn.className = "w-full text-left bg-emerald-950/80 border border-emerald-500 p-4 rounded-2xl text-xs font-semibold text-emerald-200 flex items-center justify-between shadow-xl shadow-emerald-500/10 glow-emerald-pulse";
+        } else if (idx === optIdx) {
+          btn.className = "w-full text-left bg-rose-950/80 border border-rose-500 p-4 rounded-2xl text-xs font-semibold text-rose-200 flex items-center justify-between";
+        } else {
+          btn.className = "w-full text-left glass-pill p-4 rounded-2xl text-xs text-slate-500 opacity-40";
+        }
+      });
+
+      const fbBox = document.getElementById("quiz-feedback-box");
+      const fbTitle = document.getElementById("quiz-feedback-title");
+      const fbText = document.getElementById("quiz-feedback-text");
+
+      fbBox.classList.remove("hidden");
+      if (isCorrect) {
+        fbBox.className = "p-5 rounded-2xl border bg-emerald-950/60 border-emerald-500/50 space-y-1.5 glow-emerald-pulse";
+        fbTitle.className = "font-bold text-xs text-emerald-400 flex items-center space-x-2";
+        fbTitle.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>Hervorragend gelöst! +${q.xp} XP</span>`;
+        awardXP(q.xp);
+      } else {
+        fbBox.className = "p-5 rounded-2xl border bg-rose-950/60 border-rose-500/50 space-y-1.5";
+        fbTitle.className = "font-bold text-xs text-rose-400 flex items-center space-x-2";
+        fbTitle.innerHTML = `<i data-lucide="x-circle" class="w-4 h-4"></i><span>Leider nicht korrekt</span>`;
+      }
+      fbText.textContent = q.explanation;
+
+      state.quizAnswers.push({ isCorrect, xp: isCorrect ? q.xp : 0 });
+
+      const btnNext = document.getElementById("btn-quiz-next");
+      btnNext.disabled = false;
+      btnNext.className = "px-6 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20 transition cursor-pointer flex items-center space-x-2";
+
+      setTimeout(() => lucide.createIcons(), 30);
+    }
+
+    function skipQuizQuestion() {
+      nextQuizQuestion();
+    }
+
+    function nextQuizQuestion() {
+      if (state.activeQuizIndex < activeShuffledQuestions.length - 1) {
+        state.activeQuizIndex++;
+        renderQuizQuestion();
+      } else {
+        finishQuizSummary();
+      }
+    }
+
+    function finishQuizSummary() {
+      document.getElementById("quiz-card").classList.add("hidden");
+      document.getElementById("quiz-summary-card").classList.remove("hidden");
+
+      const correctCount = state.quizAnswers.filter(a => a.isCorrect).length;
+      const total = activeShuffledQuestions.length;
+      const pct = Math.round((correctCount / total) * 100);
+      const totalXP = state.quizAnswers.reduce((sum, a) => sum + a.xp, 0);
+
+      document.getElementById("summary-percentage-text").textContent = `Du hast ${pct}% der Fragen in diesem Durchlauf korrekt gelöst.`;
+      document.getElementById("summary-correct-badge").textContent = `${correctCount} von ${total}`;
+      document.getElementById("summary-total-xp-gained").textContent = `+${totalXP} XP`;
+    }
+
+    function restartQuizSession() {
+      document.getElementById("quiz-summary-card").classList.add("hidden");
+      document.getElementById("quiz-card").classList.remove("hidden");
+      setupQuizSession();
+    }
+
+    // ==========================================
+    // 3-TAGE T-KONTEN INTENSIVLABOR LOGIC
+    // ==========================================
+
+    function loadTKontoCase(index) {
+      state.currentTKCaseIndex = index;
+      const c = tkontoCases[index];
+
+      document.getElementById("tk-case-badge").textContent = c.badge;
+      document.getElementById("tk-case-title").textContent = c.title;
+      document.getElementById("tk-case-desc").textContent = c.desc;
+      document.getElementById("tk-label-1").textContent = c.konto1;
+      document.getElementById("tk-label-2").textContent = c.konto2;
+
+      resetTKontoInputs();
+    }
+
+    function resetTKontoInputs() {
+      document.getElementById("tk-input-1-soll").value = "";
+      document.getElementById("tk-input-1-haben").value = "";
+      document.getElementById("tk-input-2-soll").value = "";
+      document.getElementById("tk-input-2-haben").value = "";
+
+      const fb = document.getElementById("tk-feedback-box");
+      fb.classList.add("hidden");
+    }
+
+    function validateTKontoCase() {
+      const c = tkontoCases[state.currentTKCaseIndex];
+      const u1s = parseInt(document.getElementById("tk-input-1-soll").value) || 0;
+      const u1h = parseInt(document.getElementById("tk-input-1-haben").value) || 0;
+      const u2s = parseInt(document.getElementById("tk-input-2-soll").value) || 0;
+      const u2h = parseInt(document.getElementById("tk-input-2-haben").value) || 0;
+
+      const isCorrect = (u1s === c.c1Soll && u1h === c.c1Haben && u2s === c.c2Soll && u2h === c.c2Haben);
+      const fb = document.getElementById("tk-feedback-box");
+      const fbTitle = document.getElementById("tk-feedback-title");
+      const fbText = document.getElementById("tk-feedback-text");
+
+      fb.classList.remove("hidden");
+      if (isCorrect) {
+        fb.className = "p-5 rounded-2xl border bg-emerald-950/60 border-emerald-500/50 space-y-1.5 glow-emerald-pulse";
+        fbTitle.className = "font-bold text-xs text-emerald-400 flex items-center space-x-2";
+        fbTitle.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>Perfekt gebucht! +80 XP</span>`;
+        fbText.textContent = c.explanation;
+        awardXP(80);
+
+        setTimeout(() => {
+          if (state.currentTKCaseIndex < tkontoCases.length - 1) {
+            loadTKontoCase(state.currentTKCaseIndex + 1);
+          }
+        }, 2200);
+
+      } else {
+        fb.className = "p-5 rounded-2xl border bg-rose-950/60 border-rose-500/50 space-y-1.5";
+        fbTitle.className = "font-bold text-xs text-rose-400 flex items-center space-x-2";
+        fbTitle.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4"></i><span>Soll/Haben noch nicht ausgeglichen</span>`;
+        fbText.textContent = `Überprüfe die Aktiv-/Passivregeln. Erforderlich für Konto 1: SOLL=${c.c1Soll}€ / HABEN=${c.c1Haben}€.`;
+      }
+      setTimeout(() => lucide.createIcons(), 30);
+    }
+
+    // ==========================================
+    // IKR KONTENPLAN TABLE
+    // ==========================================
+
+    function setKontenCat(cat, btn) {
+      state.activeKontenCat = cat;
+      document.querySelectorAll(".konten-cat-btn").forEach(b => {
+        b.className = "konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0";
+      });
+      btn.className = "konten-cat-btn bg-indigo-600 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0";
+      renderFilteredKonten();
+    }
+
+    function renderFilteredKonten() {
+      const tbody = document.getElementById("kontenplan-tbody");
+      tbody.innerHTML = "";
+      const query = document.getElementById("konten-search-input").value.toLowerCase();
+
+      IKR_DATA.forEach(k => {
+        if (state.activeKontenCat !== "all" && k.cat !== state.activeKontenCat) return;
+        if (query && !k.nr.toLowerCase().includes(query) && !k.name.toLowerCase().includes(query)) return;
+
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-white/5 transition";
+        tr.innerHTML = `
+          <td class="px-6 py-4 font-mono font-bold text-indigo-400">${k.nr}</td>
+          <td class="px-6 py-4 font-semibold text-white">${k.name}</td>
+          <td class="px-6 py-4 text-slate-400 text-xs">${k.klasse}</td>
+          <td class="px-6 py-4">
+            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${getArtBadgeStyle(k.art)}">${k.art}</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function getArtBadgeStyle(art) {
+      if (art === "Aktiv") return "bg-indigo-500/20 text-indigo-300 border border-indigo-500/30";
+      if (art === "Passiv") return "bg-amber-500/20 text-amber-300 border border-amber-500/30";
+      if (art === "Ertrag") return "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+      return "bg-rose-500/20 text-rose-300 border border-rose-500/30";
+    }
+
+    // ==========================================
+    // ACHIEVEMENTS GRID
+    // ==========================================
+
+    function renderAchievements() {
+      const grid = document.getElementById("achievements-grid");
+      grid.innerHTML = "";
+
+      ACHIEVEMENTS_DATA.forEach(a => {
+        const card = document.createElement("div");
+        card.className = `glass-v5 rounded-3xl p-5 flex items-center space-x-4 border transition ${a.unlocked ? 'border-indigo-500/40 glass-v5-hover' : 'border-white/5 opacity-50'}`;
+        card.innerHTML = `
+          <div class="p-3.5 rounded-2xl ${a.unlocked ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30' : 'bg-slate-900 text-slate-600'}">
+            <i data-lucide="${a.icon}" class="w-6 h-6"></i>
+          </div>
+          <div class="space-y-1 flex-1">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-xs text-white">${a.title}</h4>
+              ${a.unlocked ? '<span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">FREIGESCHALTET</span>' : '<span class="text-[9px] font-bold text-slate-500">GESPERRT</span>'}
+            </div>
+            <p class="text-[11px] text-slate-400">${a.desc}</p>
+            <div class="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden mt-2 border border-white/5">
+              <div class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full" style="width: ${a.progress}%"></div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      setTimeout(() => lucide.createIcons(), 30);
+    }
+
+    // ==========================================
+    // CANVAS PARTICLE BURST
+    // ==========================================
+
+    function triggerParticleBurst() {
+      const canvas = document.getElementById("particle-canvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ["#6366f1", "#10b981", "#f59e0b", "#38bdf8", "#ec4899"];
+
+      for (let i = 0; i < 60; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          vx: (Math.random() - 0.5) * 16,
+          vy: (Math.random() - 0.7) * 16,
+          size: Math.random() * 5 + 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          life: 100
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = 0;
+        particles.forEach(p => {
+          if (p.life > 0) {
+            alive++;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.25;
+            p.life -= 2.5;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        });
+        if (alive > 0) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      animate();
+    }
+
+    document.addEventListener("DOMContentLoaded", initApp);
+  </script>
+</body>
+</html>
