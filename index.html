@@ -154,6 +154,137 @@
     .glow-emerald-pulse {
       animation: emeraldPulse 1.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
+    /* Smooth View & Card Animations */
+    @keyframes viewFadeSlide {
+      0% { opacity: 0; transform: translateY(14px) scale(0.99); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .animate-view-enter {
+      animation: viewFadeSlide 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-3px) rotate(4deg); }
+    }
+    .glass-v5-hover:hover .icon-anim {
+      animation: iconFloat 1.8s ease-in-out infinite;
+    }
+
+    /* Clean Icon Box without colored borders */
+    .icon-box-clean {
+      background: rgba(255, 255, 255, 0.06);
+      border: none !important;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.14);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+    }
+    .glass-v5-hover:hover .icon-box-clean,
+    button:hover .icon-box-clean {
+      transform: scale(1.08);
+      background: rgba(255, 255, 255, 0.11);
+    }
+
+    /* Liquid Glass Shimmer Effect */
+    .glass-v5 {
+      position: relative;
+    }
+    .glass-v5::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.03) 45%, rgba(255,255,255,0.12) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    /* Hide Scrollbar for Mobile Touch Swipe Navigation */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* ==========================================
+       MONOCHROME THEME (White BG, Almost-Black Liquid Glass Tiles, White Icons)
+       ========================================== */
+    html.theme-monochrome,
+    body.theme-monochrome {
+      background-color: #ffffff !important;
+      background-image:
+        radial-gradient(circle at 20% 15%, rgba(0, 0, 0, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.06) 0%, transparent 50%),
+        linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px) !important;
+    }
+
+    body.theme-monochrome .ambient-orb-1,
+    body.theme-monochrome .ambient-orb-2,
+    body.theme-monochrome .ambient-orb-3 {
+      display: none !important;
+    }
+
+    /* Fast schwarze Kacheln in transparenter Liquid-Glass-Optik */
+    body.theme-monochrome .glass-v5 {
+      background: linear-gradient(145deg, rgba(8, 10, 14, 0.78) 0%, rgba(3, 4, 7, 0.68) 100%) !important;
+      backdrop-filter: blur(30px) saturate(190%) !important;
+      -webkit-backdrop-filter: blur(30px) saturate(190%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.14) !important;
+      box-shadow:
+        0 24px 55px rgba(0, 0, 0, 0.26),
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.34),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.08) !important;
+    }
+
+    body.theme-monochrome .glass-v5-hover:hover {
+      background: linear-gradient(145deg, rgba(12, 15, 20, 0.84) 0%, rgba(5, 7, 11, 0.75) 100%) !important;
+      border-color: rgba(255, 255, 255, 0.28) !important;
+      transform: translateY(-4px) scale(1.005);
+      box-shadow:
+        0 30px 65px rgba(0, 0, 0, 0.34),
+        inset 0 2px 2px rgba(255, 255, 255, 0.42) !important;
+    }
+
+    body.theme-monochrome .glass-pill {
+      background: rgba(12, 14, 18, 0.62) !important;
+      backdrop-filter: blur(22px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(22px) saturate(180%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.25) !important;
+    }
+
+    body.theme-monochrome .icon-box-clean {
+      background: rgba(255, 255, 255, 0.09) !important;
+      border: none !important;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
+    }
+
+    /* Alle Icons im Monochrom-Modus reinweiß */
+    body.theme-monochrome svg.lucide,
+    body.theme-monochrome [data-lucide] {
+      color: #ffffff !important;
+      stroke: #ffffff !important;
+    }
+
+    /* Monochrome Akzente für Banner, Badges & Buttons */
+    body.theme-monochrome #nav-tkonten {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: transparent !important;
+      color: #ffffff !important;
+    }
+
+    body.theme-monochrome #brand-logo-box,
+    body.theme-monochrome #user-avatar-box {
+      background: rgba(255, 255, 255, 0.14) !important;
+      color: #ffffff !important;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+    }
   </style>
 </head>
 <body class="h-full text-slate-100 font-sans antialiased bg-slate-950 bg-grid-pattern relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
@@ -166,65 +297,66 @@
   <!-- Main Wrapper -->
   <div class="relative z-10 flex flex-col min-h-screen">
 
-    <!-- FLOATING PILL HEADER NAVIGATION -->
-    <header class="sticky top-4 z-40 px-4 sm:px-8 max-w-7xl w-full mx-auto">
-      <div class="glass-v5 rounded-full p-2 flex items-center justify-between shadow-2xl">
+    <!-- FLOATING PILL HEADER NAVIGATION (Mobile Optimized + Touch Swipeable) -->
+    <header class="sticky top-3 sm:top-4 z-40 px-2.5 sm:px-8 max-w-7xl w-full mx-auto">
+      <div class="glass-v5 rounded-full p-1.5 sm:p-2 flex items-center justify-between gap-1 sm:gap-2 shadow-2xl">
         
         <!-- Brand Logo & Badge -->
-        <div class="flex items-center space-x-3 pl-3">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
-            <i data-lucide="layers" class="w-5 h-5"></i>
+        <div class="flex items-center space-x-2.5 pl-1.5 sm:pl-3 shrink-0">
+          <div id="brand-logo-box" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 transition-transform duration-300 hover:rotate-12">
+            <i data-lucide="orbit" class="w-4 h-4 sm:w-5 sm:h-5"></i>
           </div>
           <div class="hidden sm:block">
             <div class="flex items-center space-x-2">
               <span class="font-extrabold text-white tracking-tight text-base">Learnex</span>
-              <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-widest">V5 Dashboard</span>
+              <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-indigo-200 uppercase tracking-widest">V5 Liquid</span>
             </div>
           </div>
         </div>
 
-        <!-- Navigation Pills -->
-        <nav class="flex items-center space-x-1 sm:space-x-2">
-          <button onclick="switchView('dashboard')" id="nav-dashboard" class="nav-pill nav-pill-active px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-300 hover:text-white flex items-center space-x-2">
-            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+        <!-- Navigation Pills (Swipeable left/right on small screens, icons-only on mobile) -->
+        <nav class="flex items-center space-x-1 sm:space-x-2 overflow-x-auto no-scrollbar py-0.5 px-1 min-w-0 flex-1 justify-center">
+          <button onclick="switchView('dashboard')" id="nav-dashboard" title="Dashboard" class="nav-pill nav-pill-active px-2.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-300 hover:text-white flex items-center space-x-2 shrink-0">
+            <i data-lucide="layout-grid" class="w-4 h-4 shrink-0"></i>
             <span class="hidden md:inline">Dashboard</span>
           </button>
 
-          <button onclick="switchView('quiz')" id="nav-quiz" class="nav-pill px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2">
-            <i data-lucide="book-open" class="w-4 h-4"></i>
+          <button onclick="switchView('quiz')" id="nav-quiz" title="Lernen" class="nav-pill px-2.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2 shrink-0">
+            <i data-lucide="brain-circuit" class="w-4 h-4 shrink-0"></i>
             <span class="hidden md:inline">Lernen</span>
           </button>
 
-          <button onclick="switchView('tkonten')" id="nav-tkonten" class="nav-pill px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-amber-300/90 hover:text-amber-200 flex items-center space-x-2 bg-amber-500/10 border border-amber-500/20">
-            <i data-lucide="scale" class="w-4 h-4 text-amber-400"></i>
-            <span>T-Konten</span>
+          <button onclick="switchView('tkonten')" id="nav-tkonten" title="T-Konten" class="nav-pill px-2.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-amber-300/90 hover:text-amber-200 flex items-center space-x-2 bg-amber-500/10 shrink-0">
+            <i data-lucide="landmark" class="w-4 h-4 text-amber-400 shrink-0"></i>
+            <span class="hidden md:inline">T-Konten</span>
             <span class="hidden lg:inline text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full font-bold uppercase">3-Tage</span>
           </button>
 
-          <button onclick="switchView('kontenplan')" id="nav-kontenplan" class="nav-pill px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2">
-            <i data-lucide="table" class="w-4 h-4"></i>
+          <button onclick="switchView('kontenplan')" id="nav-kontenplan" title="Kontenplan" class="nav-pill px-2.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2 shrink-0">
+            <i data-lucide="book-marked" class="w-4 h-4 shrink-0"></i>
             <span class="hidden md:inline">Kontenplan</span>
           </button>
 
-          <button onclick="switchView('erfolge')" id="nav-erfolge" class="nav-pill px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2">
-            <i data-lucide="award" class="w-4 h-4"></i>
+          <button onclick="switchView('erfolge')" id="nav-erfolge" title="Erfolge" class="nav-pill px-2.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2 shrink-0">
+            <i data-lucide="medal" class="w-4 h-4 shrink-0"></i>
             <span class="hidden md:inline">Erfolge</span>
           </button>
         </nav>
 
-        <!-- User Profile Pill -->
-        <div class="flex items-center space-x-2 pr-1">
-          <div class="glass-pill px-3 py-1.5 rounded-full flex items-center space-x-2.5">
-            <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 font-bold text-xs shadow-md">
-              M
+        <!-- User Profile Pill & Settings Button -->
+        <div class="flex items-center space-x-1.5 sm:space-x-2 pr-1 shrink-0">
+          <button onclick="openSettingsModal()" title="Profil & Einstellungen" class="glass-pill px-2 sm:px-3 py-1 sm:py-1.5 rounded-full flex items-center space-x-2 hover:bg-white/10 transition">
+            <div id="user-avatar-box" class="w-7 h-7 rounded-full bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 font-bold text-xs shadow-md overflow-hidden shrink-0">
+              <span id="user-avatar-initial">M</span>
+              <img id="user-avatar-img" src="" alt="Profilbild" class="hidden w-full h-full object-cover">
             </div>
             <div class="hidden xl:block text-left">
-              <div class="text-xs font-bold text-white leading-none">Marlon</div>
-              <div class="text-[10px] text-indigo-300 font-medium leading-tight mt-0.5" id="user-pill-level">Lvl 3 &bull; 850 XP</div>
+              <div class="text-xs font-bold text-white leading-none" id="header-user-name">Marlon</div>
+              <div class="text-[10px] text-indigo-300 font-medium leading-tight mt-0.5" id="user-pill-level">Lvl 1 &bull; 0 XP</div>
             </div>
-          </div>
-          <button onclick="openResetModal()" title="Fortschritt zurücksetzen" class="p-2 rounded-full glass-pill hover:bg-rose-500/20 hover:text-rose-300 text-slate-400 transition">
-            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+          </button>
+          <button onclick="openSettingsModal()" title="Einstellungen öffnen" class="p-2 rounded-full glass-pill hover:bg-white/15 text-slate-300 hover:text-white transition duration-300 hover:rotate-90 shrink-0">
+            <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
           </button>
         </div>
 
@@ -237,67 +369,67 @@
       <!-- ========================================== -->
       <!-- SECTION 1: DASHBOARD (BENTO-GRID V5) -->
       <!-- ========================================== -->
-      <section id="view-dashboard" class="space-y-6">
+      <section id="view-dashboard" class="space-y-6 animate-view-enter">
         
         <!-- Welcome Header Banner -->
-        <div class="glass-v5 rounded-3xl p-6 sm:p-8 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 border-l-4 border-l-indigo-500">
+        <div class="glass-v5 rounded-3xl p-6 sm:p-8 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="space-y-2 relative z-10">
             <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full glass-pill text-indigo-300 text-xs font-medium">
-              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+              <i data-lucide="calendar-clock" class="w-3.5 h-3.5 text-amber-400"></i>
               <span id="current-date-badge">Montag, 09. November 2026</span>
             </div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Guten Tag, Marlon!</h1>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Guten Tag, <span id="dashboard-user-name">Marlon</span>!</h1>
             <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
-              Willkommen zurück in deinem Rechnungswesen &amp; Büromanagement V5 Dashboard. Dein Intensivbereich für T-Konten ist aktuell freigeschaltet.
+              Willkommen zurück in deinem Rechnungswesen &amp; Büromanagement V5 Dashboard. Alle Statistiken, deine Lernzeit und dein Streak werden live in Echtzeit erfasst.
             </p>
           </div>
 
           <!-- Quick Action Buttons -->
           <div class="flex items-center space-x-3 shrink-0 relative z-10">
-            <button onclick="switchView('tkonten')" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-400 hover:to-indigo-500 text-white text-xs font-bold transition shadow-xl shadow-amber-500/10 flex items-center space-x-2">
-              <i data-lucide="zap" class="w-4 h-4"></i>
+            <button onclick="switchView('tkonten')" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-400 hover:to-indigo-500 text-white text-xs font-bold transition transform hover:-translate-y-0.5 shadow-xl shadow-amber-500/10 flex items-center space-x-2">
+              <i data-lucide="rocket" class="w-4 h-4"></i>
               <span>T-Konten Labor</span>
             </button>
-            <button onclick="switchView('quiz')" class="px-5 py-3 rounded-2xl glass-pill hover:bg-white/10 text-white text-xs font-semibold transition flex items-center space-x-2">
-              <i data-lucide="book-open" class="w-4 h-4 text-emerald-400"></i>
+            <button onclick="switchView('quiz')" class="px-5 py-3 rounded-2xl glass-pill hover:bg-white/10 text-white text-xs font-semibold transition transform hover:-translate-y-0.5 flex items-center space-x-2">
+              <i data-lucide="brain-circuit" class="w-4 h-4 text-emerald-400"></i>
               <span>Jetzt Lernen</span>
             </button>
           </div>
         </div>
 
-        <!-- Top 4 KPI Glass Cards -->
+        <!-- Top 4 KPI Glass Cards (Clean Icons without colored borders + Real Live Data) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           
-          <!-- KPI 1: Lernzeit -->
+          <!-- KPI 1: Lernzeit Heute (Live Timer) -->
           <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Lernzeit Heute</span>
-              <div class="p-2.5 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                <i data-lucide="clock" class="w-5 h-5"></i>
+              <div class="p-2.5 rounded-2xl icon-box-clean text-indigo-400">
+                <i data-lucide="timer" class="w-5 h-5 icon-anim"></i>
               </div>
             </div>
             <div>
-              <div class="text-3xl font-black text-white tracking-tight" id="kpi-study-time">42 Min</div>
-              <div class="flex items-center space-x-1.5 text-xs text-emerald-400 font-semibold mt-1">
-                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                <span>+15% vs. Gestern</span>
+              <div class="text-3xl font-black text-white tracking-tight font-mono" id="kpi-study-time">0 Min 00s</div>
+              <div class="flex items-center space-x-1.5 text-xs text-emerald-400 font-semibold mt-1" id="kpi-study-sub">
+                <i data-lucide="activity" class="w-4 h-4"></i>
+                <span>Live-Stoppuhr aktiv</span>
               </div>
             </div>
           </div>
 
-          <!-- KPI 2: Erfolgsquote -->
+          <!-- KPI 2: Erfolgsquote (Real Accuracy) -->
           <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Erfolgsquote</span>
-              <div class="p-2.5 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                <i data-lucide="target" class="w-5 h-5"></i>
+              <div class="p-2.5 rounded-2xl icon-box-clean text-emerald-400">
+                <i data-lucide="crosshair" class="w-5 h-5 icon-anim"></i>
               </div>
             </div>
             <div>
-              <div class="text-3xl font-black text-white tracking-tight" id="kpi-accuracy">88%</div>
-              <div class="flex items-center space-x-1.5 text-xs text-emerald-400 font-semibold mt-1">
-                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                <span>+8% Positiver Trend</span>
+              <div class="text-3xl font-black text-white tracking-tight" id="kpi-accuracy">100%</div>
+              <div class="flex items-center space-x-1.5 text-xs text-emerald-400 font-semibold mt-1" id="kpi-accuracy-sub">
+                <i data-lucide="check-check" class="w-4 h-4"></i>
+                <span>Bereit für die erste Aufgabe</span>
               </div>
             </div>
           </div>
@@ -306,31 +438,31 @@
           <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Erfahrungspunkte</span>
-              <div class="p-2.5 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                <i data-lucide="sparkles" class="w-5 h-5"></i>
+              <div class="p-2.5 rounded-2xl icon-box-clean text-amber-400">
+                <i data-lucide="wand-sparkles" class="w-5 h-5 icon-anim"></i>
               </div>
             </div>
             <div>
-              <div class="text-3xl font-black text-white tracking-tight" id="kpi-total-xp">850 XP</div>
+              <div class="text-3xl font-black text-white tracking-tight" id="kpi-total-xp">0 XP</div>
               <div class="text-xs text-slate-400 font-semibold mt-1">
-                Stufe <span class="text-amber-300 font-bold" id="kpi-level-title">3 - Bilanz-Experte</span>
+                Stufe <span class="text-amber-300 font-bold" id="kpi-level-title">1 - Einsteiger</span>
               </div>
             </div>
           </div>
 
-          <!-- KPI 4: Streak -->
+          <!-- KPI 4: Tages-Streak (Real Consecutive Days) -->
           <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tages-Streak</span>
-              <div class="p-2.5 rounded-2xl bg-rose-500/10 text-rose-400 border border-rose-500/20">
-                <i data-lucide="flame" class="w-5 h-5"></i>
+              <div class="p-2.5 rounded-2xl icon-box-clean text-rose-400">
+                <i data-lucide="flame" class="w-5 h-5 icon-anim"></i>
               </div>
             </div>
             <div>
-              <div class="text-3xl font-black text-white tracking-tight" id="kpi-streak">4 Tage</div>
-              <div class="flex items-center space-x-1 text-xs text-rose-400 font-semibold mt-1">
-                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
-                <span>Aktiv &bull; Exzellent!</span>
+              <div class="text-3xl font-black text-white tracking-tight" id="kpi-streak">1 Tag</div>
+              <div class="flex items-center space-x-1 text-xs text-rose-400 font-semibold mt-1" id="kpi-streak-sub">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <span>Heute aktiv gelernt!</span>
               </div>
             </div>
           </div>
@@ -345,11 +477,11 @@
             <div class="flex items-center justify-between">
               <div>
                 <h3 class="text-base font-bold text-white tracking-tight">Wochenaktivität &amp; Fortschritt</h3>
-                <p class="text-xs text-slate-400">Geleistete Lerneinheiten und gesammelte Punkte pro Wochentag.</p>
+                <p class="text-xs text-slate-400">Deine tatsächlich gesammelten XP pro Wochentag in dieser Woche.</p>
               </div>
-              <div class="flex items-center space-x-2 text-xs text-indigo-400 font-bold glass-pill px-3 py-1 rounded-full">
-                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
-                <span>Aktive Woche</span>
+              <div class="flex items-center space-x-2 text-xs text-indigo-300 font-bold glass-pill px-3 py-1 rounded-full">
+                <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i>
+                <span id="weekly-total-xp-badge">Diese Woche</span>
               </div>
             </div>
 
@@ -363,7 +495,7 @@
           <div class="glass-v5 rounded-3xl p-6 flex flex-col justify-between space-y-6">
             <div>
               <h3 class="text-base font-bold text-white tracking-tight">Gesamtfortschritt</h3>
-              <p class="text-xs text-slate-400">Rechnungswesen &amp; Büromanagement</p>
+              <p class="text-xs text-slate-400">Echter Lernstand aus allen Bereichen</p>
             </div>
 
             <!-- Canvas Progress Ring -->
@@ -371,7 +503,7 @@
               <div class="relative w-40 h-40 flex items-center justify-center">
                 <canvas id="progressRingCanvas" width="160" height="160"></canvas>
                 <div class="absolute flex flex-col items-center">
-                  <span class="text-2xl font-black text-white" id="ring-percent-text">72%</span>
+                  <span class="text-2xl font-black text-white" id="ring-percent-text">0%</span>
                   <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Meisterschaft</span>
                 </div>
               </div>
@@ -381,23 +513,23 @@
               <div class="flex justify-between text-slate-300">
                 <span class="flex items-center space-x-1.5">
                   <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
-                  <span>Bilanz &amp; Buchung</span>
+                  <span>Rechnungswesen-Fragen</span>
                 </span>
-                <span class="font-bold text-white">85%</span>
+                <span class="font-bold text-white" id="progress-sub-quiz">0 / 70</span>
               </div>
               <div class="flex justify-between text-slate-300">
                 <span class="flex items-center space-x-1.5">
                   <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                  <span>T-Konten Intensiv</span>
+                  <span>T-Konten Labor</span>
                 </span>
-                <span class="font-bold text-white">60%</span>
+                <span class="font-bold text-white" id="progress-sub-tk">0 / 6</span>
               </div>
               <div class="flex justify-between text-slate-300">
                 <span class="flex items-center space-x-1.5">
                   <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                  <span>GuV &amp; Abschluss</span>
+                  <span>Aufgabenblatt 2</span>
                 </span>
-                <span class="font-bold text-white">70%</span>
+                <span class="font-bold text-white" id="progress-sub-ws">0 / 5</span>
               </div>
             </div>
           </div>
@@ -405,21 +537,21 @@
         </div>
 
         <!-- Bottom Row: 3-Tage T-Konten Special Card Banner -->
-        <div class="glass-v5 rounded-3xl p-6 sm:p-8 border border-amber-500/30 relative overflow-hidden bg-gradient-to-r from-amber-950/20 via-slate-900/40 to-indigo-950/20">
+        <div class="glass-v5 rounded-3xl p-6 sm:p-8 relative overflow-hidden bg-gradient-to-r from-amber-950/20 via-slate-900/40 to-indigo-950/20">
           <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div class="space-y-3 max-w-2xl">
-              <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
-                <i data-lucide="timer" class="w-3.5 h-3.5"></i>
+              <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                <i data-lucide="hourglass" class="w-3.5 h-3.5"></i>
                 <span>Spezial-Feature: Temporärer Fokus (3 Tage)</span>
               </div>
-              <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">3-Tage T-Konten Intensivlabor für Marlon</h2>
+              <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">3-Tage T-Konten Intensivlabor für <span id="banner-user-name">Marlon</span></h2>
               <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Speziell entwickeltes Interaktiv-Modul zur perfekten Beherrschung von Soll- und Haben-Buchungen, Bestandskonten und Erfolgskonten. Mit Sofort-Validierung und Real-Time Feedback.
               </p>
             </div>
-            <button onclick="switchView('tkonten')" class="px-6 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center space-x-2 shrink-0">
+            <button onclick="switchView('tkonten')" class="px-6 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition transform hover:-translate-y-0.5 shadow-lg shadow-amber-500/20 flex items-center justify-center space-x-2 shrink-0">
               <span>Labor starten</span>
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
             </button>
           </div>
         </div>
@@ -429,13 +561,13 @@
       <!-- ========================================== -->
       <!-- SECTION 2: LERNEN (RECHNUNGSWESEN HUB) -->
       <!-- ========================================== -->
-      <section id="view-quiz" class="hidden space-y-6">
+      <section id="view-quiz" class="hidden space-y-6 animate-view-enter">
 
         <!-- Fachbereich Header & Sub-Navigation -->
-        <div class="glass-v5 rounded-3xl p-6 sm:p-8 border-l-4 border-l-indigo-500 space-y-5">
+        <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-5">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5">
             <div class="space-y-1.5">
-              <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-[11px] font-bold uppercase tracking-wider">
+              <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[11px] font-bold uppercase tracking-wider">
                 <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i>
                 <span>Hauptbereich &bull; 70 Fragen-Pool mit Zufalls-Rotation</span>
               </div>
@@ -448,10 +580,10 @@
             <!-- Mode Toggle: Quiz-Module vs. Aufgabenblatt 2 -->
             <div class="flex items-center space-x-2 shrink-0">
               <button onclick="setLernenMode('modules')" id="btn-mode-modules" class="px-4 py-2.5 rounded-2xl bg-indigo-600 text-white text-xs font-bold transition flex items-center space-x-2 shadow-lg shadow-indigo-600/20">
-                <i data-lucide="layers" class="w-4 h-4"></i>
+                <i data-lucide="blocks" class="w-4 h-4"></i>
                 <span>Lernmodule (7)</span>
               </button>
-              <button onclick="setLernenMode('worksheet')" id="btn-mode-worksheet" class="px-4 py-2.5 rounded-2xl glass-pill text-amber-300 hover:bg-amber-500/20 border border-amber-500/30 text-xs font-bold transition flex items-center space-x-2">
+              <button onclick="setLernenMode('worksheet')" id="btn-mode-worksheet" class="px-4 py-2.5 rounded-2xl glass-pill text-amber-300 hover:bg-amber-500/20 text-xs font-bold transition flex items-center space-x-2">
                 <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-400"></i>
                 <span>Aufgabenblatt 2</span>
               </button>
@@ -461,10 +593,10 @@
           <!-- Rechnungswesen Module Cards Grid (1 to 7) -->
           <div id="rw-modules-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
             <!-- 1. Aktiv oder Passiv? -->
-            <button onclick="filterQuizCategory('aktiv_passiv', this)" class="quiz-cat-pill text-left p-4 rounded-2xl bg-indigo-600/25 border border-indigo-400/50 transition group hover:bg-indigo-600/35 flex flex-col justify-between space-y-3">
+            <button onclick="filterQuizCategory('aktiv_passiv', this)" class="quiz-cat-pill text-left p-4 rounded-2xl bg-indigo-600/25 transition group hover:bg-indigo-600/35 flex flex-col justify-between space-y-3">
               <div class="flex items-center justify-between w-full">
                 <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 uppercase">1. Modul &bull; 5 Fragen</span>
-                <i data-lucide="columns" class="w-4 h-4 text-indigo-300"></i>
+                <i data-lucide="split-square-horizontal" class="w-4 h-4 text-indigo-300 transition-transform group-hover:scale-110"></i>
               </div>
               <div>
                 <div class="font-bold text-sm text-white">Aktiv oder Passiv?</div>
@@ -476,7 +608,7 @@
             <button onclick="filterQuizCategory('soll_haben', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
               <div class="flex items-center justify-between w-full">
                 <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 uppercase">2. Modul &bull; 5 Fragen</span>
-                <i data-lucide="arrow-left-right" class="w-4 h-4 text-cyan-400"></i>
+                <i data-lucide="arrow-left-right" class="w-4 h-4 text-cyan-400 transition-transform group-hover:scale-110"></i>
               </div>
               <div>
                 <div class="font-bold text-sm text-white">Soll &amp; Haben</div>
@@ -488,7 +620,7 @@
             <button onclick="filterQuizCategory('bilanz', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
               <div class="flex items-center justify-between w-full">
                 <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 uppercase">3. Modul &bull; 5 Fragen</span>
-                <i data-lucide="scale" class="w-4 h-4 text-emerald-400"></i>
+                <i data-lucide="landmark" class="w-4 h-4 text-emerald-400 transition-transform group-hover:scale-110"></i>
               </div>
               <div>
                 <div class="font-bold text-sm text-white">Bilanzen</div>
@@ -500,7 +632,7 @@
             <button onclick="filterQuizCategory('buchung', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
               <div class="flex items-center justify-between w-full">
                 <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 uppercase">4. Modul &bull; 5 Fragen</span>
-                <i data-lucide="file-text" class="w-4 h-4 text-amber-400"></i>
+                <i data-lucide="receipt-text" class="w-4 h-4 text-amber-400 transition-transform group-hover:scale-110"></i>
               </div>
               <div>
                 <div class="font-bold text-sm text-white">Buchungssätze</div>
@@ -512,7 +644,7 @@
             <button onclick="filterQuizCategory('tkonten_quiz', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
               <div class="flex items-center justify-between w-full">
                 <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 uppercase">5. Modul &bull; 5 Fragen</span>
-                <i data-lucide="git-fork" class="w-4 h-4 text-rose-400"></i>
+                <i data-lucide="git-compare-arrows" class="w-4 h-4 text-rose-400 transition-transform group-hover:scale-110"></i>
               </div>
               <div>
                 <div class="font-bold text-sm text-white">T-Konten Buchen</div>
@@ -524,7 +656,7 @@
             <button onclick="filterQuizCategory('bilanzveraenderung', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
               <div class="flex items-center justify-between w-full">
                 <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 uppercase">6. Extra &bull; 5 Fragen</span>
-                <i data-lucide="refresh-cw" class="w-4 h-4 text-purple-400"></i>
+                <i data-lucide="repeat-2" class="w-4 h-4 text-purple-400 transition-transform group-hover:scale-110"></i>
               </div>
               <div>
                 <div class="font-bold text-sm text-white">Bilanzveränderungen</div>
@@ -536,7 +668,7 @@
             <button onclick="filterQuizCategory('abschluss', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
               <div class="flex items-center justify-between w-full">
                 <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 uppercase">7. Extra &bull; 5 Fragen</span>
-                <i data-lucide="check-square" class="w-4 h-4 text-teal-400"></i>
+                <i data-lucide="clipboard-check" class="w-4 h-4 text-teal-400 transition-transform group-hover:scale-110"></i>
               </div>
               <div>
                 <div class="font-bold text-sm text-white">Abschluss &amp; Inventur</div>
@@ -544,11 +676,11 @@
               </div>
             </button>
 
-            <!-- Alle 35 Fragen Mix -->
-            <button onclick="filterQuizCategory('all', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3 border border-dashed border-white/20">
+            <!-- Alle 70 Fragen Mix -->
+            <button onclick="filterQuizCategory('all', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
               <div class="flex items-center justify-between w-full">
                 <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-white/10 text-white uppercase">Komplett-Mix</span>
-                <i data-lucide="shuffle" class="w-4 h-4 text-indigo-400"></i>
+                <i data-lucide="dices" class="w-4 h-4 text-indigo-400 transition-transform group-hover:rotate-12"></i>
               </div>
               <div>
                 <div class="font-bold text-sm text-white">Alle Module mischen</div>
@@ -739,17 +871,17 @@
       <!-- ========================================== -->
       <!-- SECTION 3: 3-TAGE T-KONTEN INTENSIVLABOR -->
       <!-- ========================================== -->
-      <section id="view-tkonten" class="hidden space-y-6">
+      <section id="view-tkonten" class="hidden space-y-6 animate-view-enter">
         
         <!-- Header & Rules Banner -->
-        <div class="glass-v5 rounded-3xl p-6 border border-amber-500/30 space-y-4">
+        <div class="glass-v5 rounded-3xl p-6 space-y-4">
           <div class="flex items-center justify-between border-b border-white/10 pb-4 flex-wrap gap-3">
             <div class="flex items-center space-x-3">
-              <div class="p-3 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                <i data-lucide="scale" class="w-6 h-6"></i>
+              <div class="p-3 rounded-2xl icon-box-clean text-amber-400">
+                <i data-lucide="landmark" class="w-6 h-6 icon-anim"></i>
               </div>
               <div>
-                <h2 class="text-xl font-bold text-white tracking-tight">T-Konten Intensivlabor für Marlon</h2>
+                <h2 class="text-xl font-bold text-white tracking-tight">T-Konten Intensivlabor für <span id="tkonten-user-name">Marlon</span></h2>
                 <p class="text-xs text-slate-400">Interaktives Training für Soll- &amp; Haben-Zuordnungen (6 wechselnde Geschäftsfälle).</p>
               </div>
             </div>
@@ -874,7 +1006,7 @@
       <!-- ========================================== -->
       <!-- SECTION 4: IKR KONTENPLAN -->
       <!-- ========================================== -->
-      <section id="view-kontenplan" class="hidden space-y-6">
+      <section id="view-kontenplan" class="hidden space-y-6 animate-view-enter">
         
         <div class="glass-v5 rounded-3xl p-6 space-y-4">
           <div>
@@ -922,7 +1054,7 @@
       <!-- ========================================== -->
       <!-- SECTION 5: ERFOLGE & BADGES (SAVED-STYLE GRID) -->
       <!-- ========================================== -->
-      <section id="view-erfolge" class="hidden space-y-6">
+      <section id="view-erfolge" class="hidden space-y-6 animate-view-enter">
         
         <div class="glass-v5 rounded-3xl p-6 space-y-2">
           <h2 class="text-xl font-bold text-white tracking-tight">Erfolge &amp; Freigeschaltete Badges</h2>
@@ -940,26 +1072,121 @@
 
   </div>
 
-  <!-- Custom Reset Confirmation Modal (replaces native confirm) -->
-  <div id="reset-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
-    <div class="glass-v5 rounded-3xl p-6 max-w-sm w-full space-y-4 border border-rose-500/30 shadow-2xl">
-      <div class="flex items-center space-x-3 text-rose-400">
-        <div class="p-2.5 rounded-2xl bg-rose-500/10 border border-rose-500/20">
-          <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+  <!-- Settings Modal (Name, Profilbild, Monochrom-Design & Fortschritt zurücksetzen) -->
+  <div id="settings-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+    <div class="glass-v5 rounded-3xl p-6 sm:p-7 max-w-md w-full space-y-6 border border-white/15 shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-white/10 pb-4">
+        <div class="flex items-center space-x-3">
+          <div class="p-2.5 rounded-2xl icon-box-clean text-indigo-300">
+            <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white">Einstellungen</h3>
+            <p class="text-[11px] text-slate-400">Profil, Erscheinungsbild &amp; Speicherstand</p>
+          </div>
         </div>
-        <h3 class="text-base font-bold text-white">Fortschritt zurücksetzen?</h3>
-      </div>
-      <p class="text-xs text-slate-300 leading-relaxed">
-        Möchtest du deinen Lernfortschritt und deine gesammelten Erfahrungspunkte wirklich auf den Anfangswert zurücksetzen?
-      </p>
-      <div class="flex items-center justify-end space-x-3 pt-2">
-        <button onclick="closeResetModal()" class="px-4 py-2 rounded-xl glass-pill text-xs font-semibold text-slate-300 hover:text-white transition">
-          Abbrechen
-        </button>
-        <button onclick="confirmResetAppState()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white transition shadow-lg shadow-rose-600/20">
-          Zurücksetzen
+        <button onclick="closeSettingsModal()" class="p-2 rounded-full glass-pill text-slate-400 hover:text-white transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
+
+      <!-- 1. Profilbild & Name -->
+      <div class="space-y-4">
+        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Profil &amp; Name</label>
+        
+        <div class="flex items-center space-x-4">
+          <div id="settings-avatar-preview" class="w-16 h-16 rounded-full bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg overflow-hidden shrink-0 border-2 border-white/20">
+            <span id="settings-avatar-initial">M</span>
+            <img id="settings-avatar-img" src="" alt="Vorschau" class="hidden w-full h-full object-cover">
+          </div>
+          <div class="space-y-2 flex-1">
+            <div class="flex flex-wrap gap-2">
+              <label for="settings-avatar-input" class="cursor-pointer px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition inline-flex items-center space-x-1.5">
+                <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                <span>Bild wählen</span>
+              </label>
+              <input type="file" id="settings-avatar-input" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
+              <button type="button" onclick="removeCustomAvatar()" class="px-3 py-2 rounded-xl glass-pill text-xs font-semibold text-slate-300 hover:text-white transition">
+                Standard
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-400">Eigenes Foto hochladen oder Initiale nutzen.</p>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label for="settings-name-input" class="text-xs font-semibold text-slate-300">Dein Name</label>
+          <input type="text" id="settings-name-input" placeholder="Marlon" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+        </div>
+      </div>
+
+      <!-- 2. Design-Farbe (Standard vs. Monochrom) -->
+      <div class="space-y-3 border-t border-white/10 pt-4">
+        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Design-Modus</label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button type="button" onclick="setAppTheme('default')" id="theme-btn-default" class="p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 bg-indigo-600/20 border-indigo-400">
+            <div class="w-8 h-8 rounded-xl bg-slate-950 border border-indigo-500/40 flex items-center justify-center shrink-0">
+              <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white">Obsidian V5</div>
+              <div class="text-[10px] text-slate-400">Dunkel &amp; Farbakzente</div>
+            </div>
+          </button>
+
+          <button type="button" onclick="setAppTheme('monochrome')" id="theme-btn-monochrome" class="p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 glass-pill border-white/10 hover:bg-white/10">
+            <div class="w-8 h-8 rounded-xl bg-white border border-slate-400 flex items-center justify-center shrink-0">
+              <div class="w-4 h-4 rounded bg-slate-800"></div>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white">Monochrom</div>
+              <div class="text-[10px] text-slate-300">Weiß / Grau &amp; Weiße Icons</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Fortschritt zurücksetzen -->
+      <div class="space-y-3 border-t border-white/10 pt-4">
+        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Lernfortschritt</label>
+        
+        <div id="reset-default-box" class="flex items-center justify-between glass-pill p-3.5 rounded-2xl border border-white/10">
+          <div>
+            <div class="text-xs font-bold text-white">Fortschritt zurücksetzen</div>
+            <div class="text-[11px] text-slate-400">XP, Level und Fragen-Historie auf 0 setzen</div>
+          </div>
+          <button type="button" onclick="showInlineResetConfirm()" class="px-3.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 text-xs font-bold transition flex items-center space-x-1.5 shrink-0">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+            <span>Zurücksetzen</span>
+          </button>
+        </div>
+
+        <!-- Inline Bestätigung -->
+        <div id="reset-confirm-box" class="hidden p-4 rounded-2xl bg-rose-950/60 border border-rose-500/40 space-y-3">
+          <p class="text-xs text-rose-200 font-medium">
+            Möchtest du deine XP und deinen Lernfortschritt wirklich unwiderruflich zurücksetzen?
+          </p>
+          <div class="flex items-center justify-end space-x-2">
+            <button type="button" onclick="hideInlineResetConfirm()" class="px-3 py-1.5 rounded-xl glass-pill text-xs text-slate-300 hover:text-white">
+              Abbrechen
+            </button>
+            <button type="button" onclick="confirmResetAppState()" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white">
+              Ja, jetzt löschen
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-end space-x-3 border-t border-white/10 pt-4">
+        <button type="button" onclick="saveSettingsFromModal()" class="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs transition shadow-lg shadow-indigo-600/20 flex items-center justify-center space-x-2">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Einstellungen speichern</span>
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -2177,24 +2404,36 @@
     ];
 
     const ACHIEVEMENTS_DATA = [
-      { id: "a1", title: "Erster Durchlauf", desc: "Absolviere dein erstes V5 Quiz", icon: "footprints", color: "indigo", progress: 100, unlocked: true },
-      { id: "a2", title: "T-Konten Meister", desc: "Schließe alle 3 Intensivfälle ab", icon: "scale", color: "amber", progress: 100, unlocked: true },
-      { id: "a3", title: "Streak Champion", desc: "Lerne 4 Tage in Folge", icon: "flame", color: "rose", progress: 100, unlocked: true },
-      { id: "a4", title: "Bilanz-Experte", desc: "Erreiche 800+ Gesamt XP", icon: "sparkles", color: "cyan", progress: 100, unlocked: true },
-      { id: "a5", title: "Perfektions-Run", desc: "100% Score in einer Quiz-Session", icon: "check-check", color: "emerald", progress: 80, unlocked: false },
-      { id: "a6", title: "IKR Nachschläger", desc: "Nutze die IKR Suche", icon: "search", color: "indigo", progress: 100, unlocked: true }
+      { id: "a1", title: "Erster Durchlauf", desc: "Beantworte mindestens 5 Quiz-Fragen", icon: "compass", color: "indigo" },
+      { id: "a2", title: "T-Konten Meister", desc: "Löse mindestens 3 T-Konten-Fälle", icon: "landmark", color: "amber" },
+      { id: "a3", title: "Streak Champion", desc: "Lerne an mehreren Tagen aktiv", icon: "flame", color: "rose" },
+      { id: "a4", title: "Bilanz-Experte", desc: "Erreiche 500+ Gesamt XP", icon: "wand-sparkles", color: "cyan" },
+      { id: "a5", title: "Aufgabenblatt-Profi", desc: "Löse Buchungssätze auf Aufgabenblatt 2", icon: "file-check-2", color: "emerald" },
+      { id: "a6", title: "Ausdauer-Lernender", desc: "Lerne über 15 Minuten auf der Plattform", icon: "timer", color: "indigo" }
     ];
 
     // ==========================================
-    // STATE MANAGEMENT
+    // STATE MANAGEMENT (REAL METRICS & LIVE TRACKING)
     // ==========================================
 
+    function getDateKey(dateObj = new Date()) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const d = String(dateObj.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+
     let state = {
-      xp: 850,
-      level: 3,
-      streak: 4,
-      studyMinutes: 42,
-      accuracy: 88,
+      userName: "Marlon",
+      avatarDataUrl: "",
+      theme: "default",
+      xp: 0,
+      level: 1,
+      totalAnswered: 0,
+      totalCorrect: 0,
+      dailyStats: {}, // { 'YYYY-MM-DD': { seconds: 0, xp: 0 } }
+      solvedTKIds: [],
+      solvedWSRows: [],
       seenQuestions: [],
       activeQuizIndex: 0,
       quizAnswers: [],
@@ -2204,6 +2443,7 @@
 
     let activeShuffledQuestions = [];
     let activityChartInstance = null;
+    let studyTimerInterval = null;
 
     // Fisher-Yates Shuffle Algorithm
     function fisherYatesShuffle(array) {
@@ -2221,29 +2461,134 @@
 
     function initApp() {
       loadState();
+      ensureTodayEntry();
+      updateCurrentDateBadge();
+      applyUserProfileAndTheme();
       updateHeaderAndKPIs();
       initActivityChart();
-      drawProgressRing(72);
+      updateMasteryProgressUI();
       renderFilteredKonten();
       renderAchievements();
       setupQuizSession();
       renderWorksheetRows();
       loadTKontoCase(0);
+      startLiveStudyTimer();
       lucide.createIcons();
+    }
+
+    function ensureTodayEntry() {
+      const today = getDateKey();
+      if (!state.dailyStats || typeof state.dailyStats !== "object") {
+        state.dailyStats = {};
+      }
+      if (!state.dailyStats[today]) {
+        state.dailyStats[today] = { seconds: 0, xp: 0 };
+      }
+      if (!Array.isArray(state.solvedTKIds)) state.solvedTKIds = [];
+      if (!Array.isArray(state.solvedWSRows)) state.solvedWSRows = [];
+      if (!Array.isArray(state.seenQuestions)) state.seenQuestions = [];
+      if (typeof state.totalAnswered !== "number") state.totalAnswered = 0;
+      if (typeof state.totalCorrect !== "number") state.totalCorrect = 0;
+    }
+
+    function updateCurrentDateBadge() {
+      const badge = document.getElementById("current-date-badge");
+      if (!badge) return;
+      const now = new Date();
+      badge.textContent = now.toLocaleDateString("de-DE", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+    }
+
+    function startLiveStudyTimer() {
+      if (studyTimerInterval) clearInterval(studyTimerInterval);
+      studyTimerInterval = setInterval(() => {
+        if (document.hidden) return;
+        const today = getDateKey();
+        ensureTodayEntry();
+        state.dailyStats[today].seconds = (state.dailyStats[today].seconds || 0) + 1;
+        updateStudyTimeKPIOnly();
+        if (state.dailyStats[today].seconds % 10 === 0) {
+          saveState();
+          renderAchievements();
+        }
+      }, 1000);
+    }
+
+    function formatStudyTime(totalSeconds) {
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      if (mins === 0) {
+        return `0 Min ${String(secs).padStart(2, "0")}s`;
+      }
+      return `${mins} Min ${String(secs).padStart(2, "0")}s`;
+    }
+
+    function calculateCurrentStreak() {
+      ensureTodayEntry();
+      let streak = 0;
+      const cursor = new Date();
+      while (true) {
+        const key = getDateKey(cursor);
+        const entry = state.dailyStats[key];
+        const isToday = key === getDateKey();
+        if (entry && (entry.seconds > 0 || entry.xp > 0 || isToday)) {
+          streak++;
+          cursor.setDate(cursor.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+      return Math.max(1, streak);
+    }
+
+    function updateStudyTimeKPIOnly() {
+      const today = getDateKey();
+      const todaySec = (state.dailyStats[today] && state.dailyStats[today].seconds) || 0;
+      const timeEl = document.getElementById("kpi-study-time");
+      if (timeEl) timeEl.textContent = formatStudyTime(todaySec);
+
+      const yestDate = new Date();
+      yestDate.setDate(yestDate.getDate() - 1);
+      const yestKey = getDateKey(yestDate);
+      const yestSec = (state.dailyStats[yestKey] && state.dailyStats[yestKey].seconds) || 0;
+      const subEl = document.getElementById("kpi-study-sub");
+      if (subEl) {
+        if (yestSec > 0) {
+          const diffMin = Math.round((todaySec - yestSec) / 60);
+          const sign = diffMin >= 0 ? "+" : "";
+          subEl.innerHTML = `<i data-lucide="activity" class="w-4 h-4"></i><span>${sign}${diffMin} Min vs. Gestern</span>`;
+        } else {
+          const totalMin = Math.floor(todaySec / 60);
+          subEl.innerHTML = `<i data-lucide="activity" class="w-4 h-4"></i><span>Live erfasst &bull; ${totalMin} Min heute</span>`;
+        }
+      }
     }
 
     // Nav Switcher
     function switchView(viewId) {
-      document.querySelectorAll("main > section").forEach(el => el.classList.add("hidden"));
+      document.querySelectorAll("main > section").forEach(el => {
+        el.classList.add("hidden");
+        el.classList.remove("animate-view-enter");
+      });
       const target = document.getElementById("view-" + viewId);
-      if (target) target.classList.remove("hidden");
+      if (target) {
+        target.classList.remove("hidden");
+        void target.offsetWidth; // Reflow for fresh animation
+        target.classList.add("animate-view-enter");
+      }
 
       document.querySelectorAll(".nav-pill").forEach(btn => btn.classList.remove("nav-pill-active"));
       const activeBtn = document.getElementById("nav-" + viewId);
       if (activeBtn) activeBtn.classList.add("nav-pill-active");
 
-      if (viewId === "dashboard" && activityChartInstance) {
-        activityChartInstance.update();
+      if (viewId === "dashboard") {
+        updateHeaderAndKPIs();
+        initActivityChart();
+        updateMasteryProgressUI();
       }
 
       setTimeout(() => lucide.createIcons(), 30);
@@ -2266,54 +2611,238 @@
       } catch (e) {}
     }
 
-    function openResetModal() {
-      document.getElementById("reset-modal").classList.remove("hidden");
+    // ==========================================
+    // SETTINGS MODAL (NAME, AVATAR, MONOCHROME THEME, RESET)
+    // ==========================================
+
+    function applyUserProfileAndTheme() {
+      const cleanName = (state.userName || "Marlon").trim() || "Marlon";
+      state.userName = cleanName;
+      const initial = cleanName.charAt(0).toUpperCase();
+
+      // Update Name in UI
+      const nameIds = ["header-user-name", "dashboard-user-name", "banner-user-name", "tkonten-user-name"];
+      nameIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = cleanName;
+      });
+
+      // Update Initials & Avatar Image in Header + Settings Preview
+      const headerInitial = document.getElementById("user-avatar-initial");
+      const headerImg = document.getElementById("user-avatar-img");
+      const settingsInitial = document.getElementById("settings-avatar-initial");
+      const settingsImg = document.getElementById("settings-avatar-img");
+
+      if (headerInitial) headerInitial.textContent = initial;
+      if (settingsInitial) settingsInitial.textContent = initial;
+
+      if (state.avatarDataUrl) {
+        if (headerImg) {
+          headerImg.src = state.avatarDataUrl;
+          headerImg.classList.remove("hidden");
+        }
+        if (headerInitial) headerInitial.classList.add("hidden");
+        if (settingsImg) {
+          settingsImg.src = state.avatarDataUrl;
+          settingsImg.classList.remove("hidden");
+        }
+        if (settingsInitial) settingsInitial.classList.add("hidden");
+      } else {
+        if (headerImg) headerImg.classList.add("hidden");
+        if (headerInitial) headerInitial.classList.remove("hidden");
+        if (settingsImg) settingsImg.classList.add("hidden");
+        if (settingsInitial) settingsInitial.classList.remove("hidden");
+      }
+
+      // Apply Monochrome or Default Theme
+      if (state.theme === "monochrome") {
+        document.documentElement.classList.add("theme-monochrome");
+        document.body.classList.add("theme-monochrome");
+      } else {
+        document.documentElement.classList.remove("theme-monochrome");
+        document.body.classList.remove("theme-monochrome");
+      }
+
+      updateThemeButtonsUI();
+    }
+
+    function updateThemeButtonsUI() {
+      const btnDef = document.getElementById("theme-btn-default");
+      const btnMono = document.getElementById("theme-btn-monochrome");
+      if (!btnDef || !btnMono) return;
+
+      if (state.theme === "monochrome") {
+        btnMono.className = "p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 bg-white/15 border-white";
+        btnDef.className = "p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 glass-pill border-white/10 hover:bg-white/10";
+      } else {
+        btnDef.className = "p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 bg-indigo-600/20 border-indigo-400";
+        btnMono.className = "p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 glass-pill border-white/10 hover:bg-white/10";
+      }
+    }
+
+    function openSettingsModal() {
+      const nameInput = document.getElementById("settings-name-input");
+      if (nameInput) nameInput.value = state.userName || "Marlon";
+      hideInlineResetConfirm();
+      applyUserProfileAndTheme();
+      document.getElementById("settings-modal").classList.remove("hidden");
       lucide.createIcons();
     }
 
-    function closeResetModal() {
-      document.getElementById("reset-modal").classList.add("hidden");
+    function closeSettingsModal() {
+      document.getElementById("settings-modal").classList.add("hidden");
+    }
+
+    function saveSettingsFromModal() {
+      const nameInput = document.getElementById("settings-name-input");
+      if (nameInput && nameInput.value.trim()) {
+        state.userName = nameInput.value.trim();
+      }
+      saveState();
+      applyUserProfileAndTheme();
+      closeSettingsModal();
+    }
+
+    function setAppTheme(themeName) {
+      state.theme = themeName;
+      saveState();
+      applyUserProfileAndTheme();
+      lucide.createIcons();
+    }
+
+    function handleAvatarUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        state.avatarDataUrl = e.target.result;
+        saveState();
+        applyUserProfileAndTheme();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeCustomAvatar() {
+      state.avatarDataUrl = "";
+      const fileInput = document.getElementById("settings-avatar-input");
+      if (fileInput) fileInput.value = "";
+      saveState();
+      applyUserProfileAndTheme();
+    }
+
+    function showInlineResetConfirm() {
+      document.getElementById("reset-confirm-box").classList.remove("hidden");
+    }
+
+    function hideInlineResetConfirm() {
+      const box = document.getElementById("reset-confirm-box");
+      if (box) box.classList.add("hidden");
     }
 
     function confirmResetAppState() {
+      const currentName = state.userName || "Marlon";
+      const currentAvatar = state.avatarDataUrl || "";
+      const currentTheme = state.theme || "default";
       try {
         localStorage.removeItem("learnex_v5_app_state");
       } catch (e) {}
       state = {
+        userName: currentName,
+        avatarDataUrl: currentAvatar,
+        theme: currentTheme,
         xp: 0,
         level: 1,
-        streak: 1,
-        studyMinutes: 10,
-        accuracy: 100,
+        totalAnswered: 0,
+        totalCorrect: 0,
+        dailyStats: {},
+        solvedTKIds: [],
+        solvedWSRows: [],
         seenQuestions: [],
         activeQuizIndex: 0,
         quizAnswers: [],
         currentTKCaseIndex: 0,
         activeKontenCat: "all"
       };
+      ensureTodayEntry();
       saveState();
+      applyUserProfileAndTheme();
       updateHeaderAndKPIs();
+      initActivityChart();
+      updateMasteryProgressUI();
+      renderAchievements();
       setupQuizSession();
       loadTKontoCase(0);
-      closeResetModal();
+      hideInlineResetConfirm();
+      closeSettingsModal();
+    }
+
+    function getLevelTitle(lvl) {
+      if (lvl <= 1) return "1 - Einsteiger";
+      if (lvl === 2) return "2 - Buchungs-Kenner";
+      if (lvl === 3) return "3 - Bilanz-Experte";
+      if (lvl === 4) return "4 - Konten-Architekt";
+      return `${lvl} - Rechnungswesen-Meister`;
     }
 
     function updateHeaderAndKPIs() {
+      ensureTodayEntry();
+      state.level = Math.max(1, Math.floor(state.xp / 300) + 1);
+
       document.getElementById("user-pill-level").textContent = `Lvl ${state.level} • ${state.xp} XP`;
       document.getElementById("kpi-total-xp").textContent = `${state.xp} XP`;
-      document.getElementById("kpi-study-time").textContent = `${state.studyMinutes} Min`;
-      document.getElementById("kpi-accuracy").textContent = `${state.accuracy}%`;
-      document.getElementById("kpi-streak").textContent = `${state.streak} Tage`;
-      document.getElementById("kpi-level-title").textContent = `${state.level} - Bilanz-Experte`;
+      document.getElementById("kpi-level-title").textContent = getLevelTitle(state.level);
+
+      // Real Study Time
+      updateStudyTimeKPIOnly();
+
+      // Real Accuracy
+      const acc = state.totalAnswered > 0
+        ? Math.round((state.totalCorrect / state.totalAnswered) * 100)
+        : 100;
+      document.getElementById("kpi-accuracy").textContent = `${acc}%`;
+      const accSub = document.getElementById("kpi-accuracy-sub");
+      if (accSub) {
+        if (state.totalAnswered > 0) {
+          accSub.innerHTML = `<i data-lucide="check-check" class="w-4 h-4"></i><span>${state.totalCorrect} von ${state.totalAnswered} Aufgaben richtig</span>`;
+        } else {
+          accSub.innerHTML = `<i data-lucide="check-check" class="w-4 h-4"></i><span>Noch keine Aufgabe gewertet</span>`;
+        }
+      }
+
+      // Real Streak
+      const currentStreak = calculateCurrentStreak();
+      document.getElementById("kpi-streak").textContent = currentStreak === 1 ? "1 Tag" : `${currentStreak} Tage`;
+      const streakSub = document.getElementById("kpi-streak-sub");
+      if (streakSub) {
+        const todayXP = (state.dailyStats[getDateKey()] && state.dailyStats[getDateKey()].xp) || 0;
+        streakSub.innerHTML = todayXP > 0
+          ? `<i data-lucide="zap" class="w-4 h-4"></i><span>Heute +${todayXP} XP gesammelt!</span>`
+          : `<i data-lucide="sparkles" class="w-4 h-4"></i><span>Heute aktiv im Training</span>`;
+      }
     }
 
-    function awardXP(amount) {
-      state.xp += amount;
-      if (state.xp >= state.level * 300) {
-        state.level += 1;
+    function recordAnswerMetric(isCorrect) {
+      state.totalAnswered = (state.totalAnswered || 0) + 1;
+      if (isCorrect) {
+        state.totalCorrect = (state.totalCorrect || 0) + 1;
       }
       saveState();
       updateHeaderAndKPIs();
+      updateMasteryProgressUI();
+      renderAchievements();
+    }
+
+    function awardXP(amount) {
+      ensureTodayEntry();
+      const today = getDateKey();
+      state.xp += amount;
+      state.dailyStats[today].xp = (state.dailyStats[today].xp || 0) + amount;
+      state.level = Math.max(1, Math.floor(state.xp / 300) + 1);
+      saveState();
+      updateHeaderAndKPIs();
+      initActivityChart();
+      updateMasteryProgressUI();
+      renderAchievements();
       triggerXPFloatNotification(amount);
       triggerParticleBurst();
     }
@@ -2322,16 +2851,34 @@
     function triggerXPFloatNotification(amount) {
       const container = document.getElementById("xp-float-container");
       const el = document.createElement("div");
-      el.className = "glass-pill px-4 py-2 rounded-full border border-amber-500/40 text-amber-300 font-extrabold text-xs shadow-2xl flex items-center space-x-2 animate-float-xp";
-      el.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i><span>+${amount} XP</span>`;
+      el.className = "glass-pill px-4 py-2 rounded-full text-amber-300 font-extrabold text-xs shadow-2xl flex items-center space-x-2 animate-float-xp";
+      el.innerHTML = `<i data-lucide="wand-sparkles" class="w-4 h-4 text-amber-400"></i><span>+${amount} XP</span>`;
       container.appendChild(el);
       if (window.lucide) lucide.createIcons();
       setTimeout(() => el.remove(), 1400);
     }
 
     // ==========================================
-    // CHART.JS & PROGRESS RING
+    // CHART.JS & REAL MASTERY PROGRESS RING
     // ==========================================
+
+    function getCurrentWeekXPArray() {
+      ensureTodayEntry();
+      const now = new Date();
+      const dayOfWeek = (now.getDay() + 6) % 7; // Monday = 0 ... Sunday = 6
+      const monday = new Date(now);
+      monday.setDate(now.getDate() - dayOfWeek);
+
+      const data = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(monday);
+        d.setDate(monday.getDate() + i);
+        const key = getDateKey(d);
+        const dayXP = (state.dailyStats[key] && state.dailyStats[key].xp) || 0;
+        data.push(dayXP);
+      }
+      return { data, todayIndex: dayOfWeek };
+    }
 
     function initActivityChart() {
       try {
@@ -2340,12 +2887,19 @@
         const ctx = canvasEl.getContext("2d");
         
         const gradientActive = ctx.createLinearGradient(0, 0, 0, 240);
-        gradientActive.addColorStop(0, "rgba(99, 102, 241, 0.9)");
-        gradientActive.addColorStop(1, "rgba(99, 102, 241, 0.2)");
+        gradientActive.addColorStop(0, "rgba(99, 102, 241, 0.95)");
+        gradientActive.addColorStop(1, "rgba(99, 102, 241, 0.22)");
 
         const gradientNormal = ctx.createLinearGradient(0, 0, 0, 240);
-        gradientNormal.addColorStop(0, "rgba(255, 255, 255, 0.15)");
-        gradientNormal.addColorStop(1, "rgba(255, 255, 255, 0.03)");
+        gradientNormal.addColorStop(0, "rgba(255, 255, 255, 0.22)");
+        gradientNormal.addColorStop(1, "rgba(255, 255, 255, 0.05)");
+
+        const { data: weekXP, todayIndex } = getCurrentWeekXPArray();
+        const weekTotal = weekXP.reduce((a, b) => a + b, 0);
+        const weekBadge = document.getElementById("weekly-total-xp-badge");
+        if (weekBadge) weekBadge.textContent = `${weekTotal} XP diese Woche`;
+
+        const bgColors = weekXP.map((_, idx) => idx === todayIndex ? gradientActive : gradientNormal);
 
         if (activityChartInstance) {
           activityChartInstance.destroy();
@@ -2356,11 +2910,9 @@
           data: {
             labels: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
             datasets: [{
-              label: "XP",
-              data: [120, 190, 150, 220, 180, 90, 240],
-              backgroundColor: [
-                gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientActive
-              ],
+              label: "Gesammelte XP",
+              data: weekXP,
+              backgroundColor: bgColors,
               borderRadius: 12,
               borderSkipped: false
             }]
@@ -2377,6 +2929,8 @@
                 ticks: { color: "#94a3b8", font: { size: 11, weight: "600" } }
               },
               y: {
+                beginAtZero: true,
+                suggestedMax: 250,
                 grid: { color: "rgba(255, 255, 255, 0.05)" },
                 ticks: { color: "#94a3b8", font: { size: 10 } }
               }
@@ -2386,6 +2940,28 @@
       } catch (err) {
         console.error("Chart Init Error:", err);
       }
+    }
+
+    function updateMasteryProgressUI() {
+      const quizSeenCount = Array.isArray(state.seenQuestions) ? state.seenQuestions.length : 0;
+      const tkSolvedCount = Array.isArray(state.solvedTKIds) ? state.solvedTKIds.length : 0;
+      const wsSolvedCount = Array.isArray(state.solvedWSRows) ? state.solvedWSRows.length : 0;
+
+      const totalItems = rawQuizPool.length + tkontoCases.length + WORKSHEET_CASES.length; // 70 + 6 + 5 = 81
+      const completedItems = Math.min(totalItems, quizSeenCount + tkSolvedCount + wsSolvedCount);
+      const overallPct = Math.round((completedItems / totalItems) * 100);
+
+      const qEl = document.getElementById("progress-sub-quiz");
+      const tkEl = document.getElementById("progress-sub-tk");
+      const wsEl = document.getElementById("progress-sub-ws");
+      const ringTxt = document.getElementById("ring-percent-text");
+
+      if (qEl) qEl.textContent = `${quizSeenCount} / ${rawQuizPool.length}`;
+      if (tkEl) tkEl.textContent = `${tkSolvedCount} / ${tkontoCases.length}`;
+      if (wsEl) wsEl.textContent = `${wsSolvedCount} / ${WORKSHEET_CASES.length}`;
+      if (ringTxt) ringTxt.textContent = `${overallPct}%`;
+
+      drawProgressRing(overallPct);
     }
 
     function drawProgressRing(percent) {
@@ -2635,6 +3211,9 @@
         hintEl.classList.remove("hidden");
         if (isRowCorrect) {
           correctCount++;
+          if (!state.solvedWSRows.includes(item.nr)) {
+            state.solvedWSRows.push(item.nr);
+          }
           rowEl.className = "glass-pill p-4 sm:p-5 rounded-2xl border border-emerald-500/60 bg-emerald-950/20 space-y-3 transition";
           hintEl.className = "text-[11px] text-emerald-400 font-semibold pt-1";
           hintEl.textContent = `✓ Richtig: ${item.sollAccount} ${item.amountFormatted} € an ${item.habenAccount} ${item.amountFormatted} €`;
@@ -2645,11 +3224,13 @@
         }
       });
 
+      recordAnswerMetric(correctCount === WORKSHEET_CASES.length);
+
       const fb = document.getElementById("worksheet-feedback");
       fb.classList.remove("hidden");
       if (correctCount === WORKSHEET_CASES.length) {
         fb.className = "p-5 rounded-2xl border border-emerald-500/50 bg-emerald-950/60 text-emerald-200 text-xs font-bold glow-emerald-pulse";
-        fb.textContent = `Genial, Marlon! Alle 5 Buchungssätze vom Aufgabenblatt 2 sind vollkommen richtig gelöst! (+250 XP)`;
+        fb.textContent = `Genial, ${state.userName}! Alle 5 Buchungssätze vom Aufgabenblatt 2 sind vollkommen richtig gelöst! (+250 XP)`;
         awardXP(250);
       } else {
         fb.className = "p-5 rounded-2xl border border-amber-500/50 bg-amber-950/50 text-amber-200 text-xs font-semibold";
@@ -2709,6 +3290,8 @@
       const fbBox = document.getElementById("quiz-feedback-box");
       const fbTitle = document.getElementById("quiz-feedback-title");
       const fbText = document.getElementById("quiz-feedback-text");
+
+      recordAnswerMetric(isCorrect);
 
       fbBox.classList.remove("hidden");
       if (isCorrect) {
@@ -2813,8 +3396,13 @@
       const fbTitle = document.getElementById("tk-feedback-title");
       const fbText = document.getElementById("tk-feedback-text");
 
+      recordAnswerMetric(isCorrect);
+
       fb.classList.remove("hidden");
       if (isCorrect) {
+        if (!state.solvedTKIds.includes(c.id)) {
+          state.solvedTKIds.push(c.id);
+        }
         fb.className = "p-5 rounded-2xl border bg-emerald-950/60 border-emerald-500/50 space-y-1.5 glow-emerald-pulse";
         fbTitle.className = "font-bold text-xs text-emerald-400 flex items-center space-x-2";
         fbTitle.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>Perfekt gebucht! +80 XP</span>`;
@@ -2837,71 +3425,62 @@
     }
 
     // ==========================================
-    // IKR KONTENPLAN TABLE
+    // ACHIEVEMENTS GRID (DYNAMICALLY UNLOCKED)
     // ==========================================
 
-    function setKontenCat(cat, btn) {
-      state.activeKontenCat = cat;
-      document.querySelectorAll(".konten-cat-btn").forEach(b => {
-        b.className = "konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0";
-      });
-      btn.className = "konten-cat-btn bg-indigo-600 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0";
-      renderFilteredKonten();
+    function getAchievementStatus(id) {
+      ensureTodayEntry();
+      const todaySec = (state.dailyStats[getDateKey()] && state.dailyStats[getDateKey()].seconds) || 0;
+      const streak = calculateCurrentStreak();
+
+      if (id === "a1") {
+        const p = Math.min(100, Math.round(((state.totalAnswered || 0) / 5) * 100));
+        return { progress: p, unlocked: p >= 100 };
+      }
+      if (id === "a2") {
+        const p = Math.min(100, Math.round(((state.solvedTKIds.length || 0) / 3) * 100));
+        return { progress: p, unlocked: p >= 100 };
+      }
+      if (id === "a3") {
+        const p = Math.min(100, Math.round((streak / 2) * 100));
+        return { progress: p, unlocked: streak >= 2 || state.xp >= 150 };
+      }
+      if (id === "a4") {
+        const p = Math.min(100, Math.round(((state.xp || 0) / 500) * 100));
+        return { progress: p, unlocked: p >= 100 };
+      }
+      if (id === "a5") {
+        const p = Math.min(100, Math.round(((state.solvedWSRows.length || 0) / 5) * 100));
+        return { progress: p, unlocked: p >= 100 };
+      }
+      if (id === "a6") {
+        const p = Math.min(100, Math.round((todaySec / 900) * 100));
+        return { progress: p, unlocked: p >= 100 };
+      }
+      return { progress: 0, unlocked: false };
     }
-
-    function renderFilteredKonten() {
-      const tbody = document.getElementById("kontenplan-tbody");
-      tbody.innerHTML = "";
-      const query = document.getElementById("konten-search-input").value.toLowerCase();
-
-      IKR_DATA.forEach(k => {
-        if (state.activeKontenCat !== "all" && k.cat !== state.activeKontenCat) return;
-        if (query && !k.nr.toLowerCase().includes(query) && !k.name.toLowerCase().includes(query)) return;
-
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-white/5 transition";
-        tr.innerHTML = `
-          <td class="px-6 py-4 font-mono font-bold text-indigo-400">${k.nr}</td>
-          <td class="px-6 py-4 font-semibold text-white">${k.name}</td>
-          <td class="px-6 py-4 text-slate-400 text-xs">${k.klasse}</td>
-          <td class="px-6 py-4">
-            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${getArtBadgeStyle(k.art)}">${k.art}</span>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function getArtBadgeStyle(art) {
-      if (art === "Aktiv") return "bg-indigo-500/20 text-indigo-300 border border-indigo-500/30";
-      if (art === "Passiv") return "bg-amber-500/20 text-amber-300 border border-amber-500/30";
-      if (art === "Ertrag") return "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
-      return "bg-rose-500/20 text-rose-300 border border-rose-500/30";
-    }
-
-    // ==========================================
-    // ACHIEVEMENTS GRID
-    // ==========================================
 
     function renderAchievements() {
       const grid = document.getElementById("achievements-grid");
+      if (!grid) return;
       grid.innerHTML = "";
 
       ACHIEVEMENTS_DATA.forEach(a => {
+        const status = getAchievementStatus(a.id);
         const card = document.createElement("div");
-        card.className = `glass-v5 rounded-3xl p-5 flex items-center space-x-4 border transition ${a.unlocked ? 'border-indigo-500/40 glass-v5-hover' : 'border-white/5 opacity-50'}`;
+        card.className = `glass-v5 rounded-3xl p-5 flex items-center space-x-4 transition ${status.unlocked ? 'glass-v5-hover' : 'opacity-60'}`;
         card.innerHTML = `
-          <div class="p-3.5 rounded-2xl ${a.unlocked ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30' : 'bg-slate-900 text-slate-600'}">
-            <i data-lucide="${a.icon}" class="w-6 h-6"></i>
+          <div class="p-3.5 rounded-2xl icon-box-clean ${status.unlocked ? 'text-indigo-300' : 'text-slate-500'}">
+            <i data-lucide="${a.icon}" class="w-6 h-6 icon-anim"></i>
           </div>
           <div class="space-y-1 flex-1">
             <div class="flex items-center justify-between">
               <h4 class="font-bold text-xs text-white">${a.title}</h4>
-              ${a.unlocked ? '<span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">FREIGESCHALTET</span>' : '<span class="text-[9px] font-bold text-slate-500">GESPERRT</span>'}
+              ${status.unlocked ? '<span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">FREIGESCHALTET</span>' : `<span class="text-[9px] font-bold text-slate-400">${status.progress}%</span>`}
             </div>
             <p class="text-[11px] text-slate-400">${a.desc}</p>
-            <div class="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden mt-2 border border-white/5">
-              <div class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full" style="width: ${a.progress}%"></div>
+            <div class="w-full bg-slate-900/80 h-1.5 rounded-full overflow-hidden mt-2">
+              <div class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full transition-all duration-500" style="width: ${status.progress}%"></div>
             </div>
           </div>
         `;
