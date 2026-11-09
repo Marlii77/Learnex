@@ -5,17 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Learnex V5 | Modern Glassy Learning Platform</title>
   
+  <!-- Google Font Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Chosen Palette: Glassy Obsidian V5 (Obsidian Slate-950, Translucent Frost 4-7%, Indigo/Cyan/Emerald/Amber/Rose Ambient Glows) -->
-  <!-- Application Structure Plan: Bento-Grid V5 Glassy Dashboard with Floating Header Pill Navigation, Interactive Quiz Engine with Fisher-Yates Shuffle, 3-Day T-Konten Intensive Trainer for Nicko, Searchable IKR Account Table, and Glass Achievements Grid. -->
-  <!-- Visualization & Content Choices: Dashboard -> Chart.js Weekly Activity Canvas Bar Chart & Donut Ring. Quiz -> Dynamic Card with Canvas Particle Burst & +50 XP Floating Text. T-Konten Labor -> Interactive T-Account Debit/Credit Balance Inspector & Booking Simulation. Kontenplan -> Filterable Glass Table. Achievements -> Translucent Badge Grid. -->
-  <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+  <!-- Application Structure Plan: Bento-Grid V5 Glassy Dashboard with Floating Header Pill Navigation, Interactive Quiz Engine with Fisher-Yates Shuffle, 3-Day T-Konten Intensive Trainer for Marlon, Searchable IKR Account Table, and Glass Achievements Grid. -->
 
   <style>
     /* Infinite Moving Grid Background */
@@ -178,13 +192,13 @@
 
           <button onclick="switchView('quiz')" id="nav-quiz" class="nav-pill px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2">
             <i data-lucide="book-open" class="w-4 h-4"></i>
-            <span class="hidden md:inline">Lernen & Quiz</span>
+            <span class="hidden md:inline">Lernen</span>
           </button>
 
           <button onclick="switchView('tkonten')" id="nav-tkonten" class="nav-pill px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-amber-300/90 hover:text-amber-200 flex items-center space-x-2 bg-amber-500/10 border border-amber-500/20">
             <i data-lucide="scale" class="w-4 h-4 text-amber-400"></i>
             <span>T-Konten</span>
-            <span class="hidden lg:inline text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.2 rounded-full font-bold uppercase">3-Tage</span>
+            <span class="hidden lg:inline text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full font-bold uppercase">3-Tage</span>
           </button>
 
           <button onclick="switchView('kontenplan')" id="nav-kontenplan" class="nav-pill px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2">
@@ -202,14 +216,14 @@
         <div class="flex items-center space-x-2 pr-1">
           <div class="glass-pill px-3 py-1.5 rounded-full flex items-center space-x-2.5">
             <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 font-bold text-xs shadow-md">
-              N
+              M
             </div>
             <div class="hidden xl:block text-left">
-              <div class="text-xs font-bold text-white leading-none">Nicko</div>
+              <div class="text-xs font-bold text-white leading-none">Marlon</div>
               <div class="text-[10px] text-indigo-300 font-medium leading-tight mt-0.5" id="user-pill-level">Lvl 3 &bull; 850 XP</div>
             </div>
           </div>
-          <button onclick="resetAppState()" title="Fortschritt zurücksetzen" class="p-2 rounded-full glass-pill hover:bg-rose-500/20 hover:text-rose-300 text-slate-400 transition">
+          <button onclick="openResetModal()" title="Fortschritt zurücksetzen" class="p-2 rounded-full glass-pill hover:bg-rose-500/20 hover:text-rose-300 text-slate-400 transition">
             <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
           </button>
         </div>
@@ -232,7 +246,7 @@
               <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
               <span id="current-date-badge">Montag, 09. November 2026</span>
             </div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Guten Tag, Nicko!</h1>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Guten Tag, Marlon!</h1>
             <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
               Willkommen zurück in deinem Rechnungswesen &amp; Büromanagement V5 Dashboard. Dein Intensivbereich für T-Konten ist aktuell freigeschaltet.
             </p>
@@ -245,8 +259,8 @@
               <span>T-Konten Labor</span>
             </button>
             <button onclick="switchView('quiz')" class="px-5 py-3 rounded-2xl glass-pill hover:bg-white/10 text-white text-xs font-semibold transition flex items-center space-x-2">
-              <i data-lucide="play" class="w-4 h-4 text-emerald-400"></i>
-              <span>Schnell-Quiz</span>
+              <i data-lucide="book-open" class="w-4 h-4 text-emerald-400"></i>
+              <span>Jetzt Lernen</span>
             </button>
           </div>
         </div>
@@ -348,7 +362,7 @@
           <!-- Learning Ring Progress (1 col) -->
           <div class="glass-v5 rounded-3xl p-6 flex flex-col justify-between space-y-6">
             <div>
-              <h3 class="text-base font-bold text-white tracking-tight">Gesamtforschritt</h3>
+              <h3 class="text-base font-bold text-white tracking-tight">Gesamtfortschritt</h3>
               <p class="text-xs text-slate-400">Rechnungswesen &amp; Büromanagement</p>
             </div>
 
@@ -398,7 +412,7 @@
                 <i data-lucide="timer" class="w-3.5 h-3.5"></i>
                 <span>Spezial-Feature: Temporärer Fokus (3 Tage)</span>
               </div>
-              <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">3-Tage T-Konten Intensivlabor für Nicko</h2>
+              <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">3-Tage T-Konten Intensivlabor für Marlon</h2>
               <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Speziell entwickeltes Interaktiv-Modul zur perfekten Beherrschung von Soll- und Haben-Buchungen, Bestandskonten und Erfolgskonten. Mit Sofort-Validierung und Real-Time Feedback.
               </p>
@@ -413,100 +427,311 @@
       </section>
 
       <!-- ========================================== -->
-      <!-- SECTION 2: QUIZ & LERNEN (GLASS CARDS) -->
+      <!-- SECTION 2: LERNEN (RECHNUNGSWESEN HUB) -->
       <!-- ========================================== -->
       <section id="view-quiz" class="hidden space-y-6">
-        
-        <!-- Category Selector Filter Pills -->
-        <div class="glass-v5 rounded-3xl p-4 flex items-center justify-between flex-wrap gap-3">
-          <div class="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar">
-            <button onclick="filterQuizCategory('all', this)" class="quiz-cat-pill bg-indigo-600 text-white px-4 py-2 rounded-full text-xs font-bold transition">Alle Themen</button>
-            <button onclick="filterQuizCategory('bilanz', this)" class="quiz-cat-pill glass-pill text-slate-300 hover:text-white px-4 py-2 rounded-full text-xs font-bold transition">Bilanzierung</button>
-            <button onclick="filterQuizCategory('buchung', this)" class="quiz-cat-pill glass-pill text-slate-300 hover:text-white px-4 py-2 rounded-full text-xs font-bold transition">Buchungssätze</button>
-            <button onclick="filterQuizCategory('guv', this)" class="quiz-cat-pill glass-pill text-slate-300 hover:text-white px-4 py-2 rounded-full text-xs font-bold transition">GuV &amp; Erfolgskonten</button>
+
+        <!-- Fachbereich Header & Sub-Navigation -->
+        <div class="glass-v5 rounded-3xl p-6 sm:p-8 border-l-4 border-l-indigo-500 space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5">
+            <div class="space-y-1.5">
+              <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-[11px] font-bold uppercase tracking-wider">
+                <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i>
+                <span>Hauptbereich &bull; 70 Fragen-Pool mit Zufalls-Rotation</span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Rechnungswesen</h2>
+              <p class="text-xs sm:text-sm text-slate-300 max-w-2xl">
+                Jedes Modul zieht <strong class="text-white">5 neue Fragen aus einem 10er-Pool</strong> und mischt auch die <strong class="text-white">Antworten A–D</strong> bei jedem Durchlauf komplett neu.
+              </p>
+            </div>
+
+            <!-- Mode Toggle: Quiz-Module vs. Aufgabenblatt 2 -->
+            <div class="flex items-center space-x-2 shrink-0">
+              <button onclick="setLernenMode('modules')" id="btn-mode-modules" class="px-4 py-2.5 rounded-2xl bg-indigo-600 text-white text-xs font-bold transition flex items-center space-x-2 shadow-lg shadow-indigo-600/20">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+                <span>Lernmodule (7)</span>
+              </button>
+              <button onclick="setLernenMode('worksheet')" id="btn-mode-worksheet" class="px-4 py-2.5 rounded-2xl glass-pill text-amber-300 hover:bg-amber-500/20 border border-amber-500/30 text-xs font-bold transition flex items-center space-x-2">
+                <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-400"></i>
+                <span>Aufgabenblatt 2</span>
+              </button>
+            </div>
           </div>
-          <div class="text-xs text-slate-400 font-medium">
-            Rotation: <span class="text-indigo-300 font-bold">Fisher-Yates Shuffled</span>
+
+          <!-- Rechnungswesen Module Cards Grid (1 to 7) -->
+          <div id="rw-modules-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            <!-- 1. Aktiv oder Passiv? -->
+            <button onclick="filterQuizCategory('aktiv_passiv', this)" class="quiz-cat-pill text-left p-4 rounded-2xl bg-indigo-600/25 border border-indigo-400/50 transition group hover:bg-indigo-600/35 flex flex-col justify-between space-y-3">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 uppercase">1. Modul &bull; 5 Fragen</span>
+                <i data-lucide="columns" class="w-4 h-4 text-indigo-300"></i>
+              </div>
+              <div>
+                <div class="font-bold text-sm text-white">Aktiv oder Passiv?</div>
+                <p class="text-[11px] text-slate-300 mt-0.5">Fuhrpark, Waren, Darlehen &amp; Co. richtig zuordnen.</p>
+              </div>
+            </button>
+
+            <!-- 2. Soll & Haben -->
+            <button onclick="filterQuizCategory('soll_haben', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 uppercase">2. Modul &bull; 5 Fragen</span>
+                <i data-lucide="arrow-left-right" class="w-4 h-4 text-cyan-400"></i>
+              </div>
+              <div>
+                <div class="font-bold text-sm text-white">Soll &amp; Haben</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Wo steigen und sinken Aktiv- und Passivkonten?</p>
+              </div>
+            </button>
+
+            <!-- 3. Bilanzen -->
+            <button onclick="filterQuizCategory('bilanz', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 uppercase">3. Modul &bull; 5 Fragen</span>
+                <i data-lucide="scale" class="w-4 h-4 text-emerald-400"></i>
+              </div>
+              <div>
+                <div class="font-bold text-sm text-white">Bilanzen</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Bilanzaufbau, Liquidität, Eigen- &amp; Fremdkapital.</p>
+              </div>
+            </button>
+
+            <!-- 4. Buchungssätze -->
+            <button onclick="filterQuizCategory('buchung', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 uppercase">4. Modul &bull; 5 Fragen</span>
+                <i data-lucide="file-text" class="w-4 h-4 text-amber-400"></i>
+              </div>
+              <div>
+                <div class="font-bold text-sm text-white">Buchungssätze</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Grundregel „Soll an Haben“ mit Fällen aus Aufgabe 2.</p>
+              </div>
+            </button>
+
+            <!-- 5. T-Konten Buchen -->
+            <button onclick="filterQuizCategory('tkonten_quiz', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 uppercase">5. Modul &bull; 5 Fragen</span>
+                <i data-lucide="git-fork" class="w-4 h-4 text-rose-400"></i>
+              </div>
+              <div>
+                <div class="font-bold text-sm text-white">T-Konten Buchen</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Anfangsbestand, Buchung &amp; Saldo im T-Konto.</p>
+              </div>
+            </button>
+
+            <!-- 6. Bilanzveränderungen (Extra) -->
+            <button onclick="filterQuizCategory('bilanzveraenderung', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 uppercase">6. Extra &bull; 5 Fragen</span>
+                <i data-lucide="refresh-cw" class="w-4 h-4 text-purple-400"></i>
+              </div>
+              <div>
+                <div class="font-bold text-sm text-white">Bilanzveränderungen</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Aktivtausch, Passivtausch, Mehrung &amp; Minderung.</p>
+              </div>
+            </button>
+
+            <!-- 7. Kontenabschluss & Inventur (Extra) -->
+            <button onclick="filterQuizCategory('abschluss', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 uppercase">7. Extra &bull; 5 Fragen</span>
+                <i data-lucide="check-square" class="w-4 h-4 text-teal-400"></i>
+              </div>
+              <div>
+                <div class="font-bold text-sm text-white">Abschluss &amp; Inventur</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Schlussbestand, SBK, GuV &amp; Inventurabgleich.</p>
+              </div>
+            </button>
+
+            <!-- Alle 35 Fragen Mix -->
+            <button onclick="filterQuizCategory('all', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3 border border-dashed border-white/20">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-white/10 text-white uppercase">Komplett-Mix</span>
+                <i data-lucide="shuffle" class="w-4 h-4 text-indigo-400"></i>
+              </div>
+              <div>
+                <div class="font-bold text-sm text-white">Alle Module mischen</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Zufällige Rotation durch alle Rechnungswesen-Fragen.</p>
+              </div>
+            </button>
           </div>
         </div>
 
-        <!-- Quiz Container Card -->
-        <div id="quiz-card" class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden transition-all duration-300">
+        <!-- ========================================== -->
+        <!-- SUB-VIEW A: QUIZ CONTAINER CARD -->
+        <!-- ========================================== -->
+        <div id="lernen-quiz-wrapper" class="space-y-6">
+          <div id="quiz-card" class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden transition-all duration-300">
+            
+            <!-- Quiz Top Info Bar -->
+            <div class="flex items-center justify-between border-b border-white/10 pb-4 flex-wrap gap-2">
+              <div class="flex items-center space-x-3">
+                <span id="quiz-category-tag" class="text-[10px] font-extrabold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-widest">
+                  1. AKTIV ODER PASSIV?
+                </span>
+                <span class="text-xs text-slate-400 font-medium" id="quiz-step-counter">Frage 1 von 5</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1 rounded-full border border-amber-500/30" id="quiz-reward-xp">+50 XP</span>
+              </div>
+            </div>
+
+            <!-- Question Body -->
+            <div class="space-y-2">
+              <h3 id="quiz-question-title" class="text-lg sm:text-xl font-bold text-white leading-relaxed">
+                Frage wird geladen...
+              </h3>
+              <p class="text-xs text-slate-400" id="quiz-question-sub">Wähle die zutreffende Antwortoption aus.</p>
+            </div>
+
+            <!-- Multiple Choice Options Grid -->
+            <div id="quiz-options-grid" class="grid grid-cols-1 gap-3">
+              <!-- Dynamically populated options -->
+            </div>
+
+            <!-- Dynamic Feedback Box -->
+            <div id="quiz-feedback-box" class="hidden p-5 rounded-2xl border space-y-1.5 transition-all duration-300">
+              <div id="quiz-feedback-title" class="font-bold text-xs flex items-center space-x-2"></div>
+              <p id="quiz-feedback-text" class="text-xs leading-relaxed text-slate-300"></p>
+            </div>
+
+            <!-- Quiz Action Footer -->
+            <div class="flex items-center justify-between border-t border-white/10 pt-5">
+              <button onclick="skipQuizQuestion()" class="text-xs text-slate-400 hover:text-slate-200 transition">Überspringen</button>
+              <button onclick="nextQuizQuestion()" id="btn-quiz-next" disabled class="px-6 py-2.5 rounded-2xl bg-slate-800 text-slate-500 font-bold text-xs border border-white/10 transition cursor-not-allowed flex items-center space-x-2">
+                <span>Nächste Frage</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Quiz Completion Summary Screen -->
+          <div id="quiz-summary-card" class="hidden glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 text-center">
+            <div class="w-20 h-20 rounded-3xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center mx-auto text-3xl font-black text-indigo-300 shadow-xl">
+              <i data-lucide="trophy" class="w-10 h-10 text-amber-400"></i>
+            </div>
+            <div class="space-y-1">
+              <h3 class="text-2xl font-bold text-white">Modul-Durchgang abgeschlossen!</h3>
+              <p class="text-xs text-slate-400" id="summary-percentage-text">Du hast 100% der Fragen korrekt beantwortet.</p>
+            </div>
+
+            <div class="max-w-md mx-auto glass-pill p-4 rounded-2xl space-y-2 text-xs">
+              <div class="flex justify-between text-slate-300">
+                <span>Richtige Antworten:</span>
+                <span id="summary-correct-badge" class="font-bold text-emerald-400">5 von 5</span>
+              </div>
+              <div class="flex justify-between text-slate-300">
+                <span>Gesammelte Punkte:</span>
+                <span id="summary-total-xp-gained" class="font-bold text-amber-400">+250 XP</span>
+              </div>
+            </div>
+
+            <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+              <button onclick="restartQuizSession()" class="px-6 py-3 rounded-2xl glass-pill hover:bg-white/10 text-white font-semibold text-xs transition flex items-center justify-center space-x-2">
+                <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                <span>Modul wiederholen</span>
+              </button>
+              <button onclick="setLernenMode('worksheet')" class="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center space-x-2">
+                <span>Zum Aufgabenblatt 2</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SUB-VIEW B: INTERAKTIVES AUFGABENBLATT 2 -->
+        <!-- ========================================== -->
+        <div id="lernen-worksheet-wrapper" class="hidden space-y-6">
           
-          <!-- Quiz Top Info Bar -->
-          <div class="flex items-center justify-between border-b border-white/10 pb-4">
-            <div class="flex items-center space-x-3">
-              <span id="quiz-category-tag" class="text-[10px] font-extrabold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-widest">
-                BILANZEN
-              </span>
-              <span class="text-xs text-slate-400 font-medium" id="quiz-step-counter">Frage 1 von 5</span>
+          <!-- Geschäftsfälle Übersicht (wie auf dem Arbeitsblatt) -->
+          <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-5 border border-cyan-500/30">
+            <div class="flex items-center justify-between flex-wrap gap-3 border-b border-white/10 pb-4">
+              <div>
+                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 uppercase tracking-widest">
+                  AUFGABENBLATT &bull; Buchungssatz und Kontenabschluss – Aufgabe 2
+                </span>
+                <h3 class="text-xl font-bold text-white mt-2">Geschäftsfälle &amp; Buchungssätze</h3>
+              </div>
+              <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1.5 rounded-full border border-amber-500/30">+50 XP pro Buchungssatz</span>
             </div>
-            <div class="flex items-center space-x-2">
-              <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1 rounded-full border border-amber-500/30" id="quiz-reward-xp">+50 XP</span>
+
+            <!-- Original Tabelle der 5 Geschäftsfälle -->
+            <div class="overflow-x-auto custom-scrollbar rounded-2xl border border-white/10">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-cyan-950/70 text-cyan-200 uppercase text-[11px] tracking-wider border-b border-white/10">
+                  <tr>
+                    <th class="px-4 py-3 font-bold w-14">Nr.</th>
+                    <th class="px-4 py-3 font-bold">Geschäftsfall</th>
+                    <th class="px-4 py-3 font-bold text-right w-36">Betrag €</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5 text-slate-200 bg-slate-900/40">
+                  <tr>
+                    <td class="px-4 py-3 font-bold text-cyan-400">1</td>
+                    <td class="px-4 py-3">Wir begleichen die bereits gebuchte Eingangsrechnung 402 durch Banküberweisung</td>
+                    <td class="px-4 py-3 text-right font-mono font-bold text-white">11.300,00 €</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-bold text-cyan-400">2</td>
+                    <td class="px-4 py-3">Wir kaufen Waren auf Ziel lt. Eingangsrechnung 414</td>
+                    <td class="px-4 py-3 text-right font-mono font-bold text-white">7.200,00 €</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-bold text-cyan-400">3</td>
+                    <td class="px-4 py-3">Wir tilgen die Darlehensschuld durch Überweisung lt. Bankauszug</td>
+                    <td class="px-4 py-3 text-right font-mono font-bold text-white">5.000,00 €</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-bold text-cyan-400">4</td>
+                    <td class="px-4 py-3">Ein Kunde überweist den bereits gebuchten Rechnungsbetrag auf unser Bankkonto</td>
+                    <td class="px-4 py-3 text-right font-mono font-bold text-white">5.200,00 €</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-bold text-cyan-400">5</td>
+                    <td class="px-4 py-3">Unsere Bareinzahlung auf das Bankkonto lt. Bankauszug</td>
+                    <td class="px-4 py-3 text-right font-mono font-bold text-white">2.200,00 €</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </div>
 
-          <!-- Question Body -->
-          <div class="space-y-2">
-            <h3 id="quiz-question-title" class="text-lg sm:text-xl font-bold text-white leading-relaxed">
-              Frage wird geladen...
-            </h3>
-            <p class="text-xs text-slate-400" id="quiz-question-sub">Wähle die zutreffende Antwortoption aus.</p>
-          </div>
-
-          <!-- Multiple Choice Options Grid -->
-          <div id="quiz-options-grid" class="grid grid-cols-1 gap-3">
-            <!-- Dynamically populated options -->
-          </div>
-
-          <!-- Dynamic Feedback Box -->
-          <div id="quiz-feedback-box" class="hidden p-5 rounded-2xl border space-y-1.5 transition-all duration-300">
-            <div id="quiz-feedback-title" class="font-bold text-xs flex items-center space-x-2"></div>
-            <p id="quiz-feedback-text" class="text-xs leading-relaxed text-slate-300"></p>
-          </div>
-
-          <!-- Quiz Action Footer -->
-          <div class="flex items-center justify-between border-t border-white/10 pt-5">
-            <button onclick="skipQuizQuestion()" class="text-xs text-slate-400 hover:text-slate-200 transition">Überspringen</button>
-            <button onclick="nextQuizQuestion()" id="btn-quiz-next" disabled class="px-6 py-2.5 rounded-2xl bg-slate-800 text-slate-500 font-bold text-xs border border-white/10 transition cursor-not-allowed flex items-center space-x-2">
-              <span>Nächste Frage</span>
-              <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            </button>
-          </div>
-
-        </div>
-
-        <!-- Quiz Completion Summary Screen -->
-        <div id="quiz-summary-card" class="hidden glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 text-center">
-          <div class="w-20 h-20 rounded-3xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center mx-auto text-3xl font-black text-indigo-300 shadow-xl">
-            <i data-lucide="trophy" class="w-10 h-10 text-amber-400"></i>
-          </div>
-          <div class="space-y-1">
-            <h3 class="text-2xl font-bold text-white">Quiz-Durchgang abgeschlossen!</h3>
-            <p class="text-xs text-slate-400" id="summary-percentage-text">Du hast 100% der Fragen korrekt beantwortet.</p>
-          </div>
-
-          <div class="max-w-md mx-auto glass-pill p-4 rounded-2xl space-y-2 text-xs">
-            <div class="flex justify-between text-slate-300">
-              <span>Richtige Antworten:</span>
-              <span id="summary-correct-badge" class="font-bold text-emerald-400">5 von 5</span>
-            </div>
-            <div class="flex justify-between text-slate-300">
-              <span>Gesammelte Punkte:</span>
-              <span id="summary-total-xp-gained" class="font-bold text-amber-400">+250 XP</span>
+            <div class="glass-pill px-4 py-3 rounded-2xl text-xs text-slate-300 flex items-center space-x-2">
+              <i data-lucide="info" class="w-4 h-4 text-cyan-400 shrink-0"></i>
+              <span><strong class="text-white">Abschlussangabe:</strong> Die Schlussbestände auf den Konten stimmen mit der Inventur überein.</span>
             </div>
           </div>
 
-          <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
-            <button onclick="restartQuizSession()" class="px-6 py-3 rounded-2xl glass-pill hover:bg-white/10 text-white font-semibold text-xs transition flex items-center justify-center space-x-2">
-              <i data-lucide="rotate-cw" class="w-4 h-4"></i>
-              <span>Neuer Durchlauf</span>
-            </button>
-            <button onclick="switchView('dashboard')" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-indigo-600/20 flex items-center justify-center space-x-2">
-              <span>Zum Dashboard</span>
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
+          <!-- Interaktive Buchungssatz-Tabelle (Nr. 1 - 5) -->
+          <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-5">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <h4 class="text-lg font-bold text-white">Buchungssätze eintragen (Soll an Haben)</h4>
+                <p class="text-xs text-slate-400">Wähle für jeden der 5 Geschäftsfälle das Soll-Konto, das Haben-Konto und trage die Beträge ein.</p>
+              </div>
+              <button onclick="fillWorksheetDemo()" class="text-xs text-indigo-300 hover:text-white glass-pill px-3.5 py-2 rounded-xl transition flex items-center space-x-1.5">
+                <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+                <span>Tipp / Konten-Hilfe</span>
+              </button>
+            </div>
+
+            <div id="worksheet-rows-container" class="space-y-4">
+              <!-- Dynamically rendered 5 rows matching the worksheet -->
+            </div>
+
+            <div id="worksheet-feedback" class="hidden p-4 rounded-2xl border text-xs"></div>
+
+            <div class="flex items-center justify-between border-t border-white/10 pt-4">
+              <button onclick="resetWorksheet()" class="text-xs text-slate-400 hover:text-white transition">Alle Eingaben leeren</button>
+              <button onclick="checkAllWorksheetRows()" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-extrabold text-xs transition shadow-lg shadow-cyan-500/20 flex items-center space-x-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                <span>Aufgabenblatt 2 prüfen</span>
+              </button>
+            </div>
           </div>
+
         </div>
 
       </section>
@@ -518,17 +743,25 @@
         
         <!-- Header & Rules Banner -->
         <div class="glass-v5 rounded-3xl p-6 border border-amber-500/30 space-y-4">
-          <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <div class="flex items-center justify-between border-b border-white/10 pb-4 flex-wrap gap-3">
             <div class="flex items-center space-x-3">
               <div class="p-3 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
                 <i data-lucide="scale" class="w-6 h-6"></i>
               </div>
               <div>
-                <h2 class="text-xl font-bold text-white tracking-tight">T-Konten Intensivlabor für Nicko</h2>
-                <p class="text-xs text-slate-400">Interaktives Training für Soll- &amp; Haben-Zuordnungen.</p>
+                <h2 class="text-xl font-bold text-white tracking-tight">T-Konten Intensivlabor für Marlon</h2>
+                <p class="text-xs text-slate-400">Interaktives Training für Soll- &amp; Haben-Zuordnungen (6 wechselnde Geschäftsfälle).</p>
               </div>
             </div>
-            <span class="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">Fokus-Phase</span>
+            <!-- Direct Case Switcher Pills -->
+            <div class="flex items-center flex-wrap gap-1.5">
+              <button onclick="loadTKontoCase(0)" id="tk-pill-0" class="px-3 py-1.5 rounded-full text-xs font-bold bg-amber-500 text-slate-950 transition">Fall 1</button>
+              <button onclick="loadTKontoCase(1)" id="tk-pill-1" class="px-3 py-1.5 rounded-full text-xs font-bold glass-pill text-slate-300 hover:text-white transition">Fall 2</button>
+              <button onclick="loadTKontoCase(2)" id="tk-pill-2" class="px-3 py-1.5 rounded-full text-xs font-bold glass-pill text-slate-300 hover:text-white transition">Fall 3</button>
+              <button onclick="loadTKontoCase(3)" id="tk-pill-3" class="px-3 py-1.5 rounded-full text-xs font-bold glass-pill text-slate-300 hover:text-white transition">Fall 4</button>
+              <button onclick="loadTKontoCase(4)" id="tk-pill-4" class="px-3 py-1.5 rounded-full text-xs font-bold glass-pill text-slate-300 hover:text-white transition">Fall 5</button>
+              <button onclick="loadTKontoCase(5)" id="tk-pill-5" class="px-3 py-1.5 rounded-full text-xs font-bold glass-pill text-slate-300 hover:text-white transition">Fall 6</button>
+            </div>
           </div>
 
           <!-- Rule Cards Grid -->
@@ -539,7 +772,7 @@
                 <span>Aktivkonten (Bestand)</span>
               </div>
               <p class="text-xs text-slate-300 leading-relaxed">
-                <strong class="text-white">Zugänge im SOLL</strong> (links), <strong class="text-white">Abgänge im HABEN</strong> (rechts). Beisp.: Kasse, Bank, BMA.
+                <strong class="text-white">Zugänge im SOLL</strong> (links), <strong class="text-white">Abgänge im HABEN</strong> (rechts). Beisp.: Kasse, Bank, BGA.
               </p>
             </div>
 
@@ -591,11 +824,11 @@
               </div>
               <div class="grid grid-cols-2 gap-4 text-center">
                 <div class="space-y-2 border-r border-white/10 pr-2">
-                  <div class="text-[11px] font-bold text-indigo-400 uppercase">SOLL ( + )</div>
+                  <div class="text-[11px] font-bold text-indigo-400 uppercase">SOLL</div>
                   <input type="number" id="tk-input-1-soll" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
                 </div>
                 <div class="space-y-2 pl-2">
-                  <div class="text-[11px] font-bold text-slate-400 uppercase">HABEN ( - )</div>
+                  <div class="text-[11px] font-bold text-slate-400 uppercase">HABEN</div>
                   <input type="number" id="tk-input-1-haben" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
                 </div>
               </div>
@@ -608,11 +841,11 @@
               </div>
               <div class="grid grid-cols-2 gap-4 text-center">
                 <div class="space-y-2 border-r border-white/10 pr-2">
-                  <div class="text-[11px] font-bold text-slate-400 uppercase">SOLL ( - )</div>
+                  <div class="text-[11px] font-bold text-slate-400 uppercase">SOLL</div>
                   <input type="number" id="tk-input-2-soll" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
                 </div>
                 <div class="space-y-2 pl-2">
-                  <div class="text-[11px] font-bold text-amber-400 uppercase">HABEN ( + )</div>
+                  <div class="text-[11px] font-bold text-amber-400 uppercase">HABEN</div>
                   <input type="number" id="tk-input-2-haben" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
                 </div>
               </div>
@@ -707,6 +940,29 @@
 
   </div>
 
+  <!-- Custom Reset Confirmation Modal (replaces native confirm) -->
+  <div id="reset-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+    <div class="glass-v5 rounded-3xl p-6 max-w-sm w-full space-y-4 border border-rose-500/30 shadow-2xl">
+      <div class="flex items-center space-x-3 text-rose-400">
+        <div class="p-2.5 rounded-2xl bg-rose-500/10 border border-rose-500/20">
+          <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Fortschritt zurücksetzen?</h3>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        Möchtest du deinen Lernfortschritt und deine gesammelten Erfahrungspunkte wirklich auf den Anfangswert zurücksetzen?
+      </p>
+      <div class="flex items-center justify-end space-x-3 pt-2">
+        <button onclick="closeResetModal()" class="px-4 py-2 rounded-xl glass-pill text-xs font-semibold text-slate-300 hover:text-white transition">
+          Abbrechen
+        </button>
+        <button onclick="confirmResetAppState()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white transition shadow-lg shadow-rose-600/20">
+          Zurücksetzen
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Particle Burst Canvas Layer -->
   <canvas id="particle-canvas" class="pointer-events-none fixed inset-0 z-50"></canvas>
 
@@ -716,105 +972,1191 @@
   <!-- JS APPLICATION ENGINE -->
   <script>
     // ==========================================
-    // DATA POOLS & DATA STRUCTURES
+    // DATA POOLS & DATA STRUCTURES (RECHNUNGSWESEN)
     // ==========================================
 
     const rawQuizPool = [
+      // 1. AKTIV ODER PASSIV? (10 Fragen)
+      {
+        id: "ap1",
+        cat: "aktiv_passiv",
+        catTag: "1. AKTIV ODER PASSIV?",
+        question: "Wo steht das Konto „Fuhrpark“ (PKW, LKW des Unternehmens) in der Bilanz?",
+        options: [
+          "Aktivseite (Anlagevermögen)",
+          "Passivseite (Eigenkapital)",
+          "Passivseite (Fremdkapital)",
+          "Aktivseite (Umlaufvermögen)"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Der Fuhrpark dient dem Unternehmen langfristig und steht daher auf der Aktivseite im Anlagevermögen (Mittelverwendung)."
+      },
+      {
+        id: "ap2",
+        cat: "aktiv_passiv",
+        catTag: "1. AKTIV ODER PASSIV?",
+        question: "Wo wird das Konto „Verbindlichkeiten aus Lieferungen und Leistungen (a.LL)“ eingeordnet?",
+        options: [
+          "Aktivseite (Forderungen)",
+          "Passivseite (Fremdkapital / Schulden)",
+          "Aktivseite (Anlagevermögen)",
+          "Passivseite (Eigenkapital)"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Verbindlichkeiten a.LL sind offene Rechnungen gegenüber Lieferanten (Kurzfristiges Fremdkapital) und gehören auf die Passivseite."
+      },
+      {
+        id: "ap3",
+        cat: "aktiv_passiv",
+        catTag: "1. AKTIV ODER PASSIV?",
+        question: "Auf welche Bilanzseite gehört der Posten „Waren“ (Handelswaren im Lager)?",
+        options: [
+          "Passivseite (Rückstellungen)",
+          "Aktivseite (Anlagevermögen)",
+          "Aktivseite (Umlaufvermögen)",
+          "Passivseite (Verbindlichkeiten)"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Waren werden zum Verkauf benötigt und verbleiben nur kurzfristig im Unternehmen – sie stehen auf der Aktivseite im Umlaufvermögen."
+      },
+      {
+        id: "ap4",
+        cat: "aktiv_passiv",
+        catTag: "1. AKTIV ODER PASSIV?",
+        question: "Wo stehen „Darlehensschulden“ (langfristige Bankkredite) in der Bilanz?",
+        options: [
+          "Aktivseite (Bankguthaben)",
+          "Aktivseite (Anlagevermögen)",
+          "Passivseite (Eigenkapital)",
+          "Passivseite (Langfristiges Fremdkapital)"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Darlehensschulden zeigen, woher das Kapital stammt (Mittelherkunft als Fremdkapital) und stehen deshalb auf der Passivseite."
+      },
+      {
+        id: "ap5",
+        cat: "aktiv_passiv",
+        catTag: "1. AKTIV ODER PASSIV?",
+        question: "Wo gehören „Forderungen a.LL“ (Kunden müssen unsere Rechnungen noch bezahlen) hin?",
+        options: [
+          "Passivseite (Schulden)",
+          "Aktivseite (Umlaufvermögen)",
+          "Aktivseite (Anlagevermögen)",
+          "Passivseite (Eigenkapital)"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Forderungen a.LL sind Vermögenswerte (Zahlungsansprüche gegen Kunden) und stehen auf der Aktivseite im Umlaufvermögen."
+      },
+      {
+        id: "ap6",
+        cat: "aktiv_passiv",
+        catTag: "1. AKTIV ODER PASSIV?",
+        question: "Wo wird der Bestand an Bargeld („Kasse“) in der Bilanz ausgewiesen?",
+        options: [
+          "Passivseite (Eigenkapital)",
+          "Aktivseite (Anlagevermögen)",
+          "Aktivseite (Umlaufvermögen)",
+          "Passivseite (Kurzfristige Schulden)"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Bargeld in der Kasse ist das flüssigste Zahlungsmittel und steht auf der Aktivseite ganz unten im Umlaufvermögen."
+      },
+      {
+        id: "ap7",
+        cat: "aktiv_passiv",
+        catTag: "1. AKTIV ODER PASSIV?",
+        question: "Wo steht das „Eigenkapital“ eines Unternehmens in der Bilanz?",
+        options: [
+          "Auf der Passivseite ganz oben",
+          "Auf der Aktivseite im Anlagevermögen",
+          "Auf der Aktivseite unter dem Bankguthaben",
+          "Es steht überhaupt nicht in der Bilanz"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Das Eigenkapital zeigt die eigenen Mittel des Unternehmers (Mittelherkunft) und steht auf der Passivseite an erster Stelle."
+      },
+      {
+        id: "ap8",
+        cat: "aktiv_passiv",
+        catTag: "1. AKTIV ODER PASSIV?",
+        question: "Wo wird die „Betriebs- und Geschäftsausstattung (BGA)“ wie Büromöbel und Computer eingeordnet?",
+        options: [
+          "Passivseite (Fremdkapital)",
+          "Aktivseite (Umlaufvermögen)",
+          "Passivseite (Eigenkapital)",
+          "Aktivseite (Anlagevermögen)"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Büromöbel, Regale und PC-Anlagen (BGA) dienen dem Geschäftsbetrieb dauerhaft und gehören zum Anlagevermögen auf der Aktivseite."
+      },
+      {
+        id: "ap9",
+        cat: "aktiv_passiv",
+        catTag: "1. AKTIV ODER PASSIV?",
+        question: "Zu welchem Bilanzbereich zählen „Bebaute Grundstücke und Gebäude“?",
+        options: [
+          "Aktivseite (Umlaufvermögen)",
+          "Aktivseite (Anlagevermögen)",
+          "Passivseite (Eigenkapital)",
+          "Passivseite (Langfristiges Fremdkapital)"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Grundstücke und Gebäude bilden die langfristige Basis des Unternehmens und stehen ganz oben im Anlagevermögen (Aktivseite)."
+      },
+      {
+        id: "ap10",
+        cat: "aktiv_passiv",
+        catTag: "1. AKTIV ODER PASSIV?",
+        question: "Wo steht ein Guthaben auf dem geschäftlichen „Bankkonto“ in der Bilanz?",
+        options: [
+          "Passivseite (Bankverbindlichkeiten)",
+          "Aktivseite (Anlagevermögen)",
+          "Aktivseite (Umlaufvermögen)",
+          "Passivseite (Eigenkapital)"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Ein Bankguthaben ist jederzeit verfügbares Geldvermögen und zählt auf der Aktivseite zum Umlaufvermögen."
+      },
+
+      // 2. SOLL & HABEN (10 Fragen)
+      {
+        id: "sh1",
+        cat: "soll_haben",
+        catTag: "2. SOLL & HABEN",
+        question: "Auf welcher Seite wird bei einem Aktivkonto (z. B. Bank, Kasse, Waren) ein Zugang gebucht?",
+        options: [
+          "Im SOLL (links)",
+          "Im HABEN (rechts)",
+          "Immer auf beiden Seiten gleichzeitig",
+          "Im GuV-Konto"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Aktivkonten haben ihren Anfangsbestand und alle Zugänge (+) auf der linken Seite, also im SOLL."
+      },
+      {
+        id: "sh2",
+        cat: "soll_haben",
+        catTag: "2. SOLL & HABEN",
+        question: "Auf welcher Seite wird bei einem Passivkonto (z. B. Verbindlichkeiten, Darlehen) ein Zugang gebucht?",
+        options: [
+          "Im SOLL (links)",
+          "Im HABEN (rechts)",
+          "Auf der Aktivseite",
+          "Gar nicht"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Passivkonten stehen in der Bilanz rechts: Deshalb stehen Anfangsbestand und Zugänge (+) im HABEN (rechts)."
+      },
+      {
+        id: "sh3",
+        cat: "soll_haben",
+        catTag: "2. SOLL & HABEN",
+        question: "Wir überweisen 11.300 € vom Bankkonto zur Begleichung einer Rechnung. Wo wird auf dem Konto „Bank“ gebucht?",
+        options: [
+          "Im SOLL, weil Bank ein Aktivkonto ist",
+          "Im SOLL, weil Schulden steigen",
+          "Im HABEN, weil das Bankguthaben (Aktivkonto) abnimmt",
+          "Im HABEN, weil Bank ein Passivkonto ist"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Bank ist ein Aktivkonto. Durch die Überweisung verringert sich unser Bankguthaben – Abgänge (-) auf Aktivkonten stehen im HABEN."
+      },
+      {
+        id: "sh4",
+        cat: "soll_haben",
+        catTag: "2. SOLL & HABEN",
+        question: "Wir tilgen eine Darlehensschuld (5.000 €). Auf welcher Seite wird das Konto „Darlehen“ bebucht?",
+        options: [
+          "Im HABEN (rechts), da die Schuld zunimmt",
+          "Im HABEN (rechts), da Darlehen ein Aktivkonto ist",
+          "Nur auf dem Bankkonto",
+          "Im SOLL (links), da die Schuld (Passivkonto) abnimmt"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Darlehen ist ein Passivkonto. Wenn wir die Schuld tilgen, nimmt das Passivkonto ab – Abgänge (-) stehen bei Passivkonten im SOLL."
+      },
+      {
+        id: "sh5",
+        cat: "soll_haben",
+        catTag: "2. SOLL & HABEN",
+        question: "Wo steht der Anfangsbestand (AB) bei jedem Passivkonto?",
+        options: [
+          "Immer im SOLL (links)",
+          "Immer im HABEN (rechts)",
+          "Je nach Kontostand wechselnd",
+          "Unten rechts als Schlussbestand"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Wie in der Bilanz (Passiva = rechts) steht der Anfangsbestand (AB) bei Passivkonten immer rechts im HABEN."
+      },
+      {
+        id: "sh6",
+        cat: "soll_haben",
+        catTag: "2. SOLL & HABEN",
+        question: "Wo wird der Anfangsbestand (AB) bei einem aktiven Bestandskonto (z. B. Fuhrpark, Waren, Kasse) eingetragen?",
+        options: [
+          "Im HABEN (rechts)",
+          "Unten in der Summenzeile",
+          "Immer im SOLL (links)",
+          "Auf beiden Kontoseiten gleichzeitig"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Da Aktivposten in der Bilanz links stehen, wird ihr Anfangsbestand (AB) im T-Konto ebenfalls immer links im SOLL eingetragen."
+      },
+      {
+        id: "sh7",
+        cat: "soll_haben",
+        catTag: "2. SOLL & HABEN",
+        question: "Ein Kunde bezahlt unsere offene Rechnung über 5.200 € per Banküberweisung. Wo wird auf „Forderungen a.LL“ gebucht?",
+        options: [
+          "Im SOLL (links), weil Geld eingeht",
+          "Im HABEN (rechts), weil unsere Forderung gegenüber dem Kunden abnimmt",
+          "Im SOLL (links), weil Forderungen ein Passivkonto sind",
+          "Auf dem Konto Forderungen wird nichts gebucht"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Forderungen a.LL ist ein Aktivkonto. Da der Kunde gezahlt hat, erlischt der Anspruch (Abgang auf Aktivkonto = HABEN)."
+      },
+      {
+        id: "sh8",
+        cat: "soll_haben",
+        catTag: "2. SOLL & HABEN",
+        question: "Wir kaufen Waren im Wert von 7.200 € auf Ziel. Auf welcher Seite wird das Konto „Verbindlichkeiten a.LL“ bebucht?",
+        options: [
+          "Im SOLL (links), weil Waren hereinkommen",
+          "Im SOLL (links), weil Schulden sinken",
+          "Im HABEN (rechts), weil unsere Lieferantenschulden (Passivkonto) zunehmen",
+          "Im GuV-Konto links"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Verbindlichkeiten a.LL ist ein Passivkonto. Ein Kauf auf Ziel erhöht unsere Schulden – Zugänge auf Passivkonten werden im HABEN gebucht."
+      },
+      {
+        id: "sh9",
+        cat: "soll_haben",
+        catTag: "2. SOLL & HABEN",
+        question: "Auf welcher Kontoseite werden Aufwendungen (z. B. Löhne, Miete, Büromaterial) grundsätzlich gebucht?",
+        options: [
+          "Im SOLL (links), weil Aufwendungen das Eigenkapital mindern",
+          "Im HABEN (rechts), weil sie das Eigenkapital erhöhen",
+          "Immer auf der Haben-Seite des Bankkontos",
+          "Direkt im Schlussbilanzkonto"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Aufwendungen mindern das Eigenkapital (Passivkonto). Da Abgänge beim Eigenkapital im Soll stehen, werden Aufwendungen im SOLL gebucht."
+      },
+      {
+        id: "sh10",
+        cat: "soll_haben",
+        catTag: "2. SOLL & HABEN",
+        question: "Auf welcher Kontoseite werden Erträge (z. B. Umsatzerlöse, Zinserträge) gebucht?",
+        options: [
+          "Im SOLL (links)",
+          "Immer im Kassenkonto links",
+          "Auf der Aktivseite der Bilanz",
+          "Im HABEN (rechts), weil Erträge das Eigenkapital mehren"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Erträge erhöhen das Eigenkapital (Passivkonto). Da Zugänge beim Eigenkapital im Haben stehen, werden alle Erträge im HABEN erfasst."
+      },
+
+      // 3. BILANZEN (10 Fragen)
       {
         id: "q1",
         cat: "bilanz",
-        catTag: "BILANZIERUNG",
+        catTag: "3. BILANZEN",
         question: "Die Bilanzsumme beträgt 350.000 €, das Eigenkapital 210.000 €. Wie hoch ist das Fremdkapital?",
-        options: ["140.000 €", "210.000 €", "560.000 €", "70.000 €"],
-        correct: 0,
+        options: ["210.000 €", "560.000 €", "140.000 €", "70.000 €"],
+        correct: 2,
         xp: 50,
         explanation: "Passiva = Eigenkapital + Fremdkapital. Fremdkapital = Bilanzsumme (350.000 €) - Eigenkapital (210.000 €) = 140.000 €."
       },
       {
         id: "q2",
         cat: "bilanz",
-        catTag: "BILANZIERUNG",
+        catTag: "3. BILANZEN",
         question: "Nach welchem HGB-Strukturprinzip wird die Aktivseite der Bilanz gegliedert?",
         options: ["Fälligkeit der Verbindlichkeiten", "Zunehmende Liquidität (Flüssigkeit)", "Alphabetische Reihenfolge", "Höhe des Einzelwertes"],
         correct: 1,
         xp: 50,
-        explanation: "Die Aktivseite gliedert sich nach der Liquidität: Von Anlagevermögen (schwer liquide) bis Kasse/Bank (sofort liquide)."
+        explanation: "Die Aktivseite gliedert sich nach steigender Liquidität: Vom Anlagevermögen (schwer flüssig) bis zu Bank und Kasse (sofort flüssig)."
       },
       {
-        id: "q3",
-        cat: "buchung",
-        catTag: "BUCHUNGSSÄTZE",
-        question: "Wir kaufen Rohstoffe auf Ziel im Wert von 6.000 €. Wie lautet der Buchungssatz?",
+        id: "bil3",
+        cat: "bilanz",
+        catTag: "3. BILANZEN",
+        question: "Welche Aussage beschreibt die Aktivseite und Passivseite einer Bilanz korrekt?",
         options: [
-          "Bank an Rohstoffe 6.000 €",
-          "Aufwendungen für Rohstoffe an Verbindlichkeiten a.LL 6.000 €",
-          "Verbindlichkeiten a.LL an Rohstoffe 6.000 €",
-          "Kasse an Umsatzerlöse 6.000 €"
+          "Aktiva = Mittelherkunft, Passiva = Mittelverwendung",
+          "Aktiva = Mittelverwendung (Vermögen), Passiva = Mittelherkunft (Kapital)",
+          "Aktiva = Schulden, Passiva = Vermögen",
+          "Aktiva = Erträge, Passiva = Aufwendungen"
         ],
         correct: 1,
         xp: 50,
-        explanation: "Aufwendungen/Bestand Rohstoffe steigen im SOLL, Schulden (Verbindlichkeiten a.LL) steigen im HABEN."
+        explanation: "Die Aktivseite zeigt, wofür das Geld verwendet wurde (Vermögen). Die Passivseite zeigt, woher die Mittel stammen (Eigen- und Fremdkapital)."
       },
       {
-        id: "q4",
-        cat: "guv",
-        catTag: "GUV & ABSCHLUSS",
-        question: "Auf welcher Seite des GuV-Kontos werden Aufwendungen erfasst?",
-        options: ["SOLL-Seite (links)", "HABEN-Seite (rechts)", "Je nach Ertragslage", "Überhaupt nicht"],
-        correct: 0,
-        xp: 50,
-        explanation: "Im GuV-Konto stehen Aufwendungen stets auf der SOLL-Seite (links) und Erträge auf der HABEN-Seite (rechts)."
-      },
-      {
-        id: "q5",
-        cat: "buchung",
-        catTag: "BUCHUNGSSÄTZE",
-        question: "Ein Kunde gleicht eine offene Rechnung über 1.200 € per Banküberweisung aus. Was passiert?",
+        id: "bil4",
+        cat: "bilanz",
+        catTag: "3. BILANZEN",
+        question: "Nach welchem Prinzip ist die Passivseite der Bilanz geordnet?",
         options: [
-          "Aktiv-Tausch: Bank SOLL 1.200 €, Forderungen a.LL HABEN 1.200 €",
-          "Passiv-Tausch: Eigenkapital steigt",
-          "Bilanzverlängerung: Bank und Eigenkapital steigen",
-          "Bilanzverkürzung: Verbindlichkeiten sinken"
+          "Nach zunehmender Liquidität",
+          "Nach Anschaffungsdatum",
+          "Nach abnehmender Fristigkeit (Eigenkapital zuerst, kurzfristige Schulden zuletzt)",
+          "Nach Kontonummern absteigend"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Auf der Passivseite steht oben das unbefristete Eigenkapital, darunter langfristiges Fremdkapital (Darlehen) und unten kurzfristige Verbindlichkeiten."
+      },
+      {
+        id: "bil5",
+        cat: "bilanz",
+        catTag: "3. BILANZEN",
+        question: "Warum müssen die Summen von Aktivseite und Passivseite in der Bilanz immer gleich groß sein?",
+        options: [
+          "Das ist nur Zufall am Jahresende",
+          "Weil Gewinne immer weggelassen werden",
+          "Weil es keine Schulden geben darf",
+          "Weil jeder Euro Vermögen (Aktiva) durch genau einen Euro Kapital (Passiva) finanziert ist"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Bilanzgleichung: Summe Aktiva = Summe Passiva. Jedes Vermögensgut auf der Aktivseite ist durch Eigen- oder Fremdkapital auf der Passivseite gedeckt."
+      },
+      {
+        id: "bil6",
+        cat: "bilanz",
+        catTag: "3. BILANZEN",
+        question: "Das Anlagevermögen beträgt 180.000 €, das Umlaufvermögen 95.000 € und das Fremdkapital 115.000 €. Wie hoch ist das Eigenkapital?",
+        options: [
+          "160.000 €",
+          "275.000 €",
+          "65.000 €",
+          "390.000 €"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Es handelt sich um einen Aktivtausch: Bankkonto nimmt zu (SOLL), Forderungen nehmen ab (HABEN)."
+        explanation: "Gesamtvermögen (Bilanzsumme) = 180.000 € + 95.000 € = 275.000 €. Abzüglich Fremdkapital (115.000 €) ergibt 160.000 € Eigenkapital."
+      },
+      {
+        id: "bil7",
+        cat: "bilanz",
+        catTag: "3. BILANZEN",
+        question: "Welcher Posten steht auf der Aktivseite der Bilanz ganz unten, weil er die höchste Liquidität besitzt?",
+        options: [
+          "Bebaute Grundstücke",
+          "Technische Anlagen und Maschinen",
+          "Kasse (Bargeld) und Bankguthaben",
+          "Eigenkapital"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Da die Aktivseite nach zunehmender Liquidität gegliedert ist, stehen die flüssigen Mittel (Bank, Kasse) ganz unten."
+      },
+      {
+        id: "bil8",
+        cat: "bilanz",
+        catTag: "3. BILANZEN",
+        question: "Was versteht man in der Bilanz unter dem „Umlaufvermögen“?",
+        options: [
+          "Vermögensposten, die sich ständig verändern und nur kurzfristig im Betrieb bleiben (z. B. Waren, Forderungen, Kasse)",
+          "Alle Schulden mit einer Laufzeit unter einem Jahr",
+          "Gebäude und große Produktionsmaschinen",
+          "Das Kapital der Eigentümer"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Gegenstände des Umlaufvermögens sind nicht dauerhaft für den Betrieb bestimmt, sondern werden verbraucht, verkauft oder in Geld umgewandelt."
+      },
+      {
+        id: "bil9",
+        cat: "bilanz",
+        catTag: "3. BILANZEN",
+        question: "Welche Gleichung zur Ermittlung des Eigenkapitals (Reinvermögens) ist immer zutreffend?",
+        options: [
+          "Eigenkapital = Anlagevermögen + Fremdkapital",
+          "Eigenkapital = Schulden minus Umlaufvermögen",
+          "Eigenkapital = Vermögen (Aktiva) minus Schulden (Fremdkapital)",
+          "Eigenkapital = Bilanzsumme + Fremdkapital"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Zieht man vom gesamten Vermögen (Summe Aktiva) die Schulden (Fremdkapital) ab, erhält man das Reinvermögen bzw. Eigenkapital."
+      },
+      {
+        id: "bil10",
+        cat: "bilanz",
+        catTag: "3. BILANZEN",
+        question: "In welcher Form wird eine Bilanz traditionell dargestellt?",
+        options: [
+          "Als einspaltige Strichliste ohne Beträge",
+          "In T-Konto-Form mit Aktivseite (links) und Passivseite (rechts)",
+          "Als reine Textbeschreibung im Anhang",
+          "Nur mit Mengen- und Gewichtsangaben ohne Euro-Werte"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Im Gegensatz zum ausführlichen Inventar wird die Bilanz übersichtlich als Gegenüberstellung (T-Form: Aktiva links, Passiva rechts) nur in Euro-Beträgen aufgestellt."
+      },
+
+      // 4. BUCHUNGSSÄTZE (10 Fragen)
+      {
+        id: "bs1",
+        cat: "buchung",
+        catTag: "4. BUCHUNGSSÄTZE",
+        question: "Geschäftsfall 1: Wir begleichen die bereits gebuchte Eingangsrechnung 402 durch Banküberweisung (11.300 €). Wie lautet der Buchungssatz?",
+        options: [
+          "Bank 11.300 € an Verbindlichkeiten a.LL 11.300 €",
+          "Verbindlichkeiten a.LL 11.300 € an Bank 11.300 €",
+          "Waren 11.300 € an Bank 11.300 €",
+          "Forderungen a.LL 11.300 € an Bank 11.300 €"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Verbindlichkeiten (Passivkonto) nehmen ab -> SOLL. Bank (Aktivkonto) nimmt ab -> HABEN. Buchungssatz: Verbindlichkeiten a.LL an Bank 11.300 €."
+      },
+      {
+        id: "bs2",
+        cat: "buchung",
+        catTag: "4. BUCHUNGSSÄTZE",
+        question: "Geschäftsfall 2: Wir kaufen Waren auf Ziel lt. Eingangsrechnung 414 über 7.200 €. Wie lautet der Buchungssatz?",
+        options: [
+          "Waren 7.200 € an Verbindlichkeiten a.LL 7.200 €",
+          "Verbindlichkeiten a.LL 7.200 € an Waren 7.200 €",
+          "Waren 7.200 € an Bank 7.200 €",
+          "Bank 7.200 € an Waren 7.200 €"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Waren (Aktivkonto) nehmen zu -> SOLL. Verbindlichkeiten a.LL (Passivkonto) nehmen zu -> HABEN. Buchungssatz: Waren an Verbindlichkeiten a.LL 7.200 €."
+      },
+      {
+        id: "bs3",
+        cat: "buchung",
+        catTag: "4. BUCHUNGSSÄTZE",
+        question: "Geschäftsfall 3: Wir tilgen die Darlehensschuld durch Überweisung lt. Bankauszug (5.000 €). Wie wird gebucht?",
+        options: [
+          "Bank 5.000 € an Darlehen 5.000 €",
+          "Darlehen 5.000 € an Kasse 5.000 €",
+          "Verbindlichkeiten a.LL 5.000 € an Darlehen 5.000 €",
+          "Darlehen 5.000 € an Bank 5.000 €"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Darlehen (Passivkonto) sinkt -> SOLL. Bank (Aktivkonto) sinkt -> HABEN. Buchungssatz: Darlehen an Bank 5.000 €."
+      },
+      {
+        id: "bs4",
+        cat: "buchung",
+        catTag: "4. BUCHUNGSSÄTZE",
+        question: "Geschäftsfall 4: Ein Kunde überweist den bereits gebuchten Rechnungsbetrag auf unser Bankkonto (5.200 €).",
+        options: [
+          "Forderungen a.LL 5.200 € an Bank 5.200 €",
+          "Bank 5.200 € an Verbindlichkeiten a.LL 5.200 €",
+          "Bank 5.200 € an Forderungen a.LL 5.200 €",
+          "Kasse 5.200 € an Bank 5.200 €"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Bank (Aktivkonto) steigt -> SOLL. Forderungen a.LL (Aktivkonto) sinken, da der Kunde gezahlt hat -> HABEN. Buchungssatz: Bank an Forderungen a.LL 5.200 €."
+      },
+      {
+        id: "bs5",
+        cat: "buchung",
+        catTag: "4. BUCHUNGSSÄTZE",
+        question: "Geschäftsfall 5: Unsere Bareinzahlung auf das Bankkonto lt. Bankauszug beträgt 2.200 €. Wie lautet der Buchungssatz?",
+        options: [
+          "Kasse 2.200 € an Bank 2.200 €",
+          "Bank 2.200 € an Kasse 2.200 €",
+          "Bank 2.200 € an Eigenkapital 2.200 €",
+          "Forderungen a.LL 2.200 € an Kasse 2.200 €"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Das Bankguthaben (Aktiv) nimmt zu -> SOLL. Der Bargeldbestand in der Kasse (Aktiv) nimmt ab -> HABEN. Buchungssatz: Bank an Kasse 2.200 €."
+      },
+      {
+        id: "bs6",
+        cat: "buchung",
+        catTag: "4. BUCHUNGSSÄTZE",
+        question: "Wir kaufen einen neuen Büroschreibtisch (BGA) für 950 € und zahlen sofort bar aus der Geschäftskasse.",
+        options: [
+          "Kasse 950 € an BGA 950 €",
+          "BGA 950 € an Verbindlichkeiten a.LL 950 €",
+          "BGA 950 € an Kasse 950 €",
+          "Waren 950 € an Bank 950 €"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "BGA (Aktivkonto) nimmt im Soll zu (+950 €), die Kasse (Aktivkonto) nimmt im Haben ab (-950 €)."
+      },
+      {
+        id: "bs7",
+        cat: "buchung",
+        catTag: "4. BUCHUNGSSÄTZE",
+        question: "Wir heben 1.500 € bar vom geschäftlichen Bankkonto zur Auffüllung unserer Kasse ab. Wie lautet der Buchungssatz?",
+        options: [
+          "Kasse 1.500 € an Bank 1.500 €",
+          "Bank 1.500 € an Kasse 1.500 €",
+          "Kasse 1.500 € an Darlehen 1.500 €",
+          "Eigenkapital 1.500 € an Bank 1.500 €"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "In der Kasse (Aktivkonto) entsteht ein Zugang im Soll (+1.500 €), auf dem Bankkonto (Aktivkonto) ein Abgang im Haben (-1.500 €)."
+      },
+      {
+        id: "bs8",
+        cat: "buchung",
+        catTag: "4. BUCHUNGSSÄTZE",
+        question: "Eine fällige Lieferantenrechnung (Verbindlichkeiten a.LL) über 8.000 € wird in ein langfristiges Darlehen umgewandelt.",
+        options: [
+          "Darlehen 8.000 € an Verbindlichkeiten a.LL 8.000 €",
+          "Bank 8.000 € an Darlehen 8.000 €",
+          "Verbindlichkeiten a.LL 8.000 € an Bank 8.000 €",
+          "Verbindlichkeiten a.LL 8.000 € an Darlehen 8.000 €"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Verbindlichkeiten a.LL (Passiv) sinken im Soll (-8.000 €), während die Darlehensschuld (Passiv) im Haben steigt (+8.000 €)."
+      },
+      {
+        id: "bs9",
+        cat: "buchung",
+        catTag: "4. BUCHUNGSSÄTZE",
+        question: "Wir kaufen einen Kleintransporter (Fuhrpark) für 24.000 € per Banküberweisung.",
+        options: [
+          "Bank 24.000 € an Fuhrpark 24.000 €",
+          "Fuhrpark 24.000 € an Bank 24.000 €",
+          "Fuhrpark 24.000 € an Kasse 24.000 €",
+          "Waren 24.000 € an Verbindlichkeiten a.LL 24.000 €"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Das Aktivkonto Fuhrpark nimmt im Soll zu (+24.000 €) und das Aktivkonto Bank nimmt im Haben ab (-24.000 €)."
+      },
+      {
+        id: "bs10",
+        cat: "buchung",
+        catTag: "4. BUCHUNGSSÄTZE",
+        question: "Ein Kunde begleicht eine offene Rechnung über 650 € durch Barzahlung in unsere Kasse.",
+        options: [
+          "Forderungen a.LL 650 € an Kasse 650 €",
+          "Bank 650 € an Forderungen a.LL 650 €",
+          "Kasse 650 € an Forderungen a.LL 650 €",
+          "Kasse 650 € an Verbindlichkeiten a.LL 650 €"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Der Kassenbestand (Aktiv) steigt im Soll (+650 €) und unsere Forderungen a.LL gegen den Kunden (Aktiv) sinken im Haben (-650 €)."
+      },
+
+      // 5. T-KONTEN BUCHEN (10 Fragen)
+      {
+        id: "tkq1",
+        cat: "tkonten_quiz",
+        catTag: "5. T-KONTEN BUCHEN",
+        question: "Das Konto „Bank“ hat einen Anfangsbestand (AB) im Soll von 25.000 €. Dazu kommen Zugänge im Soll (7.400 €) und Abgänge im Haben (16.300 €). Wie hoch ist der Schlussbestand (SB)?",
+        options: [
+          "32.400 € (wird im Soll eingetragen)",
+          "16.100 € (wird zum Ausgleich im Haben eingetragen)",
+          "8.700 € (wird im Soll eingetragen)",
+          "48.700 € (wird im Haben eingetragen)"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Soll-Summe = 25.000 + 7.400 = 32.400 €. Abzüglich Haben-Abgänge 16.300 € ergibt einen Schlussbestand (Saldo) von 16.100 €, der auf der kleineren Seite (Haben) steht."
+      },
+      {
+        id: "tkq2",
+        cat: "tkonten_quiz",
+        catTag: "5. T-KONTEN BUCHEN",
+        question: "Auf dem Konto „Verbindlichkeiten a.LL“ steht im Haben ein AB von 15.000 € und ein Zugang von 7.200 € (Warenkauf). Im Soll steht eine Tilgung von 11.300 €. Wie hoch ist der Schlussbestand?",
+        options: [
+          "22.200 € (steht auf der Haben-Seite)",
+          "3.700 € (steht auf der Haben-Seite)",
+          "10.900 € (steht als SB auf der Soll-Seite)",
+          "33.500 € (steht auf der Soll-Seite)"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Haben-Summe = 15.000 + 7.200 = 22.200 €. Abzüglich Soll-Buchung 11.300 € = 10.900 € Schlussbestand (steht zum Kontoausgleich links im Soll)."
+      },
+      {
+        id: "tkq3",
+        cat: "tkonten_quiz",
+        catTag: "5. T-KONTEN BUCHEN",
+        question: "Was bedeutet die sogenannte „Buchhalter-Nase“ am Ende eines abgeschlossenen T-Kontos?",
+        options: [
+          "Sie markiert ein Konto mit Verlust",
+          "Sie zeigt an, dass das Konto gelöscht wurde",
+          "Sie wird nur bei Aufwandskonten gezeichnet",
+          "Sie entwertet Leerraum auf der kürzeren Kontoseite, damit nachträglich keine Buchungen eingefügt werden können"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Die Buchhalternase (Schrägstrich durch freie Zeilen) verhindert nachträgliche Manipulationen und sorgt dafür, dass beide Summenzeilen auf gleicher Höhe stehen."
+      },
+      {
+        id: "tkq4",
+        cat: "tkonten_quiz",
+        catTag: "5. T-KONTEN BUCHEN",
+        question: "Beim Buchen von „Waren 7.200 € an Verbindlichkeiten a.LL 7.200 €“: Welches Gegenkonto wird auf dem T-Konto „Waren“ im Soll als Text angegeben?",
+        options: [
+          "4400 Verbindlichkeiten a.LL",
+          "2800 Bank",
+          "Waren",
+          "Eigenkapital"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "In einem T-Konto nennt man bei jeder Buchung immer das jeweilige Gegenkonto (hier auf dem Warenkonto im Soll: „Verbindlichkeiten a.LL 7.200 €“)."
+      },
+      {
+        id: "tkq5",
+        cat: "tkonten_quiz",
+        catTag: "5. T-KONTEN BUCHEN",
+        question: "Auf welcher Seite steht der Schlussbestand (SB) bei einem aktiven Bestandskonto (z. B. Kasse, Waren, Forderungen)?",
+        options: [
+          "Im SOLL (links), genau wie der Anfangsbestand",
+          "Unterhalb der Bilanzsumme",
+          "Im HABEN (rechts), weil die Soll-Seite größer ist",
+          "Immer auf der Seite mit der größeren Summe"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Da bei Aktivkonten Anfangsbestand + Zugänge im Soll stehen, ist die Soll-Seite größer. Der Schlussbestand (Saldo) steht daher zum Ausgleich im HABEN."
+      },
+      {
+        id: "tkq6",
+        cat: "tkonten_quiz",
+        catTag: "5. T-KONTEN BUCHEN",
+        question: "Auf dem Konto „Kasse“ steht im Soll ein Anfangsbestand (AB) von 3.000 €. Im Haben wurde eine Bareinzahlung auf die Bank (2.200 €) gebucht. Wie hoch ist der Schlussbestand?",
+        options: [
+          "5.200 € im Soll",
+          "800 € im Haben",
+          "2.200 € im Soll",
+          "800 € im Soll"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Soll (3.000 €) minus Haben (2.200 €) ergibt 800 € Schlussbestand in der Kasse, der zum Ausgleich auf der Haben-Seite eingetragen wird."
+      },
+      {
+        id: "tkq7",
+        cat: "tkonten_quiz",
+        catTag: "5. T-KONTEN BUCHEN",
+        question: "Das Konto „Forderungen a.LL“ hat im Soll einen AB von 9.500 €. Ein Kunde überweist 5.200 € (Haben-Buchung). Wie lautet der Schlussbestand?",
+        options: [
+          "14.700 € im Haben",
+          "5.200 € im Soll",
+          "4.300 € im Soll",
+          "4.300 € im Haben"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Von den 9.500 € Forderungen wurden 5.200 € bezahlt. Es verbleibt ein Schlussbestand von 4.300 €, der beim Aktivkonto rechts im Haben steht."
+      },
+      {
+        id: "tkq8",
+        cat: "tkonten_quiz",
+        catTag: "5. T-KONTEN BUCHEN",
+        question: "Das Konto „Waren“ zeigt im Soll einen AB von 18.000 € und einen Warenzukauf von 7.200 €. Abgänge gab es keine. Wie hoch ist der Schlussbestand (SB)?",
+        options: [
+          "25.200 € (wird im Haben als SB eingetragen)",
+          "10.800 € (wird im Haben eingetragen)",
+          "25.200 € (wird im Soll als SB eingetragen)",
+          "7.200 € (wird im Soll eingetragen)"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "18.000 € + 7.200 € = 25.200 € Summe im Soll. Da es keine Abgänge gab, beträgt der Schlussbestand im Haben 25.200 €."
+      },
+      {
+        id: "tkq9",
+        cat: "tkonten_quiz",
+        catTag: "5. T-KONTEN BUCHEN",
+        question: "Auf dem Passivkonto „Darlehen“ steht im Haben ein AB von 40.000 €. Im Soll wurde eine Tilgung von 5.000 € gebucht. Wo und in welcher Höhe steht der Schlussbestand?",
+        options: [
+          "45.000 € im Haben",
+          "35.000 € im Haben",
+          "35.000 € im Soll",
+          "5.000 € im Haben"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Bei Passivkonten ist die Haben-Seite (40.000 €) größer. Nach Abzug der Tilgung (5.000 €) steht der Schlussbestand von 35.000 € links im Soll."
+      },
+      {
+        id: "tkq10",
+        cat: "tkonten_quiz",
+        catTag: "5. T-KONTEN BUCHEN",
+        question: "Welche Regel gilt für die Summenzeile ganz unten beim Abschluss eines jeden T-Kontos?",
+        options: [
+          "Die Soll-Summe muss immer höher sein als die Haben-Summe",
+          "Die Summe im Soll und die Summe im Haben müssen auf gleicher Höhe stehen und exakt denselben Betrag zeigen",
+          "Summenzeilen werden nur bei Bankkonten eingetragen",
+          "Die kleinere Summe wird doppelt unterstrichen"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Durch das Eintragen des Saldos (Schlussbestand) auf der schwächeren Seite sind beide Kontoseiten in der Summenzeile exakt ausgeglichen."
+      },
+
+      // 6. BILANZVERÄNDERUNGEN (10 Fragen)
+      {
+        id: "bv1",
+        cat: "bilanzveraenderung",
+        catTag: "6. BILANZVERÄNDERUNGEN",
+        question: "Welche Bilanzveränderung liegt vor bei: „Wir begleichen eine Eingangsrechnung durch Banküberweisung (11.300 €)“?",
+        options: [
+          "Aktivtausch",
+          "Passivtausch",
+          "Aktiv-Passiv-Minderung (Bilanzverkürzung)",
+          "Aktiv-Passiv-Mehrung (Bilanzverlängerung)"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Bank (Aktivkonto) nimmt ab und Verbindlichkeiten (Passivkonto) nehmen ab. Die Bilanzsumme sinkt um 11.300 € -> Aktiv-Passiv-Minderung."
+      },
+      {
+        id: "bv2",
+        cat: "bilanzveraenderung",
+        catTag: "6. BILANZVERÄNDERUNGEN",
+        question: "Welche Bilanzveränderung liegt vor bei: „Wir kaufen Waren auf Ziel lt. Eingangsrechnung (7.200 €)“?",
+        options: [
+          "Aktiv-Passiv-Mehrung (Bilanzverlängerung)",
+          "Aktivtausch",
+          "Passivtausch",
+          "Aktiv-Passiv-Minderung (Bilanzverkürzung)"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Waren (Aktiva) steigen um 7.200 € und Verbindlichkeiten a.LL (Passiva) steigen um 7.200 €. Die Bilanzsumme wächst -> Aktiv-Passiv-Mehrung."
+      },
+      {
+        id: "bv3",
+        cat: "bilanzveraenderung",
+        catTag: "6. BILANZVERÄNDERUNGEN",
+        question: "Ein Kunde überweist 5.200 € auf unser Bankkonto (oder wir zahlen 2.200 € bar aus der Kasse auf die Bank ein). Welche Bilanzveränderung ist das?",
+        options: [
+          "Passivtausch (Bilanzsumme bleibt gleich)",
+          "Aktivtausch (Bilanzsumme bleibt gleich)",
+          "Bilanzverlängerung",
+          "Bilanzverkürzung"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Es sind nur Aktivkonten betroffen (Bank + / Forderungen bzw. Kasse -). Die Bilanzsumme verändert sich nicht -> Aktivtausch."
+      },
+      {
+        id: "bv4",
+        cat: "bilanzveraenderung",
+        catTag: "6. BILANZVERÄNDERUNGEN",
+        question: "Wann spricht man von einem „Passivtausch“?",
+        options: [
+          "Wenn Kasse und Bank getauscht werden",
+          "Wenn Waren bar gekauft werden",
+          "Wenn ein Darlehen per Banküberweisung getilgt wird",
+          "Wenn ein Passivkonto zunimmt und ein anderes Passivkonto um denselben Betrag abnimmt (z. B. Umwandlung einer Lieferantenschuld in ein Darlehen)"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Beim Passivtausch findet ein Tausch ausschließlich auf der Passivseite statt (z. B. Verbindlichkeiten a.LL sinken, Darlehensschuld steigt)."
+      },
+      {
+        id: "bv5",
+        cat: "bilanzveraenderung",
+        catTag: "6. BILANZVERÄNDERUNGEN",
+        question: "Welche Auswirkung hat die Tilgung einer Darlehensschuld per Banküberweisung (5.000 €) auf die Bilanzsumme?",
+        options: [
+          "Die Bilanzsumme bleibt unverändert (Passivtausch)",
+          "Die Bilanzsumme verringert sich um 5.000 € (Aktiv-Passiv-Minderung)",
+          "Die Bilanzsumme erhöht sich um 5.000 €",
+          "Nur die Passivseite wird kleiner"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Bank (Aktiv) sinkt um 5.000 € und Darlehen (Passiv) sinkt um 5.000 €. Beide Bilanzseiten und damit die Bilanzsumme schrumpfen um 5.000 €."
+      },
+      {
+        id: "bv6",
+        cat: "bilanzveraenderung",
+        catTag: "6. BILANZVERÄNDERUNGEN",
+        question: "Wir kaufen einen neuen Lieferwagen (Fuhrpark) für 25.000 € auf Ziel (Lieferantenrechnung). Welche Bilanzveränderung bewirkt das?",
+        options: [
+          "Aktivtausch",
+          "Passivtausch",
+          "Aktiv-Passiv-Mehrung (Bilanzverlängerung)",
+          "Aktiv-Passiv-Minderung (Bilanzverkürzung)"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Fuhrpark (Aktivseite) nimmt zu und Verbindlichkeiten a.LL (Passivseite) nehmen zu. Die Bilanzsumme steigt um 25.000 €."
+      },
+      {
+        id: "bv7",
+        cat: "bilanzveraenderung",
+        catTag: "6. BILANZVERÄNDERUNGEN",
+        question: "Wir kaufen Handelswaren für 800 € gegen sofortige Barzahlung aus der Kasse. Welche Bilanzveränderung liegt vor?",
+        options: [
+          "Aktivtausch (Waren +, Kasse -)",
+          "Passivtausch (Verbindlichkeiten +, Kasse -)",
+          "Aktiv-Passiv-Mehrung",
+          "Aktiv-Passiv-Minderung"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Waren und Kasse sind beides Aktivkonten. Das eine steigt, das andere sinkt um 800 € -> Aktivtausch."
+      },
+      {
+        id: "bv8",
+        cat: "bilanzveraenderung",
+        catTag: "6. BILANZVERÄNDERUNGEN",
+        question: "Wir nehmen ein Bankdarlehen über 30.000 € auf; der Betrag wird unserem Bankkonto gutgeschrieben. Was passiert mit der Bilanz?",
+        options: [
+          "Aktivtausch",
+          "Passivtausch",
+          "Aktiv-Passiv-Minderung",
+          "Aktiv-Passiv-Mehrung (Bank +30.000 €, Darlehen +30.000 €)"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Auf der Aktivseite steigt das Bankguthaben, auf der Passivseite steigen die Darlehensschulden -> Bilanzverlängerung."
+      },
+      {
+        id: "bv9",
+        cat: "bilanzveraenderung",
+        catTag: "6. BILANZVERÄNDERUNGEN",
+        question: "Bei welchen zwei Arten der Bilanzveränderung bleibt die Bilanzsumme völlig unverändert?",
+        options: [
+          "Bei Aktiv-Passiv-Mehrung und Aktiv-Passiv-Minderung",
+          "Bei Aktivtausch und Passivtausch",
+          "Nur bei der Bilanzverlängerung",
+          "Nur bei der Darlehenstilgung"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Sowohl beim Aktivtausch als auch beim Passivtausch findet lediglich eine Umschichtung innerhalb derselben Bilanzseite statt – die Bilanzsumme bleibt konstant."
+      },
+      {
+        id: "bv10",
+        cat: "bilanzveraenderung",
+        catTag: "6. BILANZVERÄNDERUNGEN",
+        question: "Warum gibt es in der doppelten Buchführung keinen Geschäftsfall, der nur ein einziges Konto verändert?",
+        options: [
+          "Weil jede Buchung mindestens ein Soll-Konto und ein Haben-Konto mit identischer Summe anspricht",
+          "Weil immer mindestens vier Konten betroffen sein müssen",
+          "Weil das Kassenkonto immer mitgebucht werden muss",
+          "Weil sonst das Eigenkapital verschwindet"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Grundprinzip der Doppik: Keine Buchung ohne Gegenbuchung (Summe der Soll-Buchungen = Summe der Haben-Buchungen)."
+      },
+
+      // 7. ABSCHLUSS & INVENTUR (10 Fragen)
+      {
+        id: "ab1",
+        cat: "abschluss",
+        catTag: "7. ABSCHLUSS & INVENTUR",
+        question: "Auf dem Aufgabenblatt steht: „Die Schlussbestände auf den Konten stimmen mit der Inventur überein.“ Was bedeutet das?",
+        options: [
+          "Es liegt ein Fehlbestand im Lager vor",
+          "Soll-Bestand (Buchbestand) und Ist-Bestand (gezählter Inventurbestand) sind identisch – es sind keine Korrekturbuchungen nötig",
+          "Die Eröffnungsbilanz muss storniert werden",
+          "Es dürfen keine Konten abgeschlossen werden"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Wenn Buchbestand und Inventurbestand übereinstimmen, können die ermittelten Salden der T-Konten direkt als Schlussbestände in das SBK übernommen werden."
+      },
+      {
+        id: "ab2",
+        cat: "abschluss",
+        catTag: "7. ABSCHLUSS & INVENTUR",
+        question: "Über welches Konto werden alle aktiven und passiven Bestandskonten am Geschäftsjahresende abgeschlossen?",
+        options: [
+          "Über das Gewinn- und Verlustkonto (GuV)",
+          "Über das Kassenkonto",
+          "Über das Schlussbilanzkonto (SBK)",
+          "Direkt über das Konto Umsatzerlöse"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Alle Bestandskonten (Aktiva und Passiva) werden über das Schlussbilanzkonto (SBK) abgeschlossen."
+      },
+      {
+        id: "ab3",
+        cat: "abschluss",
+        catTag: "7. ABSCHLUSS & INVENTUR",
+        question: "Wie lautet der Abschlussbuchungssatz für ein Aktivkonto (z. B. Bank mit Schlussbestand 16.100 €)?",
+        options: [
+          "SBK 16.100 € an Bank 16.100 €",
+          "Bank 16.100 € an SBK 16.100 €",
+          "GuV 16.100 € an Bank 16.100 €",
+          "Eigenkapital 16.100 € an Bank 16.100 €"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Beim Aktivkonto steht der Schlussbestand im Haben. Im SBK steht er wie in der Bilanz links im Soll -> Buchungssatz: SBK an Bank."
+      },
+      {
+        id: "ab4",
+        cat: "abschluss",
+        catTag: "7. ABSCHLUSS & INVENTUR",
+        question: "Wie lautet der Abschlussbuchungssatz für ein Passivkonto (z. B. Verbindlichkeiten a.LL mit Schlussbestand 10.900 €)?",
+        options: [
+          "SBK 10.900 € an Verbindlichkeiten a.LL 10.900 €",
+          "Verbindlichkeiten a.LL 10.900 € an GuV 10.900 €",
+          "Bank 10.900 € an SBK 10.900 €",
+          "Verbindlichkeiten a.LL 10.900 € an SBK 10.900 €"
+        ],
+        correct: 3,
+        xp: 50,
+        explanation: "Beim Passivkonto steht der Schlussbestand im Soll. Im SBK steht er rechts im Haben -> Buchungssatz: Verbindlichkeiten a.LL an SBK."
+      },
+      {
+        id: "ab5",
+        cat: "abschluss",
+        catTag: "7. ABSCHLUSS & INVENTUR",
+        question: "Was ist der Unterschied zwischen Inventur und Inventar?",
+        options: [
+          "Inventur ist die Bilanz, Inventar ist das T-Konto",
+          "Inventur ist die Tätigkeit der Bestandsaufnahme (Zählen, Messen, Wiegen), das Inventar ist das fertige Bestandsverzeichnis",
+          "Beide Begriffe bedeuten exakt dasselbe",
+          "Inventar macht nur die Bank, Inventur nur das Finanzamt"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Merksatz: Die Inventur ist der Vorgang (körperliche/buchmäßige Bestandsaufnahme), das Inventar ist die daraus entstehende ausführliche Liste."
+      },
+      {
+        id: "ab6",
+        cat: "abschluss",
+        catTag: "7. ABSCHLUSS & INVENTUR",
+        question: "Über welches Konto werden die Erfolgs- bzw. Unterkonten des Eigenkapitals (Aufwendungen und Erträge) abgeschlossen?",
+        options: [
+          "Direkt über das Kassenkonto",
+          "Über das Eröffnungsbilanzkonto (EBK)",
+          "Über das Gewinn- und Verlustkonto (GuV)",
+          "Über das Konto Forderungen a.LL"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Aufwands- und Ertragskonten werden im GuV-Konto gesammelt, um den Jahreserfolg (Gewinn oder Verlust) zu ermitteln."
+      },
+      {
+        id: "ab7",
+        cat: "abschluss",
+        catTag: "7. ABSCHLUSS & INVENTUR",
+        question: "Auf welches Konto wird der im GuV-Konto ermittelte Gewinn oder Verlust abgeschlossen?",
+        options: [
+          "Auf das Konto Eigenkapital",
+          "Auf das Konto Verbindlichkeiten a.LL",
+          "Auf das Konto Fuhrpark",
+          "Auf das Konto Waren"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Das GuV-Konto ist ein Unterkonto des Eigenkapitals: Ein Gewinn mehrt das Eigenkapital, ein Verlust mindert es."
+      },
+      {
+        id: "ab8",
+        cat: "abschluss",
+        catTag: "7. ABSCHLUSS & INVENTUR",
+        question: "Wie werden körperliche Vermögensgegenstände (z. B. Waren im Lager, Bargeld in der Kasse) bei der Inventur erfasst?",
+        options: [
+          "Durch bloßes Schätzen vom Schreibtisch aus",
+          "Durch körperliche Bestandsaufnahme: Zählen, Messen, Wiegen",
+          "Nur durch Anruf beim Lieferanten",
+          "Sie müssen gar nicht erfasst werden"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Materielle Wirtschaftsgüter werden bei der körperlichen Inventur vor Ort gezählt, gemessen oder gewogen."
+      },
+      {
+        id: "ab9",
+        cat: "abschluss",
+        catTag: "7. ABSCHLUSS & INVENTUR",
+        question: "Wie werden nicht-körperliche Posten wie Bankguthaben, Forderungen oder Darlehensschulden bei der Inventur aufgenommen?",
+        options: [
+          "Durch Buchinventur anhand von Belegen, Kontoauszügen und Saldenlisten",
+          "Durch Abwiegen der Aktenordner",
+          "Gar nicht, Schulden zählen nicht zur Inventur",
+          "Durch Schätzung der Mitarbeiter"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Forderungen, Verbindlichkeiten und Bankguthaben lassen sich nicht physisch zählen – sie werden durch die Buchinventur (Belege/Kontoauszüge) nachgewiesen."
+      },
+      {
+        id: "ab10",
+        cat: "abschluss",
+        catTag: "7. ABSCHLUSS & INVENTUR",
+        question: "Wie lange müssen Bilanzen, Inventare und Jahresabschlüsse gesetzlich nach HGB aufbewahrt werden?",
+        options: [
+          "1 Jahr",
+          "3 Jahre",
+          "10 Jahre",
+          "Nur bis zum nächsten Monat"
+        ],
+        correct: 2,
+        xp: 50,
+        explanation: "Nach § 257 HGB gilt für Handelsbücher, Inventare, Eröffnungsbilanzen und Jahresabschlüsse eine Aufbewahrungsfrist von 10 Jahren."
       }
+    ];
+
+    // Aufgabenblatt 2 Daten (exakt nach dem Bild des Nutzers)
+    const WORKSHEET_CASES = [
+      {
+        nr: 1,
+        text: "Wir begleichen die bereits gebuchte Eingangsrechnung 402 durch Banküberweisung",
+        amount: 11300,
+        amountFormatted: "11.300,00",
+        sollAccount: "Verbindlichkeiten a.LL",
+        habenAccount: "Bank",
+        hint: "Verbindlichkeiten a.LL (Passiv) sinken im Soll | Bank (Aktiv) sinkt im Haben"
+      },
+      {
+        nr: 2,
+        text: "Wir kaufen Waren auf Ziel lt. Eingangsrechnung 414",
+        amount: 7200,
+        amountFormatted: "7.200,00",
+        sollAccount: "Waren",
+        habenAccount: "Verbindlichkeiten a.LL",
+        hint: "Waren (Aktiv) steigen im Soll | Verbindlichkeiten a.LL (Passiv) steigen im Haben"
+      },
+      {
+        nr: 3,
+        text: "Wir tilgen die Darlehensschuld durch Überweisung lt. Bankauszug",
+        amount: 5000,
+        amountFormatted: "5.000,00",
+        sollAccount: "Darlehen",
+        habenAccount: "Bank",
+        hint: "Darlehen (Passiv) sinkt im Soll | Bank (Aktiv) sinkt im Haben"
+      },
+      {
+        nr: 4,
+        text: "Ein Kunde überweist den bereits gebuchten Rechnungsbetrag auf unser Bankkonto",
+        amount: 5200,
+        amountFormatted: "5.200,00",
+        sollAccount: "Bank",
+        habenAccount: "Forderungen a.LL",
+        hint: "Bank (Aktiv) steigt im Soll | Forderungen a.LL (Aktiv) sinken im Haben"
+      },
+      {
+        nr: 5,
+        text: "Unsere Bareinzahlung auf das Bankkonto lt. Bankauszug",
+        amount: 2200,
+        amountFormatted: "2.200,00",
+        sollAccount: "Bank",
+        habenAccount: "Kasse",
+        hint: "Bank (Aktiv) steigt im Soll | Kasse (Aktiv) sinkt im Haben"
+      }
+    ];
+
+    const WORKSHEET_ACCOUNT_OPTIONS = [
+      "Wähle Konto...",
+      "Waren",
+      "Forderungen a.LL",
+      "Bank",
+      "Kasse",
+      "Eigenkapital",
+      "Darlehen",
+      "Verbindlichkeiten a.LL"
     ];
 
     const tkontoCases = [
       {
         id: 1,
-        badge: "FALLSTUDIE 1 VON 3",
-        title: "Kauf einer Büromaschine auf Ziel",
-        desc: "Das Unternehmen kauft einen neuen Großkopierer im Wert von 4.500 € auf Ziel (Verbindlichkeiten a.LL). Führe den Buchungssatz im T-Konto aus.",
+        badge: "FALLSTUDIE 1 VON 6 (AUFGABE 2)",
+        title: "1. Begleichung Eingangsrechnung 402 per Bank (11.300 €)",
+        desc: "Wir begleichen die bereits gebuchte Eingangsrechnung 402 über 11.300 € durch Banküberweisung. Buche den Fall in den beiden T-Konten.",
+        konto1: "Verbindlichkeiten a.LL (Passiv)",
+        konto2: "Bank (Aktivkonto)",
+        c1Soll: 11300, c1Haben: 0,
+        c2Soll: 0, c2Haben: 11300,
+        explanation: "Richtig! Verbindlichkeiten a.LL (Passivkonto) nehmen im SOLL ab (11.300 €). Bank (Aktivkonto) nimmt im HABEN ab (11.300 €)."
+      },
+      {
+        id: 2,
+        badge: "FALLSTUDIE 2 VON 6 (AUFGABE 2)",
+        title: "2. Warenkauf auf Ziel lt. ER 414 (7.200 €)",
+        desc: "Wir kaufen Waren auf Ziel lt. Eingangsrechnung 414 im Wert von 7.200 €. Trage die Beträge auf den richtigen T-Kontenseiten ein.",
+        konto1: "Waren (Aktivkonto)",
+        konto2: "Verbindlichkeiten a.LL (Passiv)",
+        c1Soll: 7200, c1Haben: 0,
+        c2Soll: 0, c2Haben: 7200,
+        explanation: "Perfekt! Waren (Aktivkonto) steigen im SOLL um 7.200 €. Verbindlichkeiten a.LL (Passivkonto) steigen im HABEN um 7.200 €."
+      },
+      {
+        id: 3,
+        badge: "FALLSTUDIE 3 VON 6 (AUFGABE 2)",
+        title: "3. Tilgung Darlehensschuld per Bank (5.000 €)",
+        desc: "Wir tilgen die Darlehensschuld in Höhe von 5.000 € durch Überweisung lt. Bankauszug. Buche den Geschäftsvorfall.",
+        konto1: "Darlehen (Passivkonto)",
+        konto2: "Bank (Aktivkonto)",
+        c1Soll: 5000, c1Haben: 0,
+        c2Soll: 0, c2Haben: 5000,
+        explanation: "Ausgezeichnet! Darlehen (Passivkonto) sinkt im SOLL um 5.000 €. Bank (Aktivkonto) sinkt im HABEN um 5.000 €."
+      },
+      {
+        id: 4,
+        badge: "FALLSTUDIE 4 VON 6 (AUFGABE 2)",
+        title: "4. Kundenüberweisung auf unser Bankkonto (5.200 €)",
+        desc: "Ein Kunde überweist den bereits gebuchten Rechnungsbetrag von 5.200 € auf unser Bankkonto. Buche im T-Konto.",
+        konto1: "Bank (Aktivkonto)",
+        konto2: "Forderungen a.LL (Aktivkonto)",
+        c1Soll: 5200, c1Haben: 0,
+        c2Soll: 0, c2Haben: 5200,
+        explanation: "Stark! Bank (Aktivkonto) nimmt im SOLL um 5.200 € zu. Forderungen a.LL (Aktivkonto) nehmen im HABEN um 5.200 € ab."
+      },
+      {
+        id: 5,
+        badge: "FALLSTUDIE 5 VON 6 (AUFGABE 2)",
+        title: "5. Bareinzahlung auf das Bankkonto (2.200 €)",
+        desc: "Unsere Bareinzahlung aus der Geschäftskasse auf das Bankkonto lt. Bankauszug beträgt 2.200 €. Trage die Buchung ein.",
+        konto1: "Bank (Aktivkonto)",
+        konto2: "Kasse (Aktivkonto)",
+        c1Soll: 2200, c1Haben: 0,
+        c2Soll: 0, c2Haben: 2200,
+        explanation: "Klasse! Das Bankkonto (Aktiv) steigt im SOLL um 2.200 €, während die Kasse (Aktiv) im HABEN um 2.200 € abnimmt."
+      },
+      {
+        id: 6,
+        badge: "FALLSTUDIE 6 VON 6 (BONUS-TRAINING)",
+        title: "6. Kauf einer Büromaschine auf Ziel (4.500 €)",
+        desc: "Das Unternehmen kauft einen neuen Großkopierer (BGA) im Wert von 4.500 € auf Ziel (Verbindlichkeiten a.LL).",
         konto1: "BGA / Büromaschinen (Aktiv)",
         konto2: "Verbindlichkeiten a.LL (Passiv)",
         c1Soll: 4500, c1Haben: 0,
         c2Soll: 0, c2Haben: 4500,
-        explanation: "Richtig! Büromaschinen (Aktivkonto) nimmt im SOLL zu. Verbindlichkeiten (Passivkonto) nimmt im HABEN zu."
-      },
-      {
-        id: 2,
-        badge: "FALLSTUDIE 2 VON 3",
-        title: "Gehaltszahlung per Banküberweisung",
-        desc: "Die Monatsgehälter in Höhe von 12.000 € werden vom Geschäftskonto überwiesen. Trage die Werte korrekt in die T-Konten ein.",
-        konto1: "Löhne & Gehälter (Aufwand)",
-        konto2: "Bank (Aktivkonto)",
-        c1Soll: 12000, c1Haben: 0,
-        c2Soll: 0, c2Haben: 12000,
-        explanation: "Perfekt! Aufwandskonto (Löhne) steigt im SOLL. Aktivkonto (Bank) sinkt im HABEN."
-      },
-      {
-        id: 3,
-        badge: "FALLSTUDIE 3 VON 3",
-        title: "Barverkauf von Fertigerzeugnissen",
-        desc: "Ein Kunde kauft Fertigerzeugnisse für 850 € und zahlt sofort in bar. Buche den Geschäftsvorfall.",
-        konto1: "Kasse (Aktivkonto)",
-        konto2: "Umsatzerlöse (Ertrag)",
-        c1Soll: 850, c1Haben: 0,
-        c2Soll: 0, c2Haben: 850,
-        explanation: "Ausgezeichnet! Kasse (Aktivkonto) steigt im SOLL. Umsatzerlöse (Ertragskonto) steigen im HABEN."
+        explanation: "Richtig! BGA (Aktivkonto) steigt im SOLL um 4.500 €. Verbindlichkeiten a.LL (Passivkonto) steigen im HABEN um 4.500 €."
       }
     ];
 
@@ -885,6 +2227,7 @@
       renderFilteredKonten();
       renderAchievements();
       setupQuizSession();
+      renderWorksheetRows();
       loadTKontoCase(0);
       lucide.createIcons();
     }
@@ -923,24 +2266,36 @@
       } catch (e) {}
     }
 
-    function resetAppState() {
-      if (confirm("Möchtest du deinen Lernfortschritt wirklich zurücksetzen?")) {
+    function openResetModal() {
+      document.getElementById("reset-modal").classList.remove("hidden");
+      lucide.createIcons();
+    }
+
+    function closeResetModal() {
+      document.getElementById("reset-modal").classList.add("hidden");
+    }
+
+    function confirmResetAppState() {
+      try {
         localStorage.removeItem("learnex_v5_app_state");
-        state = {
-          xp: 0,
-          level: 1,
-          streak: 1,
-          studyMinutes: 10,
-          accuracy: 100,
-          seenQuestions: [],
-          activeQuizIndex: 0,
-          quizAnswers: [],
-          currentTKCaseIndex: 0,
-          activeKontenCat: "all"
-        };
-        saveState();
-        location.reload();
-      }
+      } catch (e) {}
+      state = {
+        xp: 0,
+        level: 1,
+        streak: 1,
+        studyMinutes: 10,
+        accuracy: 100,
+        seenQuestions: [],
+        activeQuizIndex: 0,
+        quizAnswers: [],
+        currentTKCaseIndex: 0,
+        activeKontenCat: "all"
+      };
+      saveState();
+      updateHeaderAndKPIs();
+      setupQuizSession();
+      loadTKontoCase(0);
+      closeResetModal();
     }
 
     function updateHeaderAndKPIs() {
@@ -949,6 +2304,7 @@
       document.getElementById("kpi-study-time").textContent = `${state.studyMinutes} Min`;
       document.getElementById("kpi-accuracy").textContent = `${state.accuracy}%`;
       document.getElementById("kpi-streak").textContent = `${state.streak} Tage`;
+      document.getElementById("kpi-level-title").textContent = `${state.level} - Bilanz-Experte`;
     }
 
     function awardXP(amount) {
@@ -969,7 +2325,7 @@
       el.className = "glass-pill px-4 py-2 rounded-full border border-amber-500/40 text-amber-300 font-extrabold text-xs shadow-2xl flex items-center space-x-2 animate-float-xp";
       el.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i><span>+${amount} XP</span>`;
       container.appendChild(el);
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
       setTimeout(() => el.remove(), 1400);
     }
 
@@ -978,111 +2334,328 @@
     // ==========================================
 
     function initActivityChart() {
-      const ctx = document.getElementById("weeklyActivityChart").getContext("2d");
-      
-      const gradientActive = ctx.createLinearGradient(0, 0, 0, 240);
-      gradientActive.addColorStop(0, "rgba(99, 102, 241, 0.9)");
-      gradientActive.addColorStop(1, "rgba(99, 102, 241, 0.2)");
+      try {
+        const canvasEl = document.getElementById("weeklyActivityChart");
+        if (!canvasEl || typeof Chart === "undefined") return;
+        const ctx = canvasEl.getContext("2d");
+        
+        const gradientActive = ctx.createLinearGradient(0, 0, 0, 240);
+        gradientActive.addColorStop(0, "rgba(99, 102, 241, 0.9)");
+        gradientActive.addColorStop(1, "rgba(99, 102, 241, 0.2)");
 
-      const gradientNormal = ctx.createLinearGradient(0, 0, 0, 240);
-      gradientNormal.addColorStop(0, "rgba(255, 255, 255, 0.15)");
-      gradientNormal.addColorStop(1, "rgba(255, 255, 255, 0.03)");
+        const gradientNormal = ctx.createLinearGradient(0, 0, 0, 240);
+        gradientNormal.addColorStop(0, "rgba(255, 255, 255, 0.15)");
+        gradientNormal.addColorStop(1, "rgba(255, 255, 255, 0.03)");
 
-      activityChartInstance = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
-          datasets: [{
-            label: "XP",
-            data: [120, 190, 150, 220, 180, 90, 240],
-            backgroundColor: [
-              gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientActive
-            ],
-            borderRadius: 12,
-            borderSkipped: false
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false }
+        if (activityChartInstance) {
+          activityChartInstance.destroy();
+        }
+
+        activityChartInstance = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+            datasets: [{
+              label: "XP",
+              data: [120, 190, 150, 220, 180, 90, 240],
+              backgroundColor: [
+                gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientNormal, gradientActive
+              ],
+              borderRadius: 12,
+              borderSkipped: false
+            }]
           },
-          scales: {
-            x: {
-              grid: { display: false },
-              ticks: { color: "#94a3b8", font: { size: 11, weight: "600" } }
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false }
             },
-            y: {
-              grid: { color: "rgba(255, 255, 255, 0.05)" },
-              ticks: { color: "#94a3b8", font: { size: 10 } }
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { color: "#94a3b8", font: { size: 11, weight: "600" } }
+              },
+              y: {
+                grid: { color: "rgba(255, 255, 255, 0.05)" },
+                ticks: { color: "#94a3b8", font: { size: 10 } }
+              }
             }
           }
-        }
-      });
+        });
+      } catch (err) {
+        console.error("Chart Init Error:", err);
+      }
     }
 
     function drawProgressRing(percent) {
-      const canvas = document.getElementById("progressRingCanvas");
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      const x = canvas.width / 2;
-      const y = canvas.height / 2;
-      const radius = 62;
-      const startAngle = -Math.PI / 2;
-      const endAngle = startAngle + (Math.PI * 2 * (percent / 100));
+      try {
+        const canvas = document.getElementById("progressRingCanvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
+        const radius = 62;
+        const startAngle = -Math.PI / 2;
+        const endAngle = startAngle + (Math.PI * 2 * (percent / 100));
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Track Circle
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
-      ctx.lineWidth = 12;
-      ctx.stroke();
+        // Track Circle
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+        ctx.lineWidth = 12;
+        ctx.stroke();
 
-      // Active Arc Gradient
-      const grad = ctx.createLinearGradient(0, 0, 160, 160);
-      grad.addColorStop(0, "#6366f1");
-      grad.addColorStop(0.5, "#f59e0b");
-      grad.addColorStop(1, "#10b981");
+        // Active Arc Gradient
+        const grad = ctx.createLinearGradient(0, 0, 160, 160);
+        grad.addColorStop(0, "#6366f1");
+        grad.addColorStop(0.5, "#f59e0b");
+        grad.addColorStop(1, "#10b981");
 
-      ctx.beginPath();
-      ctx.arc(x, y, radius, startAngle, endAngle);
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = 12;
-      ctx.lineCap = "round";
-      ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(x, y, radius, startAngle, endAngle);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 12;
+        ctx.lineCap = "round";
+        ctx.stroke();
+      } catch (err) {
+        console.error("Ring Draw Error:", err);
+      }
     }
 
     // ==========================================
-    // QUIZ ENGINE WITH FISHER-YATES ROTATION
+    // QUIZ ENGINE & RECHNUNGSWESEN MODULE HUB
     // ==========================================
 
+    let currentQuizCat = "aktiv_passiv";
+    const QUESTIONS_PER_RUN = 5;
+
+    // Mischt die 4 Antwortmöglichkeiten (A-D) einer Frage zufällig durch,
+    // sodass die richtige Antwort garantiert zufällig auf Platz 1, 2, 3 oder 4 liegt.
+    function prepareQuestionWithShuffledOptions(q) {
+      const indexedOptions = q.options.map((text, idx) => ({
+        text,
+        isCorrect: idx === q.correct
+      }));
+      const shuffledOptions = fisherYatesShuffle(indexedOptions);
+      return {
+        ...q,
+        options: shuffledOptions.map(o => o.text),
+        correct: shuffledOptions.findIndex(o => o.isCorrect)
+      };
+    }
+
+    // Zieht 5 noch ungesehene Fragen aus dem gewählten Modul-Pool.
+    // Beim Wiederholen eines Moduls kommen dadurch sofort neue Fragen!
+    function buildQuizDeck(cat) {
+      const pool = cat === "all"
+        ? [...rawQuizPool]
+        : rawQuizPool.filter(q => q.cat === cat);
+
+      if (!Array.isArray(state.seenQuestions)) {
+        state.seenQuestions = [];
+      }
+
+      const unseen = fisherYatesShuffle(pool.filter(q => !state.seenQuestions.includes(q.id)));
+      const seen = fisherYatesShuffle(pool.filter(q => state.seenQuestions.includes(q.id)));
+
+      let selected = [];
+      if (unseen.length >= QUESTIONS_PER_RUN) {
+        selected = unseen.slice(0, QUESTIONS_PER_RUN);
+      } else {
+        selected = [...unseen];
+        // Wenn alle Fragen einer Kategorie gesehen wurden, Historie für diese Kategorie zurücksetzen
+        const poolIds = pool.map(q => q.id);
+        state.seenQuestions = state.seenQuestions.filter(id => !poolIds.includes(id));
+        const needed = Math.min(QUESTIONS_PER_RUN - selected.length, seen.length);
+        selected = [...selected, ...seen.slice(0, needed)];
+      }
+
+      selected.forEach(q => {
+        if (!state.seenQuestions.includes(q.id)) {
+          state.seenQuestions.push(q.id);
+        }
+      });
+      saveState();
+
+      return selected.map(q => prepareQuestionWithShuffledOptions(q));
+    }
+
+    function setLernenMode(mode) {
+      const quizWrap = document.getElementById("lernen-quiz-wrapper");
+      const wsWrap = document.getElementById("lernen-worksheet-wrapper");
+      const btnMod = document.getElementById("btn-mode-modules");
+      const btnWs = document.getElementById("btn-mode-worksheet");
+
+      if (mode === "worksheet") {
+        quizWrap.classList.add("hidden");
+        wsWrap.classList.remove("hidden");
+        btnWs.className = "px-4 py-2.5 rounded-2xl bg-amber-500 text-slate-950 text-xs font-extrabold transition flex items-center space-x-2 shadow-lg shadow-amber-500/20";
+        btnMod.className = "px-4 py-2.5 rounded-2xl glass-pill text-slate-300 hover:text-white text-xs font-bold transition flex items-center space-x-2";
+      } else {
+        wsWrap.classList.add("hidden");
+        quizWrap.classList.remove("hidden");
+        btnMod.className = "px-4 py-2.5 rounded-2xl bg-indigo-600 text-white text-xs font-bold transition flex items-center space-x-2 shadow-lg shadow-indigo-600/20";
+        btnWs.className = "px-4 py-2.5 rounded-2xl glass-pill text-amber-300 hover:bg-amber-500/20 border border-amber-500/30 text-xs font-bold transition flex items-center space-x-2";
+      }
+      setTimeout(() => lucide.createIcons(), 30);
+    }
+
     function setupQuizSession() {
-      activeShuffledQuestions = fisherYatesShuffle(rawQuizPool);
+      activeShuffledQuestions = buildQuizDeck(currentQuizCat);
       state.activeQuizIndex = 0;
       state.quizAnswers = [];
       renderQuizQuestion();
     }
 
     function filterQuizCategory(cat, btn) {
-      document.querySelectorAll(".quiz-cat-pill").forEach(b => {
-        b.className = "quiz-cat-pill glass-pill text-slate-300 hover:text-white px-4 py-2 rounded-full text-xs font-bold transition";
-      });
-      btn.className = "quiz-cat-pill bg-indigo-600 text-white px-4 py-2 rounded-full text-xs font-bold transition";
+      currentQuizCat = cat;
+      setLernenMode("modules");
 
-      if (cat === "all") {
-        activeShuffledQuestions = fisherYatesShuffle(rawQuizPool);
-      } else {
-        const filtered = rawQuizPool.filter(q => q.cat === cat);
-        activeShuffledQuestions = fisherYatesShuffle(filtered.length ? filtered : rawQuizPool);
+      document.querySelectorAll(".quiz-cat-pill").forEach(b => {
+        b.classList.remove("bg-indigo-600/25", "border-indigo-400/50");
+        b.classList.add("glass-pill");
+      });
+      if (btn) {
+        btn.classList.remove("glass-pill");
+        btn.classList.add("bg-indigo-600/25", "border", "border-indigo-400/50");
       }
+
+      activeShuffledQuestions = buildQuizDeck(cat);
       state.activeQuizIndex = 0;
       state.quizAnswers = [];
       document.getElementById("quiz-summary-card").classList.add("hidden");
       document.getElementById("quiz-card").classList.remove("hidden");
       renderQuizQuestion();
+      setTimeout(() => lucide.createIcons(), 30);
+    }
+
+    // ==========================================
+    // AUFGABENBLATT 2 (BUCHUNGSSÄTZE 1 - 5)
+    // ==========================================
+
+    function renderWorksheetRows() {
+      const container = document.getElementById("worksheet-rows-container");
+      if (!container) return;
+      container.innerHTML = "";
+
+      const optionsHtml = WORKSHEET_ACCOUNT_OPTIONS.map(opt => `<option value="${opt}" class="bg-slate-900 text-white">${opt}</option>`).join("");
+
+      WORKSHEET_CASES.forEach((item, idx) => {
+        const row = document.createElement("div");
+        row.id = `ws-row-${idx}`;
+        row.className = "glass-pill p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3 transition";
+        row.innerHTML = `
+          <div class="flex items-center justify-between flex-wrap gap-2 border-b border-white/5 pb-2.5">
+            <div class="flex items-center space-x-2.5">
+              <span class="w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs flex items-center justify-center">${item.nr}</span>
+              <span class="text-xs font-semibold text-white">${item.text}</span>
+            </div>
+            <span class="text-xs font-mono font-bold text-cyan-300 bg-cyan-950/60 px-2.5 py-1 rounded-lg border border-cyan-500/20">${item.amountFormatted} €</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+            <!-- Soll-Konto -->
+            <div class="md:col-span-4 space-y-1">
+              <label class="text-[10px] font-bold text-indigo-300 uppercase tracking-wider">Soll-Konto (links)</label>
+              <select id="ws-soll-acc-${idx}" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                ${optionsHtml}
+              </select>
+            </div>
+
+            <!-- "an" Badge -->
+            <div class="md:col-span-1 flex items-center justify-center pt-4">
+              <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 font-extrabold text-[11px] uppercase">an</span>
+            </div>
+
+            <!-- Haben-Konto -->
+            <div class="md:col-span-4 space-y-1">
+              <label class="text-[10px] font-bold text-amber-300 uppercase tracking-wider">Haben-Konto (rechts)</label>
+              <select id="ws-haben-acc-${idx}" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                ${optionsHtml}
+              </select>
+            </div>
+
+            <!-- Soll € & Haben € -->
+            <div class="md:col-span-3 grid grid-cols-2 gap-2">
+              <div class="space-y-1">
+                <label class="text-[10px] font-bold text-slate-400 uppercase">Soll €</label>
+                <input type="number" id="ws-soll-val-${idx}" placeholder="${item.amount}" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-2 text-xs text-right font-mono text-white focus:outline-none focus:border-indigo-500">
+              </div>
+              <div class="space-y-1">
+                <label class="text-[10px] font-bold text-slate-400 uppercase">Haben €</label>
+                <input type="number" id="ws-haben-val-${idx}" placeholder="${item.amount}" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-2 text-xs text-right font-mono text-white focus:outline-none focus:border-amber-500">
+              </div>
+            </div>
+          </div>
+
+          <div id="ws-hint-${idx}" class="hidden text-[11px] text-slate-300 pt-1"></div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function fillWorksheetDemo() {
+      WORKSHEET_CASES.forEach((item, idx) => {
+        const hintEl = document.getElementById(`ws-hint-${idx}`);
+        if (hintEl) {
+          hintEl.classList.remove("hidden");
+          hintEl.className = "text-[11px] text-cyan-300 pt-1 flex items-center space-x-1.5";
+          hintEl.innerHTML = `<span>💡 <strong>Denkhilfe:</strong> ${item.hint}</span>`;
+        }
+      });
+    }
+
+    function resetWorksheet() {
+      renderWorksheetRows();
+      const fb = document.getElementById("worksheet-feedback");
+      if (fb) fb.classList.add("hidden");
+    }
+
+    function checkAllWorksheetRows() {
+      let correctCount = 0;
+
+      WORKSHEET_CASES.forEach((item, idx) => {
+        const sAcc = document.getElementById(`ws-soll-acc-${idx}`).value;
+        const hAcc = document.getElementById(`ws-haben-acc-${idx}`).value;
+        const sVal = parseInt(document.getElementById(`ws-soll-val-${idx}`).value) || 0;
+        const hVal = parseInt(document.getElementById(`ws-haben-val-${idx}`).value) || 0;
+        const rowEl = document.getElementById(`ws-row-${idx}`);
+        const hintEl = document.getElementById(`ws-hint-${idx}`);
+
+        const isRowCorrect = (
+          sAcc === item.sollAccount &&
+          hAcc === item.habenAccount &&
+          sVal === item.amount &&
+          hVal === item.amount
+        );
+
+        hintEl.classList.remove("hidden");
+        if (isRowCorrect) {
+          correctCount++;
+          rowEl.className = "glass-pill p-4 sm:p-5 rounded-2xl border border-emerald-500/60 bg-emerald-950/20 space-y-3 transition";
+          hintEl.className = "text-[11px] text-emerald-400 font-semibold pt-1";
+          hintEl.textContent = `✓ Richtig: ${item.sollAccount} ${item.amountFormatted} € an ${item.habenAccount} ${item.amountFormatted} €`;
+        } else {
+          rowEl.className = "glass-pill p-4 sm:p-5 rounded-2xl border border-rose-500/60 bg-rose-950/20 space-y-3 transition";
+          hintEl.className = "text-[11px] text-rose-300 pt-1";
+          hintEl.textContent = `✗ Noch nicht ganz: Überprüfe Konten (${item.hint}) und den Betrag (${item.amount} €).`;
+        }
+      });
+
+      const fb = document.getElementById("worksheet-feedback");
+      fb.classList.remove("hidden");
+      if (correctCount === WORKSHEET_CASES.length) {
+        fb.className = "p-5 rounded-2xl border border-emerald-500/50 bg-emerald-950/60 text-emerald-200 text-xs font-bold glow-emerald-pulse";
+        fb.textContent = `Genial, Marlon! Alle 5 Buchungssätze vom Aufgabenblatt 2 sind vollkommen richtig gelöst! (+250 XP)`;
+        awardXP(250);
+      } else {
+        fb.className = "p-5 rounded-2xl border border-amber-500/50 bg-amber-950/50 text-amber-200 text-xs font-semibold";
+        fb.textContent = `Du hast ${correctCount} von ${WORKSHEET_CASES.length} Buchungssätzen komplett richtig. Schau dir die rot markierten Zeilen noch einmal an!`;
+        if (correctCount > 0) awardXP(correctCount * 30);
+      }
     }
 
     function renderQuizQuestion() {
@@ -1206,6 +2779,15 @@
       document.getElementById("tk-label-1").textContent = c.konto1;
       document.getElementById("tk-label-2").textContent = c.konto2;
 
+      tkontoCases.forEach((_, i) => {
+        const pill = document.getElementById("tk-pill-" + i);
+        if (pill) {
+          pill.className = i === index
+            ? "px-3 py-1.5 rounded-full text-xs font-bold bg-amber-500 text-slate-950 transition"
+            : "px-3 py-1.5 rounded-full text-xs font-bold glass-pill text-slate-300 hover:text-white transition";
+        }
+      });
+
       resetTKontoInputs();
     }
 
@@ -1249,7 +2831,7 @@
         fb.className = "p-5 rounded-2xl border bg-rose-950/60 border-rose-500/50 space-y-1.5";
         fbTitle.className = "font-bold text-xs text-rose-400 flex items-center space-x-2";
         fbTitle.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4"></i><span>Soll/Haben noch nicht ausgeglichen</span>`;
-        fbText.textContent = `Überprüfe die Aktiv-/Passivregeln. Erforderlich für Konto 1: SOLL=${c.c1Soll}€ / HABEN=${c.c1Haben}€.`;
+        fbText.textContent = `Überprüfe die Aktiv-/Passivregeln. Erforderlich für Konto 1: SOLL=${c.c1Soll} € / HABEN=${c.c1Haben} €.`;
       }
       setTimeout(() => lucide.createIcons(), 30);
     }
@@ -1379,7 +2961,7 @@
       animate();
     }
 
-    document.addEventListener("DOMContentLoaded", initApp);
+    window.onload = initApp;
   </script>
 </body>
 </html>
