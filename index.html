@@ -42,15 +42,7 @@
   <!-- Application Structure Plan: Bento-Grid V5 Glassy Dashboard with Floating Header Pill Navigation, Interactive Quiz Engine with Fisher-Yates Shuffle, 3-Day T-Konten Intensive Trainer for Marlon, Searchable IKR Account Table, and Glass Achievements Grid. -->
 
   <style>
-    /* Infinite Moving Grid Background (Full-Screen Fixed Layer + Body) */
-    .bg-grid-pattern,
-    .bg-grid-fixed-layer {
-      background-size: 40px 40px;
-      background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-      animation: gridMove 30s linear infinite;
-    }
+    /* Infinite Moving Grid Background (ONLY on Fixed Layer so it never scrolls with page) */
     .bg-grid-fixed-layer {
       position: fixed;
       inset: 0;
@@ -58,6 +50,11 @@
       height: 100vh;
       pointer-events: none;
       z-index: 0;
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      animation: gridMove 30s linear infinite;
     }
     @keyframes gridMove {
       0% { background-position: 0 0; }
@@ -369,23 +366,18 @@
     html.theme-monochrome,
     body.theme-monochrome {
       background-color: #ffffff !important;
+      background-image: none !important;
       color: #0f172a !important;
       min-height: 100vh;
       width: 100%;
     }
 
-    html.theme-monochrome,
-    body.theme-monochrome.bg-grid-pattern,
     body.theme-monochrome .bg-grid-fixed-layer {
       background-color: transparent !important;
       background-size: 40px 40px !important;
       background-image:
         linear-gradient(to right, rgba(15, 23, 42, 0.11) 1.5px, transparent 1.5px),
         linear-gradient(to bottom, rgba(15, 23, 42, 0.11) 1.5px, transparent 1.5px) !important;
-    }
-
-    html.theme-monochrome {
-      background-color: #ffffff !important;
     }
 
     body.theme-monochrome .ambient-orb-1,
@@ -451,9 +443,9 @@
     }
   </style>
 </head>
-<body class="min-h-screen w-full text-slate-100 font-sans antialiased bg-slate-950 bg-grid-pattern relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+<body class="min-h-screen w-full text-slate-100 font-sans antialiased bg-slate-950 relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
 
-  <!-- Full-Screen Fixed Grid Layer (Garantiert 100% Bildschirmabdeckung auf PC & Mobile) -->
+  <!-- Full-Screen Fixed Grid Layer (Einziges Grid, bleibt beim Scrollen fest stehen) -->
   <div class="bg-grid-fixed-layer"></div>
 
   <!-- Ambient Orbs -->
@@ -695,9 +687,9 @@
               <div class="flex justify-between text-slate-300">
                 <span class="flex items-center space-x-1.5">
                   <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
-                  <span>Rechnungswesen-Fragen</span>
+                  <span>Lernfragen (RW &amp; Komm.)</span>
                 </span>
-                <span class="font-bold text-white" id="progress-sub-quiz">0 / 70</span>
+                <span class="font-bold text-white" id="progress-sub-quiz">0 / 120</span>
               </div>
               <div class="flex justify-between text-slate-300">
                 <span class="flex items-center space-x-1.5">
@@ -741,26 +733,181 @@
       </section>
 
       <!-- ========================================== -->
-      <!-- SECTION 2: LERNEN (RECHNUNGSWESEN HUB) -->
+      <!-- SECTION 2: LERNEN (RECHNUNGSWESEN & GESPRÄCHSGESTALTUNG) -->
       <!-- ========================================== -->
       <section id="view-quiz" class="hidden space-y-6 animate-view-enter">
 
-        <!-- Hauptkachel: Rechnungswesen (Initial als einzige Kachel sichtbar) -->
-        <div id="rw-topic-launcher" onclick="toggleRechnungswesenHub()" class="glass-v5 glass-v5-hover rounded-3xl p-6 sm:p-8 cursor-pointer transition-all duration-500 group relative overflow-hidden">
-          <div class="flex items-center justify-between gap-4">
-            <div class="flex items-center space-x-4 sm:space-x-5">
-              <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl icon-box-clean flex items-center justify-center text-indigo-300 shadow-xl">
-                <i data-lucide="graduation-cap" class="w-7 h-7 sm:w-8 sm:h-8 icon-anim"></i>
-              </div>
-              <div class="space-y-1">
-                <div class="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-white/10 text-indigo-200 text-[10px] font-bold uppercase tracking-widest">
-                  <span>Hauptfach</span>
+        <!-- Hauptkacheln-Grid: 1. Rechnungswesen & 2. Gesprächsgestaltung -->
+        <div id="main-topics-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Hauptkachel 1: Rechnungswesen -->
+          <div id="rw-topic-launcher" onclick="toggleRechnungswesenHub()" class="glass-v5 glass-v5-hover rounded-3xl p-6 sm:p-8 cursor-pointer transition-all duration-500 group relative overflow-hidden">
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex items-center space-x-4 sm:space-x-5">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl icon-box-clean flex items-center justify-center text-indigo-300 shadow-xl">
+                  <i data-lucide="graduation-cap" class="w-7 h-7 sm:w-8 sm:h-8 icon-anim"></i>
                 </div>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Rechnungswesen</h2>
-                <p id="rw-launcher-hint" class="text-xs text-slate-400">Tippe hier, um die Themen-Kacheln zu öffnen</p>
+                <div class="space-y-1">
+                  <div class="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-200 text-[10px] font-bold uppercase tracking-widest">
+                    <span>Hauptfach 1</span>
+                  </div>
+                  <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Rechnungswesen</h2>
+                  <p id="rw-launcher-hint" class="text-xs text-slate-400">Tippe hier, um die Themen-Kacheln zu öffnen</p>
+                </div>
               </div>
             </div>
           </div>
+
+          <!-- Hauptkachel 2: Gesprächsgestaltung (NEU) -->
+          <div id="gg-topic-launcher" onclick="toggleGespraechsgestaltungHub()" class="glass-v5 glass-v5-hover rounded-3xl p-6 sm:p-8 cursor-pointer transition-all duration-500 group relative overflow-hidden">
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex items-center space-x-4 sm:space-x-5">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl icon-box-clean flex items-center justify-center text-emerald-300 shadow-xl">
+                  <i data-lucide="messages-square" class="w-7 h-7 sm:w-8 sm:h-8 icon-anim"></i>
+                </div>
+                <div class="space-y-1">
+                  <div class="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-200 text-[10px] font-bold uppercase tracking-widest">
+                    <span>Lernfeld 7</span>
+                  </div>
+                  <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Gesprächsgestaltung</h2>
+                  <p id="gg-launcher-hint" class="text-xs text-slate-400">Grundlagen der Kommunikation &amp; Kommunikationswege</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ausklappbarer Gesprächsgestaltung-Inhalt (2 Unterthemen: Grundlagen der Kommunikation & Kommunikationswege gestalten) -->
+        <div id="gg-expandable-content" class="hidden space-y-6">
+          
+          <!-- Ebene 1: Auswahl der zwei Unterthemen -->
+          <div id="gg-subtopics-panel" class="glass-v5 rounded-3xl p-5 sm:p-6 space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider">Gesprächsgestaltung &bull; Wähle ein Unterthema</span>
+              <span class="text-[11px] text-slate-400">BBS Bernkastel-Kues &bull; Lernfeld 7</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Unterthema 1: Grundlagen der Kommunikation -->
+              <button onclick="openGGSubtopic('grundlagen')" id="gg-subbtn-grundlagen" class="stagger-tile glass-v5 glass-v5-hover p-5 rounded-2xl text-left flex items-center justify-between group border border-emerald-500/30 bg-emerald-500/10">
+                <div class="flex items-center space-x-4">
+                  <div class="p-3.5 rounded-2xl icon-box-clean text-emerald-300">
+                    <i data-lucide="speech" class="w-6 h-6 icon-anim"></i>
+                  </div>
+                  <div>
+                    <div class="text-[10px] font-extrabold text-emerald-300 uppercase tracking-widest">Block 1</div>
+                    <div class="text-base sm:text-lg font-extrabold text-white mt-0.5">Grundlagen der Kommunikation</div>
+                    <div class="text-xs text-slate-300 mt-0.5">Modelle, Fragetechnik, Förderer/Blocker &amp; Mikroexpressionen</div>
+                  </div>
+                </div>
+              </button>
+
+              <!-- Unterthema 2: Kommunikationswege gestalten -->
+              <button onclick="openGGSubtopic('wege')" id="gg-subbtn-wege" class="stagger-tile glass-v5 glass-v5-hover p-5 rounded-2xl text-left flex items-center justify-between group">
+                <div class="flex items-center space-x-4">
+                  <div class="p-3.5 rounded-2xl icon-box-clean text-cyan-300">
+                    <i data-lucide="network" class="w-6 h-6 icon-anim"></i>
+                  </div>
+                  <div>
+                    <div class="text-[10px] font-extrabold text-cyan-300 uppercase tracking-widest">Block 2</div>
+                    <div class="text-base sm:text-lg font-extrabold text-white mt-0.5">Kommunikationswege gestalten</div>
+                    <div class="text-xs text-slate-300 mt-0.5">Kanäle, Medienwahl &amp; zielgerichtete Übermittlung</div>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Ebene 2A: Kacheln für "Grundlagen der Kommunikation" -->
+          <div id="gg-grundlagen-panel" class="hidden glass-v5 rounded-3xl p-5 sm:p-6 space-y-5">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                <span class="text-xs font-bold text-slate-200 uppercase tracking-wider">Grundlagen der Kommunikation</span>
+              </div>
+
+              <div class="flex items-center flex-wrap gap-2">
+                <!-- Tafelbild, Video & Arbeitsblatt-Lösungen -->
+                <button onclick="openKommStudySheet()" class="px-4 py-2 rounded-2xl glass-pill text-emerald-300 hover:bg-emerald-500/20 text-xs font-bold transition flex items-center space-x-2">
+                  <i data-lucide="tv-minimal-play" class="w-4 h-4 text-emerald-400"></i>
+                  <span>Tafelbild, Video &amp; Lösungen</span>
+                </button>
+              </div>
+            </div>
+
+            <div id="gg-grundlagen-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <!-- 1. Kommunikationsmodelle -->
+              <button onclick="filterQuizCategory('komm_modelle', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-emerald-300">
+                  <i data-lucide="share-2" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Kommunikationsmodelle</span>
+              </button>
+
+              <!-- 2. Formen & Messestand -->
+              <button onclick="filterQuizCategory('komm_formen', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-cyan-300">
+                  <i data-lucide="users" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Formen &amp; Messestand</span>
+              </button>
+
+              <!-- 3. Sprech- & Fragetechnik -->
+              <button onclick="filterQuizCategory('komm_fragen', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-amber-300">
+                  <i data-lucide="help-circle" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Sprech- &amp; Fragetechnik</span>
+              </button>
+
+              <!-- 4. Förderer vs. Blocker -->
+              <button onclick="filterQuizCategory('komm_foerderer', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-rose-300">
+                  <i data-lucide="shield-alert" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Förderer vs. Blocker</span>
+              </button>
+
+              <!-- 5. Mikroexpressionen -->
+              <button onclick="filterQuizCategory('komm_mikro', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-purple-300">
+                  <i data-lucide="scan-face" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Mikroexpressionen</span>
+              </button>
+
+              <!-- 6. Alle Grundlagen mischen -->
+              <button onclick="filterQuizCategory('komm_all', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-indigo-300">
+                  <i data-lucide="dices" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Alle Grundlagen</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Ebene 2B: Kacheln für "Kommunikationswege gestalten" -->
+          <div id="gg-wege-panel" class="hidden glass-v5 rounded-3xl p-5 sm:p-6 space-y-5">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+                <span class="text-xs font-bold text-slate-200 uppercase tracking-wider">Kommunikationswege gestalten</span>
+              </div>
+              <span class="text-[11px] text-slate-400">Bereit für deine nächsten Arbeitsblätter</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button onclick="filterQuizCategory('komm_wege', this)" class="quiz-cat-pill stagger-tile p-5 rounded-2xl glass-pill hover:bg-white/10 transition group flex items-center space-x-4 text-left">
+                <div class="p-3 rounded-xl icon-box-clean text-cyan-300">
+                  <i data-lucide="network" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <div>
+                  <div class="font-bold text-sm text-white">Kommunikationswege &amp; Medienwahl</div>
+                  <div class="text-[11px] text-slate-400">Basis-Training starten</div>
+                </div>
+              </button>
+            </div>
+          </div>
+
         </div>
 
         <!-- Ausklappbarer Rechnungswesen-Inhalt (erst nach Klick auf Rechnungswesen sichtbar) -->
@@ -1033,6 +1180,221 @@
             </div>
           </div>
 
+          </div>
+
+          <!-- ========================================== -->
+          <!-- SUB-VIEW C: TAFELBILD, VIDEO & LÖSUNGEN (GRUNDLAGEN DER KOMMUNIKATION) -->
+          <!-- ========================================== -->
+          <div id="lernen-komm-sheet-wrapper" class="hidden space-y-6">
+            
+            <!-- Top Bar inkl. Gelb-Orangenem Zurück-Button -->
+            <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 border border-emerald-500/30">
+              <div class="flex items-center justify-between flex-wrap gap-3 border-b border-white/10 pb-4">
+                <div>
+                  <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 uppercase tracking-widest">
+                    LERNFELD 7 &bull; BLOCK 1 &bull; GRUNDLAGEN DER KOMMUNIKATION
+                  </span>
+                  <h3 class="text-xl sm:text-2xl font-extrabold text-white mt-2">Tafelbild, Lernvideo &amp; Arbeitsblatt-Lösungen</h3>
+                </div>
+                <button onclick="backToModuleOverview()" title="Zurück zur Modul-Übersicht" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                  <i data-lucide="corner-up-left" class="w-4 h-4"></i>
+                </button>
+              </div>
+
+              <!-- 1. YouTube Lernvideo: Das Sender-Empfänger-Modell – einfach erklärt -->
+              <div class="glass-pill p-5 rounded-2xl border border-white/10 space-y-4">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <div class="flex items-center space-x-2.5">
+                    <div class="p-2 rounded-xl bg-rose-500/20 text-rose-400">
+                      <i data-lucide="youtube" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                      <h4 class="text-sm font-bold text-white">Lernvideo: Das Sender-Empfänger-Modell – einfach erklärt</h4>
+                      <p class="text-[11px] text-slate-400">Karrierebibel &bull; Grundlagen von Sender, Empfänger, Kanal, Codierung &amp; Störungen</p>
+                    </div>
+                  </div>
+                  <a href="https://www.youtube.com/watch?v=40-BdW0ZBos" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition flex items-center space-x-1.5">
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    <span>Auf YouTube öffnen</span>
+                  </a>
+                </div>
+                <div class="aspect-video w-full rounded-2xl overflow-hidden border border-white/10 bg-slate-950">
+                  <iframe class="w-full h-full" src="https://www.youtube.com/embed/40-BdW0ZBos" title="Das Sender-Empfänger-Modell – einfach erklärt" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+              </div>
+
+              <!-- 2. Interaktives Tafelbild 1: Kommunikation mit Geschäftspartnern -->
+              <div class="rounded-3xl p-5 sm:p-6 bg-[#133226] border-2 border-amber-400/40 space-y-6 shadow-2xl">
+                <div class="border-b border-amber-400/50 pb-3 text-center">
+                  <h4 class="text-lg sm:text-xl font-black text-amber-300 tracking-wide">Kommunikation mit Geschäftspartnern</h4>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                  <!-- Spalte 1: Einstieg Messestand -->
+                  <div class="rounded-2xl border border-white/30 bg-black/20 p-4 space-y-2.5">
+                    <div class="text-xs font-extrabold text-sky-300 uppercase tracking-wider text-center">Einstieg: Messestand</div>
+                    <ul class="text-xs text-slate-200 space-y-1.5 leading-relaxed">
+                      <li>&bull; <strong class="text-white">Frau Konski wartet</strong> – verärgert: <em>„Hat denn hier niemand Zeit für uns?“</em></li>
+                      <li>&bull; <strong class="text-white">Mitarbeiterin:</strong> gereizt, kein Blickkontakt, halbes Zuwenden: <em>„Mehr als arbeiten kann ich auch nicht.“</em></li>
+                      <li class="text-amber-300 font-bold pt-1">&rarr; sprachlich (verbal) UND körpersprachlich (nonverbal) gestört!</li>
+                    </ul>
+                  </div>
+
+                  <!-- Spalte 2: Sender-Empfänger-Modell -->
+                  <div class="rounded-2xl border border-white/30 bg-black/20 p-4 flex flex-col justify-between items-center text-center space-y-3">
+                    <div class="text-xs font-extrabold text-sky-300 uppercase tracking-wider">Sender-Empfänger-Modell</div>
+                    <div class="flex items-center justify-center space-x-3 w-full py-2">
+                      <div class="px-3.5 py-2.5 rounded-xl border border-white/60 font-bold text-xs text-white bg-white/5">Partner A</div>
+                      <div class="flex flex-col items-center text-amber-300 text-xs font-bold">
+                        <span>&rarr;</span>
+                        <span>&larr;</span>
+                      </div>
+                      <div class="px-3.5 py-2.5 rounded-xl border border-white/60 font-bold text-xs text-white bg-white/5">Partner B</div>
+                    </div>
+                    <div>
+                      <div class="text-xs font-extrabold text-amber-300">senden &#8644; empfangen</div>
+                      <div class="text-[11px] text-slate-300 italic">(verbal + nonverbal)</div>
+                    </div>
+                  </div>
+
+                  <!-- Spalte 3: Vier-Seiten-Modell -->
+                  <div class="rounded-2xl border border-white/30 bg-black/20 p-4 space-y-3">
+                    <div class="text-xs font-extrabold text-sky-300 uppercase tracking-wider text-center">Vier-Seiten-Modell (Schulz v. Thun)</div>
+                    <div class="grid grid-cols-3 gap-2 items-center text-center text-[11px]">
+                      <div></div>
+                      <div class="p-2 rounded-lg border border-white/50 bg-white/5 font-bold text-white">Sachinhalt<div class="text-[9px] text-slate-300 font-normal">Worüber?</div></div>
+                      <div></div>
+                      <div class="p-2 rounded-lg border border-white/50 bg-white/5 font-bold text-white">Selbstoffenb.<div class="text-[9px] text-slate-300 font-normal">Was über sich?</div></div>
+                      <div class="p-2 rounded-lg border-2 border-amber-400 bg-amber-400/15 font-extrabold text-amber-300">Nachricht</div>
+                      <div class="p-2 rounded-lg border border-white/50 bg-white/5 font-bold text-white">Appell<div class="text-[9px] text-slate-300 font-normal">Wozu?</div></div>
+                      <div></div>
+                      <div class="p-2 rounded-lg border border-white/50 bg-white/5 font-bold text-white">Beziehung<div class="text-[9px] text-slate-300 font-normal">Wie zueinander?</div></div>
+                      <div></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Watzlawick Banner -->
+                <div class="rounded-2xl border-2 border-amber-400/80 bg-black/25 p-4 text-center space-y-1">
+                  <div class="text-sm sm:text-base font-black text-amber-300">„Man kann nicht nicht kommunizieren!“</div>
+                  <div class="text-xs text-slate-300 italic">(Paul Watzlawick – auch Schweigen oder Wegsehen sendet eine Botschaft)</div>
+                </div>
+              </div>
+
+              <!-- 3. Interaktives Tafelbild 2: Sprache, Fragen & Gesprächsverhalten -->
+              <div class="rounded-3xl p-5 sm:p-6 bg-[#133226] border-2 border-amber-400/40 space-y-6 shadow-2xl">
+                <div class="border-b border-amber-400/50 pb-3 text-center">
+                  <h4 class="text-lg sm:text-xl font-black text-amber-300 tracking-wide">Sprache, Fragen &amp; Gesprächsverhalten</h4>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                  <!-- Sprechtechnik -->
+                  <div class="rounded-2xl border border-white/30 bg-black/20 p-4 space-y-2.5">
+                    <div class="text-xs font-extrabold text-sky-300 uppercase tracking-wider text-center">Sprechtechnik</div>
+                    <ul class="text-xs text-slate-200 space-y-1.5">
+                      <li>&bull; <strong class="text-white">Betonung:</strong> Wichtige Aussagen betonen (gegen Monotonie)</li>
+                      <li>&bull; <strong class="text-white">Sprechtempo:</strong> Nicht zu schnell sprechen</li>
+                      <li>&bull; <strong class="text-white">Aussprache:</strong> Laute deutlich aussprechen</li>
+                      <li>&bull; <strong class="text-white">Sprechpausen:</strong> Kurz pausieren erhöht Aufmerksamkeit</li>
+                      <li>&bull; <strong class="text-white">Stimmlage:</strong> Weder zu tief noch zu hoch</li>
+                      <li>&bull; <strong class="text-white">Bildhafte Sprache:</strong> Erleichtert das Verstehen</li>
+                      <li>&bull; <strong class="text-white">Satzbau:</strong> Kurze, korrekte Sätze, keine Umgangssprache</li>
+                    </ul>
+                  </div>
+
+                  <!-- Fragetechnik -->
+                  <div class="rounded-2xl border border-white/30 bg-black/20 p-4 space-y-2.5">
+                    <div class="text-xs font-extrabold text-sky-300 uppercase tracking-wider text-center">Fragetechnik</div>
+                    <div class="space-y-2 text-center text-xs">
+                      <div class="p-2.5 rounded-xl border border-white/40 bg-white/5">
+                        <div class="font-bold text-white">Offene Frage (W-Frage)</div>
+                        <div class="text-[11px] text-slate-300 italic">liefert viele Infos („Wie beurteilen Sie...?“)</div>
+                      </div>
+                      <div class="p-2.5 rounded-xl border border-white/40 bg-white/5">
+                        <div class="font-bold text-white">Geschlossene Frage</div>
+                        <div class="text-[11px] text-slate-300 italic">Ja / Nein („Sind Sie zufrieden?“)</div>
+                      </div>
+                      <div class="p-2.5 rounded-xl border border-white/40 bg-white/5">
+                        <div class="font-bold text-white">Rhetorische Frage</div>
+                        <div class="text-[11px] text-slate-300 italic">wird selbst beantwortet</div>
+                      </div>
+                      <div class="p-2.5 rounded-xl border border-white/40 bg-white/5">
+                        <div class="font-bold text-white">Suggestivfrage</div>
+                        <div class="text-[11px] text-slate-300 italic">Antwort vorgegeben („Sie wollen doch sicher...?“)</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Förderer vs. Blocker -->
+                  <div class="rounded-2xl border border-white/30 bg-black/20 p-4 space-y-2.5">
+                    <div class="text-xs font-extrabold text-sky-300 uppercase tracking-wider text-center">Förderer vs. Blocker</div>
+                    <div class="grid grid-cols-2 gap-2.5 text-xs">
+                      <div class="p-3 rounded-xl border border-emerald-400/50 bg-emerald-950/40 space-y-1.5 text-center">
+                        <div class="font-extrabold text-emerald-300">&#10003; Förderer</div>
+                        <div class="text-[11px] text-slate-200">Aktives Zuhören</div>
+                        <div class="text-[11px] text-slate-200">(Nach-)Fragen</div>
+                        <div class="text-[11px] text-slate-200">Ich-Botschaften</div>
+                        <div class="text-[11px] text-slate-200">Offene Körperhaltung &amp; Blickkontakt</div>
+                      </div>
+                      <div class="p-3 rounded-xl border border-rose-400/50 bg-rose-950/40 space-y-1.5 text-center">
+                        <div class="font-extrabold text-rose-300">&#10007; Blocker</div>
+                        <div class="text-[11px] text-slate-200">Belehrung</div>
+                        <div class="text-[11px] text-slate-200">Vielreden (Marathon)</div>
+                        <div class="text-[11px] text-slate-200">Bloßstellen</div>
+                        <div class="text-[11px] text-slate-200">Killerphrasen &amp; Drängeln</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Übersicht: Mikroexpressionen (Die 7 mimischen Einwand-Signale & 3-Schritte-Modell) -->
+              <div class="glass-pill p-5 sm:p-6 rounded-3xl border border-purple-500/30 space-y-4">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <div>
+                    <span class="text-[10px] font-extrabold text-purple-300 uppercase tracking-widest">ARBEITSBLATT MIKROEXPRESSIONEN</span>
+                    <h4 class="text-base font-bold text-white">Die 7 mimischen Signale für unausgesprochene Einwände &amp; Spiegel-Aussage</h4>
+                  </div>
+                  <span class="text-xs font-bold text-purple-300 bg-purple-500/20 px-3 py-1 rounded-full">Dauer: 125–200 ms (0,04–0,06 s)</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                  <div class="p-3 rounded-2xl bg-slate-900/70 border border-white/10">
+                    <div class="font-bold text-purple-300">1. Augenbrauen zusammenziehen</div>
+                    <div class="text-slate-300 mt-1">Irritiert, skeptisch, konzentriert oder leichte Verärgerung.</div>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-900/70 border border-white/10">
+                    <div class="font-bold text-purple-300">2. Augenbrauen hochziehen</div>
+                    <div class="text-slate-300 mt-1">Beim Zuhören: Ungläubigkeit, Skepsis, Zweifel oder Erstaunen.</div>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-900/70 border border-white/10">
+                    <div class="font-bold text-purple-300">3. Oberlippe hochziehen</div>
+                    <div class="text-slate-300 mt-1">Emotion Ekel – dem Gegenüber „schmeckt etwas nicht“ / Zweifel.</div>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-900/70 border border-white/10">
+                    <div class="font-bold text-purple-300">4. Nase rümpfen</div>
+                    <div class="text-slate-300 mt-1">Ekel / Ablehnung – Vorschlag wird in der Umsetzung für schwierig gehalten.</div>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-900/70 border border-white/10">
+                    <div class="font-bold text-purple-300">5. Lippen schürzen</div>
+                    <div class="text-slate-300 mt-1">Nachdenken / Abwägen; beim Zuhören: Nicht einverstanden, andere Idee.</div>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-900/70 border border-white/10">
+                    <div class="font-bold text-purple-300">6. Mundwinkel einpressen</div>
+                    <div class="text-slate-300 mt-1">Einseitig: Verachtung, Zweifel, Unentschlossenheit. Beidseitig: genervt.</div>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-900/70 border border-white/10">
+                    <div class="font-bold text-purple-300">7. „Facial Shrug“</div>
+                    <div class="text-slate-300 mt-1">Beim Zuhören: Ungläubigkeit/Verneinung. Mit Kopfnicken: „Respekt!“.</div>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-emerald-950/50 border border-emerald-500/40">
+                    <div class="font-bold text-emerald-300">3-Schritte-Reaktion</div>
+                    <div class="text-slate-200 mt-1">1. Signal beobachten &rarr; 2. Verbal rückkoppeln (Spiegel-Aussage: <em>„Sie runzeln gerade die Stirn.“</em>) &rarr; 3. Dialog eröffnen.</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
 
         </div>
@@ -2492,6 +2854,787 @@
         correct: 2,
         xp: 50,
         explanation: "Nach § 257 HGB gilt für Handelsbücher, Inventare, Eröffnungsbilanzen und Jahresabschlüsse eine Aufbewahrungsfrist von 10 Jahren."
+      },
+
+      // ==========================================
+      // GESPRÄCHSGESTALTUNG - BLOCK 1: GRUNDLAGEN DER KOMMUNIKATION
+      // ==========================================
+
+      // A) KOMMUNIKATIONSMODELLE (10 Fragen)
+      {
+        id: "km1",
+        cat: "komm_modelle",
+        catTag: "KOMMUNIKATIONSMODELLE",
+        question: "Was bedeutet der berühmte Merksatz „Man kann nicht nicht kommunizieren!“ von Paul Watzlawick?",
+        options: [
+          "Man muss in einem Gespräch ununterbrochen laut reden",
+          "Jedes Verhalten – selbst Schweigen, Wegsehen oder Verschränken der Arme – sendet eine Botschaft an das Gegenüber",
+          "Kommunikation funktioniert nur über E-Mails und Briefe",
+          "Man sollte im Büro niemals Pausen beim Sprechen machen"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Man kann sein Verhalten nicht abstellen: Selbst wer schweigt oder wegschaut (wie im Büro-Beispiel, wenn ein Kunde hereinkommt), signalisiert z. B. „Ich habe keine Zeit“ oder Desinteresse."
+      },
+      {
+        id: "km2",
+        cat: "komm_modelle",
+        catTag: "KOMMUNIKATIONSMODELLE",
+        question: "Welche vier Seiten stecken nach dem Vier-Seiten-Modell von Friedemann Schulz von Thun gleichzeitig in jeder Nachricht?",
+        options: [
+          "Anfangsbestand, Zugang, Abgang und Schlussbestand",
+          "Sachinhalt, Selbstoffenbarung, Appell und Beziehung",
+          "Sender, Empfänger, Kanal und Störung",
+          "Beratung, Beschwerde, Reklamation und Small Talk"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Jede Nachricht enthält vier Botschaften: Sachinhalt (Worüber?), Selbstoffenbarung (Was gebe ich über mich preis?), Appell (Wozu fordere ich auf?) und Beziehung (Wie stehen wir zueinander?)."
+      },
+      {
+        id: "km3",
+        cat: "komm_modelle",
+        catTag: "KOMMUNIKATIONSMODELLE",
+        question: "Eine Kundin sagt am Telefon: „Ich warte jetzt schon seit über einer Woche auf mein bestelltes Paket!“ Was ist hierbei der Sachinhalt?",
+        options: [
+          "Das bestellte Paket ist seit über einer Woche noch nicht angekommen",
+          "Ich bin genervt und ungeduldig",
+          "Liefern Sie das Paket sofort!",
+          "Sie arbeiten unzuverlässig"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Der Sachinhalt beinhaltet die reine Fakten-Information: Das Paket ist seit über einer Woche nicht da."
+      },
+      {
+        id: "km4",
+        cat: "komm_modelle",
+        catTag: "KOMMUNIKATIONSMODELLE",
+        question: "Die Kundin sagt: „Ich warte jetzt schon seit über einer Woche auf mein bestelltes Paket!“ Welche Botschaft steckt auf der Seite der Selbstoffenbarung?",
+        options: [
+          "Das Paket wiegt 5 Kilogramm",
+          "Ich bin genervt, enttäuscht und ungeduldig wegen der langen Wartezeit",
+          "Prüfen Sie sofort den Sendungsstatus!",
+          "Sie haben Ihre Logistik nicht im Griff"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Auf der Selbstoffenbarungs-Seite gibt die Senderin ihre eigenen Gefühle und Befindlichkeiten preis: „Ich bin genervt und ungeduldig.“"
+      },
+      {
+        id: "km5",
+        cat: "komm_modelle",
+        catTag: "KOMMUNIKATIONSMODELLE",
+        question: "Die Kundin sagt: „Ich warte jetzt schon seit über einer Woche auf mein bestelltes Paket!“ Was lautet der Appell dieser Nachricht?",
+        options: [
+          "Kümmern Sie sich darum und liefern Sie mein Paket sofort!",
+          "Ich bestelle gerne im Internet",
+          "Die Woche hat sieben Tage",
+          "Ich bin heute gut gelaunt"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Der Appell sagt aus, wozu der Empfänger aufgefordert wird: „Sorgen Sie dafür, dass das Paket schnellstmöglich geliefert wird!“"
+      },
+      {
+        id: "km6",
+        cat: "komm_modelle",
+        catTag: "KOMMUNIKATIONSMODELLE",
+        question: "Ein Kunde sagt: „Das ist diesen Monat bereits die dritte Reklamation bei Ihren Produkten.“ Was drückt die Beziehungsseite aus?",
+        options: [
+          "Wir hatten genau drei Reklamationen in diesem Monat",
+          "Ich habe Zweifel, ob Sie in der Lage sind, zuverlässig und mangelfrei zu liefern (Vorwurf an die Kompetenz)",
+          "Bitte tauschen Sie die Ware um",
+          "Der Monat ist fast vorbei"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Die Beziehungsseite zeigt, wie der Sender zum Empfänger steht – hier schwingt Zweifel an der Zuverlässigkeit („Sie arbeiten unzuverlässig“) mit."
+      },
+      {
+        id: "km7",
+        cat: "komm_modelle",
+        catTag: "KOMMUNIKATIONSMODELLE",
+        question: "Was beschreibt das Sender-Empfänger-Modell der Kommunikation?",
+        options: [
+          "Nur eine Person spricht dauerhaft, während die andere niemals reagiert",
+          "Gesprächspartner A und B wechseln ständig zwischen Senden und Empfangen – sowohl verbal (Sprache) als auch nonverbal (Körpersprache)",
+          "Nachrichten bestehen ausschließlich aus Zahlen",
+          "Kommunikation findet nur schriftlich statt"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Im Sender-Empfänger-Modell nehmen beide Partner wechselweise beide Rollen ein (Aktion & Reaktion) und übertragen Informationen verbal sowie nonverbal."
+      },
+      {
+        id: "km8",
+        cat: "komm_modelle",
+        catTag: "KOMMUNIKATIONSMODELLE",
+        question: "Wer entwickelte Ende der 1970er-Jahre an der Universität Hamburg das Vier-Seiten-Modell (und welche weiteren Modelle stammen von ihm)?",
+        options: [
+          "Friedemann Schulz von Thun (*1944) – weitere Modelle: „Inneres Team“ und „Wertequadrat“",
+          "Paul Ekman – weiteres Modell: Bilanzgleichung",
+          "Sigmund Freud – weiteres Modell: T-Konto",
+          "Paul Watzlawick – weiteres Modell: Industriekontenrahmen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Der deutsche Psychologe Friedemann Schulz von Thun (*1944) begründete Ende der 1970er an der Uni Hamburg das Vier-Seiten-Modell sowie das „Innere Team“ und das „Wertequadrat“."
+      },
+      {
+        id: "km9",
+        cat: "komm_modelle",
+        catTag: "KOMMUNIKATIONSMODELLE",
+        question: "Wodurch entstehen im Sender-Empfänger-Modell (laut Lernvideo) typischerweise Missverständnisse?",
+        options: [
+          "Wenn Sender und Empfänger eine Nachricht unterschiedlich codieren bzw. decodieren oder Störfaktoren auf dem Übertragungskanal auftreten",
+          "Wenn beide Gesprächspartner aktiv zuhören",
+          "Wenn man kurze, präzise Sätze verwendet",
+          "Wenn Blickkontakt gehalten wird"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Der Sender verschlüsselt (codiert) seinen Gedanken in Worte/Gestik, der Empfänger entschlüsselt (decodiert) ihn vor dem Hintergrund eigener Erfahrungen – dabei oder durch Kanal-Störungen entstehen Missverständnisse."
+      },
+      {
+        id: "km10",
+        cat: "komm_modelle",
+        catTag: "KOMMUNIKATIONSMODELLE",
+        question: "Wie lautet das Verhältnis zwischen Inhaltsebene (Sachebene) und Beziehungsebene nach dem Eisbergmodell?",
+        options: [
+          "Ca. 1/7 Inhaltsebene (sichtbar) zu 6/7 Beziehungsebene (unter der Oberfläche, z. B. Gefühle, Mimik, Tonfall)",
+          "Beide Ebenen sind immer genau 50% zu 50% groß",
+          "99% Sachebene und nur 1% Beziehungsebene",
+          "Es gibt im Berufsleben keine Beziehungsebene"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Wie bei einem Eisberg liegt nur rund 1/7 (die reine Sachinformation) über dem Wasser, während 6/7 (Beziehung, Gefühle, Mimik, Tonfall) unter der Oberfläche wirken."
+      },
+
+      // B) FORMEN DER KOMMUNIKATION & MESSESTAND (8 Fragen)
+      {
+        id: "kf1",
+        cat: "komm_formen",
+        catTag: "FORMEN & MESSESTAND",
+        question: "Einstieg Messestand: Welche Mitteilungen von Frau Konski und der Mitarbeiterin sind körpersprachlich (nonverbal)?",
+        options: [
+          "Der Satz „Hat denn hier niemand Zeit für uns?“",
+          "Frau Konskis verärgerter Gesichtsausdruck sowie das bloß halbe Zuwenden, der gereizte Tonfall und das Wegdrehen der Mitarbeiterin",
+          "Die telefonische Terminvereinbarung vor der Messe",
+          "Der gedruckte Text in den Produktkatalogen"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Körpersprachlich (nonverbal/paraverbal) sind Mimik (verärgerter Gesichtsausdruck), Körperhaltung (halbes Zuwenden, Wegdrehen), fehlender Blickkontakt und der gereizte Tonfall."
+      },
+      {
+        id: "kf2",
+        cat: "komm_formen",
+        catTag: "FORMEN & MESSESTAND",
+        question: "Warum läuft das Gespräch am Messestand zwischen Frau Konski und der Mitarbeiterin aus dem Ruder?",
+        options: [
+          "Weil die Kataloge ausverkauft sind",
+          "Frau Konski fühlt sich trotz Termin missachtet und reagiert mit einem Vorwurf; die Mitarbeiterin fühlt sich gestresst/überfordert und reagiert patzig mit Abwehr und Wegdrehen",
+          "Weil beide zu höflich miteinander sprechen",
+          "Weil zu viele offene Fragen gestellt wurden"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Lange Wartezeit trotz Termin führt bei Frau Konski zu Ärger/Missachtungsgefühl; ihr Vorwurf trifft auf eine gestresste Mitarbeiterin, die mit Abwehr („Mehr als arbeiten kann ich auch nicht“) und Wegdrehen eskaliert."
+      },
+      {
+        id: "kf3",
+        cat: "komm_formen",
+        catTag: "FORMEN & MESSESTAND",
+        question: "Welche Kommunikationsform liegt vor, wenn in einem strukturierten Gespräch eine Seite mehr Fachwissen hat und der anderen eine begründete Entscheidung ermöglicht?",
+        options: [
+          "Beratung",
+          "Small Talk",
+          "Reklamation",
+          "Monolog"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Bei einer Beratung unterstützt die fachkundige Person den Geschäftspartner strukturiert dabei, eine fundierte Kauf- oder Handlungsentscheidung zu treffen."
+      },
+      {
+        id: "kf4",
+        cat: "komm_formen",
+        catTag: "FORMEN & MESSESTAND",
+        question: "Was kennzeichnet „Small Talk“ im Gespräch mit Geschäftspartnern?",
+        options: [
+          "Ein Streitgespräch über Politik und Religion",
+          "Ein lockeres Gespräch ohne Tiefgang zum Beziehungsaufbau (z. B. über Anreise, Wetter, Hobbys – Tabu: Politik & Religion)",
+          "Eine juristische Mahnung wegen Zahlungsverzug",
+          "Eine detaillierte technische Produktschulung"
+        ],
+        correct: 1,
+        xp: 50,
+        explanation: "Small Talk dient als positiver Eisbrecher und zum Beziehungsaufbau mit unverfänglichen Themen wie Wetter, Sport oder Anreise (keine Konfliktthemen wie Politik oder Religion)."
+      },
+      {
+        id: "kf5",
+        cat: "komm_formen",
+        catTag: "FORMEN & MESSESTAND",
+        question: "Worin besteht das Merkmal einer „Beschwerde“ bzw. „Reklamation“?",
+        options: [
+          "Kunden äußern Unzufriedenheit (z. B. über Mängel, Lieferverzug oder Verhalten) – sie muss ernst genommen und professionell, lösungsorientiert bearbeitet werden",
+          "Sie sollte am besten ignoriert werden, bis der Kunde aufgibt",
+          "Der Kunde möchte lediglich über das Wetter plaudern",
+          "Man sollte dem Kunden sofort widersprechen und ihn belehren"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Beschwerden und Reklamationen zeigen Unzufriedenheit an und erfordern stets einen ruhigen, wertschätzenden und lösungsorientierten Umgang."
+      },
+      {
+        id: "kf6",
+        cat: "komm_formen",
+        catTag: "FORMEN & MESSESTAND",
+        question: "Wie hätte die Mitarbeiterin am Messestand professionell und deeskalierend auf Frau Konski reagieren sollen?",
+        options: [
+          "Blickkontakt aufnehmen, sich voll zuwenden, Verständnis für die Wartezeit zeigen und freundlich um einen kurzen Moment bitten oder eine Kollegin holen",
+          "Kommentarlos den Messestand verlassen",
+          "Sagen: „Sehen Sie nicht, wie viel hier los ist?“",
+          "Weiter Kataloge sortieren und gar nicht antworten"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Durch zugewandte Körpersprache, Blickkontakt und eine wertschätzende Ich-Botschaft fühlt sich die Kundin ernst genommen."
+      },
+      {
+        id: "kf7",
+        cat: "komm_formen",
+        catTag: "FORMEN & MESSESTAND",
+        question: "Welche Themen eignen sich besonders gut für den Small Talk vor Beginn eines Kundengesprächs?",
+        options: [
+          "Anfahrt, Veranstaltungsort, angenehmes Wetter oder allgemeines Branchen-Event",
+          "Parteipolitische Streitfragen und religiöse Überzeugungen",
+          "Krankheitsgeschichten und private Geldsorgen",
+          "Kritik an der Kleidung des Gesprächspartners"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Leichte, positive Themen wie die Anreise oder der Rahmen der Veranstaltung schaffen sofort eine angenehme Gesprächsatmosphäre."
+      },
+      {
+        id: "kf8",
+        cat: "komm_formen",
+        catTag: "FORMEN & MESSESTAND",
+        question: "Was bedeutet „verbale“ im Gegensatz zu „nonverbaler“ Kommunikation?",
+        options: [
+          "Verbal = Kommunikation über gesprochene/geschriebene Worte; Nonverbal = Körpersprache wie Mimik, Gestik, Blickkontakt und Körperhaltung",
+          "Verbal = Körpersprache; Nonverbal = E-Mail-Verkehr",
+          "Beide Begriffe bedeuten ausschließlich Telefonieren",
+          "Nonverbal bedeutet, besonders laut zu schreien"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Verbal umfasst das gesprochene Wort (Inhalt), während nonverbal alle körpersprachlichen Signale (Mimik, Gestik, Haltung) beschreibt."
+      },
+
+      // C) SPRECH- & FRAGETECHNIK (10 Fragen)
+      {
+        id: "kfr1",
+        cat: "komm_fragen",
+        catTag: "SPRECH- & FRAGETECHNIK",
+        question: "Um welchen Fragetyp handelt es sich bei: „Wie beurteilen Sie die Lieferzeiten unseres Unternehmens?“",
+        options: [
+          "Offene Frage",
+          "Geschlossene Frage",
+          "Suggestivfrage",
+          "Rhetorische Frage"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Offene Fragen beginnen meist mit einem W-Wort („Wie“, „Welche“, „Was“) und erfordern eine ausführliche Antwort, die viele Informationen liefert."
+      },
+      {
+        id: "kfr2",
+        cat: "komm_fragen",
+        catTag: "SPRECH- & FRAGETECHNIK",
+        question: "Um welchen Fragetyp handelt es sich bei: „Sind Sie mit dem geplanten Liefertermin einverstanden?“",
+        options: [
+          "Geschlossene Frage",
+          "Offene Frage",
+          "Rhetorische Frage",
+          "Suggestivfrage"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Geschlossene Fragen lassen meist nur eine knappe Antwort wie „Ja“ oder „Nein“ zu und eignen sich gut zur klaren Entscheidung oder Bestätigung."
+      },
+      {
+        id: "kfr3",
+        cat: "komm_fragen",
+        catTag: "SPRECH- & FRAGETECHNIK",
+        question: "Welcher Fragetyp liegt vor bei: „Sie möchten doch sicher auch künftig zuverlässig beliefert werden, oder?“",
+        options: [
+          "Suggestivfrage",
+          "Offene Frage",
+          "Geschlossene neutrale Frage",
+          "Rhetorische Frage"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Bei einer Suggestivfrage wird dem Gesprächspartner die gewünschte Antwort („Ja, natürlich“) bereits manipulierend in den Mund gelegt."
+      },
+      {
+        id: "kfr4",
+        cat: "komm_fragen",
+        catTag: "SPRECH- & FRAGETECHNIK",
+        question: "Welcher Fragetyp ist: „Warum ist unser Service so gefragt? Nun, das liegt an unserer schnellen Reaktionszeit ...“?",
+        options: [
+          "Rhetorische Frage",
+          "Offene Informationsfrage",
+          "Geschlossene Entscheidungsfrage",
+          "Gegenfrage"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Eine rhetorische Frage ist ein Stilmittel, auf das keine Antwort vom Gegenüber erwartet wird – die fragende Person beantwortet sie direkt selbst."
+      },
+      {
+        id: "kfr5",
+        cat: "komm_fragen",
+        catTag: "SPRECH- & FRAGETECHNIK",
+        question: "Wie lautet die passende Umformulierung der geschlossenen Frage „Sind Sie mit der Reaktionszeit unseres Kundenservice zufrieden?“ in eine offene Frage?",
+        options: [
+          "Wie zufrieden sind Sie mit der Reaktionszeit unseres Kundenservice?",
+          "Ist die Reaktionszeit gut oder schlecht?",
+          "Sie finden unsere Reaktionszeit doch super, oder?",
+          "Gefällt Ihnen unser Kundenservice?"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Durch das Fragewort „Wie“ (oder „Wie beurteilen Sie...“) wird aus der Ja/Nein-Frage eine offene Frage, die dem Kunden Raum für ehrliches Feedback gibt."
+      },
+      {
+        id: "kfr6",
+        cat: "komm_fragen",
+        catTag: "SPRECH- & FRAGETECHNIK",
+        question: "Wie formuliert man die geschlossene Frage „Haben Sie noch weitere Fragen zu unserem Angebot?“ in eine offene Frage um?",
+        options: [
+          "Welche Fragen haben Sie noch zu unserem Angebot?",
+          "Ist Ihnen alles klar?",
+          "Wollen Sie das Angebot jetzt unterschreiben?",
+          "Sie haben sicher keine Fragen mehr, oder?"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "„Welche Fragen haben Sie noch zum Angebot?“ lädt den Gesprächspartner aktiv ein, offene Punkte anzusprechen."
+      },
+      {
+        id: "kfr7",
+        cat: "komm_fragen",
+        catTag: "SPRECH- & FRAGETECHNIK",
+        question: "Wie wandelt man die geschlossene Frage „Gefällt Ihnen die neue Verpackung?“ in eine offene Frage um?",
+        options: [
+          "Wie finden Sie die neue Verpackung? (bzw. Wie gefällt Ihnen die neue Verpackung?)",
+          "Finden Sie die Verpackung schön?",
+          "Ist die Verpackung nicht großartig gelungen?",
+          "Kaufen Sie die neue Verpackung?"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Mit „Wie finden Sie die neue Verpackung?“ erhält man detaillierte Meinungen statt nur „Ja“ oder „Nein“."
+      },
+      {
+        id: "kfr8",
+        cat: "komm_fragen",
+        catTag: "SPRECH- & FRAGETECHNIK",
+        question: "Warum sind kurze Sprechpausen nach wichtigen Aussagen ein entscheidendes Element guter Sprechtechnik?",
+        options: [
+          "Sie erhöhen die Aufmerksamkeit und geben dem Zuhörer Zeit, das Gesagte aufzunehmen",
+          "Sie zeigen, dass man den Text vergessen hat",
+          "Sie dienen dazu, das Gespräch künstlich in die Länge zu ziehen",
+          "Sprechpausen sollten im Kundengespräch komplett vermieden werden"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Gezielte Sprechpausen nach Kernaussagen lassen das Gesagte wirken und steigern die Aufmerksamkeit des Gesprächspartners."
+      },
+      {
+        id: "kfr9",
+        cat: "komm_fragen",
+        catTag: "SPRECH- & FRAGETECHNIK",
+        question: "Was empfiehlt die professionelle Sprechtechnik hinsichtlich Ausdrucksvermögen und Satzbau?",
+        options: [
+          "Kurze, korrekte Sätze bilden, Fachbegriffe sparsam einsetzen, bildhafte Sprache nutzen und auf Umgangssprache verzichten",
+          "Möglichst viele komplizierte Fremdwörter und Schachtelsätze aneinanderreihen",
+          "Schnell und monoton ohne Punkt und Komma durchsprechen",
+          "Nur im Jugendslang mit Geschäftspartnern sprechen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Kurze, klare Sätze, eine bildhafte Sprache und ein sparsamer Einsatz von Fachbegriffen erleichtern das Verstehen erheblich."
+      },
+      {
+        id: "kfr10",
+        cat: "komm_fragen",
+        catTag: "SPRECH- & FRAGETECHNIK",
+        question: "Welchen Effekt hat eine gezielte Betonung wichtiger Wörter beim Sprechen?",
+        options: [
+          "Sie wirkt Einschläferung und Monotonie entgegen und hebt Kernaussagen hervor",
+          "Sie verärgert jeden Kunden sofort",
+          "Sie ersetzt das Zuhören komplett",
+          "Sie macht Fragen überflüssig"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Durch abwechslungsreiche Betonung und passende Stimmlage bleibt der Zuhörer aufmerksam und erkennt sofort, was wichtig ist."
+      },
+
+      // D) GESPRÄCHSFÖRDERER VS. GESPRÄCHSBLOCKER (8 Fragen)
+      {
+        id: "kfb1",
+        cat: "komm_foerderer",
+        catTag: "FÖRDERER VS. BLOCKER",
+        question: "Ist die Aussage „Das ist doch allgemein bekannt, das hätten Sie wissen müssen!“ ein Gesprächsförderer oder ein Gesprächsblocker?",
+        options: [
+          "Gesprächsblocker – es handelt sich um eine herabsetzende Belehrung/Abwertung",
+          "Gesprächsförderer – sie informiert den Kunden sachlich",
+          "Gesprächsförderer – sie ist ein Beispiel für aktives Zuhören",
+          "Neutraler Small Talk"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Belehrungen stellen den Gesprächspartner als unwissend dar und blockieren sofort das Vertrauensverhältnis."
+      },
+      {
+        id: "kfb2",
+        cat: "komm_foerderer",
+        catTag: "FÖRDERER VS. BLOCKER",
+        question: "Wie ist die Aussage „Verstehe ich Sie richtig, dass Ihnen vor allem die Lieferzeit wichtig ist?“ einzuordnen?",
+        options: [
+          "Gesprächsförderer – Aktives Zuhören und Verständnisprüfung durch Zusammenfassen",
+          "Gesprächsblocker – unzulässiges Drängeln",
+          "Gesprächsblocker – Bloßstellung des Kunden",
+          "Rhetorische Killerphrase"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Das Zusammenfassen und Nachfragen („Verstehe ich Sie richtig...“) ist ein klassisches Merkmal des aktiven Zuhörens und fördert das Gespräch."
+      },
+      {
+        id: "kfb3",
+        cat: "komm_foerderer",
+        catTag: "FÖRDERER VS. BLOCKER",
+        question: "Wie wirkt der Satz „Wenn Sie jetzt nicht bestellen, ist das Angebot morgen weg!“ in einem Beratungsgespräch?",
+        options: [
+          "Als Gesprächsblocker – der Kunde wird unter Druck gesetzt und gedrängelt",
+          "Als Gesprächsförderer – wertschätzende Ich-Botschaft",
+          "Als offene Informationsfrage",
+          "Als einfühlsames aktives Zuhören"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Drängeln und Druck ausüben verhindern einen offenen, vertrauensvollen Austausch und wirken als Gesprächsblocker."
+      },
+      {
+        id: "kfb4",
+        cat: "komm_foerderer",
+        catTag: "FÖRDERER VS. BLOCKER",
+        question: "Warum ist der Satz „Ich freue mich, dass wir eine passende Lösung gefunden haben.“ ein starker Gesprächsförderer?",
+        options: [
+          "Er ist eine wertschätzende Ich-Botschaft und sorgt für einen positiven Beziehungsabschluss",
+          "Er ist eine Suggestivfrage",
+          "Er belehrt den Geschäftspartner",
+          "Er stuft den Kundenwunsch als schwierig ein"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Ich-Botschaften drücken die eigene Sichtweise positiv und respektvoll aus und stärken die Beziehungsebene."
+      },
+      {
+        id: "kfb5",
+        cat: "komm_foerderer",
+        catTag: "FÖRDERER VS. BLOCKER",
+        question: "Wie lautet eine gesprächsfördernde Alternative zum Blocker „Das ist doch allgemein bekannt, das hätten Sie wissen müssen!“?",
+        options: [
+          "„Ich erkläre Ihnen diesen Punkt gerne noch einmal kurz im Detail.“",
+          "„Lesen Sie das bitte selbst im Handbuch nach.“",
+          "„Davon haben Sie leider keine Ahnung.“",
+          "„Das weiß doch jedes Kind!“"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Statt den Partner abzuwerten, bietet man hilfsbereit per Ich-Botschaft („Ich erkläre es Ihnen gerne noch einmal kurz“) Unterstützung an."
+      },
+      {
+        id: "kfb6",
+        cat: "komm_foerderer",
+        catTag: "FÖRDERER VS. BLOCKER",
+        question: "Wie lautet eine professionelle, gesprächsfördernde Alternative zum Blocker „Davon haben Sie doch keine Ahnung.“?",
+        options: [
+          "„Welche Informationen fehlen Ihnen hier noch, damit wir das gemeinsam klären können?“",
+          "„Lassen Sie mich das lieber alleine machen.“",
+          "„Das ist viel zu kompliziert für Sie.“",
+          "„Darüber diskutiere ich nicht.“"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Mit einer offenen, wertschätzenden Frage („Welche Infos fehlen Ihnen hier noch?“) holt man den Gesprächspartner respektvoll ins Boot."
+      },
+      {
+        id: "kfb7",
+        cat: "komm_foerderer",
+        catTag: "FÖRDERER VS. BLOCKER",
+        question: "Was gehört alles zum „Aktiven Zuhören“ als Gesprächsförderer?",
+        options: [
+          "Ausreden lassen, Blickkontakt halten, Zuhörsignale senden (Nicken, „Aha“) und Kernaussagen in eigenen Worten zusammenfassen",
+          "Dem Kunden ständig ins Wort fallen und von sich selbst erzählen (Marathon-Rede)",
+          "Nebenbei auf das Smartphone schauen",
+          "Sofort mit Killerphrasen antworten"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Aktives Zuhören kombiniert körperliche Aufmerksamkeit (Blickkontakt, Nicken), Ausredenlassen und verständnissicherndes Zusammenfassen."
+      },
+      {
+        id: "kfb8",
+        cat: "komm_foerderer",
+        catTag: "FÖRDERER VS. BLOCKER",
+        question: "Warum gelten „Marathon-Reden“ (Vielreden) und „Killerphrasen“ (z. B. „Das haben wir schon immer so gemacht!“) als Gesprächsblocker?",
+        options: [
+          "Vielreden dient nur der Selbstinszenierung und Killerphrasen ersticken jede neue Idee und jeden offenen Dialog sofort im Keim",
+          "Weil sie den Kunden zu sehr zum Reden ermutigen",
+          "Weil sie zu viele offene Fragen enthalten",
+          "Weil sie das aktive Zuhören fördern"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Wer nur selbst redet oder Ideen mit Totschlagargumenten (Killerphrasen) abwürgt, verhindert echte Verständigung."
+      },
+
+      // E) MIKROEXPRESSIONEN (10 Fragen)
+      {
+        id: "kmik1",
+        cat: "komm_mikro",
+        catTag: "MIKROEXPRESSIONEN",
+        question: "Was versteht man in der Kommunikationspsychologie unter dem „Wackel-Dackel-Effekt“?",
+        options: [
+          "Menschen nicken und lächeln beim Zuhören oft reflexartig als „soziales Schmiermittel“ – das bedeutet aber noch lange nicht, dass sie innerlich wirklich zustimmen",
+          "Kunden kaufen immer sofort, sobald sie einmal lächeln",
+          "Verkäufer sollten während des gesamten Gesprächs mit dem Kopf wackeln",
+          "Ein Nicken bedeutet immer 100%ige Zustimmung zum Preis"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Höfliches Nicken und Lächeln erleichtern die soziale Interaktion, werden von Verkäufern aber oft fälschlich als echte Kaufzustimmung missverstanden."
+      },
+      {
+        id: "kmik2",
+        cat: "komm_mikro",
+        catTag: "MIKROEXPRESSIONEN",
+        question: "Wie lange dauern Mikroexpressionen und warum können wir sie kaum bewusst unterdrücken?",
+        options: [
+          "Sie dauern nur ca. 40 bis 200 Millisekunden (0,04–0,2 Sek.), weil die Gesichtsmuskulatur direkt mit dem limbischen System verdrahtet ist, das 500 ms schneller arbeitet als das Großhirn",
+          "Sie dauern 10 bis 15 Minuten und werden vom Großhirn geplant",
+          "Sie dauern genau 4 Sekunden und sind immer absichtlich gespielt",
+          "Sie treten nur im Schlaf auf"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Mimik ist schneller als der Verstand: Das limbische System (Emotionszentrum) verarbeitet Reize 500 ms schneller als unser Großhirn."
+      },
+      {
+        id: "kmik3",
+        cat: "komm_mikro",
+        catTag: "MIKROEXPRESSIONEN",
+        question: "Was bedeutet der Fachbegriff „Inkongruenz“ im Zusammenhang mit Mikroexpressionen?",
+        options: [
+          "Das gesprochene Wort und die unbewusste Mimik widersprechen sich (z. B. Kundin sagt „Ja, klingt gut“, zeigt aber kurz Ärger oder Verachtung im Gesicht)",
+          "Sprache und Körpersprache stimmen vollkommen überein",
+          "Beide Gesprächspartner sprechen dieselbe Sprache",
+          "Der Preis stimmt mit der Rechnung überein"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Inkongruenz bezeichnet die Nicht-Übereinstimmung zwischen verbaler Aussage und nonverbalem Gesichtsausdruck."
+      },
+      {
+        id: "kmik4",
+        cat: "komm_mikro",
+        catTag: "MIKROEXPRESSIONEN",
+        question: "Worauf deutet das „Zusammenziehen der Augenbrauen“ (Signal 1) bzw. das „Einseitige Einpressen des Mundwinkels“ (Signal 6) hin?",
+        options: [
+          "Augenbrauen zusammenziehen = irritiert, skeptisch, konzentriert oder leicht verärgert | Einseitiger Mundwinkel = Verachtung, Nachdenken oder Zweifel",
+          "Beides sind eindeutige Zeichen für große Begeisterung und Vorfreude",
+          "Beides zeigt tiefe Müdigkeit an",
+          "Beides bedeutet sofortige Kaufbereitschaft"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Im Fallbeispiel mit Nicole Höver (Preis der Bürostuhl-Serie) zeigen genau diese beiden Signale, dass die Kundin beim Preis skeptisch/irritiert ist und innerlich zweifelt."
+      },
+      {
+        id: "kmik5",
+        cat: "komm_mikro",
+        catTag: "MIKROEXPRESSIONEN",
+        question: "Welche Emotion steckt hinter dem „Hochziehen der Oberlippe“ (Signal 3) und dem „Rümpfen der Nase“ (Signal 4)?",
+        options: [
+          "Ekel bzw. Ablehnung – dem Gesprächspartner „schmeckt etwas nicht“ oder er hält einen Vorschlag für schwer umsetzbar",
+          "Große Freude und Zustimmung",
+          "Überraschung und Neugier",
+          "Traurigkeit"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Sowohl das Hochziehen der Oberlippe als auch das Nasenrümpfen entstammen der Basisemotion Ekel und signalisieren Ablehnung oder Zweifel."
+      },
+      {
+        id: "kmik6",
+        cat: "komm_mikro",
+        catTag: "MIKROEXPRESSIONEN",
+        question: "Wie unterscheidet man Makro-, Mikro- und maskierte Expressionen?",
+        options: [
+          "Makro = normale Mimik (0,5–4 Sek., stimmig zum Gesagten) | Mikro = extrem kurz (0,04–0,2 Sek., verborgene Emotion) | Maskiert = falscher Ausdruck (z. B. Lächeln) überdeckt Makro-Ausdruck",
+          "Makro ist unsichtbar, Mikro dauert 10 Sekunden",
+          "Alle drei dauern gleich lang",
+          "Maskiert bedeutet, dass man eine Schutzmaske trägt"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Makro-Ausdrücke dauern 0,5 bis 4 Sekunden, Mikroexpressionen nur den Bruchteil einer Sekunde, und maskierte Ausdrücke überdecken bewusst ein anderes Gefühl."
+      },
+      {
+        id: "kmik7",
+        cat: "komm_mikro",
+        catTag: "MIKROEXPRESSIONEN",
+        question: "Was ist beim Formulieren einer „Spiegel-Aussage“ (Schritt 2: Verbal rückkoppeln) unbedingt zu beachten?",
+        options: [
+          "Eine Spiegel-Aussage ist eine feststellende Aussage und KEINE Frage (z. B. „Sie runzeln gerade die Stirn.“ statt „Runzeln Sie gerade die Stirn?“)",
+          "Man muss den Kunden streng fragen: „Warum ziehen Sie so ein Gesicht?“",
+          "Man darf das Signal niemals ansprechen",
+          "Man sollte dem Kunden sofort einen Rabatt aufzwingen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Spiegel-Aussagen beschreiben wertfrei die Beobachtung als Aussage („Sie runzeln gerade die Stirn.“), wodurch ein konstruktiver Dialog über den Einwand entsteht."
+      },
+      {
+        id: "kmik8",
+        cat: "komm_mikro",
+        catTag: "MIKROEXPRESSIONEN",
+        question: "Fallbeispiel Bürostuhl-Serie: Als Nicole Höver den Preis nennt, zieht die Kundin kurz die Augenbrauen zusammen, presst einen Mundwinkel ein und sagt dann: „Ja, das klingt gut.“ Wie reagiert Nicole ideal?",
+        options: [
+          "Mit einer Spiegel-Aussage oder wertschätzenden Nachfrage, z. B.: „Ich hatte gerade den Eindruck, dass Sie beim Preis kurz gezögert haben. Wie schätzen Sie das Preis-Leistungs-Verhältnis ein?“",
+          "Sie sagt: „Super, dann unterschreiben Sie bitte sofort hier!“",
+          "Sie wirft der Kundin vor, unehrlich zu sein",
+          "Sie bricht das Beratungsgespräch kommentarlos ab"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Durch das behutsame Spiegeln oder eine offene, wertschätzende Nachfrage wird der unausgesprochene Preiseinwand besprechbar gemacht."
+      },
+      {
+        id: "kmik9",
+        cat: "komm_mikro",
+        catTag: "MIKROEXPRESSIONEN",
+        question: "Welche sieben kulturübergreifenden Basisemotionen unterschied der Psychologe Paul Ekman bei der Erforschung von Mikroexpressionen?",
+        options: [
+          "Zorn (Ärger), Angst, Traurigkeit, Ekel, Verachtung, Überraschung und Freude",
+          "Hunger, Durst, Müdigkeit, Stolz, Neid, Geiz und Geduld",
+          "Soll, Haben, Gewinn, Verlust, Bilanz, Inventur und Steuer",
+          "Nur Freude und Wut"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Paul Ekman und Wallace Friesen wiesen nach, dass Zorn, Angst, Traurigkeit, Ekel, Verachtung, Überraschung und Freude weltweit gleich im Gesicht ausgedrückt werden."
+      },
+      {
+        id: "kmik10",
+        cat: "komm_mikro",
+        catTag: "MIKROEXPRESSIONEN",
+        question: "Was zeigt die Grenze der Mimikdeutung (nach Paul Ekman) auf?",
+        options: [
+          "Man erkennt zwar eine verborgene Emotion, sieht dem Gesicht aber nicht an, WARUM die Person das Gefühl hat (oder ob es unbewusste Verdrängung vs. absichtliche Unterdrückung ist)",
+          "Man kann an einer Mikroexpression exakt die Gedanken und Kontonummern einer Person ablesen",
+          "Jedes Stirnrunzeln beweist zu 100% eine Lüge",
+          "Mimik hat keinerlei Bedeutung in Gesprächen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Wichtig: Eine Mikroexpression zeigt nur, DASS eine Emotion bzw. ein Einwand vorliegt, aber nicht die genaue Ursache – deshalb muss man immer wertschätzend nachfragen!"
+      },
+
+      // F) BLOCK 2: KOMMUNIKATIONSWEGE GESTALTEN (Starter-Pool, 5 Fragen)
+      {
+        id: "kw1",
+        cat: "komm_wege",
+        catTag: "KOMMUNIKATIONSWEGE",
+        question: "Welcher Kommunikationsweg eignet sich im Büroalltag am besten, wenn ein komplexer Sachverhalt rechtssicher und nachweisbar dokumentiert werden muss?",
+        options: [
+          "Schriftliche Kommunikation (z. B. Geschäftsbrief oder E-Mail mit Auftragsbestätigung/Protokoll)",
+          "Kurzer Zuruf auf dem Flur",
+          "Sprachnachricht ohne Text",
+          "Reines Kopfnicken im Vorbeigehen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Schriftliche Kommunikationswege sichern die Nachweisbarkeit und Dokumentation wichtiger Vereinbarungen."
+      },
+      {
+        id: "kw2",
+        cat: "komm_wege",
+        catTag: "KOMMUNIKATIONSWEGE",
+        question: "Welcher Kommunikationskanal ist besonders sinnvoll, wenn ein dringendes Problem oder ein emotionaler Konflikt sofort persönlich geklärt werden soll?",
+        options: [
+          "Das persönliche Gespräch (Face-to-Face) oder ein direktes Telefonat/Videogespräch (synchrone Kommunikation)",
+          "Ein Brief per Post mit 4 Tagen Laufzeit",
+          "Ein Aushang am schwarzen Brett",
+          "Eine unpersönliche Serien-E-Mail"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Synchrone, direkte Kanäle (persönliches Gespräch, Videocall, Telefon) ermöglichen unmittelbares Feedback, Tonfall und Rückfragen."
+      },
+      {
+        id: "kw3",
+        cat: "komm_wege",
+        catTag: "KOMMUNIKATIONSWEGE",
+        question: "Was bedeutet der Unterschied zwischen „synchroner“ und „asynchroner“ Kommunikation?",
+        options: [
+          "Synchron = zeitgleich (z. B. Telefonat, persönliches Gespräch) | Asynchron = zeitversetzt (z. B. E-Mail, Geschäftsbrief)",
+          "Synchron = nur schriftlich | Asynchron = nur mündlich",
+          "Synchron bedeutet ohne Computer",
+          "Beide Begriffe bedeuten dasselbe"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Bei synchroner Kommunikation tauschen sich Sender und Empfänger gleichzeitig aus; bei asynchroner Kommunikation erfolgt die Antwort zeitversetzt."
+      },
+      {
+        id: "kw4",
+        cat: "komm_wege",
+        catTag: "KOMMUNIKATIONSWEGE",
+        question: "Warum fehlt bei einer reinen Text-E-Mail ein großer Teil der gewohnten Kommunikationssignale?",
+        options: [
+          "Weil nonverbale (Mimik, Gestik, Blickkontakt) und paraverbale Signale (Tonfall, Stimmlage) wegfallen, wodurch schneller Missverständnisse entstehen können",
+          "Weil E-Mails keine Buchstaben übertragen können",
+          "Weil E-Mails keinen Sachinhalt haben",
+          "Weil man in E-Mails keine Fragen stellen kann"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Ohne Tonfall und Mimik wirken kurze Textnachrichten oft kühler oder strenger als gemeint – daher ist eine präzise und höfliche Formulierung wichtig."
+      },
+      {
+        id: "kw5",
+        cat: "komm_wege",
+        catTag: "KOMMUNIKATIONSWEGE",
+        question: "Worauf sollte man bei einem professionellen Telefongespräch mit Geschäftspartnern besonders achten?",
+        options: [
+          "Freundliche Meldung mit Unternehmens- und eigenem Namen, deutliche Aussprache, Lächeln am Telefon (hörbar in der Stimme!) und Notizen machen",
+          "Nur mit „Ja, hallo?“ abheben und nebenbei weiter tippen",
+          "Den Anrufer ohne Rückfrage sofort weiterverbinden",
+          "Möglichst schnell und leise sprechen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Am Telefon ersetzt die Stimme (Tonfall, Tempo, Freundlichkeit) die fehlende Sichtbarkeit – ein Lächeln überträgt sich hörbar auf den Stimmklang."
       }
     ];
 
@@ -3375,6 +4518,96 @@
         title: "Doppik (Doppelte Buchführung)",
         desc: "Jeder Geschäftsfall wird doppelt erfasst: Zuerst zeitlich im Grundbuch (Buchungssatz) und sachlich im Hauptbuch (T-Konten) auf mindestens zwei Konten (Soll = Haben).",
         example: "Eiserne Grundregel: Keine Buchung ohne Gegenbuchung!"
+      },
+      "Vier-Seiten-Modell": {
+        tag: "KOMMUNIKATIONSMODELL",
+        title: "Vier-Seiten-Modell (Schulz von Thun)",
+        desc: "Jede Nachricht enthält vier Botschaften gleichzeitig: 1. Sachinhalt (Worüber?), 2. Selbstoffenbarung (Was gebe ich über mich preis?), 3. Appell (Wozu fordere ich auf?) und 4. Beziehung (Wie stehen wir zueinander?).",
+        example: "Entwickelt Ende der 1970er von Friedemann Schulz von Thun an der Universität Hamburg."
+      },
+      "Sender-Empfänger-Modell": {
+        tag: "KOMMUNIKATIONSMODELL",
+        title: "Sender-Empfänger-Modell",
+        desc: "Beschreibt Kommunikation als wechselseitigen Prozess zwischen Partner A und Partner B: Informationen werden codiert, über einen Kanal gesendet (verbal & nonverbal) und vom Empfänger decodiert.",
+        example: "Auf jede Aktion folgt eine Reaktion – beide Gesprächspartner wechseln ständig zwischen Senden und Empfangen."
+      },
+      "Sachinhalt": {
+        tag: "VIER-SEITEN-MODELL",
+        title: "Sachinhalt (Sachebene)",
+        desc: "Die reine Fakten- und Dateninformation einer Nachricht: Worüber wird sachlich informiert?",
+        example: "Beispiel Paket-Anruf: „Das bestellte Paket ist seit über einer Woche noch nicht angekommen.“"
+      },
+      "Selbstoffenbarung": {
+        tag: "VIER-SEITEN-MODELL",
+        title: "Selbstoffenbarung",
+        desc: "Das, was die sprechende Person (bewusst oder unbewusst) über ihre eigenen Gefühle, Werte oder Befindlichkeiten preisgibt.",
+        example: "Beispiel Paket-Anruf: „Ich bin genervt, enttäuscht und ungeduldig.“"
+      },
+      "Appell": {
+        tag: "VIER-SEITEN-MODELL",
+        title: "Appell",
+        desc: "Die Aufforderung oder der Wunsch, was der Gesprächspartner tun, denken oder unterlassen soll.",
+        example: "Beispiel Paket-Anruf: „Prüfen Sie den Versand und liefern Sie mein Paket sofort!“"
+      },
+      "Mikroexpressionen": {
+        tag: "MIMIK & KÖRPERSPRACHE",
+        title: "Mikroexpressionen",
+        desc: "Sehr flüchtige, unwillkürliche Gesichtsausdrücke (40 bis 200 Millisekunden), die auftreten, wenn ein Gefühl unbewusst verdrängt oder absichtlich unterdrückt wird.",
+        example: "Da die Gesichtsmuskulatur direkt mit dem limbischen System verbunden ist (500 ms schneller als das Großhirn), verraten sie unausgesprochene Einwände."
+      },
+      "Inkongruenz": {
+        tag: "KOMMUNIKATIONSPSYCHOLOGIE",
+        title: "Inkongruenz",
+        desc: "Widerspruch zwischen dem gesprochenen Inhalt (verbal) und der Mimik/Körpersprache (nonverbal).",
+        example: "Beispiel: Eine Kundin sagt freundlich „Ja, der Preis klingt gut“, zieht aber gleichzeitig skeptisch die Augenbrauen zusammen."
+      },
+      "Spiegel-Aussage": {
+        tag: "GESPRÄCHSTECHNIK",
+        title: "Spiegel-Aussage",
+        desc: "Eine wertfreie, feststellende Rückmeldung einer beobachteten Mimik, um unausgesprochene Einwände behutsam anzusprechen.",
+        example: "WICHTIG: Immer als Aussage und nicht als Frage formulieren! Richtig: „Sie runzeln gerade die Stirn.“ (Falsch: „Runzeln Sie gerade die Stirn?“)"
+      },
+      "Suggestivfrage": {
+        tag: "FRAGETECHNIK",
+        title: "Suggestivfrage",
+        desc: "Eine manipulierende Frageform, bei der die erwünschte Antwort bereits vorgegeben und dem Gegenüber in den Mund gelegt wird.",
+        example: "Beispiel: „Sie möchten doch sicher auch künftig zuverlässig beliefert werden, oder?“"
+      },
+      "Rhetorische Frage": {
+        tag: "FRAGETECHNIK",
+        title: "Rhetorische Frage",
+        desc: "Eine Scheinfrage, auf die keine Antwort erwartet wird, sondern die von der fragenden Person direkt selbst beantwortet wird.",
+        example: "Beispiel: „Warum ist unser Service so gefragt? Nun, das liegt an unserer schnellen Reaktionszeit ...“"
+      },
+      "Offene Frage": {
+        tag: "FRAGETECHNIK",
+        title: "Offene Frage (W-Frage)",
+        desc: "Frage, die mit W-Wörtern (Wie, Was, Welche, Wieso) beginnt und eine ausführliche Antwort mit vielen Informationen ermöglicht.",
+        example: "Beispiel: „Wie beurteilen Sie die Lieferzeiten unseres Unternehmens?“"
+      },
+      "Geschlossene Frage": {
+        tag: "FRAGETECHNIK",
+        title: "Geschlossene Frage",
+        desc: "Frage, die den Antwortspielraum stark einschränkt und meist nur mit „Ja“ oder „Nein“ beantwortet wird.",
+        example: "Beispiel: „Sind Sie mit dem geplanten Liefertermin einverstanden?“"
+      },
+      "Aktives Zuhören": {
+        tag: "GESPRÄCHSFÖRDERER",
+        title: "Aktives Zuhören",
+        desc: "Aufmerksames, zugewandtes Zuhören durch Ausredenlassen, Blickkontakt, kurze Zuhörsignale (Nicken, „Aha“) und Zusammenfassen des Gesagten.",
+        example: "Beispiel: „Verstehe ich Sie richtig, dass Ihnen vor allem die Lieferzeit wichtig ist?“"
+      },
+      "Ich-Botschaften": {
+        tag: "GESPRÄCHSFÖRDERER",
+        title: "Ich-Botschaften",
+        desc: "Respektvolle Ausdrucksweise der eigenen Sicht oder Gefühle ohne Vorwurf („Ich...“ statt „Sie immer...“).",
+        example: "Beispiel: „Ich freue mich, dass wir eine passende Lösung gefunden haben.“"
+      },
+      "Killerphrasen": {
+        tag: "GESPRÄCHSBLOCKER",
+        title: "Killerphrasen",
+        desc: "Totschlagargumente und abwertende Floskeln, die jedes offene Gespräch und neue Ideen sofort blockieren.",
+        example: "Beispiel: „Davon haben Sie doch keine Ahnung!“ oder „Das ist doch allgemein bekannt!“"
       }
     };
 
@@ -3441,23 +4674,34 @@
     }
 
     let isRechnungswesenOpen = false;
+    let isGespraechsgestaltungOpen = false;
+    let activeLernenSubject = null; // 'rw' | 'gg'
+    let activeGGSubtopic = "grundlagen"; // 'grundlagen' | 'wege'
 
     function toggleRechnungswesenHub(forceOpen) {
-      const content = document.getElementById("rw-expandable-content");
+      const rwContent = document.getElementById("rw-expandable-content");
+      const ggContent = document.getElementById("gg-expandable-content");
       const selectionPanel = document.getElementById("rw-selection-panel");
       const quizWrap = document.getElementById("lernen-quiz-wrapper");
       const wsWrap = document.getElementById("lernen-worksheet-wrapper");
-      const chevron = document.getElementById("rw-chevron-icon");
+      const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
       const hint = document.getElementById("rw-launcher-hint");
-      if (!content) return;
+      const ggHint = document.getElementById("gg-launcher-hint");
+      if (!rwContent) return;
 
       isRechnungswesenOpen = typeof forceOpen === "boolean" ? forceOpen : !isRechnungswesenOpen;
 
       if (isRechnungswesenOpen) {
-        content.classList.remove("hidden");
+        activeLernenSubject = "rw";
+        isGespraechsgestaltungOpen = false;
+        if (ggContent) ggContent.classList.add("hidden");
+        if (ggHint) ggHint.textContent = "Grundlagen der Kommunikation & Kommunikationswege";
+
+        rwContent.classList.remove("hidden");
         if (selectionPanel) selectionPanel.classList.remove("hidden");
         if (quizWrap) quizWrap.classList.add("hidden");
         if (wsWrap) wsWrap.classList.add("hidden");
+        if (kommSheetWrap) kommSheetWrap.classList.add("hidden");
         isTaskOpenInLernen = false;
 
         // Stagger-Animation für alle Kacheln neu triggern
@@ -3466,15 +4710,105 @@
           void tile.offsetWidth;
           tile.style.animation = `tilePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 55}ms forwards`;
         });
-        if (chevron) chevron.style.transform = "rotate(180deg)";
         if (hint) hint.textContent = "Themen-Kacheln geöffnet • Tippe zum Einklappen";
       } else {
-        content.classList.add("hidden");
+        rwContent.classList.add("hidden");
         isTaskOpenInLernen = false;
-        if (chevron) chevron.style.transform = "rotate(0deg)";
         if (hint) hint.textContent = "Tippe hier, um die Themen-Kacheln zu öffnen";
       }
       updateStudyTimeKPIOnly();
+      refreshIcons();
+    }
+
+    function toggleGespraechsgestaltungHub(forceOpen) {
+      const ggContent = document.getElementById("gg-expandable-content");
+      const rwContent = document.getElementById("rw-expandable-content");
+      const quizWrap = document.getElementById("lernen-quiz-wrapper");
+      const wsWrap = document.getElementById("lernen-worksheet-wrapper");
+      const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
+      const ggHint = document.getElementById("gg-launcher-hint");
+      const rwHint = document.getElementById("rw-launcher-hint");
+      if (!ggContent) return;
+
+      isGespraechsgestaltungOpen = typeof forceOpen === "boolean" ? forceOpen : !isGespraechsgestaltungOpen;
+
+      if (isGespraechsgestaltungOpen) {
+        activeLernenSubject = "gg";
+        isRechnungswesenOpen = false;
+        if (rwContent) rwContent.classList.add("hidden");
+        if (rwHint) rwHint.textContent = "Tippe hier, um die Themen-Kacheln zu öffnen";
+
+        ggContent.classList.remove("hidden");
+        if (quizWrap) quizWrap.classList.add("hidden");
+        if (wsWrap) wsWrap.classList.add("hidden");
+        if (kommSheetWrap) kommSheetWrap.classList.add("hidden");
+        isTaskOpenInLernen = false;
+
+        openGGSubtopic(activeGGSubtopic || "grundlagen");
+        if (ggHint) ggHint.textContent = "Unterthemen geöffnet • Tippe zum Einklappen";
+      } else {
+        ggContent.classList.add("hidden");
+        isTaskOpenInLernen = false;
+        if (ggHint) ggHint.textContent = "Grundlagen der Kommunikation & Kommunikationswege";
+      }
+      updateStudyTimeKPIOnly();
+      refreshIcons();
+    }
+
+    function openGGSubtopic(subtopic) {
+      activeGGSubtopic = subtopic;
+      const grundlagenPanel = document.getElementById("gg-grundlagen-panel");
+      const wegePanel = document.getElementById("gg-wege-panel");
+      const btnGrundlagen = document.getElementById("gg-subbtn-grundlagen");
+      const btnWege = document.getElementById("gg-subbtn-wege");
+
+      if (subtopic === "wege") {
+        if (grundlagenPanel) grundlagenPanel.classList.add("hidden");
+        if (wegePanel) wegePanel.classList.remove("hidden");
+        if (btnWege) {
+          btnWege.classList.add("border", "border-cyan-500/40", "bg-cyan-500/10");
+        }
+        if (btnGrundlagen) {
+          btnGrundlagen.classList.remove("border-emerald-500/30", "bg-emerald-500/10");
+        }
+      } else {
+        if (wegePanel) wegePanel.classList.add("hidden");
+        if (grundlagenPanel) grundlagenPanel.classList.remove("hidden");
+        if (btnGrundlagen) {
+          btnGrundlagen.classList.add("border", "border-emerald-500/30", "bg-emerald-500/10");
+        }
+        if (btnWege) {
+          btnWege.classList.remove("border-cyan-500/40", "bg-cyan-500/10");
+        }
+        document.querySelectorAll("#gg-grundlagen-grid .stagger-tile").forEach((tile, i) => {
+          tile.style.animation = "none";
+          void tile.offsetWidth;
+          tile.style.animation = `tilePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 55}ms forwards`;
+        });
+      }
+      refreshIcons();
+    }
+
+    function openKommStudySheet() {
+      const mainGrid = document.getElementById("main-topics-grid");
+      const ggContent = document.getElementById("gg-expandable-content");
+      const rwContent = document.getElementById("rw-expandable-content");
+      const selectionPanel = document.getElementById("rw-selection-panel");
+      const quizWrap = document.getElementById("lernen-quiz-wrapper");
+      const wsWrap = document.getElementById("lernen-worksheet-wrapper");
+      const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
+
+      activeLernenSubject = "gg";
+      if (mainGrid) mainGrid.classList.add("hidden");
+      if (ggContent) ggContent.classList.add("hidden");
+      if (rwContent) rwContent.classList.remove("hidden");
+      if (selectionPanel) selectionPanel.classList.add("hidden");
+      if (quizWrap) quizWrap.classList.add("hidden");
+      if (wsWrap) wsWrap.classList.add("hidden");
+      if (kommSheetWrap) kommSheetWrap.classList.remove("hidden");
+
+      isTaskOpenInLernen = true;
+      resetQuestionTimer();
       refreshIcons();
     }
 
@@ -3484,40 +4818,58 @@
         clearTimeout(autoAdvanceTimeout);
         autoAdvanceTimeout = null;
       }
-      const launcher = document.getElementById("rw-topic-launcher");
-      const content = document.getElementById("rw-expandable-content");
+      const mainGrid = document.getElementById("main-topics-grid");
+      const rwContent = document.getElementById("rw-expandable-content");
+      const ggContent = document.getElementById("gg-expandable-content");
       const selectionPanel = document.getElementById("rw-selection-panel");
       const quizWrap = document.getElementById("lernen-quiz-wrapper");
       const wsWrap = document.getElementById("lernen-worksheet-wrapper");
+      const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
 
-      isRechnungswesenOpen = true;
       isTaskOpenInLernen = false;
-
-      if (launcher) launcher.classList.remove("hidden");
-      if (content) content.classList.remove("hidden");
-      if (selectionPanel) selectionPanel.classList.remove("hidden");
+      if (mainGrid) mainGrid.classList.remove("hidden");
       if (quizWrap) quizWrap.classList.add("hidden");
       if (wsWrap) wsWrap.classList.add("hidden");
+      if (kommSheetWrap) kommSheetWrap.classList.add("hidden");
 
-      document.querySelectorAll("#rw-modules-grid .stagger-tile").forEach((tile, i) => {
-        tile.style.animation = "none";
-        void tile.offsetWidth;
-        tile.style.animation = `tilePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 55}ms forwards`;
-      });
+      if (activeLernenSubject === "gg") {
+        isGespraechsgestaltungOpen = true;
+        isRechnungswesenOpen = false;
+        if (rwContent) rwContent.classList.add("hidden");
+        if (ggContent) ggContent.classList.remove("hidden");
+        openGGSubtopic(activeGGSubtopic || "grundlagen");
+      } else {
+        isRechnungswesenOpen = true;
+        isGespraechsgestaltungOpen = false;
+        if (ggContent) ggContent.classList.add("hidden");
+        if (rwContent) rwContent.classList.remove("hidden");
+        if (selectionPanel) selectionPanel.classList.remove("hidden");
+
+        document.querySelectorAll("#rw-modules-grid .stagger-tile").forEach((tile, i) => {
+          tile.style.animation = "none";
+          void tile.offsetWidth;
+          tile.style.animation = `tilePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 55}ms forwards`;
+        });
+      }
 
       updateStudyTimeKPIOnly();
       refreshIcons();
     }
 
     function openWorksheetFromOverview() {
-      const launcher = document.getElementById("rw-topic-launcher");
+      const mainGrid = document.getElementById("main-topics-grid");
+      const ggContent = document.getElementById("gg-expandable-content");
       const selectionPanel = document.getElementById("rw-selection-panel");
       const quizWrap = document.getElementById("lernen-quiz-wrapper");
       const wsWrap = document.getElementById("lernen-worksheet-wrapper");
+      const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
 
-      if (launcher) launcher.classList.add("hidden");
+      activeLernenSubject = "rw";
+      if (mainGrid) mainGrid.classList.add("hidden");
+      if (ggContent) ggContent.classList.add("hidden");
       if (selectionPanel) selectionPanel.classList.add("hidden");
       if (quizWrap) quizWrap.classList.add("hidden");
+      if (kommSheetWrap) kommSheetWrap.classList.add("hidden");
       if (wsWrap) wsWrap.classList.remove("hidden");
 
       isTaskOpenInLernen = true;
@@ -4151,9 +5503,17 @@
     // Zieht 5 noch ungesehene Fragen aus dem gewählten Modul-Pool.
     // Beim Wiederholen eines Moduls kommen dadurch sofort neue Fragen!
     function buildQuizDeck(cat) {
-      const pool = cat === "all"
-        ? [...rawQuizPool]
-        : rawQuizPool.filter(q => q.cat === cat);
+      const rwCats = ["aktiv_passiv", "soll_haben", "bilanz", "buchung", "tkonten_quiz", "bilanzveraenderung", "abschluss"];
+      const kommGrundlagenCats = ["komm_modelle", "komm_formen", "komm_fragen", "komm_foerderer", "komm_mikro"];
+
+      let pool = [];
+      if (cat === "all") {
+        pool = rawQuizPool.filter(q => rwCats.includes(q.cat));
+      } else if (cat === "komm_all") {
+        pool = rawQuizPool.filter(q => kommGrundlagenCats.includes(q.cat));
+      } else {
+        pool = rawQuizPool.filter(q => q.cat === cat);
+      }
 
       if (!Array.isArray(state.seenQuestions)) {
         state.seenQuestions = [];
@@ -4185,13 +5545,20 @@
     }
 
     function setLernenMode(mode) {
-      const launcher = document.getElementById("rw-topic-launcher");
+      const mainGrid = document.getElementById("main-topics-grid");
+      const rwContent = document.getElementById("rw-expandable-content");
+      const ggContent = document.getElementById("gg-expandable-content");
       const selectionPanel = document.getElementById("rw-selection-panel");
       const quizWrap = document.getElementById("lernen-quiz-wrapper");
       const wsWrap = document.getElementById("lernen-worksheet-wrapper");
+      const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
 
-      if (launcher) launcher.classList.add("hidden");
+      if (mainGrid) mainGrid.classList.add("hidden");
+      if (ggContent) ggContent.classList.add("hidden");
+      if (rwContent) rwContent.classList.remove("hidden");
       if (selectionPanel) selectionPanel.classList.add("hidden");
+      if (kommSheetWrap) kommSheetWrap.classList.add("hidden");
+
       isTaskOpenInLernen = true;
       resetQuestionTimer();
 
@@ -4214,6 +5581,7 @@
 
     function filterQuizCategory(cat, btn) {
       currentQuizCat = cat;
+      activeLernenSubject = cat.startsWith("komm_") ? "gg" : "rw";
 
       document.querySelectorAll(".quiz-cat-pill").forEach(b => {
         b.classList.remove("bg-indigo-600/25", "border-indigo-400/50");
