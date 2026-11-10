@@ -4,6 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Learnex V5 | Modern Glassy Learning Platform</title>
+
+  <!-- App Logo & Favicon für Handy (iOS / Android Home-Bildschirm) & Browser -->
+  <link rel="icon" type="image/jpeg" href="Icon.jpg">
+  <link rel="shortcut icon" type="image/jpeg" href="Icon.jpg">
+  <link rel="apple-touch-icon" href="Icon.jpg">
+  <link rel="apple-touch-icon-precomposed" href="Icon.jpg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Learnex">
+  <meta name="mobile-web-app-capable" content="yes">
   
   <!-- Google Font Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -172,6 +182,75 @@
       animation: iconFloat 1.8s ease-in-out infinite;
     }
 
+    /* Animated Text Highlight Loops for Aktiv (Green) & Passiv (Red) */
+    @keyframes aktivTextLoop {
+      0%, 100% {
+        background-position: 0% 50%;
+        text-shadow: 0 0 8px rgba(16, 185, 129, 0.35), 0 0 18px rgba(52, 211, 153, 0.15);
+      }
+      50% {
+        background-position: 100% 50%;
+        text-shadow: 0 0 14px rgba(16, 185, 129, 0.75), 0 0 28px rgba(52, 211, 153, 0.45);
+      }
+    }
+
+    @keyframes passivTextLoop {
+      0%, 100% {
+        background-position: 0% 50%;
+        text-shadow: 0 0 8px rgba(244, 63, 94, 0.35), 0 0 18px rgba(251, 113, 133, 0.15);
+      }
+      50% {
+        background-position: 100% 50%;
+        text-shadow: 0 0 14px rgba(244, 63, 94, 0.75), 0 0 28px rgba(251, 113, 133, 0.45);
+      }
+    }
+
+    .hl-aktiv {
+      display: inline-block;
+      font-weight: 800;
+      padding: 0 0.3rem;
+      border-radius: 0.4rem;
+      background: linear-gradient(90deg, #34d399, #a7f3d0, #10b981, #34d399);
+      background-size: 250% 250%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-color: rgba(16, 185, 129, 0.1);
+      box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.25);
+      animation: aktivTextLoop 2.8s ease-in-out infinite;
+    }
+
+    .hl-passiv {
+      display: inline-block;
+      font-weight: 800;
+      padding: 0 0.3rem;
+      border-radius: 0.4rem;
+      background: linear-gradient(90deg, #fb7185, #fecdd3, #f43f5e, #fb7185);
+      background-size: 250% 250%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-color: rgba(244, 63, 94, 0.1);
+      box-shadow: inset 0 0 0 1px rgba(244, 63, 94, 0.25);
+      animation: passivTextLoop 2.8s ease-in-out infinite;
+    }
+
+    /* Staggered Tile Reveal Animation for Rechnungswesen Hub */
+    @keyframes tilePopIn {
+      0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.92);
+        filter: blur(6px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+    .stagger-tile {
+      opacity: 0;
+      animation: tilePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
     /* Clean Icon Box without colored borders */
     .icon-box-clean {
       background: rgba(255, 255, 255, 0.06);
@@ -303,8 +382,24 @@
         
         <!-- Brand Logo & Badge -->
         <div class="flex items-center space-x-2.5 pl-1.5 sm:pl-3 shrink-0">
-          <div id="brand-logo-box" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 transition-transform duration-300 hover:rotate-12">
-            <i data-lucide="orbit" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+          <div id="brand-logo-box" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f5d000] flex items-center justify-center shadow-lg shadow-amber-500/25 overflow-hidden transition-transform duration-300 hover:rotate-12 border border-white/15">
+            <img src="Icon.jpg" alt="Learnex Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <!-- Direkter Vektor-Fallback des Enten-Logos für die Vorschau, falls Icon.jpg lokal noch nicht im selben Ordner liegt -->
+            <svg viewBox="0 0 100 100" class="hidden w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" fill="#f5d000"/>
+              <!-- Linkes Auge -->
+              <ellipse cx="19" cy="44" rx="7.2" ry="8.8" transform="rotate(-12 19 44)" fill="#050505"/>
+              <ellipse cx="16.2" cy="43" rx="2.3" ry="3" transform="rotate(-12 16.2 43)" fill="#ffffff"/>
+              <!-- Rechtes Auge -->
+              <ellipse cx="73" cy="29" rx="7.2" ry="8.8" transform="rotate(-12 73 29)" fill="#050505"/>
+              <ellipse cx="70.2" cy="28" rx="2.3" ry="3" transform="rotate(-12 70.2 28)" fill="#ffffff"/>
+              <!-- Schnabel -->
+              <path d="M 24 61 C 32 58, 39 51, 44 45 C 49 40, 58 41, 65 46 C 72 51, 79 44, 86 48 C 91 52, 88 64, 77 72 C 63 82, 41 82, 26 75 C 20 72, 19 63, 24 61 Z" fill="#f15623" stroke="#d93211" stroke-width="3.5" stroke-linejoin="round"/>
+              <!-- Schnabel-Glanz -->
+              <path d="M 38 64 C 44 61, 49 54, 51 49" fill="none" stroke="#fab088" stroke-width="3.8" stroke-linecap="round"/>
+              <!-- Lächeln -->
+              <path d="M 29 68 C 46 77, 68 71, 82 52" fill="none" stroke="#660809" stroke-width="3.8" stroke-linecap="round"/>
+            </svg>
           </div>
           <div class="hidden sm:block">
             <div class="flex items-center space-x-2">
@@ -563,140 +658,114 @@
       <!-- ========================================== -->
       <section id="view-quiz" class="hidden space-y-6 animate-view-enter">
 
-        <!-- Fachbereich Header & Sub-Navigation -->
-        <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-5">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5">
-            <div class="space-y-1.5">
-              <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[11px] font-bold uppercase tracking-wider">
-                <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i>
-                <span>Hauptbereich &bull; 70 Fragen-Pool mit Zufalls-Rotation</span>
+        <!-- Hauptkachel: Rechnungswesen (Initial als einzige Kachel sichtbar) -->
+        <div id="rw-topic-launcher" onclick="toggleRechnungswesenHub()" class="glass-v5 glass-v5-hover rounded-3xl p-6 sm:p-8 cursor-pointer transition-all duration-500 group relative overflow-hidden">
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex items-center space-x-4 sm:space-x-5">
+              <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl icon-box-clean flex items-center justify-center text-indigo-300 shadow-xl">
+                <i data-lucide="graduation-cap" class="w-7 h-7 sm:w-8 sm:h-8 icon-anim"></i>
               </div>
-              <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Rechnungswesen</h2>
-              <p class="text-xs sm:text-sm text-slate-300 max-w-2xl">
-                Jedes Modul zieht <strong class="text-white">5 neue Fragen aus einem 10er-Pool</strong> und mischt auch die <strong class="text-white">Antworten A–D</strong> bei jedem Durchlauf komplett neu.
-              </p>
+              <div class="space-y-1">
+                <div class="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-white/10 text-indigo-200 text-[10px] font-bold uppercase tracking-widest">
+                  <span>Hauptfach</span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Rechnungswesen</h2>
+                <p id="rw-launcher-hint" class="text-xs text-slate-400">Tippe hier, um die Themen-Kacheln zu öffnen</p>
+              </div>
             </div>
+          </div>
+        </div>
 
-            <!-- Mode Toggle: Quiz-Module vs. Aufgabenblatt 2 -->
-            <div class="flex items-center space-x-2 shrink-0">
-              <button onclick="setLernenMode('modules')" id="btn-mode-modules" class="px-4 py-2.5 rounded-2xl bg-indigo-600 text-white text-xs font-bold transition flex items-center space-x-2 shadow-lg shadow-indigo-600/20">
-                <i data-lucide="blocks" class="w-4 h-4"></i>
-                <span>Lernmodule (7)</span>
-              </button>
-              <button onclick="setLernenMode('worksheet')" id="btn-mode-worksheet" class="px-4 py-2.5 rounded-2xl glass-pill text-amber-300 hover:bg-amber-500/20 text-xs font-bold transition flex items-center space-x-2">
+        <!-- Ausklappbarer Rechnungswesen-Inhalt (erst nach Klick auf Rechnungswesen sichtbar) -->
+        <div id="rw-expandable-content" class="hidden space-y-6">
+
+          <!-- Auswahlfenster mit den Themen-Kacheln (wird ausgeblendet, sobald eine Kachel gewählt wurde) -->
+          <div id="rw-selection-panel" class="glass-v5 rounded-3xl p-5 sm:p-6 space-y-5">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Wähle ein Lernmodul</span>
+
+              <!-- Direktwahl Aufgabenblatt 2 -->
+              <button onclick="openWorksheetFromOverview()" id="btn-mode-worksheet" class="px-4 py-2 rounded-2xl glass-pill text-amber-300 hover:bg-amber-500/20 text-xs font-bold transition flex items-center space-x-2">
                 <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-400"></i>
                 <span>Aufgabenblatt 2</span>
               </button>
             </div>
+
+            <!-- Reduzierte Kacheln: Nur Icon + Oberbegriff -->
+            <div id="rw-modules-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <!-- 1. Aktiv oder Passiv? -->
+              <button onclick="filterQuizCategory('aktiv_passiv', this)" style="animation-delay: 0ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl bg-indigo-600/25 border border-indigo-400/50 transition group hover:bg-indigo-600/35 flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-indigo-300">
+                  <i data-lucide="split-square-horizontal" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Aktiv oder Passiv?</span>
+              </button>
+
+              <!-- 2. Soll & Haben -->
+              <button onclick="filterQuizCategory('soll_haben', this)" style="animation-delay: 55ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-cyan-300">
+                  <i data-lucide="arrow-left-right" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Soll &amp; Haben</span>
+              </button>
+
+              <!-- 3. Bilanzen -->
+              <button onclick="filterQuizCategory('bilanz', this)" style="animation-delay: 110ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-emerald-300">
+                  <i data-lucide="landmark" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Bilanzen</span>
+              </button>
+
+              <!-- 4. Buchungssätze -->
+              <button onclick="filterQuizCategory('buchung', this)" style="animation-delay: 165ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-amber-300">
+                  <i data-lucide="receipt-text" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Buchungssätze</span>
+              </button>
+
+              <!-- 5. T-Konten Buchen -->
+              <button onclick="filterQuizCategory('tkonten_quiz', this)" style="animation-delay: 220ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-rose-300">
+                  <i data-lucide="git-compare-arrows" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">T-Konten Buchen</span>
+              </button>
+
+              <!-- 6. Bilanzveränderungen -->
+              <button onclick="filterQuizCategory('bilanzveraenderung', this)" style="animation-delay: 275ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-purple-300">
+                  <i data-lucide="repeat-2" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Bilanzveränderungen</span>
+              </button>
+
+              <!-- 7. Abschluss & Inventur -->
+              <button onclick="filterQuizCategory('abschluss', this)" style="animation-delay: 330ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-teal-300">
+                  <i data-lucide="clipboard-check" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Abschluss &amp; Inventur</span>
+              </button>
+
+              <!-- 8. Alle Module mischen -->
+              <button onclick="filterQuizCategory('all', this)" style="animation-delay: 385ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-indigo-300">
+                  <i data-lucide="dices" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Alle Module</span>
+              </button>
+            </div>
           </div>
 
-          <!-- Rechnungswesen Module Cards Grid (1 to 7) -->
-          <div id="rw-modules-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-            <!-- 1. Aktiv oder Passiv? -->
-            <button onclick="filterQuizCategory('aktiv_passiv', this)" class="quiz-cat-pill text-left p-4 rounded-2xl bg-indigo-600/25 transition group hover:bg-indigo-600/35 flex flex-col justify-between space-y-3">
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 uppercase">1. Modul &bull; 5 Fragen</span>
-                <i data-lucide="split-square-horizontal" class="w-4 h-4 text-indigo-300 transition-transform group-hover:scale-110"></i>
-              </div>
-              <div>
-                <div class="font-bold text-sm text-white">Aktiv oder Passiv?</div>
-                <p class="text-[11px] text-slate-300 mt-0.5">Fuhrpark, Waren, Darlehen &amp; Co. richtig zuordnen.</p>
-              </div>
-            </button>
-
-            <!-- 2. Soll & Haben -->
-            <button onclick="filterQuizCategory('soll_haben', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 uppercase">2. Modul &bull; 5 Fragen</span>
-                <i data-lucide="arrow-left-right" class="w-4 h-4 text-cyan-400 transition-transform group-hover:scale-110"></i>
-              </div>
-              <div>
-                <div class="font-bold text-sm text-white">Soll &amp; Haben</div>
-                <p class="text-[11px] text-slate-400 mt-0.5">Wo steigen und sinken Aktiv- und Passivkonten?</p>
-              </div>
-            </button>
-
-            <!-- 3. Bilanzen -->
-            <button onclick="filterQuizCategory('bilanz', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 uppercase">3. Modul &bull; 5 Fragen</span>
-                <i data-lucide="landmark" class="w-4 h-4 text-emerald-400 transition-transform group-hover:scale-110"></i>
-              </div>
-              <div>
-                <div class="font-bold text-sm text-white">Bilanzen</div>
-                <p class="text-[11px] text-slate-400 mt-0.5">Bilanzaufbau, Liquidität, Eigen- &amp; Fremdkapital.</p>
-              </div>
-            </button>
-
-            <!-- 4. Buchungssätze -->
-            <button onclick="filterQuizCategory('buchung', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 uppercase">4. Modul &bull; 5 Fragen</span>
-                <i data-lucide="receipt-text" class="w-4 h-4 text-amber-400 transition-transform group-hover:scale-110"></i>
-              </div>
-              <div>
-                <div class="font-bold text-sm text-white">Buchungssätze</div>
-                <p class="text-[11px] text-slate-400 mt-0.5">Grundregel „Soll an Haben“ mit Fällen aus Aufgabe 2.</p>
-              </div>
-            </button>
-
-            <!-- 5. T-Konten Buchen -->
-            <button onclick="filterQuizCategory('tkonten_quiz', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 uppercase">5. Modul &bull; 5 Fragen</span>
-                <i data-lucide="git-compare-arrows" class="w-4 h-4 text-rose-400 transition-transform group-hover:scale-110"></i>
-              </div>
-              <div>
-                <div class="font-bold text-sm text-white">T-Konten Buchen</div>
-                <p class="text-[11px] text-slate-400 mt-0.5">Anfangsbestand, Buchung &amp; Saldo im T-Konto.</p>
-              </div>
-            </button>
-
-            <!-- 6. Bilanzveränderungen (Extra) -->
-            <button onclick="filterQuizCategory('bilanzveraenderung', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 uppercase">6. Extra &bull; 5 Fragen</span>
-                <i data-lucide="repeat-2" class="w-4 h-4 text-purple-400 transition-transform group-hover:scale-110"></i>
-              </div>
-              <div>
-                <div class="font-bold text-sm text-white">Bilanzveränderungen</div>
-                <p class="text-[11px] text-slate-400 mt-0.5">Aktivtausch, Passivtausch, Mehrung &amp; Minderung.</p>
-              </div>
-            </button>
-
-            <!-- 7. Kontenabschluss & Inventur (Extra) -->
-            <button onclick="filterQuizCategory('abschluss', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 uppercase">7. Extra &bull; 5 Fragen</span>
-                <i data-lucide="clipboard-check" class="w-4 h-4 text-teal-400 transition-transform group-hover:scale-110"></i>
-              </div>
-              <div>
-                <div class="font-bold text-sm text-white">Abschluss &amp; Inventur</div>
-                <p class="text-[11px] text-slate-400 mt-0.5">Schlussbestand, SBK, GuV &amp; Inventurabgleich.</p>
-              </div>
-            </button>
-
-            <!-- Alle 70 Fragen Mix -->
-            <button onclick="filterQuizCategory('all', this)" class="quiz-cat-pill text-left p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col justify-between space-y-3">
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-white/10 text-white uppercase">Komplett-Mix</span>
-                <i data-lucide="dices" class="w-4 h-4 text-indigo-400 transition-transform group-hover:rotate-12"></i>
-              </div>
-              <div>
-                <div class="font-bold text-sm text-white">Alle Module mischen</div>
-                <p class="text-[11px] text-slate-400 mt-0.5">Zufällige Rotation durch alle Rechnungswesen-Fragen.</p>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- SUB-VIEW A: QUIZ CONTAINER CARD -->
-        <!-- ========================================== -->
-        <div id="lernen-quiz-wrapper" class="space-y-6">
+          <!-- ========================================== -->
+          <!-- SUB-VIEW A: QUIZ CONTAINER CARD -->
+          <!-- ========================================== -->
+          <div id="lernen-quiz-wrapper" class="hidden space-y-6">
           <div id="quiz-card" class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden transition-all duration-300">
             
-            <!-- Quiz Top Info Bar -->
+            <!-- Quiz Top Info Bar (inkl. Gelb-Orangenem Zurück-Icon oben rechts) -->
             <div class="flex items-center justify-between border-b border-white/10 pb-4 flex-wrap gap-2">
               <div class="flex items-center space-x-3">
                 <span id="quiz-category-tag" class="text-[10px] font-extrabold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-widest">
@@ -704,8 +773,11 @@
                 </span>
                 <span class="text-xs text-slate-400 font-medium" id="quiz-step-counter">Frage 1 von 5</span>
               </div>
-              <div class="flex items-center space-x-2">
+              <div class="flex items-center space-x-2.5">
                 <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1 rounded-full border border-amber-500/30" id="quiz-reward-xp">+50 XP</span>
+                <button onclick="backToModuleOverview()" title="Zurück zur Modul-Übersicht" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                  <i data-lucide="corner-up-left" class="w-4 h-4"></i>
+                </button>
               </div>
             </div>
 
@@ -740,7 +812,12 @@
           </div>
 
           <!-- Quiz Completion Summary Screen -->
-          <div id="quiz-summary-card" class="hidden glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 text-center">
+          <div id="quiz-summary-card" class="hidden glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 text-center relative">
+            <div class="flex justify-end">
+              <button onclick="backToModuleOverview()" title="Zurück zur Modul-Übersicht" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                <i data-lucide="corner-up-left" class="w-4 h-4"></i>
+              </button>
+            </div>
             <div class="w-20 h-20 rounded-3xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center mx-auto text-3xl font-black text-indigo-300 shadow-xl">
               <i data-lucide="trophy" class="w-10 h-10 text-amber-400"></i>
             </div>
@@ -765,9 +842,9 @@
                 <i data-lucide="rotate-cw" class="w-4 h-4"></i>
                 <span>Modul wiederholen</span>
               </button>
-              <button onclick="setLernenMode('worksheet')" class="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center space-x-2">
-                <span>Zum Aufgabenblatt 2</span>
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              <button onclick="backToModuleOverview()" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center space-x-2">
+                <i data-lucide="corner-up-left" class="w-4 h-4"></i>
+                <span>Zurück zur Übersicht</span>
               </button>
             </div>
           </div>
@@ -787,7 +864,12 @@
                 </span>
                 <h3 class="text-xl font-bold text-white mt-2">Geschäftsfälle &amp; Buchungssätze</h3>
               </div>
-              <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1.5 rounded-full border border-amber-500/30">+50 XP pro Buchungssatz</span>
+              <div class="flex items-center space-x-2.5">
+                <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1.5 rounded-full border border-amber-500/30">+50 XP pro Buchungssatz</span>
+                <button onclick="backToModuleOverview()" title="Zurück zur Modul-Übersicht" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                  <i data-lucide="corner-up-left" class="w-4 h-4"></i>
+                </button>
+              </div>
             </div>
 
             <!-- Original Tabelle der 5 Geschäftsfälle -->
@@ -862,6 +944,8 @@
                 <span>Aufgabenblatt 2 prüfen</span>
               </button>
             </div>
+          </div>
+
           </div>
 
         </div>
@@ -1144,6 +1228,20 @@
               <div class="text-xs font-bold text-white">Monochrom</div>
               <div class="text-[10px] text-slate-300">Weiß / Grau &amp; Weiße Icons</div>
             </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2b. Quiz-Verhalten (Automatisch weiter bei richtiger Antwort) -->
+      <div class="space-y-3 border-t border-white/10 pt-4">
+        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Quiz-Komfort</label>
+        <div class="flex items-center justify-between glass-pill p-3.5 rounded-2xl border border-white/10">
+          <div class="pr-3">
+            <div class="text-xs font-bold text-white">Automatisch weiter</div>
+            <div class="text-[11px] text-slate-400">Bei richtiger Antwort direkt zur nächsten Frage springen</div>
+          </div>
+          <button type="button" onclick="toggleAutoAdvanceSetting()" id="auto-advance-toggle-btn" class="w-12 h-7 rounded-full bg-slate-800 border border-white/15 p-1 transition flex items-center shrink-0">
+            <span id="auto-advance-knob" class="w-5 h-5 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0"></span>
           </button>
         </div>
       </div>
@@ -2427,6 +2525,7 @@
       userName: "Marlon",
       avatarDataUrl: "",
       theme: "default",
+      autoAdvanceCorrect: false,
       xp: 0,
       level: 1,
       totalAnswered: 0,
@@ -2444,6 +2543,10 @@
     let activeShuffledQuestions = [];
     let activityChartInstance = null;
     let studyTimerInterval = null;
+    let currentViewId = "dashboard";
+    let isTaskOpenInLernen = false;
+    let currentQuestionSeconds = 0;
+    let autoAdvanceTimeout = null;
 
     // Fisher-Yates Shuffle Algorithm
     function fisherYatesShuffle(array) {
@@ -2459,7 +2562,156 @@
     // APP INITIALIZATION
     // ==========================================
 
+    function refreshIcons() {
+      if (window.lucide && typeof window.lucide.createIcons === "function") {
+        window.lucide.createIcons();
+      }
+    }
+
+    // Automatisches Farb-Highlighting mit Loop-Effekt NUR für echte Kontenarten (Aktiv = Grün, Passiv = Rot)
+    const AKTIV_TERMS = [
+      "Betriebs- und Geschäftsausstattung (BGA)",
+      "Bebaute Grundstücke und Gebäude",
+      "Technische Anlagen und Maschinen",
+      "BGA / Büromaschinen",
+      "Büromaschinen & BGA",
+      "Bebaute Grundstücke",
+      "Forderungen a.LL",
+      "Büromaschinen",
+      "Forderungen",
+      "Grundstücke",
+      "Maschinen",
+      "Fuhrpark",
+      "Gebäude",
+      "Waren",
+      "Kasse",
+      "Bank",
+      "BGA"
+    ];
+
+    const PASSIV_TERMS = [
+      "Verbindlichkeiten aus Lieferungen und Leistungen (a.LL)",
+      "Verbindlichkeiten a.LL",
+      "Bankverbindlichkeiten",
+      "Verbindlichkeiten",
+      "Darlehensschulden",
+      "Darlehensschuld",
+      "Rückstellungen",
+      "Eigenkapital",
+      "Darlehen"
+    ];
+
+    function escapeRegExp(str) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    const COMBINED_TERMS_REGEX = new RegExp(
+      `(?<![\\wÄÖÜäöüß])(${[...AKTIV_TERMS, ...PASSIV_TERMS]
+        .sort((a, b) => b.length - a.length)
+        .map(escapeRegExp)
+        .join("|")})(?![\\wÄÖÜäöüß])`,
+      "g"
+    );
+
+    const AKTIV_SET = new Set(AKTIV_TERMS);
+
+    function highlightAccountingTerms(text) {
+      if (!text) return "";
+      return String(text).replace(COMBINED_TERMS_REGEX, (match) => {
+        if (AKTIV_SET.has(match)) {
+          return `<span class="hl-aktiv">${match}</span>`;
+        }
+        return `<span class="hl-passiv">${match}</span>`;
+      });
+    }
+
+    let isRechnungswesenOpen = false;
+
+    function toggleRechnungswesenHub(forceOpen) {
+      const content = document.getElementById("rw-expandable-content");
+      const selectionPanel = document.getElementById("rw-selection-panel");
+      const quizWrap = document.getElementById("lernen-quiz-wrapper");
+      const wsWrap = document.getElementById("lernen-worksheet-wrapper");
+      const chevron = document.getElementById("rw-chevron-icon");
+      const hint = document.getElementById("rw-launcher-hint");
+      if (!content) return;
+
+      isRechnungswesenOpen = typeof forceOpen === "boolean" ? forceOpen : !isRechnungswesenOpen;
+
+      if (isRechnungswesenOpen) {
+        content.classList.remove("hidden");
+        if (selectionPanel) selectionPanel.classList.remove("hidden");
+        if (quizWrap) quizWrap.classList.add("hidden");
+        if (wsWrap) wsWrap.classList.add("hidden");
+        isTaskOpenInLernen = false;
+
+        // Stagger-Animation für alle Kacheln neu triggern
+        document.querySelectorAll("#rw-modules-grid .stagger-tile").forEach((tile, i) => {
+          tile.style.animation = "none";
+          void tile.offsetWidth;
+          tile.style.animation = `tilePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 55}ms forwards`;
+        });
+        if (chevron) chevron.style.transform = "rotate(180deg)";
+        if (hint) hint.textContent = "Themen-Kacheln geöffnet • Tippe zum Einklappen";
+      } else {
+        content.classList.add("hidden");
+        isTaskOpenInLernen = false;
+        if (chevron) chevron.style.transform = "rotate(0deg)";
+        if (hint) hint.textContent = "Tippe hier, um die Themen-Kacheln zu öffnen";
+      }
+      updateStudyTimeKPIOnly();
+      refreshIcons();
+    }
+
+    // Zurück-Button oben rechts in der Lernkachel -> zeigt wieder die Themen-Übersicht
+    function backToModuleOverview() {
+      if (autoAdvanceTimeout) {
+        clearTimeout(autoAdvanceTimeout);
+        autoAdvanceTimeout = null;
+      }
+      const launcher = document.getElementById("rw-topic-launcher");
+      const content = document.getElementById("rw-expandable-content");
+      const selectionPanel = document.getElementById("rw-selection-panel");
+      const quizWrap = document.getElementById("lernen-quiz-wrapper");
+      const wsWrap = document.getElementById("lernen-worksheet-wrapper");
+
+      isRechnungswesenOpen = true;
+      isTaskOpenInLernen = false;
+
+      if (launcher) launcher.classList.remove("hidden");
+      if (content) content.classList.remove("hidden");
+      if (selectionPanel) selectionPanel.classList.remove("hidden");
+      if (quizWrap) quizWrap.classList.add("hidden");
+      if (wsWrap) wsWrap.classList.add("hidden");
+
+      document.querySelectorAll("#rw-modules-grid .stagger-tile").forEach((tile, i) => {
+        tile.style.animation = "none";
+        void tile.offsetWidth;
+        tile.style.animation = `tilePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 55}ms forwards`;
+      });
+
+      updateStudyTimeKPIOnly();
+      refreshIcons();
+    }
+
+    function openWorksheetFromOverview() {
+      const launcher = document.getElementById("rw-topic-launcher");
+      const selectionPanel = document.getElementById("rw-selection-panel");
+      const quizWrap = document.getElementById("lernen-quiz-wrapper");
+      const wsWrap = document.getElementById("lernen-worksheet-wrapper");
+
+      if (launcher) launcher.classList.add("hidden");
+      if (selectionPanel) selectionPanel.classList.add("hidden");
+      if (quizWrap) quizWrap.classList.add("hidden");
+      if (wsWrap) wsWrap.classList.remove("hidden");
+
+      isTaskOpenInLernen = true;
+      resetQuestionTimer();
+      refreshIcons();
+    }
+
     function initApp() {
+      refreshIcons();
       loadState();
       ensureTodayEntry();
       updateCurrentDateBadge();
@@ -2473,7 +2725,7 @@
       renderWorksheetRows();
       loadTKontoCase(0);
       startLiveStudyTimer();
-      lucide.createIcons();
+      refreshIcons();
     }
 
     function ensureTodayEntry() {
@@ -2489,6 +2741,7 @@
       if (!Array.isArray(state.seenQuestions)) state.seenQuestions = [];
       if (typeof state.totalAnswered !== "number") state.totalAnswered = 0;
       if (typeof state.totalCorrect !== "number") state.totalCorrect = 0;
+      if (typeof state.autoAdvanceCorrect !== "boolean") state.autoAdvanceCorrect = false;
     }
 
     function updateCurrentDateBadge() {
@@ -2503,10 +2756,39 @@
       });
     }
 
+    // Setzt den 5-Minuten-Inaktivitätstimer für die aktuelle Frage zurück
+    function resetQuestionTimer() {
+      currentQuestionSeconds = 0;
+      updateStudyTimeKPIOnly();
+    }
+
+    // Prüft, ob sich der Nutzer gerade aktiv in einer Lernaufgabe befindet
+    function isUserActivelyLearning() {
+      if (document.hidden) return false;
+      if (currentViewId === "tkonten") return true;
+      if (currentViewId === "quiz" && isTaskOpenInLernen) {
+        const summaryCard = document.getElementById("quiz-summary-card");
+        const isSummaryVisible = summaryCard && !summaryCard.classList.contains("hidden");
+        return !isSummaryVisible;
+      }
+      return false;
+    }
+
     function startLiveStudyTimer() {
       if (studyTimerInterval) clearInterval(studyTimerInterval);
       studyTimerInterval = setInterval(() => {
-        if (document.hidden) return;
+        if (!isUserActivelyLearning()) {
+          updateStudyTimeKPIOnly();
+          return;
+        }
+
+        // Wenn man länger als 5 Minuten (300s) an derselben Frage hängt -> pausieren bis zur nächsten Frage
+        if (currentQuestionSeconds >= 300) {
+          updateStudyTimeKPIOnly();
+          return;
+        }
+
+        currentQuestionSeconds++;
         const today = getDateKey();
         ensureTodayEntry();
         state.dailyStats[today].seconds = (state.dailyStats[today].seconds || 0) + 1;
@@ -2551,25 +2833,24 @@
       const timeEl = document.getElementById("kpi-study-time");
       if (timeEl) timeEl.textContent = formatStudyTime(todaySec);
 
-      const yestDate = new Date();
-      yestDate.setDate(yestDate.getDate() - 1);
-      const yestKey = getDateKey(yestDate);
-      const yestSec = (state.dailyStats[yestKey] && state.dailyStats[yestKey].seconds) || 0;
       const subEl = document.getElementById("kpi-study-sub");
       if (subEl) {
-        if (yestSec > 0) {
-          const diffMin = Math.round((todaySec - yestSec) / 60);
-          const sign = diffMin >= 0 ? "+" : "";
-          subEl.innerHTML = `<i data-lucide="activity" class="w-4 h-4"></i><span>${sign}${diffMin} Min vs. Gestern</span>`;
+        if (currentQuestionSeconds >= 300 && isUserActivelyLearning()) {
+          subEl.innerHTML = `<i data-lucide="pause-circle" class="w-4 h-4 text-amber-400"></i><span class="text-amber-300">Pausiert (über 5 Min an Frage)</span>`;
+        } else if (isUserActivelyLearning()) {
+          subEl.innerHTML = `<i data-lucide="activity" class="w-4 h-4"></i><span>Lernzeit läuft aktiv</span>`;
         } else {
-          const totalMin = Math.floor(todaySec / 60);
-          subEl.innerHTML = `<i data-lucide="activity" class="w-4 h-4"></i><span>Live erfasst &bull; ${totalMin} Min heute</span>`;
+          subEl.innerHTML = `<i data-lucide="pause-circle" class="w-4 h-4 text-slate-400"></i><span class="text-slate-400">Pausiert &bull; Startet beim Lernen</span>`;
         }
       }
     }
 
     // Nav Switcher
     function switchView(viewId) {
+      currentViewId = viewId;
+      if (viewId === "tkonten") {
+        resetQuestionTimer();
+      }
       document.querySelectorAll("main > section").forEach(el => {
         el.classList.add("hidden");
         el.classList.remove("animate-view-enter");
@@ -2589,6 +2870,8 @@
         updateHeaderAndKPIs();
         initActivityChart();
         updateMasteryProgressUI();
+      } else {
+        updateStudyTimeKPIOnly();
       }
 
       setTimeout(() => lucide.createIcons(), 30);
@@ -2664,6 +2947,27 @@
       }
 
       updateThemeButtonsUI();
+      updateAutoAdvanceToggleUI();
+    }
+
+    function updateAutoAdvanceToggleUI() {
+      const btn = document.getElementById("auto-advance-toggle-btn");
+      const knob = document.getElementById("auto-advance-knob");
+      if (!btn || !knob) return;
+
+      if (state.autoAdvanceCorrect) {
+        btn.className = "w-12 h-7 rounded-full bg-emerald-500/30 border border-emerald-400 p-1 transition flex items-center shrink-0";
+        knob.className = "w-5 h-5 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md";
+      } else {
+        btn.className = "w-12 h-7 rounded-full bg-slate-800 border border-white/15 p-1 transition flex items-center shrink-0";
+        knob.className = "w-5 h-5 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0";
+      }
+    }
+
+    function toggleAutoAdvanceSetting() {
+      state.autoAdvanceCorrect = !state.autoAdvanceCorrect;
+      saveState();
+      updateAutoAdvanceToggleUI();
     }
 
     function updateThemeButtonsUI() {
@@ -2743,6 +3047,7 @@
       const currentName = state.userName || "Marlon";
       const currentAvatar = state.avatarDataUrl || "";
       const currentTheme = state.theme || "default";
+      const currentAutoAdvance = !!state.autoAdvanceCorrect;
       try {
         localStorage.removeItem("learnex_v5_app_state");
       } catch (e) {}
@@ -2750,6 +3055,7 @@
         userName: currentName,
         avatarDataUrl: currentAvatar,
         theme: currentTheme,
+        autoAdvanceCorrect: currentAutoAdvance,
         xp: 0,
         level: 1,
         totalAnswered: 0,
@@ -3060,21 +3366,22 @@
     }
 
     function setLernenMode(mode) {
+      const launcher = document.getElementById("rw-topic-launcher");
+      const selectionPanel = document.getElementById("rw-selection-panel");
       const quizWrap = document.getElementById("lernen-quiz-wrapper");
       const wsWrap = document.getElementById("lernen-worksheet-wrapper");
-      const btnMod = document.getElementById("btn-mode-modules");
-      const btnWs = document.getElementById("btn-mode-worksheet");
+
+      if (launcher) launcher.classList.add("hidden");
+      if (selectionPanel) selectionPanel.classList.add("hidden");
+      isTaskOpenInLernen = true;
+      resetQuestionTimer();
 
       if (mode === "worksheet") {
-        quizWrap.classList.add("hidden");
-        wsWrap.classList.remove("hidden");
-        btnWs.className = "px-4 py-2.5 rounded-2xl bg-amber-500 text-slate-950 text-xs font-extrabold transition flex items-center space-x-2 shadow-lg shadow-amber-500/20";
-        btnMod.className = "px-4 py-2.5 rounded-2xl glass-pill text-slate-300 hover:text-white text-xs font-bold transition flex items-center space-x-2";
+        if (quizWrap) quizWrap.classList.add("hidden");
+        if (wsWrap) wsWrap.classList.remove("hidden");
       } else {
-        wsWrap.classList.add("hidden");
-        quizWrap.classList.remove("hidden");
-        btnMod.className = "px-4 py-2.5 rounded-2xl bg-indigo-600 text-white text-xs font-bold transition flex items-center space-x-2 shadow-lg shadow-indigo-600/20";
-        btnWs.className = "px-4 py-2.5 rounded-2xl glass-pill text-amber-300 hover:bg-amber-500/20 border border-amber-500/30 text-xs font-bold transition flex items-center space-x-2";
+        if (wsWrap) wsWrap.classList.add("hidden");
+        if (quizWrap) quizWrap.classList.remove("hidden");
       }
       setTimeout(() => lucide.createIcons(), 30);
     }
@@ -3088,7 +3395,6 @@
 
     function filterQuizCategory(cat, btn) {
       currentQuizCat = cat;
-      setLernenMode("modules");
 
       document.querySelectorAll(".quiz-cat-pill").forEach(b => {
         b.classList.remove("bg-indigo-600/25", "border-indigo-400/50");
@@ -3098,6 +3404,9 @@
         btn.classList.remove("glass-pill");
         btn.classList.add("bg-indigo-600/25", "border", "border-indigo-400/50");
       }
+
+      // Auswahl-Kacheln ausblenden und direkt die Lernaufgabe öffnen
+      setLernenMode("modules");
 
       activeShuffledQuestions = buildQuizDeck(cat);
       state.activeQuizIndex = 0;
@@ -3127,7 +3436,7 @@
           <div class="flex items-center justify-between flex-wrap gap-2 border-b border-white/5 pb-2.5">
             <div class="flex items-center space-x-2.5">
               <span class="w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs flex items-center justify-center">${item.nr}</span>
-              <span class="text-xs font-semibold text-white">${item.text}</span>
+              <span class="text-xs font-semibold text-white">${highlightAccountingTerms(item.text)}</span>
             </div>
             <span class="text-xs font-mono font-bold text-cyan-300 bg-cyan-950/60 px-2.5 py-1 rounded-lg border border-cyan-500/20">${item.amountFormatted} €</span>
           </div>
@@ -3179,7 +3488,7 @@
         if (hintEl) {
           hintEl.classList.remove("hidden");
           hintEl.className = "text-[11px] text-cyan-300 pt-1 flex items-center space-x-1.5";
-          hintEl.innerHTML = `<span>💡 <strong>Denkhilfe:</strong> ${item.hint}</span>`;
+          hintEl.innerHTML = `<span>💡 <strong>Denkhilfe:</strong> ${highlightAccountingTerms(item.hint)}</span>`;
         }
       });
     }
@@ -3191,6 +3500,7 @@
     }
 
     function checkAllWorksheetRows() {
+      resetQuestionTimer();
       let correctCount = 0;
 
       WORKSHEET_CASES.forEach((item, idx) => {
@@ -3216,11 +3526,11 @@
           }
           rowEl.className = "glass-pill p-4 sm:p-5 rounded-2xl border border-emerald-500/60 bg-emerald-950/20 space-y-3 transition";
           hintEl.className = "text-[11px] text-emerald-400 font-semibold pt-1";
-          hintEl.textContent = `✓ Richtig: ${item.sollAccount} ${item.amountFormatted} € an ${item.habenAccount} ${item.amountFormatted} €`;
+          hintEl.innerHTML = `✓ Richtig: ${highlightAccountingTerms(item.sollAccount)} ${item.amountFormatted} € an ${highlightAccountingTerms(item.habenAccount)} ${item.amountFormatted} €`;
         } else {
           rowEl.className = "glass-pill p-4 sm:p-5 rounded-2xl border border-rose-500/60 bg-rose-950/20 space-y-3 transition";
           hintEl.className = "text-[11px] text-rose-300 pt-1";
-          hintEl.textContent = `✗ Noch nicht ganz: Überprüfe Konten (${item.hint}) und den Betrag (${item.amount} €).`;
+          hintEl.innerHTML = `✗ Noch nicht ganz: Überprüfe Konten (${highlightAccountingTerms(item.hint)}) und den Betrag (${item.amount} €).`;
         }
       });
 
@@ -3241,12 +3551,17 @@
 
     function renderQuizQuestion() {
       if (!activeShuffledQuestions.length) return;
+      if (autoAdvanceTimeout) {
+        clearTimeout(autoAdvanceTimeout);
+        autoAdvanceTimeout = null;
+      }
+      resetQuestionTimer();
       const q = activeShuffledQuestions[state.activeQuizIndex];
 
       document.getElementById("quiz-category-tag").textContent = q.catTag;
       document.getElementById("quiz-step-counter").textContent = `Frage ${state.activeQuizIndex + 1} von ${activeShuffledQuestions.length}`;
       document.getElementById("quiz-reward-xp").textContent = `+${q.xp} XP`;
-      document.getElementById("quiz-question-title").textContent = q.question;
+      document.getElementById("quiz-question-title").innerHTML = highlightAccountingTerms(q.question);
 
       const fbBox = document.getElementById("quiz-feedback-box");
       fbBox.classList.add("hidden");
@@ -3263,7 +3578,7 @@
         const btn = document.createElement("button");
         btn.className = "w-full text-left glass-pill hover:bg-white/10 border border-white/10 p-4 rounded-2xl text-xs font-semibold text-slate-200 transition flex items-center justify-between group";
         btn.innerHTML = `
-          <span><strong class="text-indigo-400 mr-2.5">${String.fromCharCode(65 + idx)}.</strong> ${optText}</span>
+          <span><strong class="text-indigo-400 mr-2.5">${String.fromCharCode(65 + idx)}.</strong> ${highlightAccountingTerms(optText)}</span>
           <span class="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center group-hover:border-indigo-400"></span>
         `;
         btn.onclick = () => selectQuizOption(idx);
@@ -3304,13 +3619,22 @@
         fbTitle.className = "font-bold text-xs text-rose-400 flex items-center space-x-2";
         fbTitle.innerHTML = `<i data-lucide="x-circle" class="w-4 h-4"></i><span>Leider nicht korrekt</span>`;
       }
-      fbText.textContent = q.explanation;
+      fbText.innerHTML = highlightAccountingTerms(q.explanation);
 
       state.quizAnswers.push({ isCorrect, xp: isCorrect ? q.xp : 0 });
 
       const btnNext = document.getElementById("btn-quiz-next");
       btnNext.disabled = false;
       btnNext.className = "px-6 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20 transition cursor-pointer flex items-center space-x-2";
+
+      // Automatisch weiter zur nächsten Frage, falls in den Einstellungen aktiviert und Antwort richtig
+      if (isCorrect && state.autoAdvanceCorrect) {
+        if (autoAdvanceTimeout) clearTimeout(autoAdvanceTimeout);
+        autoAdvanceTimeout = setTimeout(() => {
+          autoAdvanceTimeout = null;
+          nextQuizQuestion();
+        }, 1200);
+      }
 
       setTimeout(() => lucide.createIcons(), 30);
     }
@@ -3320,6 +3644,10 @@
     }
 
     function nextQuizQuestion() {
+      if (autoAdvanceTimeout) {
+        clearTimeout(autoAdvanceTimeout);
+        autoAdvanceTimeout = null;
+      }
       if (state.activeQuizIndex < activeShuffledQuestions.length - 1) {
         state.activeQuizIndex++;
         renderQuizQuestion();
@@ -3353,14 +3681,15 @@
     // ==========================================
 
     function loadTKontoCase(index) {
+      resetQuestionTimer();
       state.currentTKCaseIndex = index;
       const c = tkontoCases[index];
 
       document.getElementById("tk-case-badge").textContent = c.badge;
-      document.getElementById("tk-case-title").textContent = c.title;
-      document.getElementById("tk-case-desc").textContent = c.desc;
-      document.getElementById("tk-label-1").textContent = c.konto1;
-      document.getElementById("tk-label-2").textContent = c.konto2;
+      document.getElementById("tk-case-title").innerHTML = highlightAccountingTerms(c.title);
+      document.getElementById("tk-case-desc").innerHTML = highlightAccountingTerms(c.desc);
+      document.getElementById("tk-label-1").innerHTML = highlightAccountingTerms(c.konto1);
+      document.getElementById("tk-label-2").innerHTML = highlightAccountingTerms(c.konto2);
 
       tkontoCases.forEach((_, i) => {
         const pill = document.getElementById("tk-pill-" + i);
@@ -3406,7 +3735,7 @@
         fb.className = "p-5 rounded-2xl border bg-emerald-950/60 border-emerald-500/50 space-y-1.5 glow-emerald-pulse";
         fbTitle.className = "font-bold text-xs text-emerald-400 flex items-center space-x-2";
         fbTitle.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>Perfekt gebucht! +80 XP</span>`;
-        fbText.textContent = c.explanation;
+        fbText.innerHTML = highlightAccountingTerms(c.explanation);
         awardXP(80);
 
         setTimeout(() => {
@@ -3422,6 +3751,53 @@
         fbText.textContent = `Überprüfe die Aktiv-/Passivregeln. Erforderlich für Konto 1: SOLL=${c.c1Soll} € / HABEN=${c.c1Haben} €.`;
       }
       setTimeout(() => lucide.createIcons(), 30);
+    }
+
+    // ==========================================
+    // IKR KONTENPLAN TABLE
+    // ==========================================
+
+    function setKontenCat(cat, btn) {
+      state.activeKontenCat = cat;
+      document.querySelectorAll(".konten-cat-btn").forEach(b => {
+        b.className = "konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0";
+      });
+      if (btn) {
+        btn.className = "konten-cat-btn bg-indigo-600 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0";
+      }
+      renderFilteredKonten();
+    }
+
+    function renderFilteredKonten() {
+      const tbody = document.getElementById("kontenplan-tbody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+      const searchEl = document.getElementById("konten-search-input");
+      const query = searchEl ? searchEl.value.toLowerCase() : "";
+
+      IKR_DATA.forEach(k => {
+        if (state.activeKontenCat !== "all" && k.cat !== state.activeKontenCat) return;
+        if (query && !k.nr.toLowerCase().includes(query) && !k.name.toLowerCase().includes(query)) return;
+
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-white/5 transition";
+        tr.innerHTML = `
+          <td class="px-6 py-4 font-mono font-bold text-indigo-400">${k.nr}</td>
+          <td class="px-6 py-4 font-semibold text-white">${highlightAccountingTerms(k.name)}</td>
+          <td class="px-6 py-4 text-slate-400 text-xs">${k.klasse}</td>
+          <td class="px-6 py-4">
+            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${getArtBadgeStyle(k.art)}">${k.art}</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function getArtBadgeStyle(art) {
+      if (art === "Aktiv") return "bg-emerald-500/20 text-emerald-300";
+      if (art === "Passiv") return "bg-rose-500/20 text-rose-300";
+      if (art === "Ertrag") return "bg-indigo-500/20 text-indigo-300";
+      return "bg-amber-500/20 text-amber-300";
     }
 
     // ==========================================
@@ -3540,7 +3916,8 @@
       animate();
     }
 
-    window.onload = initApp;
+    document.addEventListener("DOMContentLoaded", initApp);
+    window.addEventListener("load", refreshIcons);
   </script>
 </body>
 </html>
