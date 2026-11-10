@@ -441,6 +441,65 @@
       color: #ffffff !important;
       box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
     }
+
+    /* ==========================================
+       DUCK THEME (Dark Base, Yellow & Orange Ambient Orbs, Animated Yellow-Orange Icons)
+       ========================================== */
+    body.theme-duck .ambient-orb-1 {
+      background: radial-gradient(circle, rgba(250, 204, 21, 0.22) 0%, rgba(245, 158, 11, 0.08) 45%, rgba(0, 0, 0, 0) 70%) !important;
+    }
+    body.theme-duck .ambient-orb-2 {
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.20) 0%, rgba(234, 88, 12, 0.07) 45%, rgba(0, 0, 0, 0) 70%) !important;
+    }
+    body.theme-duck .ambient-orb-3 {
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.16) 0%, rgba(249, 115, 22, 0.06) 45%, rgba(0, 0, 0, 0) 70%) !important;
+    }
+
+    body.theme-duck .glass-v5-hover:hover {
+      border-color: rgba(251, 191, 36, 0.35) !important;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 32px rgba(249, 115, 22, 0.25) !important;
+    }
+
+    @keyframes duckIconColorPulse {
+      0%, 100% {
+        stroke: #facc15;
+        color: #facc15;
+        filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.55)) drop-shadow(0 0 14px rgba(249, 115, 22, 0.25));
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        stroke: #f97316;
+        color: #f97316;
+        filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.85)) drop-shadow(0 0 22px rgba(250, 204, 21, 0.5));
+        transform: translateY(-2px) scale(1.06);
+      }
+    }
+
+    @keyframes duckBoxGlow {
+      0%, 100% {
+        background: linear-gradient(135deg, rgba(250, 204, 21, 0.14), rgba(249, 115, 22, 0.08));
+        box-shadow: inset 0 1px 1px rgba(254, 240, 138, 0.3), 0 0 12px rgba(245, 158, 11, 0.12);
+      }
+      50% {
+        background: linear-gradient(135deg, rgba(249, 115, 22, 0.22), rgba(250, 204, 21, 0.14));
+        box-shadow: inset 0 1px 2px rgba(254, 240, 138, 0.45), 0 0 20px rgba(249, 115, 22, 0.28);
+      }
+    }
+
+    body.theme-duck svg.lucide,
+    body.theme-duck [data-lucide] {
+      animation: duckIconColorPulse 3s ease-in-out infinite !important;
+    }
+
+    body.theme-duck .icon-box-clean {
+      animation: duckBoxGlow 3.5s ease-in-out infinite !important;
+    }
+
+    body.theme-duck .nav-pill-active {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.24), rgba(249, 115, 22, 0.20)) !important;
+      border-color: rgba(251, 191, 36, 0.45) !important;
+      box-shadow: 0 8px 22px rgba(249, 115, 22, 0.28), 0 0 15px rgba(250, 204, 21, 0.2) !important;
+    }
   </style>
 </head>
 <body class="min-h-screen w-full text-slate-100 font-sans antialiased bg-slate-950 relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
@@ -782,8 +841,13 @@
           <!-- Ebene 1: Auswahl der zwei Unterthemen -->
           <div id="gg-subtopics-panel" class="glass-v5 rounded-3xl p-5 sm:p-6 space-y-4">
             <div class="flex items-center justify-between flex-wrap gap-2">
-              <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider">Gesprächsgestaltung &bull; Wähle ein Unterthema</span>
-              <span class="text-[11px] text-slate-400">BBS Bernkastel-Kues &bull; Lernfeld 7</span>
+              <div>
+                <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider">Gesprächsgestaltung &bull; Wähle ein Unterthema</span>
+                <p class="text-[11px] text-slate-400">BBS Bernkastel-Kues &bull; Lernfeld 7</p>
+              </div>
+              <button onclick="backToMainSubjects()" title="Zurück zur Fachauswahl" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                <i data-lucide="corner-up-left" class="w-4 h-4"></i>
+              </button>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -830,6 +894,10 @@
                 <button onclick="openKommStudySheet()" class="px-4 py-2 rounded-2xl glass-pill text-emerald-300 hover:bg-emerald-500/20 text-xs font-bold transition flex items-center space-x-2">
                   <i data-lucide="tv-minimal-play" class="w-4 h-4 text-emerald-400"></i>
                   <span>Tafelbild, Video &amp; Lösungen</span>
+                </button>
+                <!-- Zurück zu den 2 Unterthemen -->
+                <button onclick="backToGGSubtopics()" title="Zurück zur Themenauswahl" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                  <i data-lucide="corner-up-left" class="w-4 h-4"></i>
                 </button>
               </div>
             </div>
@@ -892,7 +960,12 @@
                 <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
                 <span class="text-xs font-bold text-slate-200 uppercase tracking-wider">Kommunikationswege gestalten</span>
               </div>
-              <span class="text-[11px] text-slate-400">Bereit für deine nächsten Arbeitsblätter</span>
+              <div class="flex items-center space-x-2.5">
+                <span class="text-[11px] text-slate-400">Bereit für deine nächsten Arbeitsblätter</span>
+                <button onclick="backToGGSubtopics()" title="Zurück zur Themenauswahl" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                  <i data-lucide="corner-up-left" class="w-4 h-4"></i>
+                </button>
+              </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -918,73 +991,71 @@
             <div class="flex items-center justify-between flex-wrap gap-3">
               <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Wähle ein Lernmodul</span>
 
-              <!-- Direktwahl Aufgabenblatt 2 -->
-              <button onclick="openWorksheetFromOverview()" id="btn-mode-worksheet" class="px-4 py-2 rounded-2xl glass-pill text-amber-300 hover:bg-amber-500/20 text-xs font-bold transition flex items-center space-x-2">
-                <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-400"></i>
-                <span>Aufgabenblatt 2</span>
-              </button>
+              <div class="flex items-center space-x-2.5">
+                <!-- Direktwahl Aufgabenblatt 2 -->
+                <button onclick="openWorksheetFromOverview()" id="btn-mode-worksheet" class="px-4 py-2 rounded-2xl glass-pill text-amber-300 hover:bg-amber-500/20 text-xs font-bold transition flex items-center space-x-2">
+                  <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-400"></i>
+                  <span>Aufgabenblatt 2</span>
+                </button>
+                <!-- Zurück zur Hauptfach-Auswahl -->
+                <button onclick="backToMainSubjects()" title="Zurück zur Fachauswahl" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                  <i data-lucide="corner-up-left" class="w-4 h-4"></i>
+                </button>
+              </div>
             </div>
 
-            <!-- Reduzierte Kacheln: Nur Icon + Oberbegriff -->
+            <!-- 8 Themen-Kacheln für Rechnungswesen -->
             <div id="rw-modules-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <!-- 1. Aktiv oder Passiv? -->
-              <button onclick="filterQuizCategory('aktiv_passiv', this)" style="animation-delay: 0ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl bg-indigo-600/25 border border-indigo-400/50 transition group hover:bg-indigo-600/35 flex flex-col items-center justify-center text-center space-y-2.5">
+              <button onclick="filterQuizCategory('aktiv_passiv', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
                 <div class="p-2.5 rounded-xl icon-box-clean text-indigo-300">
-                  <i data-lucide="split-square-horizontal" class="w-5 h-5 icon-anim"></i>
+                  <i data-lucide="scale" class="w-5 h-5 icon-anim"></i>
                 </div>
                 <span class="font-bold text-xs sm:text-sm text-white">Aktiv oder Passiv?</span>
               </button>
 
-              <!-- 2. Soll & Haben -->
-              <button onclick="filterQuizCategory('soll_haben', this)" style="animation-delay: 55ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+              <button onclick="filterQuizCategory('soll_haben', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
                 <div class="p-2.5 rounded-xl icon-box-clean text-cyan-300">
                   <i data-lucide="arrow-left-right" class="w-5 h-5 icon-anim"></i>
                 </div>
                 <span class="font-bold text-xs sm:text-sm text-white">Soll &amp; Haben</span>
               </button>
 
-              <!-- 3. Bilanzen -->
-              <button onclick="filterQuizCategory('bilanz', this)" style="animation-delay: 110ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+              <button onclick="filterQuizCategory('bilanz', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
                 <div class="p-2.5 rounded-xl icon-box-clean text-emerald-300">
-                  <i data-lucide="landmark" class="w-5 h-5 icon-anim"></i>
+                  <i data-lucide="columns-2" class="w-5 h-5 icon-anim"></i>
                 </div>
                 <span class="font-bold text-xs sm:text-sm text-white">Bilanzen</span>
               </button>
 
-              <!-- 4. Buchungssätze -->
-              <button onclick="filterQuizCategory('buchung', this)" style="animation-delay: 165ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+              <button onclick="filterQuizCategory('buchung', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
                 <div class="p-2.5 rounded-xl icon-box-clean text-amber-300">
                   <i data-lucide="receipt-text" class="w-5 h-5 icon-anim"></i>
                 </div>
                 <span class="font-bold text-xs sm:text-sm text-white">Buchungssätze</span>
               </button>
 
-              <!-- 5. T-Konten Buchen -->
-              <button onclick="filterQuizCategory('tkonten_quiz', this)" style="animation-delay: 220ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+              <button onclick="filterQuizCategory('tkonten_quiz', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
                 <div class="p-2.5 rounded-xl icon-box-clean text-rose-300">
-                  <i data-lucide="git-compare-arrows" class="w-5 h-5 icon-anim"></i>
+                  <i data-lucide="landmark" class="w-5 h-5 icon-anim"></i>
                 </div>
                 <span class="font-bold text-xs sm:text-sm text-white">T-Konten Buchen</span>
               </button>
 
-              <!-- 6. Bilanzveränderungen -->
-              <button onclick="filterQuizCategory('bilanzveraenderung', this)" style="animation-delay: 275ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+              <button onclick="filterQuizCategory('bilanzveraenderung', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
                 <div class="p-2.5 rounded-xl icon-box-clean text-purple-300">
-                  <i data-lucide="repeat-2" class="w-5 h-5 icon-anim"></i>
+                  <i data-lucide="git-compare-arrows" class="w-5 h-5 icon-anim"></i>
                 </div>
                 <span class="font-bold text-xs sm:text-sm text-white">Bilanzveränderungen</span>
               </button>
 
-              <!-- 7. Abschluss & Inventur -->
-              <button onclick="filterQuizCategory('abschluss', this)" style="animation-delay: 330ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+              <button onclick="filterQuizCategory('abschluss', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
                 <div class="p-2.5 rounded-xl icon-box-clean text-teal-300">
                   <i data-lucide="clipboard-check" class="w-5 h-5 icon-anim"></i>
                 </div>
                 <span class="font-bold text-xs sm:text-sm text-white">Abschluss &amp; Inventur</span>
               </button>
 
-              <!-- 8. Alle Module mischen -->
-              <button onclick="filterQuizCategory('all', this)" style="animation-delay: 385ms;" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+              <button onclick="filterQuizCategory('all', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
                 <div class="p-2.5 rounded-xl icon-box-clean text-indigo-300">
                   <i data-lucide="dices" class="w-5 h-5 icon-anim"></i>
                 </div>
@@ -994,26 +1065,26 @@
           </div>
 
           <!-- ========================================== -->
-          <!-- SUB-VIEW A: QUIZ CONTAINER CARD -->
+          <!-- SUB-VIEW A: QUIZ CARD & SUMMARY -->
           <!-- ========================================== -->
           <div id="lernen-quiz-wrapper" class="hidden space-y-6">
-          <div id="quiz-card" class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden transition-all duration-300">
-            
-            <!-- Quiz Top Info Bar (inkl. Gelb-Orangenem Zurück-Icon oben rechts) -->
-            <div class="flex items-center justify-between border-b border-white/10 pb-4 flex-wrap gap-2">
-              <div class="flex items-center space-x-3">
-                <span id="quiz-category-tag" class="text-[10px] font-extrabold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-widest">
-                  1. AKTIV ODER PASSIV?
-                </span>
-                <span class="text-xs text-slate-400 font-medium" id="quiz-step-counter">Frage 1 von 5</span>
+            <div id="quiz-card" class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden transition-all duration-300">
+              
+              <!-- Quiz Top Info Bar inkl. Gelb-Orangenem Zurück-Icon -->
+              <div class="flex items-center justify-between border-b border-white/10 pb-4 flex-wrap gap-2">
+                <div class="flex items-center space-x-3">
+                  <span id="quiz-category-tag" class="text-[10px] font-extrabold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-widest">
+                    1. AKTIV ODER PASSIV?
+                  </span>
+                  <span class="text-xs text-slate-400 font-medium" id="quiz-step-counter">Frage 1 von 5</span>
+                </div>
+                <div class="flex items-center space-x-2.5">
+                  <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1.5 rounded-full border border-amber-500/30" id="quiz-reward-xp">+50 XP</span>
+                  <button onclick="backToModuleOverview()" title="Zurück zur Modul-Übersicht" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                    <i data-lucide="corner-up-left" class="w-4 h-4"></i>
+                  </button>
+                </div>
               </div>
-              <div class="flex items-center space-x-2.5">
-                <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1 rounded-full border border-amber-500/30" id="quiz-reward-xp">+50 XP</span>
-                <button onclick="backToModuleOverview()" title="Zurück zur Modul-Übersicht" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
-                  <i data-lucide="corner-up-left" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
 
             <!-- Question Body -->
             <div class="space-y-2">
@@ -1649,37 +1720,47 @@
                 Standard
               </button>
             </div>
-            <p class="text-[11px] text-slate-400">Eigenes Foto hochladen oder Initiale nutzen.</p>
+            <p class="text-[11px] text-slate-400">Eigenes Profilbild oder Initialen-Icon</p>
           </div>
         </div>
 
         <div class="space-y-1.5">
-          <label for="settings-name-input" class="text-xs font-semibold text-slate-300">Dein Name</label>
-          <input type="text" id="settings-name-input" placeholder="Marlon" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+          <label for="settings-name-input" class="text-xs font-semibold text-slate-300">Dein Anzeigename</label>
+          <input type="text" id="settings-name-input" placeholder="Marlon" class="w-full bg-slate-900/90 border border-white/15 rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
         </div>
       </div>
 
-      <!-- 2. Design-Farbe (Standard vs. Monochrom) -->
+      <!-- 2. Design-Farbe (Standard, Duck, Monochrom) -->
       <div class="space-y-3 border-t border-white/10 pt-4">
         <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Design-Modus</label>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <button type="button" onclick="setAppTheme('default')" id="theme-btn-default" class="p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 bg-indigo-600/20 border-indigo-400">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <button type="button" onclick="setAppTheme('default')" id="theme-btn-default" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 bg-indigo-600/20 border-indigo-400">
             <div class="w-8 h-8 rounded-xl bg-slate-950 border border-indigo-500/40 flex items-center justify-center shrink-0">
               <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
             </div>
             <div>
               <div class="text-xs font-bold text-white">Obsidian V5</div>
-              <div class="text-[10px] text-slate-400">Dunkel &amp; Farbakzente</div>
+              <div class="text-[10px] text-slate-400">Blau &amp; Grün</div>
             </div>
           </button>
 
-          <button type="button" onclick="setAppTheme('monochrome')" id="theme-btn-monochrome" class="p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 glass-pill border-white/10 hover:bg-white/10">
+          <button type="button" onclick="setAppTheme('duck')" id="theme-btn-duck" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 glass-pill border-white/10 hover:bg-white/10">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center shrink-0 shadow-md shadow-amber-500/25">
+              <i data-lucide="flame" class="w-4 h-4 text-slate-950"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-amber-300">Duck</div>
+              <div class="text-[10px] text-slate-300">Gelb &amp; Orange</div>
+            </div>
+          </button>
+
+          <button type="button" onclick="setAppTheme('monochrome')" id="theme-btn-monochrome" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 glass-pill border-white/10 hover:bg-white/10">
             <div class="w-8 h-8 rounded-xl bg-white border border-slate-400 flex items-center justify-center shrink-0">
               <div class="w-4 h-4 rounded bg-slate-800"></div>
             </div>
             <div>
               <div class="text-xs font-bold text-white">Monochrom</div>
-              <div class="text-[10px] text-slate-300">Weiß / Grau &amp; Weiße Icons</div>
+              <div class="text-[10px] text-slate-300">Weiß &amp; Schwarz</div>
             </div>
           </button>
         </div>
@@ -4676,17 +4757,61 @@
     let isRechnungswesenOpen = false;
     let isGespraechsgestaltungOpen = false;
     let activeLernenSubject = null; // 'rw' | 'gg'
-    let activeGGSubtopic = "grundlagen"; // 'grundlagen' | 'wege'
+    let activeGGSubtopic = null; // 'grundlagen' | 'wege'
+
+    // Zurück zur obersten Ebene unter "Lernen" (Beide Hauptfächer: Rechnungswesen & Gesprächsgestaltung sichtbar)
+    function backToMainSubjects() {
+      if (autoAdvanceTimeout) {
+        clearTimeout(autoAdvanceTimeout);
+        autoAdvanceTimeout = null;
+      }
+      isRechnungswesenOpen = false;
+      isGespraechsgestaltungOpen = false;
+      activeLernenSubject = null;
+      activeGGSubtopic = null;
+      isTaskOpenInLernen = false;
+
+      const mainGrid = document.getElementById("main-topics-grid");
+      const rwLauncher = document.getElementById("rw-topic-launcher");
+      const ggLauncher = document.getElementById("gg-topic-launcher");
+      const rwContent = document.getElementById("rw-expandable-content");
+      const ggContent = document.getElementById("gg-expandable-content");
+      const quizWrap = document.getElementById("lernen-quiz-wrapper");
+      const wsWrap = document.getElementById("lernen-worksheet-wrapper");
+      const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
+      const rwHint = document.getElementById("rw-launcher-hint");
+      const ggHint = document.getElementById("gg-launcher-hint");
+
+      if (mainGrid) {
+        mainGrid.classList.remove("hidden");
+        mainGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-5";
+      }
+      if (rwLauncher) rwLauncher.classList.remove("hidden");
+      if (ggLauncher) ggLauncher.classList.remove("hidden");
+      if (rwContent) rwContent.classList.add("hidden");
+      if (ggContent) ggContent.classList.add("hidden");
+      if (quizWrap) quizWrap.classList.add("hidden");
+      if (wsWrap) wsWrap.classList.add("hidden");
+      if (kommSheetWrap) kommSheetWrap.classList.add("hidden");
+
+      if (rwHint) rwHint.textContent = "Tippe hier, um die Themen-Kacheln zu öffnen";
+      if (ggHint) ggHint.textContent = "Grundlagen der Kommunikation & Kommunikationswege";
+
+      updateStudyTimeKPIOnly();
+      refreshIcons();
+    }
 
     function toggleRechnungswesenHub(forceOpen) {
       const rwContent = document.getElementById("rw-expandable-content");
       const ggContent = document.getElementById("gg-expandable-content");
+      const mainGrid = document.getElementById("main-topics-grid");
+      const rwLauncher = document.getElementById("rw-topic-launcher");
+      const ggLauncher = document.getElementById("gg-topic-launcher");
       const selectionPanel = document.getElementById("rw-selection-panel");
       const quizWrap = document.getElementById("lernen-quiz-wrapper");
       const wsWrap = document.getElementById("lernen-worksheet-wrapper");
       const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
       const hint = document.getElementById("rw-launcher-hint");
-      const ggHint = document.getElementById("gg-launcher-hint");
       if (!rwContent) return;
 
       isRechnungswesenOpen = typeof forceOpen === "boolean" ? forceOpen : !isRechnungswesenOpen;
@@ -4694,8 +4819,11 @@
       if (isRechnungswesenOpen) {
         activeLernenSubject = "rw";
         isGespraechsgestaltungOpen = false;
+        // Gesprächsgestaltung komplett ausblenden!
+        if (ggLauncher) ggLauncher.classList.add("hidden");
+        if (rwLauncher) rwLauncher.classList.remove("hidden");
+        if (mainGrid) mainGrid.className = "grid grid-cols-1 gap-5";
         if (ggContent) ggContent.classList.add("hidden");
-        if (ggHint) ggHint.textContent = "Grundlagen der Kommunikation & Kommunikationswege";
 
         rwContent.classList.remove("hidden");
         if (selectionPanel) selectionPanel.classList.remove("hidden");
@@ -4710,11 +4838,10 @@
           void tile.offsetWidth;
           tile.style.animation = `tilePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 55}ms forwards`;
         });
-        if (hint) hint.textContent = "Themen-Kacheln geöffnet • Tippe zum Einklappen";
+        if (hint) hint.textContent = "Themen-Kacheln geöffnet • Tippe zum Zurückkehren";
       } else {
-        rwContent.classList.add("hidden");
-        isTaskOpenInLernen = false;
-        if (hint) hint.textContent = "Tippe hier, um die Themen-Kacheln zu öffnen";
+        backToMainSubjects();
+        return;
       }
       updateStudyTimeKPIOnly();
       refreshIcons();
@@ -4723,63 +4850,78 @@
     function toggleGespraechsgestaltungHub(forceOpen) {
       const ggContent = document.getElementById("gg-expandable-content");
       const rwContent = document.getElementById("rw-expandable-content");
+      const mainGrid = document.getElementById("main-topics-grid");
+      const rwLauncher = document.getElementById("rw-topic-launcher");
+      const ggLauncher = document.getElementById("gg-topic-launcher");
+      const subtopicsPanel = document.getElementById("gg-subtopics-panel");
+      const grundlagenPanel = document.getElementById("gg-grundlagen-panel");
+      const wegePanel = document.getElementById("gg-wege-panel");
       const quizWrap = document.getElementById("lernen-quiz-wrapper");
       const wsWrap = document.getElementById("lernen-worksheet-wrapper");
       const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
       const ggHint = document.getElementById("gg-launcher-hint");
-      const rwHint = document.getElementById("rw-launcher-hint");
       if (!ggContent) return;
 
       isGespraechsgestaltungOpen = typeof forceOpen === "boolean" ? forceOpen : !isGespraechsgestaltungOpen;
 
       if (isGespraechsgestaltungOpen) {
         activeLernenSubject = "gg";
+        activeGGSubtopic = null;
         isRechnungswesenOpen = false;
+        // Rechnungswesen komplett ausblenden!
+        if (rwLauncher) rwLauncher.classList.add("hidden");
+        if (ggLauncher) ggLauncher.classList.remove("hidden");
+        if (mainGrid) mainGrid.className = "grid grid-cols-1 gap-5";
         if (rwContent) rwContent.classList.add("hidden");
-        if (rwHint) rwHint.textContent = "Tippe hier, um die Themen-Kacheln zu öffnen";
 
         ggContent.classList.remove("hidden");
+        // Erst NUR die 2 Optionen anzeigen, die Aufgaben-Kacheln noch ausgeblendet lassen!
+        if (subtopicsPanel) subtopicsPanel.classList.remove("hidden");
+        if (grundlagenPanel) grundlagenPanel.classList.add("hidden");
+        if (wegePanel) wegePanel.classList.add("hidden");
         if (quizWrap) quizWrap.classList.add("hidden");
         if (wsWrap) wsWrap.classList.add("hidden");
         if (kommSheetWrap) kommSheetWrap.classList.add("hidden");
         isTaskOpenInLernen = false;
 
-        openGGSubtopic(activeGGSubtopic || "grundlagen");
-        if (ggHint) ggHint.textContent = "Unterthemen geöffnet • Tippe zum Einklappen";
+        document.querySelectorAll("#gg-subtopics-panel .stagger-tile").forEach((tile, i) => {
+          tile.style.animation = "none";
+          void tile.offsetWidth;
+          tile.style.animation = `tilePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 70}ms forwards`;
+        });
+
+        if (ggHint) ggHint.textContent = "Wähle eines der beiden Themen • Tippe zum Zurückkehren";
       } else {
-        ggContent.classList.add("hidden");
-        isTaskOpenInLernen = false;
-        if (ggHint) ggHint.textContent = "Grundlagen der Kommunikation & Kommunikationswege";
+        backToMainSubjects();
+        return;
       }
       updateStudyTimeKPIOnly();
       refreshIcons();
     }
 
+    // Klick auf eine der 2 Optionen unter Gesprächsgestaltung -> blendet die 2 Optionen & die Hauptkachel aus und zeigt nur die Aufgaben!
     function openGGSubtopic(subtopic) {
       activeGGSubtopic = subtopic;
+      const mainGrid = document.getElementById("main-topics-grid");
+      const subtopicsPanel = document.getElementById("gg-subtopics-panel");
       const grundlagenPanel = document.getElementById("gg-grundlagen-panel");
       const wegePanel = document.getElementById("gg-wege-panel");
-      const btnGrundlagen = document.getElementById("gg-subbtn-grundlagen");
-      const btnWege = document.getElementById("gg-subbtn-wege");
+
+      // Die beiden Optionen & die obere Hauptkachel ausblenden!
+      if (mainGrid) mainGrid.classList.add("hidden");
+      if (subtopicsPanel) subtopicsPanel.classList.add("hidden");
 
       if (subtopic === "wege") {
         if (grundlagenPanel) grundlagenPanel.classList.add("hidden");
         if (wegePanel) wegePanel.classList.remove("hidden");
-        if (btnWege) {
-          btnWege.classList.add("border", "border-cyan-500/40", "bg-cyan-500/10");
-        }
-        if (btnGrundlagen) {
-          btnGrundlagen.classList.remove("border-emerald-500/30", "bg-emerald-500/10");
-        }
+        document.querySelectorAll("#gg-wege-panel .stagger-tile").forEach((tile, i) => {
+          tile.style.animation = "none";
+          void tile.offsetWidth;
+          tile.style.animation = `tilePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 55}ms forwards`;
+        });
       } else {
         if (wegePanel) wegePanel.classList.add("hidden");
         if (grundlagenPanel) grundlagenPanel.classList.remove("hidden");
-        if (btnGrundlagen) {
-          btnGrundlagen.classList.add("border", "border-emerald-500/30", "bg-emerald-500/10");
-        }
-        if (btnWege) {
-          btnWege.classList.remove("border-cyan-500/40", "bg-cyan-500/10");
-        }
         document.querySelectorAll("#gg-grundlagen-grid .stagger-tile").forEach((tile, i) => {
           tile.style.animation = "none";
           void tile.offsetWidth;
@@ -4787,6 +4929,11 @@
         });
       }
       refreshIcons();
+    }
+
+    // Zurück von den Aufgaben-Kacheln zu den 2 Unterthemen von Gesprächsgestaltung
+    function backToGGSubtopics() {
+      toggleGespraechsgestaltungHub(true);
     }
 
     function openKommStudySheet() {
@@ -4812,13 +4959,15 @@
       refreshIcons();
     }
 
-    // Zurück-Button oben rechts in der Lernkachel -> zeigt wieder die Themen-Übersicht
+    // Zurück-Button oben rechts in der Lernkachel -> zeigt wieder die Themen-Übersicht des aktiven Bereichs
     function backToModuleOverview() {
       if (autoAdvanceTimeout) {
         clearTimeout(autoAdvanceTimeout);
         autoAdvanceTimeout = null;
       }
       const mainGrid = document.getElementById("main-topics-grid");
+      const rwLauncher = document.getElementById("rw-topic-launcher");
+      const ggLauncher = document.getElementById("gg-topic-launcher");
       const rwContent = document.getElementById("rw-expandable-content");
       const ggContent = document.getElementById("gg-expandable-content");
       const selectionPanel = document.getElementById("rw-selection-panel");
@@ -4827,7 +4976,6 @@
       const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
 
       isTaskOpenInLernen = false;
-      if (mainGrid) mainGrid.classList.remove("hidden");
       if (quizWrap) quizWrap.classList.add("hidden");
       if (wsWrap) wsWrap.classList.add("hidden");
       if (kommSheetWrap) kommSheetWrap.classList.add("hidden");
@@ -4841,6 +4989,12 @@
       } else {
         isRechnungswesenOpen = true;
         isGespraechsgestaltungOpen = false;
+        if (mainGrid) {
+          mainGrid.classList.remove("hidden");
+          mainGrid.className = "grid grid-cols-1 gap-5";
+        }
+        if (rwLauncher) rwLauncher.classList.remove("hidden");
+        if (ggLauncher) ggLauncher.classList.add("hidden");
         if (ggContent) ggContent.classList.add("hidden");
         if (rwContent) rwContent.classList.remove("hidden");
         if (selectionPanel) selectionPanel.classList.remove("hidden");
@@ -4955,9 +5109,9 @@
           return;
         }
 
-        currentQuestionSeconds++;
-        const today = getDateKey();
+        currentQuestionSeconds += 1;
         ensureTodayEntry();
+        const today = getDateKey();
         state.dailyStats[today].seconds = (state.dailyStats[today].seconds || 0) + 1;
         updateStudyTimeKPIOnly();
         if (state.dailyStats[today].seconds % 10 === 0) {
@@ -4967,13 +5121,27 @@
       }, 1000);
     }
 
-    function formatStudyTime(totalSeconds) {
-      const mins = Math.floor(totalSeconds / 60);
-      const secs = totalSeconds % 60;
-      if (mins === 0) {
-        return `0 Min ${String(secs).padStart(2, "0")}s`;
+    function updateStudyTimeKPIOnly() {
+      const today = getDateKey();
+      const totalSec = (state.dailyStats[today] && state.dailyStats[today].seconds) || 0;
+      const mins = Math.floor(totalSec / 60);
+      const secs = String(totalSec % 60).padStart(2, "0");
+      const el = document.getElementById("kpi-study-time");
+      if (el) el.textContent = `${mins} Min ${secs}s`;
+
+      const subEl = document.getElementById("kpi-study-sub");
+      if (subEl) {
+        if (currentQuestionSeconds >= 300 && isUserActivelyLearning()) {
+          subEl.className = "flex items-center space-x-1.5 text-xs text-amber-400 font-semibold mt-1";
+          subEl.innerHTML = `<i data-lucide="pause-circle" class="w-4 h-4"></i><span>Pausiert (>5 Min an Frage)</span>`;
+        } else if (isUserActivelyLearning()) {
+          subEl.className = "flex items-center space-x-1.5 text-xs text-emerald-400 font-semibold mt-1";
+          subEl.innerHTML = `<i data-lucide="activity" class="w-4 h-4"></i><span>Zählt aktiv beim Lernen</span>`;
+        } else {
+          subEl.className = "flex items-center space-x-1.5 text-xs text-slate-400 font-semibold mt-1";
+          subEl.innerHTML = `<i data-lucide="clock" class="w-4 h-4"></i><span>Wartet auf Lernaufgabe</span>`;
+        }
       }
-      return `${mins} Min ${String(secs).padStart(2, "0")}s`;
     }
 
     function calculateCurrentStreak() {
@@ -4983,8 +5151,8 @@
       while (true) {
         const key = getDateKey(cursor);
         const entry = state.dailyStats[key];
-        const isToday = key === getDateKey();
-        if (entry && (entry.seconds > 0 || entry.xp > 0 || isToday)) {
+        const hasActivity = entry && (entry.seconds > 0 || entry.xp > 0 || key === getDateKey());
+        if (hasActivity) {
           streak++;
           cursor.setDate(cursor.getDate() - 1);
         } else {
@@ -4992,24 +5160,6 @@
         }
       }
       return Math.max(1, streak);
-    }
-
-    function updateStudyTimeKPIOnly() {
-      const today = getDateKey();
-      const todaySec = (state.dailyStats[today] && state.dailyStats[today].seconds) || 0;
-      const timeEl = document.getElementById("kpi-study-time");
-      if (timeEl) timeEl.textContent = formatStudyTime(todaySec);
-
-      const subEl = document.getElementById("kpi-study-sub");
-      if (subEl) {
-        if (currentQuestionSeconds >= 300 && isUserActivelyLearning()) {
-          subEl.innerHTML = `<i data-lucide="pause-circle" class="w-4 h-4 text-amber-400"></i><span class="text-amber-300">Pausiert (über 5 Min an Frage)</span>`;
-        } else if (isUserActivelyLearning()) {
-          subEl.innerHTML = `<i data-lucide="activity" class="w-4 h-4"></i><span>Lernzeit läuft aktiv</span>`;
-        } else {
-          subEl.innerHTML = `<i data-lucide="pause-circle" class="w-4 h-4 text-slate-400"></i><span class="text-slate-400">Pausiert &bull; Startet beim Lernen</span>`;
-        }
-      }
     }
 
     // Nav Switcher
@@ -5098,22 +5248,32 @@
         }
         if (settingsInitial) settingsInitial.classList.add("hidden");
       } else {
-        if (headerImg) headerImg.classList.add("hidden");
+        if (headerImg) {
+          headerImg.src = "";
+          headerImg.classList.add("hidden");
+        }
         if (headerInitial) headerInitial.classList.remove("hidden");
-        if (settingsImg) settingsImg.classList.add("hidden");
+        if (settingsImg) {
+          settingsImg.src = "";
+          settingsImg.classList.add("hidden");
+        }
         if (settingsInitial) settingsInitial.classList.remove("hidden");
       }
 
-      // Apply Monochrome or Default Theme
+      // Apply Monochrome, Duck or Default Theme
+      document.documentElement.classList.remove("theme-monochrome", "theme-duck");
+      document.body.classList.remove("theme-monochrome", "theme-duck");
+
       if (state.theme === "monochrome") {
         document.documentElement.classList.add("theme-monochrome");
         document.documentElement.classList.remove("bg-slate-950");
         document.body.classList.add("theme-monochrome");
         document.body.classList.remove("bg-slate-950");
+      } else if (state.theme === "duck") {
+        document.documentElement.classList.add("theme-duck", "bg-slate-950");
+        document.body.classList.add("theme-duck", "bg-slate-950");
       } else {
-        document.documentElement.classList.remove("theme-monochrome");
         document.documentElement.classList.add("bg-slate-950");
-        document.body.classList.remove("theme-monochrome");
         document.body.classList.add("bg-slate-950");
       }
 
@@ -5143,15 +5303,21 @@
 
     function updateThemeButtonsUI() {
       const btnDef = document.getElementById("theme-btn-default");
+      const btnDuck = document.getElementById("theme-btn-duck");
       const btnMono = document.getElementById("theme-btn-monochrome");
-      if (!btnDef || !btnMono) return;
+      if (!btnDef || !btnMono || !btnDuck) return;
+
+      const inactiveClass = "p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 glass-pill border-white/10 hover:bg-white/10";
+      btnDef.className = inactiveClass;
+      btnDuck.className = inactiveClass;
+      btnMono.className = inactiveClass;
 
       if (state.theme === "monochrome") {
-        btnMono.className = "p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 bg-white/15 border-white";
-        btnDef.className = "p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 glass-pill border-white/10 hover:bg-white/10";
+        btnMono.className = "p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 bg-white/15 border-white";
+      } else if (state.theme === "duck") {
+        btnDuck.className = "p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 bg-amber-500/20 border-amber-400 shadow-lg shadow-amber-500/10";
       } else {
-        btnDef.className = "p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 bg-indigo-600/20 border-indigo-400";
-        btnMono.className = "p-3.5 rounded-2xl border text-left transition flex items-center space-x-3 glass-pill border-white/10 hover:bg-white/10";
+        btnDef.className = "p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 bg-indigo-600/20 border-indigo-400";
       }
     }
 
