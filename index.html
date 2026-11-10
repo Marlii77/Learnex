@@ -303,6 +303,53 @@
       animation: glossaryPop 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
+    /* 3D Flip-Card Styles (Gestochen scharfes Text-Rendering ohne 3D-Textur-Unschärfe) */
+    .flip-card-perspective {
+      position: relative;
+      width: 100%;
+      height: 320px;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .flip-card-face {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden !important;
+      -webkit-backface-visibility: hidden !important;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+    .flip-card-front {
+      transform: perspective(1400px) rotateY(0deg);
+      z-index: 2;
+    }
+    .flip-card-inner.is-flipped .flip-card-front {
+      transform: perspective(1400px) rotateY(180deg);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .flip-card-back {
+      transform: perspective(1400px) rotateY(-180deg);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .flip-card-inner.is-flipped .flip-card-back {
+      transform: perspective(1400px) rotateY(0deg);
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 3;
+    }
+
     /* Staggered Tile Reveal Animation for Rechnungswesen Hub */
     @keyframes tilePopIn {
       0% {
@@ -570,9 +617,9 @@
             <span class="hidden md:inline">Kontenplan</span>
           </button>
 
-          <button onclick="switchView('erfolge')" id="nav-erfolge" title="Erfolge" class="nav-pill px-2.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2 shrink-0">
-            <i data-lucide="medal" class="w-4 h-4 shrink-0"></i>
-            <span class="hidden md:inline">Erfolge</span>
+          <button onclick="switchView('erfolge')" id="nav-erfolge" title="Digitale Karteikarten" class="nav-pill px-2.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-400 hover:text-white flex items-center space-x-2 shrink-0">
+            <i data-lucide="layers" class="w-4 h-4 shrink-0"></i>
+            <span class="hidden md:inline">Karteikarten</span>
           </button>
         </nav>
 
@@ -618,13 +665,17 @@
           </div>
 
           <!-- Quick Action Buttons -->
-          <div class="flex items-center space-x-3 shrink-0 relative z-10">
-            <button onclick="switchView('tkonten')" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-400 hover:to-indigo-500 text-white text-xs font-bold transition transform hover:-translate-y-0.5 shadow-xl shadow-amber-500/10 flex items-center space-x-2">
-              <i data-lucide="rocket" class="w-4 h-4"></i>
-              <span>T-Konten Labor</span>
+          <div class="flex items-center flex-wrap gap-2.5 shrink-0 relative z-10">
+            <button onclick="startMistakeTrainerFromAnywhere()" id="dashboard-mistake-btn" class="px-4 py-3 rounded-2xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 text-xs font-bold transition transform hover:-translate-y-0.5 flex items-center space-x-2">
+              <i data-lucide="shield-alert" class="w-4 h-4 text-rose-400"></i>
+              <span>Fehler-Trainer (<span id="dashboard-mistake-count">0</span>)</span>
             </button>
-            <button onclick="switchView('quiz')" class="px-5 py-3 rounded-2xl glass-pill hover:bg-white/10 text-white text-xs font-semibold transition transform hover:-translate-y-0.5 flex items-center space-x-2">
-              <i data-lucide="brain-circuit" class="w-4 h-4 text-emerald-400"></i>
+            <button onclick="switchView('erfolge')" class="px-4 py-3 rounded-2xl glass-pill hover:bg-white/10 text-white text-xs font-semibold transition transform hover:-translate-y-0.5 flex items-center space-x-2">
+              <i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i>
+              <span>Karteikarten</span>
+            </button>
+            <button onclick="switchView('quiz')" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-400 hover:to-indigo-500 text-white text-xs font-bold transition transform hover:-translate-y-0.5 shadow-xl shadow-amber-500/10 flex items-center space-x-2">
+              <i data-lucide="brain-circuit" class="w-4 h-4"></i>
               <span>Jetzt Lernen</span>
             </button>
           </div>
@@ -796,6 +847,33 @@
       <!-- ========================================== -->
       <section id="view-quiz" class="hidden space-y-6 animate-view-enter">
 
+        <!-- Smarte Prüfungs-Tools Leiste (Fehler-Trainer, Karteikarten & Fokus-Timer) -->
+        <div id="lernen-smart-toolbar" class="glass-v5 rounded-3xl p-4 sm:p-5 flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center space-x-3">
+            <div class="p-2.5 rounded-2xl icon-box-clean text-rose-400">
+              <i data-lucide="target" class="w-5 h-5 icon-anim"></i>
+            </div>
+            <div>
+              <h3 class="text-xs sm:text-sm font-extrabold text-white">Smarte Prüfungs-Tools</h3>
+              <p class="text-[11px] text-slate-400" id="mistake-toolbar-sub">Gezieltes Wiederholen falsch beantworteter Fragen &amp; 3D-Karteikarten</p>
+            </div>
+          </div>
+          <div class="flex items-center flex-wrap gap-2">
+            <button onclick="startMistakeTrainerFromAnywhere()" id="lernen-mistake-btn" class="px-4 py-2 rounded-2xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 text-xs font-bold transition flex items-center space-x-2">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-rose-400"></i>
+              <span>Fehler-Trainer (<span id="lernen-mistake-count">0</span>)</span>
+            </button>
+            <button onclick="switchView('erfolge')" class="px-4 py-2 rounded-2xl glass-pill hover:bg-white/10 text-cyan-300 text-xs font-bold transition flex items-center space-x-2">
+              <i data-lucide="layers" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span>3D-Karteikarten</span>
+            </button>
+            <button onclick="togglePomodoroModal()" class="px-3.5 py-2 rounded-2xl glass-pill hover:bg-white/10 text-amber-300 text-xs font-bold transition flex items-center space-x-1.5">
+              <i data-lucide="timer" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span>Fokus-Timer</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Hauptkacheln-Grid: 1. Rechnungswesen & 2. Gesprächsgestaltung -->
         <div id="main-topics-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <!-- Hauptkachel 1: Rechnungswesen -->
@@ -874,7 +952,7 @@
                   <div>
                     <div class="text-[10px] font-extrabold text-cyan-300 uppercase tracking-widest">Block 2</div>
                     <div class="text-base sm:text-lg font-extrabold text-white mt-0.5">Kommunikationswege gestalten</div>
-                    <div class="text-xs text-slate-300 mt-0.5">Kanäle, Medienwahl &amp; zielgerichtete Übermittlung</div>
+                    <div class="text-xs text-slate-300 mt-0.5">Telefon, Videokonferenz, Weg wählen &amp; Interkulturell</div>
                   </div>
                 </div>
               </button>
@@ -953,30 +1031,69 @@
             </div>
           </div>
 
-          <!-- Ebene 2B: Kacheln für "Kommunikationswege gestalten" -->
+          <!-- Ebene 2B: Kacheln für "Kommunikationswege gestalten" (Block 2 komplett ausgebaut) -->
           <div id="gg-wege-panel" class="hidden glass-v5 rounded-3xl p-5 sm:p-6 space-y-5">
             <div class="flex items-center justify-between flex-wrap gap-3">
               <div class="flex items-center space-x-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
-                <span class="text-xs font-bold text-slate-200 uppercase tracking-wider">Kommunikationswege gestalten</span>
+                <span class="text-xs font-bold text-slate-200 uppercase tracking-wider">Block 2 &bull; Kommunikationswege gestalten</span>
               </div>
-              <div class="flex items-center space-x-2.5">
-                <span class="text-[11px] text-slate-400">Bereit für deine nächsten Arbeitsblätter</span>
+              <div class="flex items-center flex-wrap gap-2">
+                <!-- Spickzettel, Telefon-Dialog, Interkulturelle Rätsel & Selbstcheck -->
+                <button onclick="openKommWegeSheet()" class="px-4 py-2 rounded-2xl glass-pill text-cyan-300 hover:bg-cyan-500/20 text-xs font-bold transition flex items-center space-x-2">
+                  <i data-lucide="book-open-check" class="w-4 h-4 text-cyan-400"></i>
+                  <span>Spickzettel, Dialog &amp; Selbstcheck</span>
+                </button>
                 <button onclick="backToGGSubtopics()" title="Zurück zur Themenauswahl" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
                   <i data-lucide="corner-up-left" class="w-4 h-4"></i>
                 </button>
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <button onclick="filterQuizCategory('komm_wege', this)" class="quiz-cat-pill stagger-tile p-5 rounded-2xl glass-pill hover:bg-white/10 transition group flex items-center space-x-4 text-left">
-                <div class="p-3 rounded-xl icon-box-clean text-cyan-300">
-                  <i data-lucide="network" class="w-5 h-5 icon-anim"></i>
+            <div id="gg-wege-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              <!-- 1. Telefon: Meldeformel & Stimme -->
+              <button onclick="filterQuizCategory('komm_telefon', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-rose-300">
+                  <i data-lucide="phone-call" class="w-5 h-5 icon-anim"></i>
                 </div>
-                <div>
-                  <div class="font-bold text-sm text-white">Kommunikationswege &amp; Medienwahl</div>
-                  <div class="text-[11px] text-slate-400">Basis-Training starten</div>
+                <span class="font-bold text-xs sm:text-sm text-white">1. Telefon</span>
+                <span class="text-[10px] text-slate-400">Meldeformel &amp; Stimme</span>
+              </button>
+
+              <!-- 2. Video: Regeln für Videokonferenzen -->
+              <button onclick="filterQuizCategory('komm_video', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-indigo-300">
+                  <i data-lucide="video" class="w-5 h-5 icon-anim"></i>
                 </div>
+                <span class="font-bold text-xs sm:text-sm text-white">2. Video</span>
+                <span class="text-[10px] text-slate-400">Regeln &amp; Vor-/Nachteile</span>
+              </button>
+
+              <!-- 3. Weg wählen: Telefon, Video oder persönlich? -->
+              <button onclick="filterQuizCategory('komm_wege', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-emerald-300">
+                  <i data-lucide="compass" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">3. Weg wählen</span>
+                <span class="text-[10px] text-slate-400">Telefon, Video, Präsenz</span>
+              </button>
+
+              <!-- 4. Interkulturell & Recht -->
+              <button onclick="filterQuizCategory('komm_interkulturell', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5">
+                <div class="p-2.5 rounded-xl icon-box-clean text-amber-300">
+                  <i data-lucide="globe-2" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">4. Interkulturell</span>
+                <span class="text-[10px] text-slate-400">Länder, Sitten &amp; Recht</span>
+              </button>
+
+              <!-- 5. Alle Block 2 Themen mischen -->
+              <button onclick="filterQuizCategory('komm_block2_all', this)" class="quiz-cat-pill stagger-tile p-4 rounded-2xl glass-pill hover:bg-white/10 transition group flex flex-col items-center justify-center text-center space-y-2.5 col-span-2 sm:col-span-1">
+                <div class="p-2.5 rounded-xl icon-box-clean text-cyan-300">
+                  <i data-lucide="dices" class="w-5 h-5 icon-anim"></i>
+                </div>
+                <span class="font-bold text-xs sm:text-sm text-white">Alle Block 2</span>
+                <span class="text-[10px] text-slate-400">Komplett-Mix</span>
               </button>
             </div>
           </div>
@@ -1468,6 +1585,237 @@
             </div>
           </div>
 
+          <!-- ========================================== -->
+          <!-- SUB-VIEW D: BLOCK 2 SPICKZETTEL, TELEFON-DIALOG, LÄNDER-RÄTSEL & SELBSTCHECK -->
+          <!-- ========================================== -->
+          <div id="lernen-komm-wege-sheet-wrapper" class="hidden space-y-6">
+            <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 border border-cyan-500/30">
+              
+              <!-- Header -->
+              <div class="flex items-center justify-between flex-wrap gap-3 border-b border-white/10 pb-4">
+                <div>
+                  <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 uppercase tracking-widest">
+                    LERNFELD 7 &bull; BLOCK 2 &bull; KOMMUNIKATIONSWEGE GESTALTEN
+                  </span>
+                  <h3 class="text-xl sm:text-2xl font-extrabold text-white mt-2">Telefon-Spickzettel, Videokonferenz, Interkulturelles &amp; Selbstcheck</h3>
+                </div>
+                <button onclick="backToModuleOverview()" title="Zurück zur Modul-Übersicht" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                  <i data-lucide="corner-up-left" class="w-4 h-4"></i>
+                </button>
+              </div>
+
+              <!-- 1. Einstieg: Misslungenes Telefonat vs. Die 3-teilige Meldeformel -->
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                <!-- Negativbeispiel Nicole Höver -->
+                <div class="glass-pill p-5 rounded-2xl border border-rose-500/30 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-extrabold text-rose-300 uppercase tracking-wider flex items-center space-x-1.5">
+                      <i data-lucide="phone-missed" class="w-4 h-4"></i>
+                      <span>Einstieg: Was läuft bei Nicole schief?</span>
+                    </span>
+                    <span class="text-[10px] font-bold bg-rose-500/20 text-rose-300 px-2.5 py-0.5 rounded-full">6x Klingeln</span>
+                  </div>
+                  <div class="space-y-2 text-xs">
+                    <div class="p-2.5 rounded-xl bg-slate-900/80 text-slate-200"><strong class="text-rose-400">Nicole (gereizt):</strong> „Höver.“ <span class="text-[10px] text-slate-400">(Keine Firma, kein Gruß!)</span></div>
+                    <div class="p-2.5 rounded-xl bg-rose-950/30 text-slate-200 ml-4"><strong class="text-amber-300">Kunde (irritiert):</strong> „Äh ... guten Tag, Jacobs hier. Bin ich bei der Primus GmbH richtig?“</div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/80 text-slate-200"><strong class="text-rose-400">Nicole (ungeduldig):</strong> „Ja, sicher. ... Welcher denn? ... Wie viele? ... Moment, ich muss erst das Programm aufmachen und einen Stift suchen.“</div>
+                  </div>
+                  <p class="text-[11px] text-slate-300 pt-1">
+                    <strong class="text-white">Folge:</strong> Herr Jacobs fühlt sich als Störfaktor, ist verunsichert und zweifelt an der Professionalität der Primus GmbH.
+                  </p>
+                </div>
+
+                <!-- Die 3-teilige Meldeformel & Goldene Telefonregeln -->
+                <div class="glass-pill p-5 rounded-2xl border border-emerald-500/30 space-y-4 flex flex-col justify-between">
+                  <div class="space-y-2">
+                    <span class="text-xs font-extrabold text-emerald-300 uppercase tracking-wider flex items-center space-x-1.5">
+                      <i data-lucide="phone-call" class="w-4 h-4"></i>
+                      <span>Am Telefon müssen deine Ohren sehen</span>
+                    </span>
+                    <p class="text-xs text-slate-300">Am Telefon fehlt die Körpersprache – deine <strong class="text-white">Stimme</strong> (Tonfall, Tempo, Lautstärke, Lächeln!) entscheidet über Vertrauen.</p>
+                  </div>
+
+                  <!-- 3-Schritte Meldeformel -->
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-center text-xs">
+                    <div class="p-3 rounded-xl bg-rose-900/50 border border-rose-400/40">
+                      <div class="text-[10px] font-bold text-rose-300 uppercase">1. Firma</div>
+                      <div class="font-extrabold text-white mt-0.5">„Primus GmbH ...“</div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-rose-900/50 border border-rose-400/40">
+                      <div class="text-[10px] font-bold text-rose-300 uppercase">2. Begrüßung</div>
+                      <div class="font-extrabold text-white mt-0.5">„... guten Tag ...“</div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-rose-900/50 border border-rose-400/40">
+                      <div class="text-[10px] font-bold text-rose-300 uppercase">3. Vor- &amp; Zuname</div>
+                      <div class="font-extrabold text-white mt-0.5">„... Nicole Höver.“</div>
+                    </div>
+                  </div>
+
+                  <ul class="text-[11px] text-slate-300 space-y-1">
+                    <li>&bull; <strong class="text-white">Max. 3x Klingeln:</strong> Spätestens nach dem 3. Klingeln abnehmen.</li>
+                    <li>&bull; <strong class="text-white">Telefonarbeitsplatz:</strong> PC-Programm offen, Stift &amp; Notizblock bereit, Ruhe schaffen.</li>
+                    <li>&bull; <strong class="text-amber-300">Profi-Trick:</strong> Aufrecht sitzen &amp; beim Telefonieren lächeln – man hört es!</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- 2. Spickzettel: Sätze, mit denen du am Telefon souverän klingst -->
+              <div class="glass-pill p-5 rounded-2xl border border-white/10 space-y-3">
+                <div class="text-xs font-extrabold text-amber-300 uppercase tracking-wider">Spickzettel: Sätze, mit denen du am Telefon souverän klingst</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
+                  <div class="p-3 rounded-xl bg-slate-900/70 flex flex-col space-y-1">
+                    <span class="font-bold text-rose-300">Annehmen</span>
+                    <span class="text-slate-200">„Primus GmbH, guten Tag, Sie sprechen mit Nicole Höver. Was kann ich für Sie tun?“</span>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-900/70 flex flex-col space-y-1">
+                    <span class="font-bold text-rose-300">Bedarf ermitteln (offene W-Fragen)</span>
+                    <span class="text-slate-200">„Wofür möchten Sie die Stühle einsetzen?“ – „Welche Menge benötigen Sie?“</span>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-900/70 flex flex-col space-y-1">
+                    <span class="font-bold text-rose-300">Nachfragen</span>
+                    <span class="text-slate-200">„Habe ich Sie richtig verstanden, dass ...?“ – „Würden Sie mir den Namen bitte buchstabieren?“</span>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-900/70 flex flex-col space-y-1">
+                    <span class="font-bold text-rose-300">Wiederholen (Menge, Preis, Termin)</span>
+                    <span class="text-slate-200">„Ich fasse kurz zusammen: zehn Drehstühle Super-Star, Lieferung bis Freitag.“</span>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-900/70 flex flex-col space-y-1">
+                    <span class="font-bold text-rose-300">Weiterleiten</span>
+                    <span class="text-slate-200">„Einen Moment bitte, ich verbinde Sie mit Frau Konski.“</span>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-900/70 flex flex-col space-y-1">
+                    <span class="font-bold text-rose-300">Verabschieden (mit Namen!)</span>
+                    <span class="text-slate-200">„Vielen Dank für Ihren Anruf, Herr Jacobs. Auf Wiederhören!“</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Videokonferenz & Kommunikationsweg wählen -->
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                <div class="glass-pill p-5 rounded-2xl border border-indigo-500/30 space-y-3">
+                  <div class="text-xs font-extrabold text-indigo-300 uppercase tracking-wider">Videokonferenz: Vor-/Nachteile &amp; 4 Setup-Regeln</div>
+                  <div class="grid grid-cols-2 gap-2.5 text-xs">
+                    <div class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 space-y-1">
+                      <div class="font-bold text-emerald-300">+ Vorteile</div>
+                      <div class="text-[11px] text-slate-200">&bull; Spart Reisezeit &amp; Kosten</div>
+                      <div class="text-[11px] text-slate-200">&bull; Schont die Umwelt</div>
+                      <div class="text-[11px] text-slate-200">&bull; Ortsunabhängig (Homeoffice)</div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-rose-950/40 border border-rose-500/30 space-y-1">
+                      <div class="font-bold text-rose-300">- Nachteile</div>
+                      <div class="text-[11px] text-slate-200">&bull; Unpersönlicher als vor Ort</div>
+                      <div class="text-[11px] text-slate-200">&bull; Kaum Small Talk möglich</div>
+                      <div class="text-[11px] text-slate-200">&bull; Technik-/Tonstörungen</div>
+                    </div>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-900/80 text-[11px] text-slate-200 space-y-1">
+                    <div class="font-bold text-cyan-300">Setup-Challenge (Die 4 Regeln gegen No-Gos):</div>
+                    <div>1. <strong class="text-white">Licht von vorn</strong> (kein Gegenlicht vom Fenster im Rücken)</div>
+                    <div>2. <strong class="text-white">Kamera auf Augenhöhe</strong> &amp; Blick in die Linse</div>
+                    <div>3. <strong class="text-white">Hintergrund aufgeräumt/neutral</strong> &amp; Business-Kleidung</div>
+                    <div>4. <strong class="text-white">Ton ohne Störgeräusche</strong> (Headset, Mute bei Nichtsprechen)</div>
+                  </div>
+                </div>
+
+                <!-- Welcher Weg passt zu welchem Anlass? -->
+                <div class="glass-pill p-5 rounded-2xl border border-cyan-500/30 space-y-2.5 text-xs">
+                  <div class="text-xs font-extrabold text-cyan-300 uppercase tracking-wider">Entscheidungshilfe: Kommunikationsweg wählen</div>
+                  <div class="space-y-2">
+                    <div class="p-2.5 rounded-xl bg-slate-900/70 flex justify-between items-center gap-2">
+                      <span class="text-slate-200">1. Kurze Rückfrage einer Stammkundin zum Liefertermin</span>
+                      <span class="px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 font-bold shrink-0">Telefon</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/70 flex justify-between items-center gap-2">
+                      <span class="text-slate-200">2. Wöchentliche Projektbesprechung an drei Standorten</span>
+                      <span class="px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 font-bold shrink-0">Videokonferenz</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/70 flex justify-between items-center gap-2">
+                      <span class="text-slate-200">3. Erstgespräch mit potenziellem Großkunden aus Singapur</span>
+                      <span class="px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 font-bold shrink-0">Videokonferenz</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/70 flex justify-between items-center gap-2">
+                      <span class="text-slate-200">4. Vertragsverhandlung Großauftrag mit langjährigem Kunden</span>
+                      <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold shrink-0">Persönlich vor Ort</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/70 flex justify-between items-center gap-2">
+                      <span class="text-slate-200">5. Verärgerte 3. Reklamation eines wichtigen Kunden</span>
+                      <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold shrink-0">Persönlich / Telefon</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Interkulturelle Besonderheiten (Andere Länder, andere Sitten) -->
+              <div class="glass-pill p-5 rounded-2xl border border-amber-500/30 space-y-4">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <div>
+                    <span class="text-[10px] font-extrabold text-amber-300 uppercase tracking-widest">ARBEITSBLATT 3 &amp; 4 &bull; INTERKULTURELLE KOMPETENZ &amp; RECHT</span>
+                    <h4 class="text-base font-bold text-white">Länder-Besonderheiten (D, TR, USA, CN) &amp; Die 4 Praxis-Rätsel</h4>
+                  </div>
+                  <span class="text-xs font-bold text-amber-300 bg-amber-500/20 px-3 py-1 rounded-full">Transkulturalität = Kulturen greifen ineinander</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                  <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10 space-y-1">
+                    <div class="font-extrabold text-amber-300">🇩🇪 Deutschland (D)</div>
+                    <div class="text-slate-300">&bull; Pünktlichkeit = Respekt, man kommt schnell „zur Sache“.</div>
+                    <div class="text-slate-300">&bull; Verträge werden schriftlich fixiert und exakt erfüllt.</div>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10 space-y-1">
+                    <div class="font-extrabold text-amber-300">🇹🇷 Türkei (TR)</div>
+                    <div class="text-slate-300">&bull; Weicherer Handschlag, akademische/berufliche Titel sehr wichtig.</div>
+                    <div class="text-slate-300">&bull; Gastfreundschaft, starke Personenorientierung, elegantes Auftreten. („Deniz“ = m/w!)</div>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10 space-y-1">
+                    <div class="font-extrabold text-amber-300">🇺🇸 USA</div>
+                    <div class="text-slate-300">&bull; „How do you do?“ ist nur ein Gruß; schneller Wechsel zum Vornamen.</div>
+                    <div class="text-slate-300">&bull; Fragen nach Einkommen ok, aber Vorsicht bei Religion &amp; Politik!</div>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10 space-y-1">
+                    <div class="font-extrabold text-amber-300">🇨🇳 China (CN)</div>
+                    <div class="text-slate-300">&bull; „Gesicht wahren“: Kein direktes Nein („interessantes Angebot“ = oft Absage).</div>
+                    <div class="text-slate-300">&bull; Verträge gelten eher als Absichtserklärung; Beziehung zählt.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 5. Interaktiver Selbstcheck: Bist du fit für die Klassenarbeit? -->
+              <div class="glass-pill p-5 rounded-2xl border border-emerald-500/40 bg-emerald-950/20 space-y-3">
+                <div class="flex items-center space-x-2 text-emerald-300 font-extrabold text-xs uppercase tracking-wider">
+                  <i data-lucide="check-square" class="w-4 h-4"></i>
+                  <span>Selbstcheck: Bist du fit für die Klassenarbeit?</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-200">
+                  <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-white/5 cursor-pointer">
+                    <input type="checkbox" class="rounded accent-emerald-500 w-4 h-4">
+                    <span>Ich kann mich mit der vollständigen 3-teiligen Meldeformel am Telefon melden.</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-white/5 cursor-pointer">
+                    <input type="checkbox" class="rounded accent-emerald-500 w-4 h-4">
+                    <span>Ich kann erklären, warum die Stimme am Telefon der wichtigste Erfolgsfaktor ist.</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-white/5 cursor-pointer">
+                    <input type="checkbox" class="rounded accent-emerald-500 w-4 h-4">
+                    <span>Ich kann einen optimalen Telefonarbeitsplatz (Raum, Technik, Unterlagen) beschreiben.</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-white/5 cursor-pointer">
+                    <input type="checkbox" class="rounded accent-emerald-500 w-4 h-4">
+                    <span>Ich kann je 3 Vor- und Nachteile sowie 4 Regeln für Videokonferenzen nennen.</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-white/5 cursor-pointer">
+                    <input type="checkbox" class="rounded accent-emerald-500 w-4 h-4">
+                    <span>Ich kann begründen, wann Telefon, Videokonferenz oder persönliches Treffen passt.</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-white/5 cursor-pointer">
+                    <input type="checkbox" class="rounded accent-emerald-500 w-4 h-4">
+                    <span>Ich kenne die kulturellen Besonderheiten (D, TR, USA, CN, Polen) sowie Inter- vs. Transkulturalität.</span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
       </section>
@@ -1478,18 +1826,18 @@
       <section id="view-tkonten" class="hidden space-y-6 animate-view-enter">
         
         <!-- Header & Rules Banner -->
-        <div class="glass-v5 rounded-3xl p-6 space-y-4">
-          <div class="flex items-center justify-between border-b border-white/10 pb-4 flex-wrap gap-3">
+        <div class="glass-v5 rounded-3xl p-6 border border-amber-500/30 space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-3 border-b border-white/10 pb-4">
             <div class="flex items-center space-x-3">
               <div class="p-3 rounded-2xl icon-box-clean text-amber-400">
                 <i data-lucide="landmark" class="w-6 h-6 icon-anim"></i>
               </div>
               <div>
                 <h2 class="text-xl font-bold text-white tracking-tight">T-Konten Intensivlabor für <span id="tkonten-user-name">Marlon</span></h2>
-                <p class="text-xs text-slate-400">Interaktives Training für Soll- &amp; Haben-Zuordnungen (6 wechselnde Geschäftsfälle).</p>
+                <p class="text-xs text-slate-400">Interaktives Training für Soll- &amp; Haben-Zuordnungen (inkl. Aufgabe 2).</p>
               </div>
             </div>
-            <!-- Direct Case Switcher Pills -->
+            <!-- Case Quick Switcher Pills -->
             <div class="flex items-center flex-wrap gap-1.5">
               <button onclick="loadTKontoCase(0)" id="tk-pill-0" class="px-3 py-1.5 rounded-full text-xs font-bold bg-amber-500 text-slate-950 transition">Fall 1</button>
               <button onclick="loadTKontoCase(1)" id="tk-pill-1" class="px-3 py-1.5 rounded-full text-xs font-bold glass-pill text-slate-300 hover:text-white transition">Fall 2</button>
@@ -1503,27 +1851,27 @@
           <!-- Rule Cards Grid -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
             <div class="glass-pill p-4 rounded-2xl space-y-1.5">
-              <div class="flex items-center space-x-2 text-indigo-400 font-bold text-xs uppercase tracking-wider">
+              <div class="flex items-center space-x-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
                 <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
                 <span>Aktivkonten (Bestand)</span>
               </div>
               <p class="text-xs text-slate-300 leading-relaxed">
-                <strong class="text-white">Zugänge im SOLL</strong> (links), <strong class="text-white">Abgänge im HABEN</strong> (rechts). Beisp.: Kasse, Bank, BGA.
+                <strong class="text-white">Zugänge im SOLL</strong> (links), <strong class="text-white">Abgänge im HABEN</strong> (rechts). Beisp.: <span class="hl-aktiv">Kasse</span>, <span class="hl-aktiv">Bank</span>, <span class="hl-aktiv">Waren</span>.
               </p>
             </div>
 
             <div class="glass-pill p-4 rounded-2xl space-y-1.5">
-              <div class="flex items-center space-x-2 text-amber-400 font-bold text-xs uppercase tracking-wider">
+              <div class="flex items-center space-x-2 text-rose-400 font-bold text-xs uppercase tracking-wider">
                 <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
                 <span>Passivkonten (Kapital)</span>
               </div>
               <p class="text-xs text-slate-300 leading-relaxed">
-                <strong class="text-white">Anfangsbestand &amp; Zugänge im HABEN</strong>, <strong class="text-white">Abgänge im SOLL</strong>. Beisp.: Verbindlichkeiten.
+                <strong class="text-white">Anfangsbestand &amp; Zugänge im HABEN</strong>, <strong class="text-white">Abgänge im SOLL</strong>. Beisp.: <span class="hl-passiv">Verbindlichkeiten a.LL</span>, <span class="hl-passiv">Darlehen</span>.
               </p>
             </div>
 
             <div class="glass-pill p-4 rounded-2xl space-y-1.5">
-              <div class="flex items-center space-x-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
+              <div class="flex items-center space-x-2 text-indigo-400 font-bold text-xs uppercase tracking-wider">
                 <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                 <span>Erfolgskonten</span>
               </div>
@@ -1539,7 +1887,7 @@
           <div class="flex items-center justify-between border-b border-white/10 pb-4">
             <div>
               <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 uppercase tracking-widest" id="tk-case-badge">
-                FALLSTUDIE 1 VON 3
+                FALLSTUDIE 1 VON 6
               </span>
               <h3 class="text-lg font-bold text-white mt-2" id="tk-case-title">Kauf einer Büromaschine auf Ziel</h3>
             </div>
@@ -1556,15 +1904,15 @@
             <!-- T-Konto 1 -->
             <div class="glass-pill p-5 rounded-2xl space-y-4 border border-indigo-500/30">
               <div class="text-center font-extrabold text-indigo-300 border-b border-white/10 pb-2 text-sm uppercase tracking-wider" id="tk-label-1">
-                BGA / Büromaschinen (Aktivkonto)
+                Konto 1
               </div>
               <div class="grid grid-cols-2 gap-4 text-center">
                 <div class="space-y-2 border-r border-white/10 pr-2">
-                  <div class="text-[11px] font-bold text-indigo-400 uppercase">SOLL</div>
+                  <div class="text-[11px] font-bold text-indigo-400 uppercase">SOLL (Links)</div>
                   <input type="number" id="tk-input-1-soll" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
                 </div>
                 <div class="space-y-2 pl-2">
-                  <div class="text-[11px] font-bold text-slate-400 uppercase">HABEN</div>
+                  <div class="text-[11px] font-bold text-slate-400 uppercase">HABEN (Rechts)</div>
                   <input type="number" id="tk-input-1-haben" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
                 </div>
               </div>
@@ -1573,15 +1921,15 @@
             <!-- T-Konto 2 -->
             <div class="glass-pill p-5 rounded-2xl space-y-4 border border-amber-500/30">
               <div class="text-center font-extrabold text-amber-300 border-b border-white/10 pb-2 text-sm uppercase tracking-wider" id="tk-label-2">
-                Verbindlichkeiten a.LL (Passivkonto)
+                Konto 2
               </div>
               <div class="grid grid-cols-2 gap-4 text-center">
                 <div class="space-y-2 border-r border-white/10 pr-2">
-                  <div class="text-[11px] font-bold text-slate-400 uppercase">SOLL</div>
+                  <div class="text-[11px] font-bold text-slate-400 uppercase">SOLL (Links)</div>
                   <input type="number" id="tk-input-2-soll" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
                 </div>
                 <div class="space-y-2 pl-2">
-                  <div class="text-[11px] font-bold text-amber-400 uppercase">HABEN</div>
+                  <div class="text-[11px] font-bold text-amber-400 uppercase">HABEN (Rechts)</div>
                   <input type="number" id="tk-input-2-haben" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
                 </div>
               </div>
@@ -1616,7 +1964,7 @@
           <div class="flex items-center justify-between flex-wrap gap-2">
             <div>
               <h2 class="text-xl font-bold text-white tracking-tight">IKR Kontenplan (Industriekontenrahmen)</h2>
-              <p class="text-xs text-slate-400">Vollständige Übersicht aller Kontenklassen (0 bis 9), Nummern und Kontenarten.</p>
+              <p class="text-xs text-slate-400">Komplettübersicht aller Kontenklassen 0 bis 9 (inkl. Schnellsuche).</p>
             </div>
             <span id="konten-count-badge" class="text-xs font-bold px-3 py-1 rounded-full glass-pill text-indigo-300">Alle Konten</span>
           </div>
@@ -1625,24 +1973,24 @@
           <div class="flex flex-col sm:flex-row gap-3">
             <div class="relative flex-1">
               <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-3.5"></i>
-              <input type="text" id="konten-search-input" oninput="renderFilteredKonten()" placeholder="Konto suchen (z. B. 0840 Fuhrpark, 2800 Bank, 4400, 6200 Löhne)..." class="w-full bg-slate-900/80 border border-white/10 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+              <input type="text" id="konten-search-input" oninput="renderFilteredKonten()" placeholder="Konto suchen (z. B. 2800 Bank, 0840 Fuhrpark, 4400 Verbindlichkeiten)..." class="w-full bg-slate-900/80 border border-white/10 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
             </div>
             <div class="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar">
               <button onclick="setKontenCat('all', this)" class="konten-cat-btn bg-indigo-600 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Alle</button>
-              <button onclick="setKontenCat('aktiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aktivkonten (Kl. 0–2)</button>
-              <button onclick="setKontenCat('passiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Passivkonten (Kl. 3–4)</button>
-              <button onclick="setKontenCat('ertrag', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Erträge (Kl. 5)</button>
-              <button onclick="setKontenCat('aufwand', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aufwendungen (Kl. 6–7)</button>
-              <button onclick="setKontenCat('abschluss', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Ergebnis &amp; KLR (Kl. 8–9)</button>
+              <button onclick="setKontenCat('aktiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aktivkonten</button>
+              <button onclick="setKontenCat('passiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Passivkonten</button>
+              <button onclick="setKontenCat('ertrag', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Erträge</button>
+              <button onclick="setKontenCat('aufwand', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aufwendungen</button>
+              <button onclick="setKontenCat('abschluss', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Ergebnis / KLR</button>
             </div>
           </div>
         </div>
 
         <!-- Glass Table -->
         <div class="glass-v5 rounded-3xl overflow-hidden">
-          <div class="overflow-x-auto custom-scrollbar">
+          <div class="overflow-x-auto custom-scrollbar max-h-[540px]">
             <table class="w-full text-left text-xs">
-              <thead class="bg-slate-900/90 text-slate-400 text-[11px] uppercase tracking-wider border-b border-white/10">
+              <thead class="bg-slate-900/95 text-slate-400 text-[11px] uppercase tracking-wider border-b border-white/10 sticky top-0 z-10">
                 <tr>
                   <th class="px-6 py-4 font-semibold">Konto-Nr.</th>
                   <th class="px-6 py-4 font-semibold">Bezeichnung</th>
@@ -1660,24 +2008,167 @@
       </section>
 
       <!-- ========================================== -->
-      <!-- SECTION 5: ERFOLGE & BADGES (SAVED-STYLE GRID) -->
+      <!-- SECTION 5: DIGITALE 3D-KARTEIKARTEN (FLIP-CARDS) -->
       <!-- ========================================== -->
       <section id="view-erfolge" class="hidden space-y-6 animate-view-enter">
         
-        <div class="glass-v5 rounded-3xl p-6 space-y-2">
-          <h2 class="text-xl font-bold text-white tracking-tight">Erfolge &amp; Freigeschaltete Badges</h2>
-          <p class="text-xs text-slate-400">Schließe Herausforderungen ab, um exklusive Visual-Badges freizuschalten.</p>
+        <!-- Top Header & Topic Filter -->
+        <div class="glass-v5 rounded-3xl p-6 space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-3">
+            <div class="flex items-center space-x-3">
+              <div class="p-3 rounded-2xl icon-box-clean text-cyan-300">
+                <i data-lucide="layers" class="w-6 h-6 icon-anim"></i>
+              </div>
+              <div>
+                <h2 class="text-xl font-bold text-white tracking-tight">Digitale 3D-Karteikarten (Flip-Cards)</h2>
+                <p class="text-xs text-slate-400">Klicke auf die Karte zum Umdrehen und trainiere alle Prüfungsbegriffe im Schnell-Check.</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span id="fc-progress-badge" class="text-xs font-bold px-3 py-1.5 rounded-full glass-pill text-cyan-300">Karte 1 von 24</span>
+              <span id="fc-known-badge" class="text-xs font-bold px-3 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300">0 gewusst</span>
+            </div>
+          </div>
+
+          <!-- Filter Buttons -->
+          <div class="flex items-center justify-between flex-wrap gap-2 pt-1">
+            <div class="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar">
+              <button onclick="setFlashcardCategory('all', this)" class="fc-cat-btn bg-indigo-600 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition">Alle Karten</button>
+              <button onclick="setFlashcardCategory('rw', this)" class="fc-cat-btn glass-pill text-slate-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition">Rechnungswesen</button>
+              <button onclick="setFlashcardCategory('komm1', this)" class="fc-cat-btn glass-pill text-slate-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition">Kommunikation Block 1</button>
+              <button onclick="setFlashcardCategory('komm2', this)" class="fc-cat-btn glass-pill text-slate-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition">Kommunikation Block 2</button>
+            </div>
+            <button onclick="shuffleFlashcards()" class="px-3.5 py-2 rounded-xl glass-pill hover:bg-white/10 text-xs font-bold text-amber-300 flex items-center space-x-1.5 transition">
+              <i data-lucide="shuffle" class="w-3.5 h-3.5"></i>
+              <span>Karten mischen</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Achievement Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="achievements-grid">
-          <!-- Dynamically rendered achievement cards -->
+        <!-- 3D Flip Card Stage -->
+        <div class="max-w-3xl mx-auto space-y-5">
+          <div onclick="flipCurrentFlashcard()" class="flip-card-perspective cursor-pointer select-none">
+            <div id="flashcard-inner" class="flip-card-inner">
+              
+              <!-- VORDERSEITE (FRAGE / BEGRIFF) -->
+              <div class="flip-card-face flip-card-front glass-v5 rounded-3xl p-7 sm:p-10 border border-indigo-500/30 shadow-2xl">
+                <div class="flex items-center justify-between">
+                  <span id="fc-front-tag" class="text-[10px] font-extrabold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 uppercase tracking-widest">
+                    RECHNUNGSWESEN
+                  </span>
+                  <span class="text-xs text-slate-400 flex items-center space-x-1.5">
+                    <i data-lucide="rotate-3d" class="w-4 h-4 text-cyan-400"></i>
+                    <span>Tippen zum Umdrehen</span>
+                  </span>
+                </div>
+
+                <div class="my-auto py-6 text-center space-y-3">
+                  <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Frage / Fachbegriff</div>
+                  <h3 id="fc-front-title" class="text-xl sm:text-2xl font-extrabold text-white leading-snug">
+                    Lade Karteikarte...
+                  </h3>
+                </div>
+
+                <div class="flex items-center justify-center text-[11px] text-slate-400">
+                  <span>Tippe auf die Karte, um die Antwort aufzudecken</span>
+                </div>
+              </div>
+
+              <!-- RÜCKSEITE (ANTWORT & MERKSATZ) -->
+              <div class="flip-card-face flip-card-back glass-v5 rounded-3xl p-7 sm:p-10 border border-emerald-500/40 bg-emerald-950/20 shadow-2xl">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-extrabold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 uppercase tracking-widest">
+                    ANTWORT &amp; MERKSATZ
+                  </span>
+                  <span class="text-xs text-slate-400 flex items-center space-x-1.5">
+                    <i data-lucide="rotate-3d" class="w-4 h-4 text-emerald-400"></i>
+                    <span>Zurück zur Frage</span>
+                  </span>
+                </div>
+
+                <div class="my-auto py-4 space-y-3 text-center">
+                  <p id="fc-back-answer" class="text-base sm:text-lg font-bold text-white leading-relaxed"></p>
+                  <div class="glass-pill p-3.5 rounded-2xl border border-amber-400/30 text-xs text-amber-200" id="fc-back-hint"></div>
+                </div>
+
+                <div class="flex items-center justify-center text-[11px] text-emerald-300 font-semibold">
+                  <span>Wähle unten deinen Status für diese Karte</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Controls Row (Erst sichtbar, nachdem die Karte umgedreht wurde) -->
+          <div id="fc-controls-row" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <button onclick="prevFlashcard()" class="px-4 py-3.5 rounded-2xl glass-pill hover:bg-white/10 text-xs font-bold text-slate-300 hover:text-white flex items-center justify-center space-x-2 transition">
+              <i data-lucide="chevron-left" class="w-4 h-4"></i>
+              <span>Vorherige</span>
+            </button>
+
+            <button onclick="markFlashcardRetry()" class="px-4 py-3.5 rounded-2xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/30 text-xs font-bold text-rose-200 flex items-center justify-center space-x-2 transition">
+              <i data-lucide="repeat" class="w-4 h-4 text-rose-400"></i>
+              <span>Noch üben</span>
+            </button>
+
+            <button onclick="markFlashcardKnown()" class="px-4 py-3.5 rounded-2xl bg-emerald-500/25 hover:bg-emerald-500/35 border border-emerald-500/40 text-xs font-extrabold text-emerald-200 flex items-center justify-center space-x-2 transition">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+              <span>Gewusst (+15 XP)</span>
+            </button>
+
+            <button onclick="nextFlashcard()" class="px-4 py-3.5 rounded-2xl glass-pill hover:bg-white/10 text-xs font-bold text-slate-300 hover:text-white flex items-center justify-center space-x-2 transition">
+              <span>Nächste</span>
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+          </div>
         </div>
 
       </section>
 
     </main>
 
+  </div>
+
+  <!-- Pomodoro Fokus-Timer Modal -->
+  <div id="pomodoro-modal" onclick="togglePomodoroModal(event)" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 backdrop-blur-md p-4">
+    <div onclick="event.stopPropagation()" class="glass-v5 animate-glossary-pop rounded-3xl p-6 sm:p-7 max-w-sm w-full space-y-5 border border-amber-400/30 shadow-2xl text-center">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center space-x-2.5">
+          <div class="p-2 rounded-xl bg-amber-500/20 text-amber-300">
+            <i data-lucide="timer" class="w-5 h-5"></i>
+          </div>
+          <div class="text-left">
+            <h3 class="text-sm font-extrabold text-white">Pomodoro Fokus-Timer</h3>
+            <p class="text-[11px] text-slate-400" id="pomo-mode-label">Fokus-Phase (25 Min) &bull; +100 XP Bonus</p>
+          </div>
+        </div>
+        <button onclick="togglePomodoroModal()" class="p-2 rounded-full glass-pill text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Mode Switcher -->
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="setPomodoroMode('work')" id="pomo-tab-work" class="py-2 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs transition">25 Min Fokus</button>
+        <button onclick="setPomodoroMode('break')" id="pomo-tab-break" class="py-2 rounded-xl glass-pill text-slate-300 hover:text-white font-bold text-xs transition">5 Min Pause</button>
+      </div>
+
+      <!-- Big Clock -->
+      <div class="py-4">
+        <div id="pomo-big-display" class="text-5xl font-black font-mono text-white tracking-tight">25:00</div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center justify-center space-x-3">
+        <button onclick="startPausePomodoro()" id="pomo-start-btn" class="flex-1 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center space-x-2">
+          <i data-lucide="play" class="w-4 h-4"></i>
+          <span id="pomo-start-label">Starten</span>
+        </button>
+        <button onclick="resetPomodoro()" class="px-4 py-3 rounded-2xl glass-pill text-slate-300 hover:text-white text-xs font-bold transition">
+          Reset
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Settings Modal (Name, Profilbild, Monochrom-Design & Fortschritt zurücksetzen) -->
@@ -1725,50 +2216,46 @@
         </div>
 
         <div class="space-y-1.5">
-          <label for="settings-name-input" class="text-xs font-semibold text-slate-300">Dein Anzeigename</label>
+          <label for="settings-name-input" class="text-[11px] font-semibold text-slate-300">Dein Anzeigename</label>
           <input type="text" id="settings-name-input" placeholder="Marlon" class="w-full bg-slate-900/90 border border-white/15 rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
         </div>
       </div>
 
-      <!-- 2. Design-Farbe (Standard, Duck, Monochrom) -->
+      <!-- 2. Design-Farbe (Obsidian V5, Duck & Monochrom) -->
       <div class="space-y-3 border-t border-white/10 pt-4">
         <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Design-Modus</label>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
           <button type="button" onclick="setAppTheme('default')" id="theme-btn-default" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 bg-indigo-600/20 border-indigo-400">
-            <div class="w-8 h-8 rounded-xl bg-slate-950 border border-indigo-500/40 flex items-center justify-center shrink-0">
-              <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
-            </div>
+            <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-slate-950 via-indigo-600 to-emerald-400 border border-white/20 shrink-0"></div>
             <div>
               <div class="text-xs font-bold text-white">Obsidian V5</div>
-              <div class="text-[10px] text-slate-400">Blau &amp; Grün</div>
+              <div class="text-[10px] text-slate-300">Standard</div>
             </div>
           </button>
 
           <button type="button" onclick="setAppTheme('duck')" id="theme-btn-duck" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 glass-pill border-white/10 hover:bg-white/10">
-            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center shrink-0 shadow-md shadow-amber-500/25">
-              <i data-lucide="flame" class="w-4 h-4 text-slate-950"></i>
-            </div>
+            <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-yellow-400 via-amber-500 to-orange-500 border border-white/30 shrink-0"></div>
             <div>
-              <div class="text-xs font-bold text-amber-300">Duck</div>
-              <div class="text-[10px] text-slate-300">Gelb &amp; Orange</div>
+              <div class="text-xs font-bold text-white">Duck</div>
+              <div class="text-[10px] text-slate-300">Gelb-Orange</div>
             </div>
           </button>
 
           <button type="button" onclick="setAppTheme('monochrome')" id="theme-btn-monochrome" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 glass-pill border-white/10 hover:bg-white/10">
-            <div class="w-8 h-8 rounded-xl bg-white border border-slate-400 flex items-center justify-center shrink-0">
-              <div class="w-4 h-4 rounded bg-slate-800"></div>
+            <div class="w-6 h-6 rounded-full bg-white border border-slate-400 flex items-center justify-center shrink-0">
+              <div class="w-3 h-3 rounded-full bg-slate-900"></div>
             </div>
             <div>
               <div class="text-xs font-bold text-white">Monochrom</div>
-              <div class="text-[10px] text-slate-300">Weiß &amp; Schwarz</div>
+              <div class="text-[10px] text-slate-300">Liquid Glass</div>
             </div>
           </button>
         </div>
       </div>
 
-      <!-- 2b. Quiz-Verhalten (Automatisch weiter bei richtiger Antwort) -->
+      <!-- 2b. Quiz-Verhalten (Automatisch weiter & Sound-Effekte) -->
       <div class="space-y-3 border-t border-white/10 pt-4">
-        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Quiz-Komfort</label>
+        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Quiz-Komfort &amp; Audio</label>
         <div class="flex items-center justify-between glass-pill p-3.5 rounded-2xl border border-white/10">
           <div class="pr-3">
             <div class="text-xs font-bold text-white">Automatisch weiter</div>
@@ -1777,6 +2264,47 @@
           <button type="button" onclick="toggleAutoAdvanceSetting()" id="auto-advance-toggle-btn" class="w-12 h-7 rounded-full bg-slate-800 border border-white/15 p-1 transition flex items-center shrink-0">
             <span id="auto-advance-knob" class="w-5 h-5 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0"></span>
           </button>
+        </div>
+
+        <div class="flex items-center justify-between glass-pill p-3.5 rounded-2xl border border-white/10">
+          <div class="pr-3">
+            <div class="text-xs font-bold text-white">Sound-Effekte</div>
+            <div class="text-[11px] text-slate-400">Dezente Klänge bei richtigen Antworten &amp; Level-Up</div>
+          </div>
+          <button type="button" onclick="toggleSoundSetting()" id="sound-toggle-btn" class="w-12 h-7 rounded-full bg-emerald-500/30 border border-emerald-400 p-1 transition flex items-center shrink-0">
+            <span id="sound-knob" class="w-5 h-5 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2c. Speicherstand-Transfer (PC <-> Handy Sync per Code oder Datei) -->
+      <div class="space-y-3 border-t border-white/10 pt-4">
+        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Handy &amp; PC Sync (Speicherstand-Transfer)</label>
+        <div class="glass-pill p-4 rounded-2xl border border-white/10 space-y-3">
+          <p class="text-[11px] text-slate-300 leading-relaxed">
+            Kopiere deinen Sync-Code oder exportiere eine Datei, um deinen Fortschritt sofort zwischen PC und Smartphone zu übertragen.
+          </p>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="copySyncCodeToClipboard()" class="px-3 py-2 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/40 border border-indigo-400/40 text-indigo-200 text-xs font-bold transition flex items-center justify-center space-x-1.5">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span>Code kopieren</span>
+            </button>
+            <button type="button" onclick="downloadSyncFile()" class="px-3 py-2 rounded-xl glass-pill hover:bg-white/10 text-slate-200 text-xs font-bold transition flex items-center justify-center space-x-1.5">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Datei speichern</span>
+            </button>
+          </div>
+          <div class="flex items-center space-x-2 pt-1">
+            <input type="text" id="sync-code-input" placeholder="Sync-Code hier einfügen..." class="flex-1 bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <button type="button" onclick="importFromSyncCodeInput()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shrink-0">
+              Laden
+            </button>
+            <label for="sync-file-input" title="Backup-Datei laden" class="cursor-pointer p-2 rounded-xl glass-pill hover:bg-white/10 text-slate-300 hover:text-white shrink-0">
+              <i data-lucide="upload" class="w-4 h-4"></i>
+            </label>
+            <input type="file" id="sync-file-input" accept=".json,application/json" class="hidden" onchange="importFromSyncFile(event)">
+          </div>
+          <div id="sync-status-msg" class="hidden text-[11px] font-semibold text-emerald-400"></div>
         </div>
       </div>
 
@@ -3081,16 +3609,16 @@
         id: "km10",
         cat: "komm_modelle",
         catTag: "KOMMUNIKATIONSMODELLE",
-        question: "Wie lautet das Verhältnis zwischen Inhaltsebene (Sachebene) und Beziehungsebene nach dem Eisbergmodell?",
+        question: "Ein Kunde sagt: „Das ist diesen Monat bereits die dritte Reklamation!“ Welche 4 Botschaften stecken darin?",
         options: [
-          "Ca. 1/7 Inhaltsebene (sichtbar) zu 6/7 Beziehungsebene (unter der Oberfläche, z. B. Gefühle, Mimik, Tonfall)",
-          "Beide Ebenen sind immer genau 50% zu 50% groß",
-          "99% Sachebene und nur 1% Beziehungsebene",
-          "Es gibt im Berufsleben keine Beziehungsebene"
+          "Sachinhalt: 3 Reklamationen | Selbstoffenbarung: Ich bin genervt | Appell: Liefern Sie mangelfrei! | Beziehung: Zweifel an Ihrer Zuverlässigkeit",
+          "Es steckt ausschließlich eine Sachinformation darin",
+          "Es handelt sich um reinen Small Talk über das Wetter",
+          "Der Kunde möchte ein weiteres Produkt loben"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Wie bei einem Eisberg liegt nur rund 1/7 (die reine Sachinformation) über dem Wasser, während 6/7 (Beziehung, Gefühle, Mimik, Tonfall) unter der Oberfläche wirken."
+        explanation: "Nach dem Vier-Seiten-Modell schwingen neben dem Sachinhalt (3 Reklamationen) auch Ärger (Selbstoffenbarung), die Forderung nach Qualität (Appell) und Kritik (Beziehung) mit."
       },
 
       // B) FORMEN DER KOMMUNIKATION & MESSESTAND (8 Fragen)
@@ -3098,554 +3626,705 @@
         id: "kf1",
         cat: "komm_formen",
         catTag: "FORMEN & MESSESTAND",
-        question: "Einstieg Messestand: Welche Mitteilungen von Frau Konski und der Mitarbeiterin sind körpersprachlich (nonverbal)?",
+        question: "Handlungssituation Messestand: Welche körpersprachlichen (nonverbalen) Signale zeigen Frau Konski und die Stand-Mitarbeiterin?",
         options: [
-          "Der Satz „Hat denn hier niemand Zeit für uns?“",
-          "Frau Konskis verärgerter Gesichtsausdruck sowie das bloß halbe Zuwenden, der gereizte Tonfall und das Wegdrehen der Mitarbeiterin",
-          "Die telefonische Terminvereinbarung vor der Messe",
-          "Der gedruckte Text in den Produktkatalogen"
+          "Frau Konski: verärgerte Mimik | Mitarbeiterin: nur halbes Zuwenden, kein Blickkontakt, gereizter Tonfall, sofortiges Wegdrehen",
+          "Beide lächeln sich freundlich an und geben sich die Hand",
+          "Die Mitarbeiterin hört aktiv zu und macht sich Notizen",
+          "Es gibt überhaupt keine Körpersprache in dieser Szene"
         ],
-        correct: 1,
+        correct: 0,
         xp: 50,
-        explanation: "Körpersprachlich (nonverbal/paraverbal) sind Mimik (verärgerter Gesichtsausdruck), Körperhaltung (halbes Zuwenden, Wegdrehen), fehlender Blickkontakt und der gereizte Tonfall."
+        explanation: "Körpersprachlich sendet Frau Konski Ärger über ihre Mimik, während die Mitarbeiterin durch halbes Zuwenden, fehlenden Blickkontakt und Wegdrehen Ablehnung signalisiert."
       },
       {
         id: "kf2",
         cat: "komm_formen",
         catTag: "FORMEN & MESSESTAND",
-        question: "Warum läuft das Gespräch am Messestand zwischen Frau Konski und der Mitarbeiterin aus dem Ruder?",
+        question: "Warum läuft das Gespräch am Messestand zwischen Frau Konski und der Mitarbeiterin sofort aus dem Ruder?",
         options: [
-          "Weil die Kataloge ausverkauft sind",
-          "Frau Konski fühlt sich trotz Termin missachtet und reagiert mit einem Vorwurf; die Mitarbeiterin fühlt sich gestresst/überfordert und reagiert patzig mit Abwehr und Wegdrehen",
-          "Weil beide zu höflich miteinander sprechen",
-          "Weil zu viele offene Fragen gestellt wurden"
+          "Frau Konski fühlt sich trotz Termin missachtet und beginnt mit einem Vorwurf; die gestresste Mitarbeiterin reagiert patzig mit Abwehr („Mehr als arbeiten kann ich auch nicht“) und dreht sich weg",
+          "Weil die Produktkataloge ausverkauft sind",
+          "Weil beide zu lange Small Talk über das Wetter geführt haben",
+          "Weil die Mitarbeiterin offene Fragen gestellt hat"
         ],
-        correct: 1,
+        correct: 0,
         xp: 50,
-        explanation: "Lange Wartezeit trotz Termin führt bei Frau Konski zu Ärger/Missachtungsgefühl; ihr Vorwurf trifft auf eine gestresste Mitarbeiterin, die mit Abwehr („Mehr als arbeiten kann ich auch nicht“) und Wegdrehen eskaliert."
+        explanation: "Lange Wartezeit trotz Termin führt zu Verärgerung bei Frau Konski; statt Verständnis zu zeigen, reagiert die überforderte Mitarbeiterin gereizt – das Gespräch ist sprachlich und körpersprachlich gestört."
       },
       {
         id: "kf3",
         cat: "komm_formen",
         catTag: "FORMEN & MESSESTAND",
         question: "Welche Kommunikationsform liegt vor, wenn in einem strukturierten Gespräch eine Seite mehr Fachwissen hat und der anderen eine begründete Entscheidung ermöglicht?",
-        options: [
-          "Beratung",
-          "Small Talk",
-          "Reklamation",
-          "Monolog"
-        ],
+        options: ["Beratung", "Small Talk", "Reklamation", "Monolog"],
         correct: 0,
         xp: 50,
-        explanation: "Bei einer Beratung unterstützt die fachkundige Person den Geschäftspartner strukturiert dabei, eine fundierte Kauf- oder Handlungsentscheidung zu treffen."
+        explanation: "In einer Beratung nutzt die beratende Person ihr Fachwissen, um dem Geschäftspartner eine fundierte Kauf- oder Sachentscheidung zu ermöglichen."
       },
       {
         id: "kf4",
         cat: "komm_formen",
         catTag: "FORMEN & MESSESTAND",
-        question: "Was kennzeichnet „Small Talk“ im Gespräch mit Geschäftspartnern?",
+        question: "Was kennzeichnet den „Small Talk“ mit Geschäftspartnern und welche Themen sind dafür geeignet?",
         options: [
-          "Ein Streitgespräch über Politik und Religion",
-          "Ein lockeres Gespräch ohne Tiefgang zum Beziehungsaufbau (z. B. über Anreise, Wetter, Hobbys – Tabu: Politik & Religion)",
-          "Eine juristische Mahnung wegen Zahlungsverzug",
-          "Eine detaillierte technische Produktschulung"
+          "Lockeres Gespräch ohne Tiefgang zum Beziehungsaufbau (z. B. Wetter, Anreise, Hobbys – Tabu: Politik und Religion)",
+          "Strenges Streitgespräch über Politik und Religion",
+          "Sofortige Verhandlung über Rabatte und Vertragsstrafen",
+          "Schriftliche Mängelrüge bei defekter Ware"
         ],
-        correct: 1,
+        correct: 0,
         xp: 50,
-        explanation: "Small Talk dient als positiver Eisbrecher und zum Beziehungsaufbau mit unverfänglichen Themen wie Wetter, Sport oder Anreise (keine Konfliktthemen wie Politik oder Religion)."
+        explanation: "Small Talk dient als positiver Gesprächseinstieg zum Beziehungsaufbau mit unverfänglichen Themen wie Anreise, Wetter oder Sport."
       },
       {
         id: "kf5",
         cat: "komm_formen",
         catTag: "FORMEN & MESSESTAND",
-        question: "Worin besteht das Merkmal einer „Beschwerde“ bzw. „Reklamation“?",
+        question: "Worin besteht das Merkmal einer „Beschwerde“ bzw. „Reklamation“ im Geschäftsleben?",
         options: [
-          "Kunden äußern Unzufriedenheit (z. B. über Mängel, Lieferverzug oder Verhalten) – sie muss ernst genommen und professionell, lösungsorientiert bearbeitet werden",
-          "Sie sollte am besten ignoriert werden, bis der Kunde aufgibt",
-          "Der Kunde möchte lediglich über das Wetter plaudern",
-          "Man sollte dem Kunden sofort widersprechen und ihn belehren"
+          "Kunden äußern Unzufriedenheit mit Produkten, Leistungen oder Verhalten – sie muss ernst genommen und professionell sowie lösungsorientiert behandelt werden",
+          "Man sollte Beschwerden ignorieren und sich wegdrehen",
+          "Beschwerden sind ein Zeichen dafür, dass der Kunde zufrieden ist",
+          "Man sollte dem Kunden sofort mit einer Killerphrase widersprechen"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Beschwerden und Reklamationen zeigen Unzufriedenheit an und erfordern stets einen ruhigen, wertschätzenden und lösungsorientierten Umgang."
-      },
-      {
-        id: "kf6",
-        cat: "komm_formen",
-        catTag: "FORMEN & MESSESTAND",
-        question: "Wie hätte die Mitarbeiterin am Messestand professionell und deeskalierend auf Frau Konski reagieren sollen?",
-        options: [
-          "Blickkontakt aufnehmen, sich voll zuwenden, Verständnis für die Wartezeit zeigen und freundlich um einen kurzen Moment bitten oder eine Kollegin holen",
-          "Kommentarlos den Messestand verlassen",
-          "Sagen: „Sehen Sie nicht, wie viel hier los ist?“",
-          "Weiter Kataloge sortieren und gar nicht antworten"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Durch zugewandte Körpersprache, Blickkontakt und eine wertschätzende Ich-Botschaft fühlt sich die Kundin ernst genommen."
-      },
-      {
-        id: "kf7",
-        cat: "komm_formen",
-        catTag: "FORMEN & MESSESTAND",
-        question: "Welche Themen eignen sich besonders gut für den Small Talk vor Beginn eines Kundengesprächs?",
-        options: [
-          "Anfahrt, Veranstaltungsort, angenehmes Wetter oder allgemeines Branchen-Event",
-          "Parteipolitische Streitfragen und religiöse Überzeugungen",
-          "Krankheitsgeschichten und private Geldsorgen",
-          "Kritik an der Kleidung des Gesprächspartners"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Leichte, positive Themen wie die Anreise oder der Rahmen der Veranstaltung schaffen sofort eine angenehme Gesprächsatmosphäre."
-      },
-      {
-        id: "kf8",
-        cat: "komm_formen",
-        catTag: "FORMEN & MESSESTAND",
-        question: "Was bedeutet „verbale“ im Gegensatz zu „nonverbaler“ Kommunikation?",
-        options: [
-          "Verbal = Kommunikation über gesprochene/geschriebene Worte; Nonverbal = Körpersprache wie Mimik, Gestik, Blickkontakt und Körperhaltung",
-          "Verbal = Körpersprache; Nonverbal = E-Mail-Verkehr",
-          "Beide Begriffe bedeuten ausschließlich Telefonieren",
-          "Nonverbal bedeutet, besonders laut zu schreien"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Verbal umfasst das gesprochene Wort (Inhalt), während nonverbal alle körpersprachlichen Signale (Mimik, Gestik, Haltung) beschreibt."
+        explanation: "Bei Beschwerden und Reklamationen ist ein ruhiger, wertschätzender und lösungsorientierter Umgang entscheidend, um den Kunden zu halten."
       },
 
-      // C) SPRECH- & FRAGETECHNIK (10 Fragen)
+      // C) SPRECH- & FRAGETECHNIK (8 Fragen)
       {
         id: "kfr1",
         cat: "komm_fragen",
         catTag: "SPRECH- & FRAGETECHNIK",
-        question: "Um welchen Fragetyp handelt es sich bei: „Wie beurteilen Sie die Lieferzeiten unseres Unternehmens?“",
+        question: "Aufgabe 5: Welcher Fragetyp ist „Wie beurteilen Sie die Lieferzeiten unseres Unternehmens?“?",
         options: [
-          "Offene Frage",
-          "Geschlossene Frage",
-          "Suggestivfrage",
-          "Rhetorische Frage"
+          "Offene Frage (erfordert eine ausführliche Antwort und liefert viele Informationen)",
+          "Geschlossene Frage (nur Ja/Nein)",
+          "Suggestivfrage (Antwort vorgegeben)",
+          "Rhetorische Frage (wird selbst beantwortet)"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Offene Fragen beginnen meist mit einem W-Wort („Wie“, „Welche“, „Was“) und erfordern eine ausführliche Antwort, die viele Informationen liefert."
+        explanation: "W-Fragen wie „Wie beurteilen Sie...?“ sind offene Fragen, die den Gesprächspartner aktivieren und ausführliche Informationen liefern."
       },
       {
         id: "kfr2",
         cat: "komm_fragen",
         catTag: "SPRECH- & FRAGETECHNIK",
-        question: "Um welchen Fragetyp handelt es sich bei: „Sind Sie mit dem geplanten Liefertermin einverstanden?“",
+        question: "Aufgabe 5: Welcher Fragetyp ist „Sind Sie mit dem geplanten Liefertermin einverstanden?“?",
         options: [
-          "Geschlossene Frage",
+          "Geschlossene Frage (schränkt die Antwort auf „Ja“ oder „Nein“ ein)",
           "Offene Frage",
           "Rhetorische Frage",
-          "Suggestivfrage"
+          "Gegenfrage"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Geschlossene Fragen lassen meist nur eine knappe Antwort wie „Ja“ oder „Nein“ zu und eignen sich gut zur klaren Entscheidung oder Bestätigung."
+        explanation: "Auf diese Frage kann man direkt mit „Ja“ oder „Nein“ antworten – sie dient dazu, Entscheidungen oder Zustimmungen einzuholen."
       },
       {
         id: "kfr3",
         cat: "komm_fragen",
         catTag: "SPRECH- & FRAGETECHNIK",
-        question: "Welcher Fragetyp liegt vor bei: „Sie möchten doch sicher auch künftig zuverlässig beliefert werden, oder?“",
+        question: "Aufgabe 5: Welcher Fragetyp ist „Sie möchten doch sicher auch künftig zuverlässig beliefert werden, oder?“?",
         options: [
-          "Suggestivfrage",
-          "Offene Frage",
-          "Geschlossene neutrale Frage",
-          "Rhetorische Frage"
+          "Suggestivfrage (die gewünschte Antwort wird dem Gegenüber bereits vorgegeben)",
+          "Offene W-Frage",
+          "Geschlossene Wissensfrage",
+          "Aktives Zuhören"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Bei einer Suggestivfrage wird dem Gesprächspartner die gewünschte Antwort („Ja, natürlich“) bereits manipulierend in den Mund gelegt."
+        explanation: "Durch Formulierungen wie „Sie möchten doch sicher...“ wird der Gesprächspartner in eine vorbestimmte Antwort gedrängt (Suggestivfrage)."
       },
       {
         id: "kfr4",
         cat: "komm_fragen",
         catTag: "SPRECH- & FRAGETECHNIK",
-        question: "Welcher Fragetyp ist: „Warum ist unser Service so gefragt? Nun, das liegt an unserer schnellen Reaktionszeit ...“?",
+        question: "Aufgabe 5: Welcher Fragetyp ist „Warum ist unser Service so gefragt? Nun, das liegt an unserer schnellen Reaktionszeit ...“?",
         options: [
-          "Rhetorische Frage",
-          "Offene Informationsfrage",
+          "Rhetorische Frage (wird von der fragenden Person direkt selbst beantwortet)",
+          "Offene Informationsfrage an den Kunden",
           "Geschlossene Entscheidungsfrage",
-          "Gegenfrage"
+          "Spiegel-Aussage"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Eine rhetorische Frage ist ein Stilmittel, auf das keine Antwort vom Gegenüber erwartet wird – die fragende Person beantwortet sie direkt selbst."
+        explanation: "Eine rhetorische Frage erwartet keine Antwort vom Gegenüber, sondern dient als Stilmittel, um Aufmerksamkeit für die eigene Aussage zu wecken."
       },
       {
         id: "kfr5",
         cat: "komm_fragen",
         catTag: "SPRECH- & FRAGETECHNIK",
-        question: "Wie lautet die passende Umformulierung der geschlossenen Frage „Sind Sie mit der Reaktionszeit unseres Kundenservice zufrieden?“ in eine offene Frage?",
+        question: "Aufgabe 6: Wie wandelst du die geschlossene Frage „Haben Sie noch weitere Fragen zu unserem Angebot?“ in eine offene Frage um?",
         options: [
-          "Wie zufrieden sind Sie mit der Reaktionszeit unseres Kundenservice?",
-          "Ist die Reaktionszeit gut oder schlecht?",
-          "Sie finden unsere Reaktionszeit doch super, oder?",
-          "Gefällt Ihnen unser Kundenservice?"
+          "„Welche Fragen haben Sie noch zu unserem Angebot?“",
+          "„Alles klar soweit, oder?“",
+          "„Wollen Sie jetzt kaufen: Ja oder Nein?“",
+          "„Sie haben doch sicher keine Fragen mehr?“"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Durch das Fragewort „Wie“ (oder „Wie beurteilen Sie...“) wird aus der Ja/Nein-Frage eine offene Frage, die dem Kunden Raum für ehrliches Feedback gibt."
-      },
-      {
-        id: "kfr6",
-        cat: "komm_fragen",
-        catTag: "SPRECH- & FRAGETECHNIK",
-        question: "Wie formuliert man die geschlossene Frage „Haben Sie noch weitere Fragen zu unserem Angebot?“ in eine offene Frage um?",
-        options: [
-          "Welche Fragen haben Sie noch zu unserem Angebot?",
-          "Ist Ihnen alles klar?",
-          "Wollen Sie das Angebot jetzt unterschreiben?",
-          "Sie haben sicher keine Fragen mehr, oder?"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "„Welche Fragen haben Sie noch zum Angebot?“ lädt den Gesprächspartner aktiv ein, offene Punkte anzusprechen."
-      },
-      {
-        id: "kfr7",
-        cat: "komm_fragen",
-        catTag: "SPRECH- & FRAGETECHNIK",
-        question: "Wie wandelt man die geschlossene Frage „Gefällt Ihnen die neue Verpackung?“ in eine offene Frage um?",
-        options: [
-          "Wie finden Sie die neue Verpackung? (bzw. Wie gefällt Ihnen die neue Verpackung?)",
-          "Finden Sie die Verpackung schön?",
-          "Ist die Verpackung nicht großartig gelungen?",
-          "Kaufen Sie die neue Verpackung?"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Mit „Wie finden Sie die neue Verpackung?“ erhält man detaillierte Meinungen statt nur „Ja“ oder „Nein“."
-      },
-      {
-        id: "kfr8",
-        cat: "komm_fragen",
-        catTag: "SPRECH- & FRAGETECHNIK",
-        question: "Warum sind kurze Sprechpausen nach wichtigen Aussagen ein entscheidendes Element guter Sprechtechnik?",
-        options: [
-          "Sie erhöhen die Aufmerksamkeit und geben dem Zuhörer Zeit, das Gesagte aufzunehmen",
-          "Sie zeigen, dass man den Text vergessen hat",
-          "Sie dienen dazu, das Gespräch künstlich in die Länge zu ziehen",
-          "Sprechpausen sollten im Kundengespräch komplett vermieden werden"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Gezielte Sprechpausen nach Kernaussagen lassen das Gesagte wirken und steigern die Aufmerksamkeit des Gesprächspartners."
-      },
-      {
-        id: "kfr9",
-        cat: "komm_fragen",
-        catTag: "SPRECH- & FRAGETECHNIK",
-        question: "Was empfiehlt die professionelle Sprechtechnik hinsichtlich Ausdrucksvermögen und Satzbau?",
-        options: [
-          "Kurze, korrekte Sätze bilden, Fachbegriffe sparsam einsetzen, bildhafte Sprache nutzen und auf Umgangssprache verzichten",
-          "Möglichst viele komplizierte Fremdwörter und Schachtelsätze aneinanderreihen",
-          "Schnell und monoton ohne Punkt und Komma durchsprechen",
-          "Nur im Jugendslang mit Geschäftspartnern sprechen"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Kurze, klare Sätze, eine bildhafte Sprache und ein sparsamer Einsatz von Fachbegriffen erleichtern das Verstehen erheblich."
-      },
-      {
-        id: "kfr10",
-        cat: "komm_fragen",
-        catTag: "SPRECH- & FRAGETECHNIK",
-        question: "Welchen Effekt hat eine gezielte Betonung wichtiger Wörter beim Sprechen?",
-        options: [
-          "Sie wirkt Einschläferung und Monotonie entgegen und hebt Kernaussagen hervor",
-          "Sie verärgert jeden Kunden sofort",
-          "Sie ersetzt das Zuhören komplett",
-          "Sie macht Fragen überflüssig"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Durch abwechslungsreiche Betonung und passende Stimmlage bleibt der Zuhörer aufmerksam und erkennt sofort, was wichtig ist."
+        explanation: "Durch das Fragewort „Welche...“ entsteht eine einladende offene Frage, die dem Kunden Raum für echte Rückfragen gibt."
       },
 
-      // D) GESPRÄCHSFÖRDERER VS. GESPRÄCHSBLOCKER (8 Fragen)
+      // D) FÖRDERER VS. BLOCKER (8 Fragen)
       {
         id: "kfb1",
         cat: "komm_foerderer",
         catTag: "FÖRDERER VS. BLOCKER",
-        question: "Ist die Aussage „Das ist doch allgemein bekannt, das hätten Sie wissen müssen!“ ein Gesprächsförderer oder ein Gesprächsblocker?",
+        question: "Aufgabe 7: „Das ist doch allgemein bekannt, das hätten Sie wissen müssen!“ – Ist das ein Gesprächsförderer oder Gesprächsblocker?",
         options: [
-          "Gesprächsblocker – es handelt sich um eine herabsetzende Belehrung/Abwertung",
-          "Gesprächsförderer – sie informiert den Kunden sachlich",
-          "Gesprächsförderer – sie ist ein Beispiel für aktives Zuhören",
-          "Neutraler Small Talk"
+          "Gesprächsblocker – Belehrung und Abwertung (der Gesprächspartner wird als unwissend dargestellt)",
+          "Gesprächsförderer – Aktives Zuhören",
+          "Gesprächsförderer – Ich-Botschaft",
+          "Offene Fragetechnik"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Belehrungen stellen den Gesprächspartner als unwissend dar und blockieren sofort das Vertrauensverhältnis."
+        explanation: "Belehrungen werten den Gesprächspartner ab. Fördernde Alternative: „Ich erkläre Ihnen diesen Punkt gerne noch einmal kurz.“"
       },
       {
         id: "kfb2",
         cat: "komm_foerderer",
         catTag: "FÖRDERER VS. BLOCKER",
-        question: "Wie ist die Aussage „Verstehe ich Sie richtig, dass Ihnen vor allem die Lieferzeit wichtig ist?“ einzuordnen?",
+        question: "Aufgabe 7: „Verstehe ich Sie richtig, dass Ihnen vor allem die Lieferzeit wichtig ist?“ – Förderer oder Blocker?",
         options: [
           "Gesprächsförderer – Aktives Zuhören und Verständnisprüfung durch Zusammenfassen",
-          "Gesprächsblocker – unzulässiges Drängeln",
-          "Gesprächsblocker – Bloßstellung des Kunden",
-          "Rhetorische Killerphrase"
+          "Gesprächsblocker – Killerphrase",
+          "Gesprächsblocker – Marathon-Rede",
+          "Suggestivfrage"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Das Zusammenfassen und Nachfragen („Verstehe ich Sie richtig...“) ist ein klassisches Merkmal des aktiven Zuhörens und fördert das Gespräch."
+        explanation: "Das Zusammenfassen in eigenen Worten („Verstehe ich Sie richtig...“) ist ein Kernmerkmal des aktiven Zuhörens und vermeidet Missverständnisse."
       },
       {
         id: "kfb3",
         cat: "komm_foerderer",
         catTag: "FÖRDERER VS. BLOCKER",
-        question: "Wie wirkt der Satz „Wenn Sie jetzt nicht bestellen, ist das Angebot morgen weg!“ in einem Beratungsgespräch?",
+        question: "Aufgabe 7: „Wenn Sie jetzt nicht bestellen, ist das Angebot morgen weg!“ – Förderer oder Blocker?",
         options: [
-          "Als Gesprächsblocker – der Kunde wird unter Druck gesetzt und gedrängelt",
-          "Als Gesprächsförderer – wertschätzende Ich-Botschaft",
-          "Als offene Informationsfrage",
-          "Als einfühlsames aktives Zuhören"
+          "Gesprächsblocker – Drängeln, Überreden und Druck ausüben verhindert einen offenen, vertrauensvollen Austausch",
+          "Gesprächsförderer – Wertschätzende Ich-Botschaft",
+          "Gesprächsförderer – Aktives Zuhören",
+          "Rhetorische Frage"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Drängeln und Druck ausüben verhindern einen offenen, vertrauensvollen Austausch und wirken als Gesprächsblocker."
+        explanation: "Zeitdruck und Überrumpelung („Drängeln“) zerstören das Vertrauen auf der Beziehungsebene."
       },
       {
         id: "kfb4",
         cat: "komm_foerderer",
         catTag: "FÖRDERER VS. BLOCKER",
-        question: "Warum ist der Satz „Ich freue mich, dass wir eine passende Lösung gefunden haben.“ ein starker Gesprächsförderer?",
+        question: "Aufgabe 7: „Ich freue mich, dass wir eine passende Lösung gefunden haben.“ – Förderer oder Blocker?",
         options: [
-          "Er ist eine wertschätzende Ich-Botschaft und sorgt für einen positiven Beziehungsabschluss",
-          "Er ist eine Suggestivfrage",
-          "Er belehrt den Geschäftspartner",
-          "Er stuft den Kundenwunsch als schwierig ein"
+          "Gesprächsförderer – Positive Ich-Botschaft, die Wertschätzung und einen konstruktiven Beziehungsabschluss ausdrückt",
+          "Gesprächsblocker – Bloßstellung",
+          "Gesprächsblocker – Belehrung",
+          "Geschlossene Frage"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Ich-Botschaften drücken die eigene Sichtweise positiv und respektvoll aus und stärken die Beziehungsebene."
+        explanation: "Ich-Botschaften zeigen respektvoll die eigene Perspektive und stärken die Beziehungsebene."
       },
       {
         id: "kfb5",
         cat: "komm_foerderer",
         catTag: "FÖRDERER VS. BLOCKER",
-        question: "Wie lautet eine gesprächsfördernde Alternative zum Blocker „Das ist doch allgemein bekannt, das hätten Sie wissen müssen!“?",
+        question: "Aufgabe 7 & 8: „Davon haben Sie doch keine Ahnung!“ – Was ist das und wie lautet eine gesprächsfördernde Alternative?",
         options: [
-          "„Ich erkläre Ihnen diesen Punkt gerne noch einmal kurz im Detail.“",
-          "„Lesen Sie das bitte selbst im Handbuch nach.“",
-          "„Davon haben Sie leider keine Ahnung.“",
-          "„Das weiß doch jedes Kind!“"
+          "Blocker (Bloßstellung / Killerphrase) -> Alternative: „Welche Informationen fehlen Ihnen an dieser Stelle noch?“",
+          "Förderer -> Alternative: Noch lauter wiederholen",
+          "Förderer -> Alternative: Einfach das Telefon auflegen",
+          "Small Talk -> Alternative: Über Politik diskutieren"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Statt den Partner abzuwerten, bietet man hilfsbereit per Ich-Botschaft („Ich erkläre es Ihnen gerne noch einmal kurz“) Unterstützung an."
-      },
-      {
-        id: "kfb6",
-        cat: "komm_foerderer",
-        catTag: "FÖRDERER VS. BLOCKER",
-        question: "Wie lautet eine professionelle, gesprächsfördernde Alternative zum Blocker „Davon haben Sie doch keine Ahnung.“?",
-        options: [
-          "„Welche Informationen fehlen Ihnen hier noch, damit wir das gemeinsam klären können?“",
-          "„Lassen Sie mich das lieber alleine machen.“",
-          "„Das ist viel zu kompliziert für Sie.“",
-          "„Darüber diskutiere ich nicht.“"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Mit einer offenen, wertschätzenden Frage („Welche Infos fehlen Ihnen hier noch?“) holt man den Gesprächspartner respektvoll ins Boot."
-      },
-      {
-        id: "kfb7",
-        cat: "komm_foerderer",
-        catTag: "FÖRDERER VS. BLOCKER",
-        question: "Was gehört alles zum „Aktiven Zuhören“ als Gesprächsförderer?",
-        options: [
-          "Ausreden lassen, Blickkontakt halten, Zuhörsignale senden (Nicken, „Aha“) und Kernaussagen in eigenen Worten zusammenfassen",
-          "Dem Kunden ständig ins Wort fallen und von sich selbst erzählen (Marathon-Rede)",
-          "Nebenbei auf das Smartphone schauen",
-          "Sofort mit Killerphrasen antworten"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Aktives Zuhören kombiniert körperliche Aufmerksamkeit (Blickkontakt, Nicken), Ausredenlassen und verständnissicherndes Zusammenfassen."
-      },
-      {
-        id: "kfb8",
-        cat: "komm_foerderer",
-        catTag: "FÖRDERER VS. BLOCKER",
-        question: "Warum gelten „Marathon-Reden“ (Vielreden) und „Killerphrasen“ (z. B. „Das haben wir schon immer so gemacht!“) als Gesprächsblocker?",
-        options: [
-          "Vielreden dient nur der Selbstinszenierung und Killerphrasen ersticken jede neue Idee und jeden offenen Dialog sofort im Keim",
-          "Weil sie den Kunden zu sehr zum Reden ermutigen",
-          "Weil sie zu viele offene Fragen enthalten",
-          "Weil sie das aktive Zuhören fördern"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Wer nur selbst redet oder Ideen mit Totschlagargumenten (Killerphrasen) abwürgt, verhindert echte Verständigung."
+        explanation: "Bloßstellungen und Killerphrasen greifen das Gegenüber persönlich an. Eine offene Nachfrage („Welche Infos fehlen Ihnen hier noch?“) hält den Dialog sachlich."
       },
 
-      // E) MIKROEXPRESSIONEN (10 Fragen)
+      // E) MIKROEXPRESSIONEN (8 Fragen)
       {
-        id: "kmik1",
+        id: "kmi1",
         cat: "komm_mikro",
         catTag: "MIKROEXPRESSIONEN",
-        question: "Was versteht man in der Kommunikationspsychologie unter dem „Wackel-Dackel-Effekt“?",
+        question: "Warum darf man häufiges Nicken und Lächeln des Gesprächspartners („Wackel-Dackel-Effekt“) nicht automatisch als Zustimmung werten?",
         options: [
-          "Menschen nicken und lächeln beim Zuhören oft reflexartig als „soziales Schmiermittel“ – das bedeutet aber noch lange nicht, dass sie innerlich wirklich zustimmen",
-          "Kunden kaufen immer sofort, sobald sie einmal lächeln",
-          "Verkäufer sollten während des gesamten Gesprächs mit dem Kopf wackeln",
-          "Ein Nicken bedeutet immer 100%ige Zustimmung zum Preis"
+          "Weil Nicken und Lächeln oft nur reflexartige „soziale Schmiermittel“ sind, während unausgesprochene Einwände sich in kurzen Mikroexpressionen zeigen",
+          "Weil Nicken immer Ablehnung bedeutet",
+          "Weil Kunden niemals lächeln dürfen",
+          "Weil Mimik langsamer als der Verstand ist"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Höfliches Nicken und Lächeln erleichtern die soziale Interaktion, werden von Verkäufern aber oft fälschlich als echte Kaufzustimmung missverstanden."
+        explanation: "Menschen nicken und lächeln oft aus Höflichkeit reflexartig. Echte, verborgene Einwände blitzen dagegen als kurze Mikroexpressionen im Gesicht auf."
       },
       {
-        id: "kmik2",
+        id: "kmi2",
         cat: "komm_mikro",
         catTag: "MIKROEXPRESSIONEN",
-        question: "Wie lange dauern Mikroexpressionen und warum können wir sie kaum bewusst unterdrücken?",
+        question: "Warum gilt der Satz „Mimik ist schneller als der Verstand“ und wie lange dauert eine Mikroexpression?",
         options: [
-          "Sie dauern nur ca. 40 bis 200 Millisekunden (0,04–0,2 Sek.), weil die Gesichtsmuskulatur direkt mit dem limbischen System verdrahtet ist, das 500 ms schneller arbeitet als das Großhirn",
-          "Sie dauern 10 bis 15 Minuten und werden vom Großhirn geplant",
-          "Sie dauern genau 4 Sekunden und sind immer absichtlich gespielt",
-          "Sie treten nur im Schlaf auf"
+          "Die Gesichtsmuskulatur ist direkt mit dem limbischen System (Emotionszentrum) verbunden, das 500 ms schneller als das Großhirn arbeitet; Mikroexpressionen dauern nur ca. 40 bis 200 Millisekunden (0,04–0,2 s)",
+          "Eine Mikroexpression dauert mindestens 10 Minuten",
+          "Man kann jede Mikroexpression vollständig bewusst steuern",
+          "Mikroexpressionen treten nur im Schlaf auf"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Mimik ist schneller als der Verstand: Das limbische System (Emotionszentrum) verarbeitet Reize 500 ms schneller als unser Großhirn."
+        explanation: "Da das limbische System 500 ms schneller als das Großhirn reagiert, huschen Mikroexpressionen (40–200 ms) unkontrollierbar über das Gesicht."
       },
       {
-        id: "kmik3",
+        id: "kmi3",
         cat: "komm_mikro",
         catTag: "MIKROEXPRESSIONEN",
-        question: "Was bedeutet der Fachbegriff „Inkongruenz“ im Zusammenhang mit Mikroexpressionen?",
+        question: "Was bedeutet der Fachbegriff „Inkongruenz“ bei der Beobachtung von Mikroexpressionen?",
         options: [
-          "Das gesprochene Wort und die unbewusste Mimik widersprechen sich (z. B. Kundin sagt „Ja, klingt gut“, zeigt aber kurz Ärger oder Verachtung im Gesicht)",
-          "Sprache und Körpersprache stimmen vollkommen überein",
-          "Beide Gesprächspartner sprechen dieselbe Sprache",
-          "Der Preis stimmt mit der Rechnung überein"
+          "Der gesprochene Inhalt (verbal) widerspricht dem mimischen Ausdruck (nonverbal) – z. B. sagt eine Kundin „Ja, klingt gut“, zeigt aber Ärger oder Zweifel im Gesicht",
+          "Sprache und Körpersprache stimmen zu 100 % überein",
+          "Beide Gesprächspartner sprechen gleichzeitig",
+          "Die Bilanzsumme stimmt mit der Inventur überein"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Inkongruenz bezeichnet die Nicht-Übereinstimmung zwischen verbaler Aussage und nonverbalem Gesichtsausdruck."
+        explanation: "Inkongruenz bezeichnet das Auseinanderklaffen von Wort und Mimik – ein klassisches Warnsignal für einen unausgesprochenen Einwand."
       },
       {
-        id: "kmik4",
+        id: "kmi4",
         cat: "komm_mikro",
         catTag: "MIKROEXPRESSIONEN",
-        question: "Worauf deutet das „Zusammenziehen der Augenbrauen“ (Signal 1) bzw. das „Einseitige Einpressen des Mundwinkels“ (Signal 6) hin?",
+        question: "Welche Bedeutung haben die Signale „Oberlippe hochziehen“ (Signal 3) und „Nase rümpfen“ (Signal 4)?",
         options: [
-          "Augenbrauen zusammenziehen = irritiert, skeptisch, konzentriert oder leicht verärgert | Einseitiger Mundwinkel = Verachtung, Nachdenken oder Zweifel",
-          "Beides sind eindeutige Zeichen für große Begeisterung und Vorfreude",
-          "Beides zeigt tiefe Müdigkeit an",
-          "Beides bedeutet sofortige Kaufbereitschaft"
+          "Zeichen für die Basisemotion Ekel bzw. Ablehnung – dem Gegenüber „schmeckt etwas nicht“ oder ein Vorschlag wird für schwierig gehalten",
+          "Zeichen für große Begeisterung und sofortige Kaufbereitschaft",
+          "Zeichen für tiefe Entspannung",
+          "Bedeutet immer uneingeschränkte Zustimmung"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Im Fallbeispiel mit Nicole Höver (Preis der Bürostuhl-Serie) zeigen genau diese beiden Signale, dass die Kundin beim Preis skeptisch/irritiert ist und innerlich zweifelt."
+        explanation: "Sowohl das Hochziehen der Oberlippe als auch das Rümpfen der Nase entstammen der Emotion Ekel und signalisieren Ablehnung oder Zweifel."
       },
       {
-        id: "kmik5",
+        id: "kmi5",
         cat: "komm_mikro",
         catTag: "MIKROEXPRESSIONEN",
-        question: "Welche Emotion steckt hinter dem „Hochziehen der Oberlippe“ (Signal 3) und dem „Rümpfen der Nase“ (Signal 4)?",
+        question: "Aufgabe 4: Als Nicole Höver am Messestand den Preis der Bürostuhl-Serie nennt, zieht die Kundin kurz die Augenbrauen zusammen und presst einseitig den Mundwinkel ein, sagt aber „Ja, das klingt gut.“ Was bedeutet das?",
         options: [
-          "Ekel bzw. Ablehnung – dem Gesprächspartner „schmeckt etwas nicht“ oder er hält einen Vorschlag für schwer umsetzbar",
-          "Große Freude und Zustimmung",
-          "Überraschung und Neugier",
-          "Traurigkeit"
+          "Inkongruenz! Augenbrauen zusammenziehen = Irritation/Skepsis; einseitiges Mundwinkel-Einpressen = Zweifel/Unentschlossenheit/Verachtung gegenüber dem Preis",
+          "Die Kundin findet den Preis extrem günstig und hat keinerlei Bedenken",
+          "Die Kundin ist müde und möchte sofort zehn Stühle kaufen",
+          "Es liegt keine nonverbale Botschaft vor"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Sowohl das Hochziehen der Oberlippe als auch das Nasenrümpfen entstammen der Basisemotion Ekel und signalisieren Ablehnung oder Zweifel."
+        explanation: "Obwohl die Kundin verbal zustimmt („Ja, das klingt gut“), verraten beide Mikroexpressionen deutliche Skepsis und Zweifel beim Preis."
       },
       {
-        id: "kmik6",
+        id: "kmi6",
         cat: "komm_mikro",
         catTag: "MIKROEXPRESSIONEN",
-        question: "Wie unterscheidet man Makro-, Mikro- und maskierte Expressionen?",
+        question: "Wie lautet der 3-Schritte-Weg vom mimischen Signal zum konstruktiven Dialog und wie formuliert man eine korrekte „Spiegel-Aussage“?",
         options: [
-          "Makro = normale Mimik (0,5–4 Sek., stimmig zum Gesagten) | Mikro = extrem kurz (0,04–0,2 Sek., verborgene Emotion) | Maskiert = falscher Ausdruck (z. B. Lächeln) überdeckt Makro-Ausdruck",
-          "Makro ist unsichtbar, Mikro dauert 10 Sekunden",
-          "Alle drei dauern gleich lang",
-          "Maskiert bedeutet, dass man eine Schutzmaske trägt"
+          "1. Signal beobachten -> 2. Verbal rückkoppeln -> 3. Dialog eröffnen | Spiegel-Aussage ist eine Feststellung, KEINE Frage (z. B. „Sie runzeln gerade die Stirn.“ statt „Runzeln Sie die Stirn?“)",
+          "Man spricht den Kunden vorwurfsvoll an: „Warum gucken Sie denn so böse?!“",
+          "Man ignoriert das Signal komplett und redet schneller weiter",
+          "Eine Spiegel-Aussage muss immer eine Suggestivfrage sein"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Makro-Ausdrücke dauern 0,5 bis 4 Sekunden, Mikroexpressionen nur den Bruchteil einer Sekunde, und maskierte Ausdrücke überdecken bewusst ein anderes Gefühl."
-      },
-      {
-        id: "kmik7",
-        cat: "komm_mikro",
-        catTag: "MIKROEXPRESSIONEN",
-        question: "Was ist beim Formulieren einer „Spiegel-Aussage“ (Schritt 2: Verbal rückkoppeln) unbedingt zu beachten?",
-        options: [
-          "Eine Spiegel-Aussage ist eine feststellende Aussage und KEINE Frage (z. B. „Sie runzeln gerade die Stirn.“ statt „Runzeln Sie gerade die Stirn?“)",
-          "Man muss den Kunden streng fragen: „Warum ziehen Sie so ein Gesicht?“",
-          "Man darf das Signal niemals ansprechen",
-          "Man sollte dem Kunden sofort einen Rabatt aufzwingen"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Spiegel-Aussagen beschreiben wertfrei die Beobachtung als Aussage („Sie runzeln gerade die Stirn.“), wodurch ein konstruktiver Dialog über den Einwand entsteht."
-      },
-      {
-        id: "kmik8",
-        cat: "komm_mikro",
-        catTag: "MIKROEXPRESSIONEN",
-        question: "Fallbeispiel Bürostuhl-Serie: Als Nicole Höver den Preis nennt, zieht die Kundin kurz die Augenbrauen zusammen, presst einen Mundwinkel ein und sagt dann: „Ja, das klingt gut.“ Wie reagiert Nicole ideal?",
-        options: [
-          "Mit einer Spiegel-Aussage oder wertschätzenden Nachfrage, z. B.: „Ich hatte gerade den Eindruck, dass Sie beim Preis kurz gezögert haben. Wie schätzen Sie das Preis-Leistungs-Verhältnis ein?“",
-          "Sie sagt: „Super, dann unterschreiben Sie bitte sofort hier!“",
-          "Sie wirft der Kundin vor, unehrlich zu sein",
-          "Sie bricht das Beratungsgespräch kommentarlos ab"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Durch das behutsame Spiegeln oder eine offene, wertschätzende Nachfrage wird der unausgesprochene Preiseinwand besprechbar gemacht."
-      },
-      {
-        id: "kmik9",
-        cat: "komm_mikro",
-        catTag: "MIKROEXPRESSIONEN",
-        question: "Welche sieben kulturübergreifenden Basisemotionen unterschied der Psychologe Paul Ekman bei der Erforschung von Mikroexpressionen?",
-        options: [
-          "Zorn (Ärger), Angst, Traurigkeit, Ekel, Verachtung, Überraschung und Freude",
-          "Hunger, Durst, Müdigkeit, Stolz, Neid, Geiz und Geduld",
-          "Soll, Haben, Gewinn, Verlust, Bilanz, Inventur und Steuer",
-          "Nur Freude und Wut"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Paul Ekman und Wallace Friesen wiesen nach, dass Zorn, Angst, Traurigkeit, Ekel, Verachtung, Überraschung und Freude weltweit gleich im Gesicht ausgedrückt werden."
-      },
-      {
-        id: "kmik10",
-        cat: "komm_mikro",
-        catTag: "MIKROEXPRESSIONEN",
-        question: "Was zeigt die Grenze der Mimikdeutung (nach Paul Ekman) auf?",
-        options: [
-          "Man erkennt zwar eine verborgene Emotion, sieht dem Gesicht aber nicht an, WARUM die Person das Gefühl hat (oder ob es unbewusste Verdrängung vs. absichtliche Unterdrückung ist)",
-          "Man kann an einer Mikroexpression exakt die Gedanken und Kontonummern einer Person ablesen",
-          "Jedes Stirnrunzeln beweist zu 100% eine Lüge",
-          "Mimik hat keinerlei Bedeutung in Gesprächen"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Wichtig: Eine Mikroexpression zeigt nur, DASS eine Emotion bzw. ein Einwand vorliegt, aber nicht die genaue Ursache – deshalb muss man immer wertschätzend nachfragen!"
+        explanation: "Wichtig: Eine Spiegel-Aussage spiegelt wertfrei das Beobachtete als Aussage („Sie runzeln gerade die Stirn.“ / „Sie wirken beim Preis noch nachdenklich.“) oder nutzt eine wertschätzende Nachfrage."
       },
 
-      // F) BLOCK 2: KOMMUNIKATIONSWEGE GESTALTEN (Starter-Pool, 5 Fragen)
+      // F) BLOCK 2: KOMMUNIKATIONSWEGE GESTALTEN (4 Module à 10 Fragen = 40 Fragen)
+      
+      // 1. TELEFON: MELDEFORMEL, STIMME & TELEFONARBEITSPLATZ (10 Fragen)
+      {
+        id: "ktel1",
+        cat: "komm_telefon",
+        catTag: "1. TELEFON & MELDEFORMEL",
+        question: "Einstieg Verkauf Primus GmbH: Nach wie vielen Klingelzeichen nimmt Nicole Höver den Anruf von Herrn Jacobs erst an – und welche goldene Regel gilt stattdessen?",
+        options: [
+          "Sie nimmt erst nach dem 6. Klingeln ab – richtig ist die Annahme spätestens nach dem 3. Klingeln, sonst wirkt der Betrieb schlecht organisiert",
+          "Sie nimmt beim 1. Klingeln ab – richtig wäre erst nach dem 10. Klingeln",
+          "Es gibt im Büro keinerlei Regel zur Klingeldauer",
+          "Man sollte Anrufe grundsätzlich auf den Anrufbeantworter laufen lassen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Eingehende Anrufe sollten spätestens nach dem dritten Klingeln angenommen werden, damit sich Kunden willkommen fühlen und das Unternehmen gut organisiert wirkt."
+      },
+      {
+        id: "ktel2",
+        cat: "komm_telefon",
+        catTag: "1. TELEFON & MELDEFORMEL",
+        question: "Wie lautet die vollständige 3-teilige Meldeformel bei der Annahme eines externen Anrufs (z. B. bei der Primus GmbH)?",
+        options: [
+          "1. Firma („Primus GmbH“) -> 2. Begrüßung („guten Tag“) -> 3. Vor- und Zuname („Sie sprechen mit Nicole Höver.“)",
+          "Nur der eigene Nachname („Höver!“)",
+          "Nur „Ja, bitte? Wer ist da?“",
+          "Zuerst das Geburtsdatum und danach „Hallo“"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Für den professionellen ersten Eindruck nennt man bei externen Anrufen stets: 1. Firmenname, 2. Tageszeit-Gruß („guten Tag“) und 3. Vor- und Zuname."
+      },
+      {
+        id: "ktel3",
+        cat: "komm_telefon",
+        catTag: "1. TELEFON & MELDEFORMEL",
+        question: "Warum ist die Stimme (Tonfall, Lautstärke, Sprechtempo) im Telefongespräch der wichtigste Erfolgsfaktor?",
+        options: [
+          "Weil am Telefon die Körpersprache (Mimik, Gestik, Blickkontakt) komplett fehlt und man Freundlichkeit, Vertrauen und Sicherheit allein über die Stimme ausstrahlt",
+          "Weil Kunden am Telefon niemals auf den Inhalt achten",
+          "Weil man am Telefon möglichst laut schreien muss",
+          "Weil man durch schnelles Reden das Gespräch verkürzt"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Anders als im Face-to-Face-Gespräch sieht das Gegenüber uns nicht – die Stimme übernimmt daher die gesamte Wirkung für Sympathie und Kompetenz."
+      },
+      {
+        id: "ktel4",
+        cat: "komm_telefon",
+        catTag: "1. TELEFON & MELDEFORMEL",
+        question: "Welchen Profi-Trick empfiehlt das Telefontraining bezüglich Körperhaltung und Mimik beim Telefonieren?",
+        options: [
+          "Aufrecht sitzen und beim Sprechen lächeln – denn ein Lächeln verändert den Stimmklang positiv und ist für den Gesprächspartner am Telefon hörbar",
+          "Sich flach auf den Schreibtisch legen",
+          "Mit verschränkten Armen und ernster Miene sprechen",
+          "Während des Gesprächs Kaugummi kauen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Wer aufrecht sitzt, atmet freier, und ein Lächeln lässt die Stimme automatisch wärmer, freundlicher und einladender klingen."
+      },
+      {
+        id: "ktel5",
+        cat: "komm_telefon",
+        catTag: "1. TELEFON & MELDEFORMEL",
+        question: "Welche Fehler macht Nicole Höver im Einstiegsdialog mit Herrn Jacobs (Bandscheiben-Drehstuhl „Super-Star“)?",
+        options: [
+          "Zu spätes Abnehmen (6x Klingeln), nur „Höver“, gereizter/ungeduldiger Ton, knappe Fragen („Welcher denn?“), Programm nicht offen und kein Stift griffbereit",
+          "Sie spricht viel zu ausführlich und wiederholt alle Bestelldaten doppelt",
+          "Sie nennt sofort die vollständige Meldeformel und bietet Zusatzprodukte an",
+          "Sie ist zu freundlich zu Herrn Jacobs"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Durch das gereizte „Höver“, die ungeduldigen Ein-Wort-Fragen und den unvorbereiteten Arbeitsplatz fühlt sich der Kunde abgefertigt und verunsichert."
+      },
+      {
+        id: "ktel6",
+        cat: "komm_telefon",
+        catTag: "1. TELEFON & MELDEFORMEL",
+        question: "Wie ist ein optimaler Telefonarbeitsplatz (räumlich, technisch, Arbeitsmittel) ausgestattet?",
+        options: [
+          "Ruhige Umgebung ohne Nebengeräusche/Parallelarbeiten, PC mit geöffnetem Programm/Headset sowie Stift, Notizblock und Unterlagen direkt griffbereit",
+          "Laute Musik im Hintergrund, geschlossener PC und keine Stifte am Platz",
+          "Mitten im Pausenraum neben der Kaffeemaschine ohne Notizzettel",
+          "Nur ein Smartphone ohne Zugriff auf Kundendaten"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Ein vorbereiteter Telefonplatz vermeidet hektisches Suchen („Moment, ich muss erst einen Stift suchen“) und vermittelt dem Kunden sofortige Kompetenz."
+      },
+      {
+        id: "ktel7",
+        cat: "komm_telefon",
+        catTag: "1. TELEFON & MELDEFORMEL",
+        question: "Warum sind Zuhörsignale („ja“, „richtig“, „ich verstehe“) gerade am Telefon so wichtig?",
+        options: [
+          "Da der Anrufer unser Kopfnicken nicht sehen kann, signalisieren kurze verbale Zuhörsignale, dass wir aufmerksam in der Leitung sind",
+          "Sie dienen dazu, den Kunden möglichst schnell zu unterbrechen",
+          "Man nutzt sie, um keine Notizen machen zu müssen",
+          "Sie zeigen dem Kunden, dass man nebenbei E-Mails tippt"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Ohne kurze Hörsignale entsteht am Telefon schnell das Gefühl, die Leitung sei tot oder das Gegenüber höre nicht zu."
+      },
+      {
+        id: "ktel8",
+        cat: "komm_telefon",
+        catTag: "1. TELEFON & MELDEFORMEL",
+        question: "Was muss bei einer telefonischen Bestellung vor der Verabschiedung unbedingt getan werden?",
+        options: [
+          "Wichtige Eckdaten wie Artikel, Menge, Preis und Liefertermin kurz zusammenfassen/wiederholen und sich freundlich mit dem Namen des Kunden verabschieden",
+          "Sofort ohne Gruß auflegen, sobald die Stückzahl genannt wurde",
+          "Dem Kunden sagen, er solle alles noch einmal per Brief schicken",
+          "Den Namen des Kunden absichtlich weglassen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Beispiel aus dem Spickzettel: „Ich fasse kurz zusammen: zehn Drehstühle Super-Star, Lieferung bis Freitag. Vielen Dank für Ihren Anruf, Herr Jacobs. Auf Wiederhören!“"
+      },
+      {
+        id: "ktel9",
+        cat: "komm_telefon",
+        catTag: "1. TELEFON & MELDEFORMEL",
+        question: "Wie leitet man ein Telefongespräch laut Spickzettel souverän weiter, wenn die gewünschte Person (z. B. Frau Konski) nicht am Platz ist?",
+        options: [
+          "„Frau Konski ist gerade nicht am Platz. Darf ich ihr etwas ausrichten oder soll sie Sie zurückrufen?“",
+          "„Keine Ahnung, wo die ist. Rufen Sie morgen wieder an!“",
+          "„Moment...“ rufen und den Hörer 10 Minuten auf den Tisch legen",
+          "Einfach kommentarlos auflegen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Verbindliche, lösungsorientierte Formulierungen („Darf ich ihr etwas ausrichten?“) hinterlassen auch bei Abwesenheit einen erstklassigen Eindruck."
+      },
+      {
+        id: "ktel10",
+        cat: "komm_telefon",
+        catTag: "1. TELEFON & MELDEFORMEL",
+        question: "Wie ermittelt man auch am Telefon professionell den Kundenbedarf für ein Beratungsgespräch?",
+        options: [
+          "Mit offenen W-Fragen (z. B. „Wofür möchten Sie die Stühle einsetzen?“, „Welche Menge benötigen Sie?“), Nennung des Kundennutzens und Hinweis auf Zusatzangebote",
+          "Mit ruppigen Ein-Wort-Fragen wie „Welcher denn?“ oder „Hä?“",
+          "Indem man gar keine Fragen stellt",
+          "Indem man nur Ja/Nein-Suggestivfragen nutzt"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Offene W-Fragen klären den genauen Bedarf, ermöglichen eine passgenaue Empfehlung und zeigen echtes Interesse am Kunden."
+      },
+
+      // 2. VIDEOKONFERENZ: VOR-/NACHTEILE, NO-GOS & SETUP (10 Fragen)
+      {
+        id: "kvid1",
+        cat: "komm_video",
+        catTag: "2. VIDEOKONFERENZ",
+        question: "Worin liegt der Unterschied zwischen „Videotelefonie“ und einer „Videokonferenz“?",
+        options: [
+          "Videotelefonie findet zwischen zwei Personen statt (z. B. Verkaufsberatung); an einer Videokonferenz nehmen zwei oder mehr Personen gleichzeitig teil (z. B. Teamsitzung, Projektbesprechung)",
+          "Videotelefonie überträgt nur Ton ohne Bild",
+          "Videokonferenzen dürfen nur im selben Raum stattfinden",
+          "Es gibt keinerlei Unterschied"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Videotelefonie entspricht einem Zweiergespräch mit Kamera, während Videokonferenzen Gruppenmeetings über mehrere Standorte hinweg ermöglichen."
+      },
+      {
+        id: "kvid2",
+        cat: "komm_video",
+        catTag: "2. VIDEOKONFERENZ",
+        question: "Welche drei wesentlichen Vorteile bieten Videokonferenzen für Unternehmen wie die Primus GmbH?",
+        options: [
+          "Zeit- und Kostenersparnis (keine Anreise), Entlastung der Umwelt sowie ortsunabhängige, flexible Zusammenarbeit (z. B. mehrere Standorte / Homeoffice)",
+          "Mehr Reisekosten, höherer Zeitaufwand und kein Sichtkontakt",
+          "Automatischer Vertragsabschluss ohne Gespräch",
+          "Man braucht keinerlei Internetverbindung"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Durch den Wegfall von Dienstreisen sparen Unternehmen viel Zeit und Geld, schonen das Klima und können Teams ortsunabhängig vernetzen."
+      },
+      {
+        id: "kvid3",
+        cat: "komm_video",
+        catTag: "2. VIDEOKONFERENZ",
+        question: "Welche Nachteile haben Videokonferenzen gegenüber einem persönlichen Treffen vor Ort (weshalb Nicole Höver skeptisch ist)?",
+        options: [
+          "Das Gespräch ist unpersönlicher, Small Talk zum Beziehungsaufbau ist kaum möglich und technische Störungen (stockendes Bild, Tonprobleme) können auftreten",
+          "Man muss stundenlang im Stau stehen",
+          "Man sieht das Gesicht des Gesprächspartners überhaupt nicht",
+          "Videokonferenzen sind nur schriftlich möglich"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Gerade für den persönlichen Vertrauensaufbau und ungezwungenen Small Talk ist ein Videocall distanzierter als ein echtes Treffen."
+      },
+      {
+        id: "kvid4",
+        cat: "komm_video",
+        catTag: "2. VIDEOKONFERENZ",
+        question: "Was empfiehlt das Lehrbuch, wenn man mit derselben Kundschaft regelmäßig per Videokonferenz zusammenarbeitet?",
+        options: [
+          "Vorab zumindest ein persönliches Treffen vor Ort durchzuführen, um eine tragfähige Vertrauensbasis aufzubauen",
+          "Die Kamera in allen Gesprächen dauerhaft auszuschalten",
+          "Niemals Namen zu nennen",
+          "Auf jede Begrüßung zu verzichten"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Hat man sich einmal persönlich kennengelernt, gelingt die anschließende Zusammenarbeit per Videokonferenz deutlich vertrauensvoller."
+      },
+      {
+        id: "kvid5",
+        cat: "komm_video",
+        catTag: "2. VIDEOKONFERENZ",
+        question: "Setup-Challenge für Videokonferenzen: Welche vier Punkte müssen bei Kamera, Licht, Hintergrund und Ton stimmen?",
+        options: [
+          "1. Licht von vorn, 2. Kamera auf Augenhöhe, 3. Hintergrund aufgeräumt/neutral, 4. Ton ohne Störgeräusche (Headset / Mute bei Nichtsprechen)",
+          "Fenster direkt im Rücken (Gegenlicht), Kamera von unten aufs Kinn, unordentliches Zimmer und offenes Mikrofon bei Straßenlärm",
+          "Licht komplett ausschalten und Kamera an die Decke richten",
+          "Kamera abkleben und Musik laufen lassen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Licht von vorn sorgt für ein gut erkennbares Gesicht, Kamera auf Augenhöhe verhindert die Froschperspektive, und ein ruhiger Hintergrund + guter Ton wirken hochprofessionell."
+      },
+      {
+        id: "kvid6",
+        cat: "komm_video",
+        catTag: "2. VIDEOKONFERENZ",
+        question: "Wohin sollte man in einer Videokonferenz blicken, wenn man selbst spricht, damit sich das Gegenüber direkt angeschaut fühlt?",
+        options: [
+          "Direkt in die Kameralinse (zumindest bei der Begrüßung und wichtigen Aussagen)",
+          "Auf das eigene Spiegelbild unten in der Ecke",
+          "Ständig nach unten auf die Tastatur oder aufs Handy",
+          "Aus dem Seitenfenster"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Nur der Blick in die Kameralinse erzeugt beim Gesprächspartner am Bildschirm den Eindruck von direktem Blickkontakt."
+      },
+      {
+        id: "kvid7",
+        cat: "komm_video",
+        catTag: "2. VIDEOKONFERENZ",
+        question: "Welches Verhalten gilt in einer geschäftlichen Videokonferenz als absolutes „No-Go“?",
+        options: [
+          "Nebenbei auf dem Smartphone tippen, essen, in Freizeit-/Schlafkleidung erscheinen oder die Technik erst nach Beginn des Termins testen",
+          "Sich 5 Minuten vor Beginn einwählen und Kamera/Ton prüfen",
+          "Das Mikrofon stummschalten, während andere präsentieren",
+          "Unterlagen für die Bildschirmfreigabe vorab öffnen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Für eine Videokonferenz mit Geschäftspartnern gelten dieselben Höflichkeits- und Kleidungsstandards wie bei einem Vor-Ort-Termin."
+      },
+      {
+        id: "kvid8",
+        cat: "komm_video",
+        catTag: "2. VIDEOKONFERENZ",
+        question: "Warum sollte man in größeren Videokonferenzen das eigene Mikrofon stummschalten (Mute), solange man nicht selbst spricht?",
+        options: [
+          "Um störende Hintergrundgeräusche (Tippen, Rascheln, Atemgeräusche, Rückkopplungen) für alle Teilnehmenden zu vermeiden",
+          "Damit man heimlich telefonieren kann",
+          "Weil das Programm sonst abstürzt",
+          "Damit niemand merkt, dass man nicht zuhört"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Schon kleinste Nebengeräusche werden über empfindliche Mikrofone verstärkt und stören den Sprecher in einer Videokonferenz erheblich."
+      },
+      {
+        id: "kvid9",
+        cat: "komm_video",
+        catTag: "2. VIDEOKONFERENZ",
+        question: "Was sollte man tun, bevor man in einer Videokonferenz seinen Bildschirm (Screen-Sharing) mit Kunden teilt?",
+        options: [
+          "Vertrauliche Dokumente, private Tabs und E-Mail-Postfächer schließen und nur das benötigte Fenster öffnen",
+          "Alle geheimen Kundendaten anderer Firmen offen auf dem Desktop lassen",
+          "Niemals den Bildschirm teilen",
+          "Zuerst das Hintergrundbild ändern"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Sowohl aus Gründen der Professionalität als auch des Datenschutzes (DSGVO) dürfen keine fremden oder internen Daten sichtbar sein."
+      },
+      {
+        id: "kvid10",
+        cat: "komm_video",
+        catTag: "2. VIDEOKONFERENZ",
+        question: "Warum ist starkes Gegenlicht (z. B. ein helles Fenster direkt hinter dem Rücken) in einer Videokonferenz ein Problem?",
+        options: [
+          "Die Kamera dunkelt das Gesicht ab, sodass man für den Geschäftspartner nur noch als dunkle Silhouette ohne Mimik erkennbar ist",
+          "Der Ton wird dadurch leiser",
+          "Die Internetverbindung wird langsamer",
+          "Gegenlicht ist immer ideal für Webcams"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Die Lichtquelle gehört immer vor oder schräg vor das Gesicht, damit Mimik und Augen klar zu erkennen sind."
+      },
+
+      // 3. WEG WÄHLEN: TELEFON, VIDEO ODER PERSÖNLICH? (10 Fragen)
+      {
+        id: "kweg1",
+        cat: "komm_wege",
+        catTag: "3. WEG WÄHLEN",
+        question: "Anlass 1 (Arbeitsblatt 2): Eine Stammkundin hat eine kurze Rückfrage zum Liefertermin ihrer Bestellung. Welcher Kommunikationsweg passt am besten?",
+        options: [
+          "Telefon (Sprachanruf) – die kurze Sachfrage lässt sich direkt, schnell und ohne technischen oder zeitlichen Aufwand klären",
+          "Persönliches Treffen vor Ort mit zweistündiger Anreise",
+          "Große Videokonferenz mit fünf Abteilungen",
+          "Ein eingeschriebener Brief per Post"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Für eine schnelle, unkomplizierte Auskunft bei einer bestehenden Geschäftsbeziehung ist der kurze Griff zum Telefon am effizientesten."
+      },
+      {
+        id: "kweg2",
+        cat: "komm_wege",
+        catTag: "3. WEG WÄHLEN",
+        question: "Anlass 2 (Arbeitsblatt 2): Wöchentliche Projektbesprechung mit Kolleginnen und Kollegen an drei verschiedenen Standorten. Welcher Weg ist ideal?",
+        options: [
+          "Videokonferenz – alle Beteiligten sehen sich gleichzeitig, können Bildschirme/Dokumente teilen und sparen jede Woche hohe Reisezeiten und Kosten",
+          "Jede Woche mit allen Mitarbeitern quer durch Deutschland reisen",
+          "Einzelne Postkarten verschicken",
+          "Gar nicht mehr miteinander sprechen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Regelmäßige Team- und Projektmeetings über mehrere Standorte hinweg sind das Paradebeispiel für den Einsatz einer Videokonferenz."
+      },
+      {
+        id: "kweg3",
+        cat: "komm_wege",
+        catTag: "3. WEG WÄHLEN",
+        question: "Anlass 3 (Arbeitsblatt 2): Erstgespräch mit einem möglichen neuen Großkunden aus Singapur. Welcher Kommunikationsweg bietet sich an?",
+        options: [
+          "Videokonferenz – man lernt sich trotz der riesigen Entfernung von Angesicht zu Angesicht (mit Mimik und Präsentation) kennen, ohne sofort eine teure Fernreise anzutreten",
+          "Nur eine kurze SMS schicken",
+          "Warten, bis der Kunde zufällig vorbeikommt",
+          "Ein unpersönliches Fax ohne Gespräch"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Über internationale Distanzen ermöglicht die Videokonferenz einen persönlichen ersten Eindruck inklusive Sichtkontakt und Produktpräsentation."
+      },
+      {
+        id: "kweg4",
+        cat: "komm_wege",
+        catTag: "3. WEG WÄHLEN",
+        question: "Anlass 4 (Arbeitsblatt 2): Vertragsverhandlung über einen wichtigen Großauftrag mit einem langjährigen Kunden. Welchen Weg wählst du?",
+        options: [
+          "Persönliches Treffen (Face-to-Face) – drückt höchste Wertschätzung aus, ermöglicht Small Talk, volle Körpersprache und stärkt das Vertrauen bei großen Abschlüssen",
+          "Eine kurze WhatsApp-Sprachnachricht",
+          "Einen Zettel an die Tür hängen",
+          "Eine automatische Standard-E-Mail"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Bei strategisch wichtigen Verhandlungen und langjährigen Schlüsselkunden ist das persönliche Gespräch vor Ort durch nichts zu ersetzen."
+      },
+      {
+        id: "kweg5",
+        cat: "komm_wege",
+        catTag: "3. WEG WÄHLEN",
+        question: "Anlass 5 (Arbeitsblatt 2): Verärgerte Reklamation eines Kunden, der bereits zum dritten Mal reklamiert hat. Welcher Weg ist hier geboten?",
+        options: [
+          "Persönliches Treffen vor Ort (bzw. sofortiges persönliches Telefonat/Videogespräch auf Leitungsebene), um maximale Wertschätzung zu zeigen und die Kundenbeziehung zu retten",
+          "Die E-Mail ignorieren und zwei Wochen abwarten",
+          "Einen automatischen Chatbot antworten lassen",
+          "Dem Kunden einen Werbeflyer schicken"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Bei eskalierenden Beschwerden braucht es den direktesten, persönlichsten Kanal (persönliches Gespräch / direkter Anruf), um ernsthaftes Bemühen zu signalisieren."
+      },
       {
         id: "kw1",
         cat: "komm_wege",
-        catTag: "KOMMUNIKATIONSWEGE",
+        catTag: "3. WEG WÄHLEN",
         question: "Welcher Kommunikationsweg eignet sich im Büroalltag am besten, wenn ein komplexer Sachverhalt rechtssicher und nachweisbar dokumentiert werden muss?",
         options: [
           "Schriftliche Kommunikation (z. B. Geschäftsbrief oder E-Mail mit Auftragsbestätigung/Protokoll)",
@@ -3658,65 +4337,248 @@
         explanation: "Schriftliche Kommunikationswege sichern die Nachweisbarkeit und Dokumentation wichtiger Vereinbarungen."
       },
       {
-        id: "kw2",
-        cat: "komm_wege",
-        catTag: "KOMMUNIKATIONSWEGE",
-        question: "Welcher Kommunikationskanal ist besonders sinnvoll, wenn ein dringendes Problem oder ein emotionaler Konflikt sofort persönlich geklärt werden soll?",
-        options: [
-          "Das persönliche Gespräch (Face-to-Face) oder ein direktes Telefonat/Videogespräch (synchrone Kommunikation)",
-          "Ein Brief per Post mit 4 Tagen Laufzeit",
-          "Ein Aushang am schwarzen Brett",
-          "Eine unpersönliche Serien-E-Mail"
-        ],
-        correct: 0,
-        xp: 50,
-        explanation: "Synchrone, direkte Kanäle (persönliches Gespräch, Videocall, Telefon) ermöglichen unmittelbares Feedback, Tonfall und Rückfragen."
-      },
-      {
         id: "kw3",
         cat: "komm_wege",
-        catTag: "KOMMUNIKATIONSWEGE",
+        catTag: "3. WEG WÄHLEN",
         question: "Was bedeutet der Unterschied zwischen „synchroner“ und „asynchroner“ Kommunikation?",
         options: [
-          "Synchron = zeitgleich (z. B. Telefonat, persönliches Gespräch) | Asynchron = zeitversetzt (z. B. E-Mail, Geschäftsbrief)",
+          "Synchron = zeitgleich (z. B. Telefonat, Videokonferenz, persönliches Gespräch) | Asynchron = zeitversetzt (z. B. E-Mail, Geschäftsbrief)",
           "Synchron = nur schriftlich | Asynchron = nur mündlich",
           "Synchron bedeutet ohne Computer",
           "Beide Begriffe bedeuten dasselbe"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Bei synchroner Kommunikation tauschen sich Sender und Empfänger gleichzeitig aus; bei asynchroner Kommunikation erfolgt die Antwort zeitversetzt."
+        explanation: "Bei synchroner Kommunikation tauschen sich Sender und Empfänger gleichzeitig in Echtzeit aus; bei asynchroner Kommunikation erfolgt die Antwort zeitversetzt."
       },
       {
         id: "kw4",
         cat: "komm_wege",
-        catTag: "KOMMUNIKATIONSWEGE",
-        question: "Warum fehlt bei einer reinen Text-E-Mail ein großer Teil der gewohnten Kommunikationssignale?",
+        catTag: "3. WEG WÄHLEN",
+        question: "Warum sollte man nach einem wichtigen telefonischen oder videobasierten Verhandlungsgespräch oft noch eine kurze E-Mail senden?",
         options: [
-          "Weil nonverbale (Mimik, Gestik, Blickkontakt) und paraverbale Signale (Tonfall, Stimmlage) wegfallen, wodurch schneller Missverständnisse entstehen können",
-          "Weil E-Mails keine Buchstaben übertragen können",
-          "Weil E-Mails keinen Sachinhalt haben",
-          "Weil man in E-Mails keine Fragen stellen kann"
+          "Um die mündlich vereinbarten Ergebnisse (Preise, Mengen, Termine) schriftlich festzuhalten und für beide Seiten verbindlich zu dokumentieren",
+          "Weil das Telefonat sonst ungültig ist",
+          "Um dem Kunden Werbung zu schicken",
+          "Das sollte man niemals tun"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Ohne Tonfall und Mimik wirken kurze Textnachrichten oft kühler oder strenger als gemeint – daher ist eine präzise und höfliche Formulierung wichtig."
+        explanation: "Die Kombination aus persönlichem/telefonischem Gespräch und kurzem schriftlichem Gesprächsprotokoll verbindet Schnelligkeit mit Rechtssicherheit."
       },
       {
-        id: "kw5",
+        id: "kw6",
         cat: "komm_wege",
-        catTag: "KOMMUNIKATIONSWEGE",
-        question: "Worauf sollte man bei einem professionellen Telefongespräch mit Geschäftspartnern besonders achten?",
+        catTag: "3. WEG WÄHLEN",
+        question: "Wann ist ein persönliches Gespräch vor Ort trotz schnellem Glasfaseranschluss einer Videokonferenz vorzuziehen?",
         options: [
-          "Freundliche Meldung mit Unternehmens- und eigenem Namen, deutliche Aussprache, Lächeln am Telefon (hörbar in der Stimme!) und Notizen machen",
-          "Nur mit „Ja, hallo?“ abheben und nebenbei weiter tippen",
-          "Den Anrufer ohne Rückfrage sofort weiterverbinden",
-          "Möglichst schnell und leise sprechen"
+          "Bei sensiblen Konflikten/Reklamationen, beim wichtigen Beziehungsaufbau mit Schlüsselkunden, bei großen Vertragsverhandlungen oder wenn Materialproben (z. B. Polsterstoffe) gefühlt werden müssen",
+          "Bei jeder 30-sekündigen Terminrückfrage",
+          "Wenn man nur eine Rechnungsnummer durchgeben will",
+          "Nie, man braucht überhaupt keine persönlichen Treffen mehr"
         ],
         correct: 0,
         xp: 50,
-        explanation: "Am Telefon ersetzt die Stimme (Tonfall, Tempo, Freundlichkeit) die fehlende Sichtbarkeit – ein Lächeln überträgt sich hörbar auf den Stimmklang."
+        explanation: "Haptik (Material anfassen wie bei Herrn Madans Polsterstoffen), tiefes Vertrauen und schwierige Konfliktlösungen gelingen vor Ort deutlich besser."
+      },
+      {
+        id: "kw7",
+        cat: "komm_wege",
+        catTag: "3. WEG WÄHLEN",
+        question: "Welche Kriterien helfen bei der Entscheidung für den passenden Kommunikationsweg?",
+        options: [
+          "Dringlichkeit, Komplexität des Themas, Bedeutung/Beziehung zum Geschäftspartner, räumliche Distanz, Kosten und Nachweisbedarf",
+          "Nur die Lieblingsfarbe des Mitarbeiters",
+          "Ausschließlich der Wochentag",
+          "Ob es draußen regnet"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Je wichtiger, emotionaler oder komplexer ein Anlass ist, desto reichhaltiger und persönlicher sollte der gewählte Kanal sein."
+      },
+
+      // 4. INTERKULTURELLE BESONDERHEITEN & RECHT / DATENSCHUTZ (10 Fragen)
+      {
+        id: "kik1",
+        cat: "komm_interkulturell",
+        catTag: "4. INTERKULTURELL & RECHT",
+        question: "Was versteht man unter „Interkultureller Kompetenz“ im Geschäftsleben?",
+        options: [
+          "Die Fähigkeit, mit Menschen aus anderen Kulturen so zu kommunizieren und zu verhandeln, dass sich beide Seiten angenommen und wohlfühlen (inkl. Wissen über Werte, Gepflogenheiten und Markt)",
+          "Dass alle ausländischen Geschäftspartner exakt die deutschen Gewohnheiten übernehmen müssen",
+          "Dass man im Ausland ausschließlich Deutsch spricht",
+          "Dass man eigene Werte komplett aufgibt"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Interkulturelle Kompetenz verbindet Offenheit, kulturelles Bewusstsein und Vorbereitung – findet ihre Grenze aber dort, wo man gegen eigene Grundwerte verstoßen müsste."
+      },
+      {
+        id: "kik2",
+        cat: "komm_interkulturell",
+        catTag: "4. INTERKULTURELL & RECHT",
+        question: "Worin liegt der Unterschied zwischen „Interkulturalität“ und „Transkulturalität“?",
+        options: [
+          "Interkulturalität sieht Kulturen als getrennte Inseln; Transkulturalität beschreibt das heutige Ineinandergreifen und Vermischen mehrerer Kulturen in einer globalisierten Welt",
+          "Transkulturalität bedeutet den Verzicht auf internationalen Handel",
+          "Beide Begriffe bedeuten Vorurteile",
+          "Interkulturalität gilt nur für Videokonferenzen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Da viele Menschen heute durch mehrere Kulturen gleichzeitig geprägt sind, beschreibt „Transkulturalität“ die moderne Gesellschaft deutlich treffender."
+      },
+      {
+        id: "kik3",
+        cat: "komm_interkulturell",
+        catTag: "4. INTERKULTURELL & RECHT",
+        question: "Missverständnis 1 (Aufgabe 3): Herr Nolte begrüßt einen polnischen Lieferanten mit einem Lächeln. Der Gast bleibt ernst. Warum ist das keine Unfreundlichkeit?",
+        options: [
+          "In osteuropäischen Ländern drückt ein Lächeln persönliche Sympathie aus und ist gegenüber Fremden unüblich – während es in Deutschland als bloße Höflichkeit gilt",
+          "Weil man in Polen niemals Geschäfte macht",
+          "Weil der Lieferant kein Interesse am Auftrag hat",
+          "Weil Lächeln in ganz Europa verboten ist"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Wenn man fremdes Verhalten nur mit eigenen Maßstäben deutet, hält man den ernsten Gesichtsausdruck fälschlich für unhöflich."
+      },
+      {
+        id: "kik4",
+        cat: "komm_interkulturell",
+        catTag: "4. INTERKULTURELL & RECHT",
+        question: "Missverständnis 2 (Aufgabe 3): Ein chinesischer Einkaufsleiter sagt nach der Präsentation: „Ein sehr interessantes Angebot, wir werden es sorgfältig prüfen.“ Ist der Auftrag sicher?",
+        options: [
+          "Nein! In China müssen alle Beteiligten ihr „Gesicht wahren“ – ein direktes „Nein“ wird vermieden, sodass dieser Satz oft eine höfliche Absage oder großen Klärungsbedarf bedeutet",
+          "Ja, in China bedeutet dieser Satz immer eine 100%ige Auftragszusage",
+          "Er möchte damit sofort den Vertrag unterschreiben",
+          "In China gelten mündliche Komplimente als rechtskräftiger Vertrag"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "In China hat Harmonie oberstes Gebot: Kritik oder Ablehnung wird indirekt und höflich verpackt, damit niemand das Gesicht verliert."
+      },
+      {
+        id: "kik5",
+        cat: "komm_interkulturell",
+        catTag: "4. INTERKULTURELL & RECHT",
+        question: "Missverständnis 3 (Aufgabe 3): Besuch von „Deniz Yılmaz“ aus Istanbul – Herr Nolte bereitet „Herzlich willkommen, Herr Yılmaz“ vor, doch es kommt eine Frau. Was ist die Ursache?",
+        options: [
+          "„Deniz“ ist im Türkischen ein geschlechtsneutraler Vorname (für Frauen und Männer) – man sollte sich vorab über die Gesprächspartnerin informieren!",
+          "In der Türkei werden alle Frauen mit „Herr“ angesprochen",
+          "Es handelt sich um einen Druckfehler im Reisepass",
+          "In der Türkei gibt es keine Vornamen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Eine kurze Recherche vor dem Treffen (und die Kenntnis über Anrede und akademische/berufliche Titel, die in der Türkei sehr wichtig sind) vermeidet solche Fettnäpfchen."
+      },
+      {
+        id: "kik6",
+        cat: "komm_interkulturell",
+        catTag: "4. INTERKULTURELL & RECHT",
+        question: "Missverständnis 4 (Aufgabe 3): Ein US-amerikanischer Kunde fragt beim Geschäftsessen nach Nicoles Einkommen und sagt zur Begrüßung „How do you do?“. Was gilt in den USA?",
+        options: [
+          "In den USA sind Fragen nach Einkommen/Vermögen beim Small Talk nicht verpönt (dafür Vorsicht bei Religion & Politik!), und „How do you do?“ ist nur eine Begrüßungsfloskel",
+          "Der Amerikaner möchte Nicole beleidigen",
+          "Auf „How do you do?“ muss man seine gesamte Krankengeschichte erzählen",
+          "In den USA siezt man sich jahrzehntelang mit Nachnamen"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "In den USA wechselt man schnell zum Vornamen, „How do you do?“ heißt schlicht „Guten Tag“, und über Gehalt spricht man viel offener als in Deutschland."
+      },
+      {
+        id: "kik7",
+        cat: "komm_interkulturell",
+        catTag: "4. INTERKULTURELL & RECHT",
+        question: "Länder-Zuordnung (Aufgabe 2): In welchem Land gelten unterzeichnete Verträge oft eher als flexible Absichtserklärungen und ein vorschnelles Einklagen gefährdet die Beziehung?",
+        options: [
+          "China (CN) – dort steht die langfristige persönliche Beziehung im Vordergrund",
+          "Deutschland (D) – hier zählen schriftliche Verträge überhaupt nicht",
+          "Schweiz",
+          "Luxemburg"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Während in Deutschland (D) schriftliche Verträge und deren buchstabengetreue Erfüllung größtes Gewicht haben, zählt in China vor allem das Vertrauensverhältnis."
+      },
+      {
+        id: "kik8",
+        cat: "komm_interkulturell",
+        catTag: "4. INTERKULTURELL & RECHT",
+        question: "Länder-Zuordnung (Aufgabe 2): Welches Land ist geprägt von einem etwas weicheren Handschlag, hoher Bedeutung akademischer/beruflicher Titel, großer Gastfreundschaft und starker Personenorientierung?",
+        options: [
+          "Türkei (TR)",
+          "USA",
+          "Deutschland (D)",
+          "Kanada"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "In der Türkei legt man großen Wert auf Gastfreundschaft, ein elegantes Erscheinungsbild, den persönlichen Beziehungsaufbau sowie die korrekte Nennung von Titeln."
+      },
+      {
+        id: "kik9",
+        cat: "komm_interkulturell",
+        catTag: "4. INTERKULTURELL & RECHT",
+        question: "Recht & Datenschutz (Arbeitsblatt 4, Aufgabe 2): Dürfen Telefonate oder Videokonferenzen mit Geschäftspartnern einfach aufgezeichnet werden?",
+        options: [
+          "Nein! Heimliche Ton- oder Videoaufnahmen sind verboten und nach § 201 StGB (Verletzung der Vertraulichkeit des Wortes) sowie DSGVO strafbar – es braucht immer die ausdrückliche Einwilligung aller Beteiligten",
+          "Ja, jedes Telefonat darf heimlich mitgeschnitten und veröffentlicht werden",
+          "Ja, solange man selbst mitspricht, ist keine Zustimmung nötig",
+          "Nur montags ist eine Einwilligung erforderlich"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Das Recht am gesprochenen Wort und am eigenen Bild ist streng geschützt. Vor jeder Aufzeichnung muss das ausdrückliche Einverständnis aller Teilnehmenden eingeholt werden."
+      },
+      {
+        id: "kik10",
+        cat: "komm_interkulturell",
+        catTag: "4. INTERKULTURELL & RECHT",
+        question: "Was ist beim Einsatz von Videokonferenz-Programmen aus Sicht des Datenschutzes (DSGVO) im Unternehmen zu beachten?",
+        options: [
+          "DSGVO-konformer Anbieter (idealerweise Server in der EU), Auftragsverarbeitungsvertrag (AVV), Verschlüsselung, Passwortschutz für Meetings und keine unbefugte Weitergabe personenbezogener Daten",
+          "Man sollte möglichst öffentliche, unverschlüsselte Links ohne Passwort in sozialen Netzwerken posten",
+          "Datenschutz gilt bei Videokonferenzen überhaupt nicht",
+          "Jeder Teilnehmer muss seine Bank-PIN in den Chat schreiben"
+        ],
+        correct: 0,
+        xp: 50,
+        explanation: "Unternehmen müssen sicherstellen, dass Videokonferenz-Tools den Anforderungen der DSGVO entsprechen (Verschlüsselung, Zugriffsbeschränkung, AV-Vertrag)."
       }
+    ];
+
+    // ==========================================
+    // DIGITALE 3D-KARTEIKARTEN (FLIP-CARDS) POOL
+    // ==========================================
+    const FLASHCARDS_POOL = [
+      // Rechnungswesen
+      { id: "fc1", cat: "rw", tag: "RECHNUNGSWESEN • BILANZ", front: "Was zeigt die Aktivseite und was zeigt die Passivseite der Bilanz?", back: "Aktivseite = Mittelverwendung (Vermögen: Anlage- & Umlaufvermögen)\nPassivseite = Mittelherkunft (Kapital: Eigen- & Fremdkapital)", hint: "Merksatz: Aktiva = Wofür wurde das Geld verwendet? | Passiva = Woher stammt das Geld?" },
+      { id: "fc2", cat: "rw", tag: "RECHNUNGSWESEN • SOLL & HABEN", front: "Wo stehen Anfangsbestand (AB), Zugänge (+) und Abgänge (-) bei einem Aktivkonto?", back: "Im SOLL (links): Anfangsbestand (AB) und Zugänge (+)\nIm HABEN (rechts): Abgänge (-) und Schlussbestand (SB)", hint: "Beispiele für Aktivkonten: Fuhrpark, BGA, Waren, Forderungen a.LL, Bank, Kasse." },
+      { id: "fc3", cat: "rw", tag: "RECHNUNGSWESEN • SOLL & HABEN", front: "Wo stehen Anfangsbestand (AB), Zugänge (+) und Abgänge (-) bei einem Passivkonto?", back: "Im HABEN (rechts): Anfangsbestand (AB) und Zugänge (+)\nIm SOLL (links): Abgänge (-) und Schlussbestand (SB)", hint: "Beispiele für Passivkonten: Eigenkapital, Darlehen, Verbindlichkeiten a.LL." },
+      { id: "fc4", cat: "rw", tag: "RECHNUNGSWESEN • ERFOLGSKONTEN", front: "Wie werden Aufwendungen und Erträge gebucht?", back: "Aufwendungen = immer im SOLL (links), da sie das Eigenkapital mindern.\nErträge = immer im HABEN (rechts), da sie das Eigenkapital mehren.", hint: "Beide werden am Jahresende über das GuV-Konto abgeschlossen." },
+      { id: "fc5", cat: "rw", tag: "RECHNUNGSWESEN • BUCHUNGSSATZ", front: "Wie lautet der Buchungssatz beim Kauf von Waren auf Ziel (7.200 €)?", back: "Waren 7.200 € an Verbindlichkeiten a.LL 7.200 €", hint: "Bilanzveränderung: Aktiv-Passiv-Mehrung (Bilanzverlängerung)." },
+      { id: "fc6", cat: "rw", tag: "RECHNUNGSWESEN • BUCHUNGSSATZ", front: "Wie lautet der Buchungssatz bei Begleichung einer Lieferantenrechnung per Banküberweisung (11.300 €)?", back: "Verbindlichkeiten a.LL 11.300 € an Bank 11.300 €", hint: "Bilanzveränderung: Aktiv-Passiv-Minderung (Bilanzverkürzung)." },
+      { id: "fc7", cat: "rw", tag: "RECHNUNGSWESEN • BILANZVERÄNDERUNG", front: "Was passiert bei einem Aktivtausch mit der Bilanzsumme?", back: "Ein Aktivkonto steigt (+), ein anderes Aktivkonto sinkt (-) um denselben Betrag. Die Bilanzsumme bleibt unverändert!", hint: "Beispiel: Bareinzahlung auf das Bankkonto (Bank an Kasse)." },
+      { id: "fc8", cat: "rw", tag: "RECHNUNGSWESEN • INVENTUR", front: "Was ist der Unterschied zwischen Inventur und Inventar?", back: "Inventur = die Tätigkeit der Bestandsaufnahme (Zählen, Messen, Wiegen, Buchinventur).\nInventar = das fertige, ausführliche Bestandsverzeichnis.", hint: "Aufbewahrungsfrist für Inventare & Bilanzen nach HGB: 10 Jahre." },
+
+      // Kommunikation Block 1
+      { id: "fc9", cat: "komm1", tag: "KOMMUNIKATION BLOCK 1 • WATZLAWICK", front: "Was bedeutet Paul Watzlawicks Merksatz „Man kann nicht nicht kommunizieren!“?", back: "Jedes Verhalten ist Kommunikation. Selbst wer schweigt, wegsieht oder die Arme verschränkt, sendet eine nonverbale Botschaft.", hint: "Beispiel: Kein Blickkontakt am Messestand signalisiert „Ich habe keine Zeit für Sie“." },
+      { id: "fc10", cat: "komm1", tag: "KOMMUNIKATION BLOCK 1 • SCHULZ VON THUN", front: "Welche 4 Seiten hat jede Nachricht nach Friedemann Schulz von Thun?", back: "1. Sachinhalt (Worüber informiere ich?)\n2. Selbstoffenbarung (Was gebe ich über mich preis?)\n3. Appell (Wozu fordere ich auf?)\n4. Beziehung (Wie stehen wir zueinander?)", hint: "Ursache vieler Konflikte: Sender und Empfänger hören auf unterschiedlichen Ohren!" },
+      { id: "fc11", cat: "komm1", tag: "KOMMUNIKATION BLOCK 1 • FRAGETECHNIK", front: "Welche 4 Fragetypen unterscheidet man in der Gesprächsführung?", back: "1. Offene Frage (W-Frage -> viele Infos)\n2. Geschlossene Frage (Ja/Nein -> Entscheidung)\n3. Suggestivfrage (Antwort vorgegeben/manipulativ)\n4. Rhetorische Frage (wird selbst beantwortet)", hint: "Zur Bedarfsermittlung im Kundengespräch sind offene W-Fragen ideal!" },
+      { id: "fc12", cat: "komm1", tag: "KOMMUNIKATION BLOCK 1 • FÖRDERER VS. BLOCKER", front: "Nenne 4 Gesprächsförderer und 4 Gesprächsblocker!", back: "Förderer: Aktives Zuhören, (Nach-)Fragen, Ich-Botschaften, zugewandte Körpersprache/Blickkontakt.\nBlocker: Belehrung, Vielreden (Marathon), Bloßstellen, Killerphrasen/Drängeln.", hint: "Aktives Zuhören = Ausreden lassen + Nicken/„Aha“ + Kernaussage zusammenfassen." },
+      { id: "fc13", cat: "komm1", tag: "KOMMUNIKATION BLOCK 1 • MIKROEXPRESSIONEN", front: "Was sind Mikroexpressionen und was bedeutet Inkongruenz?", back: "Mikroexpressionen sind extrem kurze Gesichtsausdrücke (40–200 ms), gesteuert vom limbischen System.\nInkongruenz = Widerspruch zwischen gesprochenem Wort und Mimik.", hint: "Reaktion in 3 Schritten: 1. Signal beobachten -> 2. Spiegel-Aussage (keine Frage!) -> 3. Dialog eröffnen." },
+
+      // Kommunikation Block 2
+      { id: "fc14", cat: "komm2", tag: "KOMMUNIKATION BLOCK 2 • TELEFON", front: "Wie lautet die 3-teilige Meldeformel am Telefon und wann nimmt man spätestens ab?", back: "1. Firma („Primus GmbH“)\n2. Begrüßung („guten Tag“)\n3. Vor- und Zuname („Sie sprechen mit Nicole Höver.“)\nAnnahme: Spätestens nach dem 3. Klingeln!", hint: "Profi-Trick: Aufrecht sitzen & lächeln – der Kunde hört es an der Stimme!" },
+      { id: "fc15", cat: "komm2", tag: "KOMMUNIKATION BLOCK 2 • TELEFONARBEITSPLATZ", front: "Wie ist ein optimaler Telefonarbeitsplatz vorbereitet?", back: "1. Räumlich: Ruhige Umgebung, keine Nebengeräusche/Parallelarbeiten.\n2. Technisch: Headset/Telefon, PC mit geöffnetem Programm.\n3. Unterlagen: Stift & Notizblock griffbereit.", hint: "Vor dem Auflegen: Menge, Preis & Liefertermin wiederholen und mit Namen verabschieden!" },
+      { id: "fc16", cat: "komm2", tag: "KOMMUNIKATION BLOCK 2 • VIDEOKONFERENZ", front: "Was sind die Vor- und Nachteile einer Videokonferenz?", back: "Vorteile: Spart Reisezeit & Kosten, schont die Umwelt, ortsunabhängig (Homeoffice).\nNachteile: Unpersönlicher als vor Ort, kaum Small Talk möglich, Risiko von Technik-/Tonstörungen.", hint: "Tipp: Vor regelmäßigen Videokonferenzen mit Kunden empfiehlt sich ein erstes persönliches Treffen!" },
+      { id: "fc17", cat: "komm2", tag: "KOMMUNIKATION BLOCK 2 • VIDEO SETUP", front: "Welche 4 Regeln gelten beim Setup einer Videokonferenz (Setup-Challenge)?", back: "1. Licht von vorn (kein Gegenlicht!)\n2. Kamera auf Augenhöhe (Blick in die Linse)\n3. Hintergrund aufgeräumt/neutral & Business-Kleidung\n4. Ton ohne Störgeräusche (Headset, Mute bei Nichtsprechen)", hint: "Technik immer 5–10 Minuten vor Gesprächsbeginn testen!" },
+      { id: "fc18", cat: "komm2", tag: "KOMMUNIKATION BLOCK 2 • INTERKULTURELL", front: "Was ist der Unterschied zwischen Interkulturalität und Transkulturalität?", back: "Interkulturalität betrachtet Kulturen als getrennte Inseln.\nTranskulturalität beschreibt das heutige Ineinandergreifen und Vermischen mehrerer Kulturen und Lebensweisen.", hint: "Merksatz: Vorher informieren – und dem Gegenüber offen statt mit Vorurteilen begegnen." },
+      { id: "fc19", cat: "komm2", tag: "KOMMUNIKATION BLOCK 2 • LÄNDER-CHECK", front: "Welche Besonderheiten gelten in China (CN), den USA und der Türkei (TR)?", back: "• China: „Gesicht wahren“ (kein direktes Nein), Verträge oft als Absichtserklärung.\n• USA: „How do you do?“ = Gruß, schneller Vorname, Gehalt kein Tabu (aber Politik/Religion!).\n• Türkei: Weicher Handschlag, Titel sehr wichtig, hohe Gastfreundschaft & Personenorientierung.", hint: "In Osteuropa (z. B. Polen) gilt ein Lächeln Fremden gegenüber oft als unüblich – keine Unfreundlichkeit!" },
+      { id: "fc20", cat: "komm2", tag: "KOMMUNIKATION BLOCK 2 • RECHT & DSGVO", front: "Dürfen Telefonate oder Videokonferenzen mit Geschäftspartnern aufgezeichnet werden?", back: "Nein! Heimliche Aufnahmen sind nach § 201 StGB (Vertraulichkeit des Wortes) und DSGVO verboten und strafbar. Eine Aufzeichnung ist nur mit ausdrücklicher vorheriger Einwilligung aller Beteiligten erlaubt!", hint: "Bei Videokonferenz-Tools auf DSGVO-Konformität (EU-Server, Verschlüsselung, AV-Vertrag) achten." }
     ];
 
     // Aufgabenblatt 2 Daten (exakt nach dem Bild des Nutzers)
@@ -4193,6 +5055,7 @@
       avatarDataUrl: "",
       theme: "default",
       autoAdvanceCorrect: false,
+      soundEnabled: true,
       xp: 0,
       level: 1,
       totalAnswered: 0,
@@ -4201,6 +5064,8 @@
       solvedTKIds: [],
       solvedWSRows: [],
       seenQuestions: [],
+      wrongQuestionIds: [],
+      knownFlashcardIds: [],
       activeQuizIndex: 0,
       quizAnswers: [],
       currentTKCaseIndex: 0,
@@ -4689,6 +5554,30 @@
         title: "Killerphrasen",
         desc: "Totschlagargumente und abwertende Floskeln, die jedes offene Gespräch und neue Ideen sofort blockieren.",
         example: "Beispiel: „Davon haben Sie doch keine Ahnung!“ oder „Das ist doch allgemein bekannt!“"
+      },
+      "Meldeformel": {
+        tag: "TELEFONTRAINING",
+        title: "Meldeformel am Telefon",
+        desc: "Standardisierte, dreiteilige Begrüßung bei der Annahme externer Anrufe für einen professionellen ersten Eindruck.",
+        example: "1. Firma („Primus GmbH“) + 2. Tagesgruß („guten Tag“) + 3. Vor- und Zuname („Sie sprechen mit Nicole Höver.“)."
+      },
+      "Videokonferenz": {
+        tag: "KOMMUNIKATIONSWEG",
+        title: "Videokonferenz",
+        desc: "Zeitgleiche (synchrone) Übertragung von Bild und Ton zwischen zwei oder mehr Teilnehmenden an verschiedenen Orten.",
+        example: "Vorteile: Spart Reisezeit/Kosten, umweltfreundlich. Nachteile: Unpersönlicher als vor Ort, kaum Small Talk, Technikrisiko."
+      },
+      "Interkulturelle Kompetenz": {
+        tag: "INTERKULTURELLES",
+        title: "Interkulturelle Kompetenz",
+        desc: "Die Fähigkeit, mit Geschäftspartnern aus anderen Kulturen wertschätzend und erfolgreich zu kommunizieren, sodass sich beide Seiten wohlfühlen.",
+        example: "Basiert auf Vorbereitung, Offenheit und dem Verzicht auf vorschnelle Stereotype/Vorurteile."
+      },
+      "Transkulturalität": {
+        tag: "KULTURBEGRIFF",
+        title: "Transkulturalität",
+        desc: "Beschreibt das heutige Ineinandergreifen und Verschmelzen von Kulturen und Lebensweisen in einer vernetzten Welt.",
+        example: "Im Gegensatz zur Interkulturalität (Kulturen als getrennte Inseln) berücksichtigt Transkulturalität, dass Menschen durch mehrere Kulturen geprägt sind."
       }
     };
 
@@ -4779,6 +5668,7 @@
       const quizWrap = document.getElementById("lernen-quiz-wrapper");
       const wsWrap = document.getElementById("lernen-worksheet-wrapper");
       const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
+      const kommWegeSheetWrap = document.getElementById("lernen-komm-wege-sheet-wrapper");
       const rwHint = document.getElementById("rw-launcher-hint");
       const ggHint = document.getElementById("gg-launcher-hint");
 
@@ -4793,6 +5683,7 @@
       if (quizWrap) quizWrap.classList.add("hidden");
       if (wsWrap) wsWrap.classList.add("hidden");
       if (kommSheetWrap) kommSheetWrap.classList.add("hidden");
+      if (kommWegeSheetWrap) kommWegeSheetWrap.classList.add("hidden");
 
       if (rwHint) rwHint.textContent = "Tippe hier, um die Themen-Kacheln zu öffnen";
       if (ggHint) ggHint.textContent = "Grundlagen der Kommunikation & Kommunikationswege";
@@ -4906,10 +5797,12 @@
       const subtopicsPanel = document.getElementById("gg-subtopics-panel");
       const grundlagenPanel = document.getElementById("gg-grundlagen-panel");
       const wegePanel = document.getElementById("gg-wege-panel");
+      const kommWegeSheetWrap = document.getElementById("lernen-komm-wege-sheet-wrapper");
 
       // Die beiden Optionen & die obere Hauptkachel ausblenden!
       if (mainGrid) mainGrid.classList.add("hidden");
       if (subtopicsPanel) subtopicsPanel.classList.add("hidden");
+      if (kommWegeSheetWrap) kommWegeSheetWrap.classList.add("hidden");
 
       if (subtopic === "wege") {
         if (grundlagenPanel) grundlagenPanel.classList.add("hidden");
@@ -4944,15 +5837,44 @@
       const quizWrap = document.getElementById("lernen-quiz-wrapper");
       const wsWrap = document.getElementById("lernen-worksheet-wrapper");
       const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
+      const kommWegeSheetWrap = document.getElementById("lernen-komm-wege-sheet-wrapper");
 
       activeLernenSubject = "gg";
+      activeGGSubtopic = "grundlagen";
       if (mainGrid) mainGrid.classList.add("hidden");
       if (ggContent) ggContent.classList.add("hidden");
       if (rwContent) rwContent.classList.remove("hidden");
       if (selectionPanel) selectionPanel.classList.add("hidden");
       if (quizWrap) quizWrap.classList.add("hidden");
       if (wsWrap) wsWrap.classList.add("hidden");
+      if (kommWegeSheetWrap) kommWegeSheetWrap.classList.add("hidden");
       if (kommSheetWrap) kommSheetWrap.classList.remove("hidden");
+
+      isTaskOpenInLernen = true;
+      resetQuestionTimer();
+      refreshIcons();
+    }
+
+    function openKommWegeSheet() {
+      const mainGrid = document.getElementById("main-topics-grid");
+      const ggContent = document.getElementById("gg-expandable-content");
+      const rwContent = document.getElementById("rw-expandable-content");
+      const selectionPanel = document.getElementById("rw-selection-panel");
+      const quizWrap = document.getElementById("lernen-quiz-wrapper");
+      const wsWrap = document.getElementById("lernen-worksheet-wrapper");
+      const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
+      const kommWegeSheetWrap = document.getElementById("lernen-komm-wege-sheet-wrapper");
+
+      activeLernenSubject = "gg";
+      activeGGSubtopic = "wege";
+      if (mainGrid) mainGrid.classList.add("hidden");
+      if (ggContent) ggContent.classList.add("hidden");
+      if (rwContent) rwContent.classList.remove("hidden");
+      if (selectionPanel) selectionPanel.classList.add("hidden");
+      if (quizWrap) quizWrap.classList.add("hidden");
+      if (wsWrap) wsWrap.classList.add("hidden");
+      if (kommSheetWrap) kommSheetWrap.classList.add("hidden");
+      if (kommWegeSheetWrap) kommWegeSheetWrap.classList.remove("hidden");
 
       isTaskOpenInLernen = true;
       resetQuestionTimer();
@@ -4974,11 +5896,13 @@
       const quizWrap = document.getElementById("lernen-quiz-wrapper");
       const wsWrap = document.getElementById("lernen-worksheet-wrapper");
       const kommSheetWrap = document.getElementById("lernen-komm-sheet-wrapper");
+      const kommWegeSheetWrap = document.getElementById("lernen-komm-wege-sheet-wrapper");
 
       isTaskOpenInLernen = false;
       if (quizWrap) quizWrap.classList.add("hidden");
       if (wsWrap) wsWrap.classList.add("hidden");
       if (kommSheetWrap) kommSheetWrap.classList.add("hidden");
+      if (kommWegeSheetWrap) kommWegeSheetWrap.classList.add("hidden");
 
       if (activeLernenSubject === "gg") {
         isGespraechsgestaltungOpen = true;
@@ -5042,6 +5966,8 @@
       updateMasteryProgressUI();
       renderFilteredKonten();
       renderAchievements();
+      initFlashcards();
+      updateMistakeTrainerUI();
       setupQuizSession();
       renderWorksheetRows();
       loadTKontoCase(0);
@@ -5060,9 +5986,12 @@
       if (!Array.isArray(state.solvedTKIds)) state.solvedTKIds = [];
       if (!Array.isArray(state.solvedWSRows)) state.solvedWSRows = [];
       if (!Array.isArray(state.seenQuestions)) state.seenQuestions = [];
+      if (!Array.isArray(state.wrongQuestionIds)) state.wrongQuestionIds = [];
+      if (!Array.isArray(state.knownFlashcardIds)) state.knownFlashcardIds = [];
       if (typeof state.totalAnswered !== "number") state.totalAnswered = 0;
       if (typeof state.totalCorrect !== "number") state.totalCorrect = 0;
       if (typeof state.autoAdvanceCorrect !== "boolean") state.autoAdvanceCorrect = false;
+      if (typeof state.soundEnabled !== "boolean") state.soundEnabled = true;
     }
 
     function updateCurrentDateBadge() {
@@ -5279,6 +6208,283 @@
 
       updateThemeButtonsUI();
       updateAutoAdvanceToggleUI();
+      updateSoundToggleUI();
+    }
+
+    function updateAutoAdvanceToggleUI() {
+      const btn = document.getElementById("auto-advance-toggle-btn");
+      const knob = document.getElementById("auto-advance-knob");
+      if (!btn || !knob) return;
+
+      if (state.autoAdvanceCorrect) {
+        btn.className = "w-12 h-7 rounded-full bg-emerald-500/30 border border-emerald-400 p-1 transition flex items-center shrink-0";
+        knob.className = "w-5 h-5 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md";
+      } else {
+        btn.className = "w-12 h-7 rounded-full bg-slate-800 border border-white/15 p-1 transition flex items-center shrink-0";
+        knob.className = "w-5 h-5 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0";
+      }
+    }
+
+    function toggleAutoAdvanceSetting() {
+      state.autoAdvanceCorrect = !state.autoAdvanceCorrect;
+      saveState();
+      updateAutoAdvanceToggleUI();
+    }
+
+    function updateSoundToggleUI() {
+      const btn = document.getElementById("sound-toggle-btn");
+      const knob = document.getElementById("sound-knob");
+      if (!btn || !knob) return;
+
+      if (state.soundEnabled) {
+        btn.className = "w-12 h-7 rounded-full bg-emerald-500/30 border border-emerald-400 p-1 transition flex items-center shrink-0";
+        knob.className = "w-5 h-5 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md";
+      } else {
+        btn.className = "w-12 h-7 rounded-full bg-slate-800 border border-white/15 p-1 transition flex items-center shrink-0";
+        knob.className = "w-5 h-5 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0";
+      }
+    }
+
+    function toggleSoundSetting() {
+      state.soundEnabled = !state.soundEnabled;
+      saveState();
+      updateSoundToggleUI();
+      if (state.soundEnabled) playAppSound("correct");
+    }
+
+    // ==========================================
+    // SYNTHESIZED SOUND EFFECTS (WEB AUDIO API)
+    // ==========================================
+    let audioCtxInstance = null;
+    function playAppSound(type) {
+      if (!state.soundEnabled) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        if (!audioCtxInstance) audioCtxInstance = new AudioCtx();
+        if (audioCtxInstance.state === "suspended") audioCtxInstance.resume();
+
+        const now = audioCtxInstance.currentTime;
+        if (type === "correct") {
+          const freqs = [523.25, 659.25, 783.99]; // C5 - E5 - G5
+          freqs.forEach((f, idx) => {
+            const osc = audioCtxInstance.createOscillator();
+            const gain = audioCtxInstance.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(f, now + idx * 0.055);
+            gain.gain.setValueAtTime(0.001, now + idx * 0.055);
+            gain.gain.exponentialRampToValueAtTime(0.08, now + idx * 0.055 + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.055 + 0.28);
+            osc.connect(gain);
+            gain.connect(audioCtxInstance.destination);
+            osc.start(now + idx * 0.055);
+            osc.stop(now + idx * 0.055 + 0.3);
+          });
+        } else if (type === "wrong") {
+          const osc = audioCtxInstance.createOscillator();
+          const gain = audioCtxInstance.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.linearRampToValueAtTime(165, now + 0.22);
+          gain.gain.setValueAtTime(0.07, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+          osc.connect(gain);
+          gain.connect(audioCtxInstance.destination);
+          osc.start(now);
+          osc.stop(now + 0.26);
+        } else if (type === "levelup") {
+          const freqs = [523.25, 659.25, 783.99, 1046.5];
+          freqs.forEach((f, idx) => {
+            const osc = audioCtxInstance.createOscillator();
+            const gain = audioCtxInstance.createGain();
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(f, now + idx * 0.07);
+            gain.gain.setValueAtTime(0.09, now + idx * 0.07);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.07 + 0.4);
+            osc.connect(gain);
+            gain.connect(audioCtxInstance.destination);
+            osc.start(now + idx * 0.07);
+            osc.stop(now + idx * 0.07 + 0.42);
+          });
+        }
+      } catch (e) {}
+    }
+
+    // ==========================================
+    // HANDY & PC SPEICHERSTAND-SYNC (CODE & DATEI)
+    // ==========================================
+    function showSyncStatus(msg, isError = false) {
+      const el = document.getElementById("sync-status-msg");
+      if (!el) return;
+      el.classList.remove("hidden");
+      el.className = isError ? "text-[11px] font-semibold text-rose-400" : "text-[11px] font-semibold text-emerald-400";
+      el.textContent = msg;
+      setTimeout(() => el.classList.add("hidden"), 4000);
+    }
+
+    function encodeSyncState() {
+      const exportObj = { ...state, avatarDataUrl: "" }; // Ohne schweres Base64-Bild für kompakten Sync-Code
+      const jsonStr = JSON.stringify(exportObj);
+      return btoa(unescape(encodeURIComponent(jsonStr)));
+    }
+
+    function copySyncCodeToClipboard() {
+      try {
+        const code = encodeSyncState();
+        const input = document.getElementById("sync-code-input");
+        if (input) {
+          input.value = code;
+          input.select();
+          document.execCommand("copy");
+        }
+        showSyncStatus("✓ Sync-Code in die Zwischenablage kopiert!");
+      } catch (e) {
+        showSyncStatus("Fehler beim Erstellen des Sync-Codes.", true);
+      }
+    }
+
+    function downloadSyncFile() {
+      try {
+        const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `learnex-v5-backup-${getDateKey()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showSyncStatus("✓ Backup-Datei erfolgreich heruntergeladen!");
+      } catch (e) {
+        showSyncStatus("Download fehlgeschlagen.", true);
+      }
+    }
+
+    function importFromSyncCodeInput() {
+      const input = document.getElementById("sync-code-input");
+      if (!input || !input.value.trim()) {
+        showSyncStatus("Bitte zuerst einen Sync-Code einfügen.", true);
+        return;
+      }
+      try {
+        const raw = input.value.trim();
+        const jsonStr = decodeURIComponent(escape(atob(raw)));
+        const parsed = JSON.parse(jsonStr);
+        state = { ...state, ...parsed };
+        ensureTodayEntry();
+        saveState();
+        applyUserProfileAndTheme();
+        updateHeaderAndKPIs();
+        initActivityChart();
+        updateMasteryProgressUI();
+        updateMistakeTrainerUI();
+        initFlashcards();
+        showSyncStatus("✓ Speicherstand erfolgreich geladen!");
+        playAppSound("levelup");
+      } catch (e) {
+        showSyncStatus("Ungültiger Sync-Code.", true);
+      }
+    }
+
+    function importFromSyncFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          state = { ...state, ...parsed };
+          ensureTodayEntry();
+          saveState();
+          applyUserProfileAndTheme();
+          updateHeaderAndKPIs();
+          initActivityChart();
+          updateMasteryProgressUI();
+          updateMistakeTrainerUI();
+          initFlashcards();
+          showSyncStatus("✓ Backup-Datei erfolgreich wiederhergestellt!");
+          playAppSound("levelup");
+        } catch (err) {
+          showSyncStatus("Datei konnte nicht gelesen werden.", true);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ==========================================
+    // POMODORO FOKUS-TIMER
+    // ==========================================
+    let pomoSecondsLeft = 25 * 60;
+    let pomoMode = "work"; // 'work' | 'break'
+    let pomoRunning = false;
+    let pomoInterval = null;
+
+    function togglePomodoroModal(event) {
+      if (event) event.stopPropagation();
+      const modal = document.getElementById("pomodoro-modal");
+      if (!modal) return;
+      modal.classList.toggle("hidden");
+      refreshIcons();
+    }
+
+    function updatePomodoroUI() {
+      const m = String(Math.floor(pomoSecondsLeft / 60)).padStart(2, "0");
+      const s = String(pomoSecondsLeft % 60).padStart(2, "0");
+      const formatted = `${m}:${s}`;
+      const headerEl = document.getElementById("header-pomo-time");
+      const bigEl = document.getElementById("pomo-big-display");
+      const startLabel = document.getElementById("pomo-start-label");
+      if (headerEl) headerEl.textContent = formatted;
+      if (bigEl) bigEl.textContent = formatted;
+      if (startLabel) startLabel.textContent = pomoRunning ? "Pausieren" : "Starten";
+    }
+
+    function setPomodoroMode(mode) {
+      pomoMode = mode;
+      pomoRunning = false;
+      if (pomoInterval) clearInterval(pomoInterval);
+      pomoSecondsLeft = mode === "work" ? 25 * 60 : 5 * 60;
+      const tabWork = document.getElementById("pomo-tab-work");
+      const tabBreak = document.getElementById("pomo-tab-break");
+      const label = document.getElementById("pomo-mode-label");
+      if (tabWork && tabBreak) {
+        tabWork.className = mode === "work" ? "py-2 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs transition" : "py-2 rounded-xl glass-pill text-slate-300 hover:text-white font-bold text-xs transition";
+        tabBreak.className = mode === "break" ? "py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs transition" : "py-2 rounded-xl glass-pill text-slate-300 hover:text-white font-bold text-xs transition";
+      }
+      if (label) {
+        label.textContent = mode === "work" ? "Fokus-Phase (25 Min) • +100 XP Bonus" : "Erholungs-Pause (5 Min)";
+      }
+      updatePomodoroUI();
+    }
+
+    function startPausePomodoro() {
+      pomoRunning = !pomoRunning;
+      if (pomoRunning) {
+        if (pomoInterval) clearInterval(pomoInterval);
+        pomoInterval = setInterval(() => {
+          if (pomoSecondsLeft > 0) {
+            pomoSecondsLeft--;
+            updatePomodoroUI();
+          } else {
+            clearInterval(pomoInterval);
+            pomoRunning = false;
+            playAppSound("levelup");
+            if (pomoMode === "work") {
+              awardXP(100);
+              setPomodoroMode("break");
+            } else {
+              setPomodoroMode("work");
+            }
+          }
+        }, 1000);
+      } else {
+        if (pomoInterval) clearInterval(pomoInterval);
+      }
+      updatePomodoroUI();
+    }
+
+    function resetPomodoro() {
+      setPomodoroMode(pomoMode);
     }
 
     function updateAutoAdvanceToggleUI() {
@@ -5478,9 +6684,13 @@
     function awardXP(amount) {
       ensureTodayEntry();
       const today = getDateKey();
+      const prevLevel = state.level || 1;
       state.xp += amount;
       state.dailyStats[today].xp = (state.dailyStats[today].xp || 0) + amount;
       state.level = Math.max(1, Math.floor(state.xp / 300) + 1);
+      if (state.level > prevLevel) {
+        playAppSound("levelup");
+      }
       saveState();
       updateHeaderAndKPIs();
       initActivityChart();
@@ -5671,12 +6881,21 @@
     function buildQuizDeck(cat) {
       const rwCats = ["aktiv_passiv", "soll_haben", "bilanz", "buchung", "tkonten_quiz", "bilanzveraenderung", "abschluss"];
       const kommGrundlagenCats = ["komm_modelle", "komm_formen", "komm_fragen", "komm_foerderer", "komm_mikro"];
+      const kommBlock2Cats = ["komm_telefon", "komm_video", "komm_wege", "komm_interkulturell"];
 
       let pool = [];
-      if (cat === "all") {
+      if (cat === "mistakes") {
+        pool = rawQuizPool.filter(q => (state.wrongQuestionIds || []).includes(q.id));
+        if (!pool.length) {
+          pool = fisherYatesShuffle(rawQuizPool).slice(0, QUESTIONS_PER_RUN);
+        }
+        return fisherYatesShuffle(pool).slice(0, QUESTIONS_PER_RUN).map(q => prepareQuestionWithShuffledOptions(q));
+      } else if (cat === "all") {
         pool = rawQuizPool.filter(q => rwCats.includes(q.cat));
       } else if (cat === "komm_all") {
         pool = rawQuizPool.filter(q => kommGrundlagenCats.includes(q.cat));
+      } else if (cat === "komm_block2_all") {
+        pool = rawQuizPool.filter(q => kommBlock2Cats.includes(q.cat));
       } else {
         pool = rawQuizPool.filter(q => q.cat === cat);
       }
@@ -5963,14 +7182,29 @@
 
       fbBox.classList.remove("hidden");
       if (isCorrect) {
+        playAppSound("correct");
+        // Aus dem Fehler-Trainer entfernen, falls die Frage dort gespeichert war
+        if (Array.isArray(state.wrongQuestionIds) && state.wrongQuestionIds.includes(q.id)) {
+          state.wrongQuestionIds = state.wrongQuestionIds.filter(id => id !== q.id);
+          saveState();
+          updateMistakeTrainerUI();
+        }
         fbBox.className = "p-5 rounded-2xl border bg-emerald-950/60 border-emerald-500/50 space-y-1.5 glow-emerald-pulse";
         fbTitle.className = "font-bold text-xs text-emerald-400 flex items-center space-x-2";
         fbTitle.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>Hervorragend gelöst! +${q.xp} XP</span>`;
         awardXP(q.xp);
       } else {
+        playAppSound("wrong");
+        // Automatisch in den Fehler-Trainer aufnehmen
+        if (!Array.isArray(state.wrongQuestionIds)) state.wrongQuestionIds = [];
+        if (!state.wrongQuestionIds.includes(q.id)) {
+          state.wrongQuestionIds.push(q.id);
+          saveState();
+          updateMistakeTrainerUI();
+        }
         fbBox.className = "p-5 rounded-2xl border bg-rose-950/60 border-rose-500/50 space-y-1.5";
         fbTitle.className = "font-bold text-xs text-rose-400 flex items-center space-x-2";
-        fbTitle.innerHTML = `<i data-lucide="x-circle" class="w-4 h-4"></i><span>Leider nicht korrekt</span>`;
+        fbTitle.innerHTML = `<i data-lucide="x-circle" class="w-4 h-4"></i><span>Leider nicht korrekt (im Fehler-Trainer gemerkt)</span>`;
       }
       fbText.innerHTML = highlightAccountingTerms(q.explanation);
 
@@ -6037,12 +7271,19 @@
       resetQuestionTimer();
       state.currentTKCaseIndex = index;
       const c = tkontoCases[index];
+      if (!c) return;
 
-      document.getElementById("tk-case-badge").textContent = c.badge;
-      document.getElementById("tk-case-title").innerHTML = highlightAccountingTerms(c.title);
-      document.getElementById("tk-case-desc").innerHTML = highlightAccountingTerms(c.desc);
-      document.getElementById("tk-label-1").innerHTML = highlightAccountingTerms(c.konto1);
-      document.getElementById("tk-label-2").innerHTML = highlightAccountingTerms(c.konto2);
+      const badgeEl = document.getElementById("tk-case-badge");
+      const titleEl = document.getElementById("tk-case-title");
+      const descEl = document.getElementById("tk-case-desc");
+      const l1El = document.getElementById("tk-label-1");
+      const l2El = document.getElementById("tk-label-2");
+
+      if (badgeEl) badgeEl.textContent = c.badge;
+      if (titleEl) titleEl.innerHTML = highlightAccountingTerms(c.title);
+      if (descEl) descEl.innerHTML = highlightAccountingTerms(c.desc);
+      if (l1El) l1El.innerHTML = highlightAccountingTerms(c.konto1);
+      if (l2El) l2El.innerHTML = highlightAccountingTerms(c.konto2);
 
       tkontoCases.forEach((_, i) => {
         const pill = document.getElementById("tk-pill-" + i);
@@ -6057,13 +7298,17 @@
     }
 
     function resetTKontoInputs() {
-      document.getElementById("tk-input-1-soll").value = "";
-      document.getElementById("tk-input-1-haben").value = "";
-      document.getElementById("tk-input-2-soll").value = "";
-      document.getElementById("tk-input-2-haben").value = "";
+      const i1s = document.getElementById("tk-input-1-soll");
+      const i1h = document.getElementById("tk-input-1-haben");
+      const i2s = document.getElementById("tk-input-2-soll");
+      const i2h = document.getElementById("tk-input-2-haben");
+      if (i1s) i1s.value = "";
+      if (i1h) i1h.value = "";
+      if (i2s) i2s.value = "";
+      if (i2h) i2h.value = "";
 
       const fb = document.getElementById("tk-feedback-box");
-      fb.classList.add("hidden");
+      if (fb) fb.classList.add("hidden");
     }
 
     function validateTKontoCase() {
@@ -6198,32 +7443,142 @@
     }
 
     function renderAchievements() {
-      const grid = document.getElementById("achievements-grid");
-      if (!grid) return;
-      grid.innerHTML = "";
+      // Erfolge wurden durch die 3D-Karteikarten ersetzt; Sicherheits-Guard bleibt erhalten
+      updateMistakeTrainerUI();
+    }
 
-      ACHIEVEMENTS_DATA.forEach(a => {
-        const status = getAchievementStatus(a.id);
-        const card = document.createElement("div");
-        card.className = `glass-v5 rounded-3xl p-5 flex items-center space-x-4 transition ${status.unlocked ? 'glass-v5-hover' : 'opacity-60'}`;
-        card.innerHTML = `
-          <div class="p-3.5 rounded-2xl icon-box-clean ${status.unlocked ? 'text-indigo-300' : 'text-slate-500'}">
-            <i data-lucide="${a.icon}" class="w-6 h-6 icon-anim"></i>
-          </div>
-          <div class="space-y-1 flex-1">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold text-xs text-white">${a.title}</h4>
-              ${status.unlocked ? '<span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">FREIGESCHALTET</span>' : `<span class="text-[9px] font-bold text-slate-400">${status.progress}%</span>`}
-            </div>
-            <p class="text-[11px] text-slate-400">${a.desc}</p>
-            <div class="w-full bg-slate-900/80 h-1.5 rounded-full overflow-hidden mt-2">
-              <div class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full transition-all duration-500" style="width: ${status.progress}%"></div>
-            </div>
-          </div>
-        `;
-        grid.appendChild(card);
+    // ==========================================
+    // SMARTER FEHLER-TRAINER
+    // ==========================================
+    function updateMistakeTrainerUI() {
+      const count = Array.isArray(state.wrongQuestionIds) ? state.wrongQuestionIds.length : 0;
+      const dCount = document.getElementById("dashboard-mistake-count");
+      const lCount = document.getElementById("lernen-mistake-count");
+      const subEl = document.getElementById("mistake-toolbar-sub");
+      if (dCount) dCount.textContent = count;
+      if (lCount) lCount.textContent = count;
+      if (subEl) {
+        subEl.textContent = count > 0
+          ? `Du hast aktuell ${count} offene Frage(n) im Fehler-Trainer zur gezielten Wiederholung.`
+          : "Keine offenen Fehler! Falsch beantwortete Fragen landen automatisch hier.";
+      }
+    }
+
+    function startMistakeTrainerFromAnywhere() {
+      switchView("quiz");
+      const count = Array.isArray(state.wrongQuestionIds) ? state.wrongQuestionIds.length : 0;
+      if (count === 0) {
+        // Falls noch keine Fehler vorliegen, gemischtes Wiederholungs-Deck starten
+        filterQuizCategory("all", null);
+        document.getElementById("quiz-category-tag").textContent = "FEHLER-TRAINER (0 FEHLER • MIX-TRAINING)";
+        return;
+      }
+      filterQuizCategory("mistakes", null);
+      document.getElementById("quiz-category-tag").textContent = `FEHLER-TRAINER (${count} OFFEN)`;
+    }
+
+    // ==========================================
+    // DIGITALE 3D-KARTEIKARTEN (FLIP-CARDS) ENGINE
+    // ==========================================
+    let activeFlashcards = [...FLASHCARDS_POOL];
+    let currentFlashcardIdx = 0;
+    let currentFlashcardCat = "all";
+
+    function initFlashcards() {
+      activeFlashcards = [...FLASHCARDS_POOL];
+      currentFlashcardIdx = 0;
+      renderCurrentFlashcard();
+    }
+
+    function setFlashcardCategory(cat, btn) {
+      currentFlashcardCat = cat;
+      document.querySelectorAll(".fc-cat-btn").forEach(b => {
+        b.className = "fc-cat-btn glass-pill text-slate-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition";
       });
-      setTimeout(() => lucide.createIcons(), 30);
+      if (btn) {
+        btn.className = "fc-cat-btn bg-indigo-600 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition";
+      }
+      activeFlashcards = cat === "all"
+        ? [...FLASHCARDS_POOL]
+        : FLASHCARDS_POOL.filter(fc => fc.cat === cat);
+      currentFlashcardIdx = 0;
+      renderCurrentFlashcard();
+    }
+
+    function shuffleFlashcards() {
+      activeFlashcards = fisherYatesShuffle(activeFlashcards);
+      currentFlashcardIdx = 0;
+      renderCurrentFlashcard();
+    }
+
+    function flipCurrentFlashcard() {
+      const inner = document.getElementById("flashcard-inner");
+      const controls = document.getElementById("fc-controls-row");
+      if (!inner) return;
+      inner.classList.toggle("is-flipped");
+
+      // Sobald die Karte umgedreht wird und die Antwort sichtbar ist, Buttons unten mit Animation einblenden
+      if (inner.classList.contains("is-flipped") && controls) {
+        controls.classList.remove("hidden");
+        controls.classList.remove("animate-view-enter");
+        void controls.offsetWidth;
+        controls.classList.add("animate-view-enter");
+      }
+    }
+
+    function renderCurrentFlashcard() {
+      if (!activeFlashcards.length) return;
+      const inner = document.getElementById("flashcard-inner");
+      const controls = document.getElementById("fc-controls-row");
+      if (inner) inner.classList.remove("is-flipped");
+      if (controls) {
+        controls.classList.add("hidden");
+        controls.classList.remove("animate-view-enter");
+      }
+
+      const card = activeFlashcards[currentFlashcardIdx];
+      const tagEl = document.getElementById("fc-front-tag");
+      const titleEl = document.getElementById("fc-front-title");
+      const ansEl = document.getElementById("fc-back-answer");
+      const hintEl = document.getElementById("fc-back-hint");
+      const progBadge = document.getElementById("fc-progress-badge");
+      const knownBadge = document.getElementById("fc-known-badge");
+
+      if (tagEl) tagEl.textContent = card.tag;
+      if (titleEl) titleEl.innerHTML = highlightAccountingTerms(card.front);
+      if (ansEl) ansEl.innerHTML = highlightAccountingTerms(card.back.replace(/\n/g, "<br>"));
+      if (hintEl) hintEl.innerHTML = `💡 ${highlightAccountingTerms(card.hint)}`;
+      if (progBadge) progBadge.textContent = `Karte ${currentFlashcardIdx + 1} von ${activeFlashcards.length}`;
+      if (knownBadge) knownBadge.textContent = `${(state.knownFlashcardIds || []).length} gewusst`;
+    }
+
+    function nextFlashcard() {
+      if (!activeFlashcards.length) return;
+      currentFlashcardIdx = (currentFlashcardIdx + 1) % activeFlashcards.length;
+      renderCurrentFlashcard();
+    }
+
+    function prevFlashcard() {
+      if (!activeFlashcards.length) return;
+      currentFlashcardIdx = (currentFlashcardIdx - 1 + activeFlashcards.length) % activeFlashcards.length;
+      renderCurrentFlashcard();
+    }
+
+    function markFlashcardKnown() {
+      if (!activeFlashcards.length) return;
+      const card = activeFlashcards[currentFlashcardIdx];
+      if (!Array.isArray(state.knownFlashcardIds)) state.knownFlashcardIds = [];
+      if (!state.knownFlashcardIds.includes(card.id)) {
+        state.knownFlashcardIds.push(card.id);
+        awardXP(15);
+      }
+      playAppSound("correct");
+      nextFlashcard();
+    }
+
+    function markFlashcardRetry() {
+      playAppSound("wrong");
+      nextFlashcard();
     }
 
     // ==========================================
