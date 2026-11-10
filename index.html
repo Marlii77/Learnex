@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Learnex </title>
+  <title>Learnex V5 | Modern Glassy Learning Platform</title>
 
   <!-- App Logo & Favicon für Handy (iOS / Android Home-Bildschirm) & Browser -->
   <link rel="icon" type="image/jpeg" href="Icon.jpg">
@@ -233,6 +233,70 @@
       animation: passivTextLoop 2.8s ease-in-out infinite;
     }
 
+    /* Animierte, blau gestrichelte Unterstreichung & Shimmer-Loop für klickbare Fachbegriffe */
+    @keyframes fachbegriffShimmer {
+      0%, 100% {
+        background-position: 0% 50%;
+        text-shadow: 0 0 10px rgba(56, 189, 248, 0.4), 0 0 20px rgba(59, 130, 246, 0.2);
+      }
+      50% {
+        background-position: 100% 50%;
+        text-shadow: 0 0 16px rgba(56, 189, 248, 0.85), 0 0 30px rgba(96, 165, 250, 0.5);
+      }
+    }
+
+    @keyframes dashMarch {
+      0% {
+        background-position: 0 100%, 0% 50%;
+      }
+      100% {
+        background-position: 24px 100%, 100% 50%;
+      }
+    }
+
+    .hl-fachbegriff {
+      position: relative;
+      display: inline-block;
+      font-weight: 800;
+      padding: 0 0.28rem 0.12rem 0.28rem;
+      margin: 0 0.05rem;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      color: #7dd3fc;
+      background-color: rgba(56, 189, 248, 0.1);
+      border-bottom: 2.5px dashed #38bdf8;
+      text-decoration: none;
+      animation: fachbegriffShimmer 2.8s ease-in-out infinite;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hl-fachbegriff:hover {
+      transform: translateY(-2px) scale(1.04);
+      color: #e0f2fe;
+      background-color: rgba(56, 189, 248, 0.24);
+      border-bottom-color: #60a5fa;
+      box-shadow: 0 6px 18px rgba(56, 189, 248, 0.32), inset 0 0 0 1px rgba(56, 189, 248, 0.4);
+    }
+
+    .hl-fachbegriff:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    /* Popup Animation für die Fachbegriff-Erklärung */
+    @keyframes glossaryPop {
+      0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.92);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .animate-glossary-pop {
+      animation: glossaryPop 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
     /* Staggered Tile Reveal Animation for Rechnungswesen Hub */
     @keyframes tilePopIn {
       0% {
@@ -296,11 +360,15 @@
     html.theme-monochrome,
     body.theme-monochrome {
       background-color: #ffffff !important;
+      color: #0f172a !important;
+    }
+
+    body.theme-monochrome.bg-grid-pattern {
+      background-color: #ffffff !important;
+      background-size: 40px 40px !important;
       background-image:
-        radial-gradient(circle at 20% 15%, rgba(0, 0, 0, 0.05) 0%, transparent 45%),
-        radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.06) 0%, transparent 50%),
-        linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px) !important;
+        linear-gradient(to right, rgba(15, 23, 42, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.06) 1px, transparent 1px) !important;
     }
 
     body.theme-monochrome .ambient-orb-1,
@@ -311,22 +379,22 @@
 
     /* Fast schwarze Kacheln in transparenter Liquid-Glass-Optik */
     body.theme-monochrome .glass-v5 {
-      background: linear-gradient(145deg, rgba(8, 10, 14, 0.78) 0%, rgba(3, 4, 7, 0.68) 100%) !important;
+      background: linear-gradient(145deg, rgba(8, 10, 14, 0.86) 0%, rgba(3, 4, 7, 0.78) 100%) !important;
       backdrop-filter: blur(30px) saturate(190%) !important;
       -webkit-backdrop-filter: blur(30px) saturate(190%) !important;
-      border: 1px solid rgba(255, 255, 255, 0.14) !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
       box-shadow:
-        0 24px 55px rgba(0, 0, 0, 0.26),
+        0 24px 55px rgba(15, 23, 42, 0.22),
         inset 0 1.5px 1px rgba(255, 255, 255, 0.34),
         inset 0 -1px 1px rgba(255, 255, 255, 0.08) !important;
     }
 
     body.theme-monochrome .glass-v5-hover:hover {
-      background: linear-gradient(145deg, rgba(12, 15, 20, 0.84) 0%, rgba(5, 7, 11, 0.75) 100%) !important;
-      border-color: rgba(255, 255, 255, 0.28) !important;
+      background: linear-gradient(145deg, rgba(12, 15, 20, 0.92) 0%, rgba(5, 7, 11, 0.85) 100%) !important;
+      border-color: rgba(255, 255, 255, 0.32) !important;
       transform: translateY(-4px) scale(1.005);
       box-shadow:
-        0 30px 65px rgba(0, 0, 0, 0.34),
+        0 30px 65px rgba(15, 23, 42, 0.3),
         inset 0 2px 2px rgba(255, 255, 255, 0.42) !important;
     }
 
@@ -1290,6 +1358,54 @@
 
   <!-- Particle Burst Canvas Layer -->
   <canvas id="particle-canvas" class="pointer-events-none fixed inset-0 z-50"></canvas>
+
+  <!-- Interaktives Fachbegriff-Lexikon Modal / Popup -->
+  <div id="glossary-modal" onclick="closeGlossaryModal(event)" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 backdrop-blur-md p-4">
+    <div onclick="event.stopPropagation()" class="glass-v5 animate-glossary-pop rounded-3xl p-6 sm:p-7 max-w-md w-full space-y-5 border border-sky-400/40 shadow-2xl shadow-sky-500/20 relative overflow-hidden">
+      <!-- Dekorativer Blauer Glow im Hintergrund -->
+      <div class=" -top-16 -right-16 w-40 h-40 rounded-full bg-sky-500/20 blur-2xl pointer-events-none absolute"></div>
+
+      <div class="flex items-start justify-between gap-3 border-b border-white/10 pb-4 relative z-10">
+        <div class="flex items-center space-x-3">
+          <div class="p-3 rounded-2xl bg-sky-500/20 text-sky-300 border border-sky-400/30 shadow-lg shadow-sky-500/10">
+            <i data-lucide="book-open-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <span id="glossary-modal-tag" class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/30 uppercase tracking-widest">
+              FACHBEGRIFF
+            </span>
+            <h3 id="glossary-modal-title" class="text-lg sm:text-xl font-extrabold text-white mt-1">Erträge</h3>
+          </div>
+        </div>
+        <button type="button" onclick="closeGlossaryModal()" class="p-2 rounded-full glass-pill text-slate-400 hover:text-white transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Haupt-Erklärung -->
+      <div class="space-y-3 relative z-10">
+        <div class="text-xs sm:text-sm text-slate-200 leading-relaxed" id="glossary-modal-desc">
+          Erklärung wird geladen...
+        </div>
+
+        <!-- Merksatz / Praxisbeispiel Box -->
+        <div class="glass-pill p-4 rounded-2xl border border-sky-400/25 bg-sky-950/30 space-y-1.5">
+          <div class="flex items-center space-x-1.5 text-[11px] font-extrabold text-sky-300 uppercase tracking-wider">
+            <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>Merksatz &amp; Praxisbeispiel</span>
+          </div>
+          <p id="glossary-modal-example" class="text-xs text-slate-300 leading-relaxed"></p>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-1 relative z-10">
+        <button type="button" onclick="closeGlossaryModal()" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-sky-500/20 flex items-center space-x-1.5">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Verstanden</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Dynamic XP Float Notification Layer -->
   <div id="xp-float-container" class="pointer-events-none fixed bottom-12 right-12 z-50 flex flex-col space-y-2"></div>
@@ -2601,12 +2717,348 @@
       "Darlehen"
     ];
 
+    // Lexikon aller wichtigen Fachbegriffe (blau gestrichelt unterstrichen + per Klick erklärt)
+    const FACHBEGRIFFE_LEXIKON = {
+      "Erträge": {
+        tag: "ERFOLGSKONTO (HABEN)",
+        title: "Erträge",
+        desc: "Erträge sind alle Wertzuflüsse eines Unternehmens (z. B. durch den Verkauf von Waren oder Zinsen), die das Eigenkapital erhöhen.",
+        example: "Erträge werden immer rechts im HABEN gebucht, weil sie das Eigenkapital (Passivkonto) mehren. Beispiele: Umsatzerlöse, Zinserträge, Mieterträge."
+      },
+      "Ertrag": {
+        tag: "ERFOLGSKONTO (HABEN)",
+        title: "Ertrag",
+        desc: "Ein Ertrag ist ein Wertezufluss im Unternehmen, der den Gewinn und damit das Eigenkapital erhöht.",
+        example: "Buchungsregel: Ertragskonten wachsen immer im HABEN (rechts)."
+      },
+      "Ertragskonto": {
+        tag: "ERFOLGSKONTO (HABEN)",
+        title: "Ertragskonto",
+        desc: "Auf einem Ertragskonto werden alle erfolgswirksamen Wertzuflüsse gesammelt und am Jahresende über das GuV-Konto abgeschlossen.",
+        example: "Zugänge stehen auf Ertragskonten immer rechts im HABEN."
+      },
+      "Umsatzerlöse": {
+        tag: "ERTRAGSKONTO (5000)",
+        title: "Umsatzerlöse",
+        desc: "Umsatzerlöse sind die Einnahmen aus dem Verkauf von eigenen Erzeugnissen, Waren oder Dienstleistungen an Kunden.",
+        example: "Verkaufen wir Waren für 850 € bar, lautet der Buchungssatz: Kasse (Soll) an Umsatzerlöse (Haben) 850 €."
+      },
+      "Zinserträge": {
+        tag: "ERTRAGSKONTO",
+        title: "Zinserträge",
+        desc: "Zinserträge sind Gutschriften der Bank für angelegtes Guthaben des Unternehmens.",
+        example: "Da Zinserträge unser Eigenkapital erhöhen, werden sie rechts im HABEN gebucht (Bank an Zinserträge)."
+      },
+      "Aufwendungen": {
+        tag: "ERFOLGSKONTO (SOLL)",
+        title: "Aufwendungen",
+        desc: "Aufwendungen sind der Werteverzehr von Gütern und Dienstleistungen im Betrieb (z. B. Löhne, Miete, Büromaterial), der das Eigenkapital mindert.",
+        example: "Aufwendungen werden immer links im SOLL gebucht, weil sie das Eigenkapital verringern."
+      },
+      "Aufwand": {
+        tag: "ERFOLGSKONTO (SOLL)",
+        title: "Aufwand",
+        desc: "Ein Aufwand mindert den Gewinn und reduziert dadurch das Eigenkapital des Unternehmens.",
+        example: "Merksatz: Aufwendungen werden immer links im SOLL gebucht!"
+      },
+      "Aufwandskonto": {
+        tag: "ERFOLGSKONTO (SOLL)",
+        title: "Aufwandskonto",
+        desc: "Unterkonto des Eigenkapitals, auf dem Kosten wie Löhne, Miete oder Rohstoffverbrauch gesammelt werden.",
+        example: "Aufwandskonten werden im SOLL bebucht und am Jahresende über das GuV-Konto abgeschlossen."
+      },
+      "Aufwandskonten": {
+        tag: "ERFOLGSKONTEN (SOLL)",
+        title: "Aufwandskonten",
+        desc: "Konten zur Erfassung des betrieblichen Werteverzehrs (z. B. Löhne, Miete, Zinsaufwand).",
+        example: "Sie stehen beim Buchen im SOLL und wandern beim Jahresabschluss auf die linke Seite des GuV-Kontos."
+      },
+      "Erfolgskonten": {
+        tag: "GUV & ERFOLG",
+        title: "Erfolgskonten",
+        desc: "Der Sammelbegriff für Aufwands- und Ertragskonten. Sie sind Unterkonten des Eigenkapitals und zeigen, ob das Unternehmen Gewinn oder Verlust macht.",
+        example: "Aufwendungen = SOLL (links) | Erträge = HABEN (rechts). Abschluss über das GuV-Konto."
+      },
+      "Bestandskonten": {
+        tag: "BILANZKONTEN",
+        title: "Bestandskonten",
+        desc: "Konten, die direkt aus der Bilanz abgeleitet werden (Aktivkonten für Vermögen und Passivkonten für Kapital/Schulden).",
+        example: "Bestandskonten haben einen Anfangsbestand (AB) und werden am Jahresende über das Schlussbilanzkonto (SBK) abgeschlossen."
+      },
+      "Anlagevermögen": {
+        tag: "BILANZ (AKTIVA)",
+        title: "Anlagevermögen",
+        desc: "Alle Vermögensgegenstände, die dem Unternehmen langfristig (dauerhaft) dienen sollen.",
+        example: "Dazu gehören Grundstücke, Gebäude, Maschinen, der Fuhrpark sowie die Betriebs- und Geschäftsausstattung (BGA)."
+      },
+      "Umlaufvermögen": {
+        tag: "BILANZ (AKTIVA)",
+        title: "Umlaufvermögen",
+        desc: "Vermögensposten, die nur kurzfristig im Unternehmen bleiben, weil sie verkauft, verbraucht oder bald zu Geld werden.",
+        example: "Typische Posten: Rohstoffe, Waren, Forderungen a.LL, Bankguthaben und Kasse (Bargeld)."
+      },
+      "Umlaufvermögens": {
+        tag: "BILANZ (AKTIVA)",
+        title: "Umlaufvermögen",
+        desc: "Vermögensposten, die nur kurzfristig im Unternehmen bleiben und sich laufend verändern.",
+        example: "Steht auf der Aktivseite unterhalb des Anlagevermögens (z. B. Waren, Forderungen, Bank, Kasse)."
+      },
+      "Fremdkapital": {
+        tag: "BILANZ (PASSIVA)",
+        title: "Fremdkapital (Schulden)",
+        desc: "Das von außen geliehene Kapital (Schulden gegenüber Banken oder Lieferanten), das zurückgezahlt werden muss.",
+        example: "Steht auf der Passivseite unter dem Eigenkapital, z. B. Darlehensschulden und Verbindlichkeiten a.LL."
+      },
+      "Bilanzsumme": {
+        tag: "BILANZ",
+        title: "Bilanzsumme",
+        desc: "Die Gesamtsumme unter der Aktivseite bzw. Passivseite einer Bilanz. Beide Seiten müssen immer exakt gleich groß sein.",
+        example: "Formel: Summe Aktiva (Anlage- + Umlaufvermögen) = Summe Passiva (Eigen- + Fremdkapital)."
+      },
+      "Liquidität": {
+        tag: "BILANZGLIEDERUNG",
+        title: "Liquidität (Flüssigkeit)",
+        desc: "Beschreibt, wie schnell ein Vermögensgegenstand in flüssiges Bargeld umgewandelt werden kann.",
+        example: "Die Aktivseite ist nach steigender Liquidität geordnet: Oben Grundstücke (schwer flüssig), ganz unten Kasse/Bank (sofort flüssig)."
+      },
+      "Fristigkeit": {
+        tag: "BILANZGLIEDERUNG",
+        title: "Fristigkeit",
+        desc: "Gibt an, wie lange Kapital dem Unternehmen zeitlich zur Verfügung steht.",
+        example: "Die Passivseite ist nach abnehmender Fristigkeit geordnet: Oben unbefristetes Eigenkapital, unten kurzfristige Verbindlichkeiten."
+      },
+      "Mittelverwendung": {
+        tag: "AKTIVSEITE",
+        title: "Mittelverwendung",
+        desc: "Zeigt auf der Aktivseite der Bilanz, wofür das Geld im Unternehmen konkret eingesetzt wurde (in welchen Vermögenswerten es steckt).",
+        example: "Antwortet auf die Frage: „Wohin ist das Kapital geflossen?“ (z. B. in Fuhrpark, Waren oder Bankguthaben)."
+      },
+      "Mittelherkunft": {
+        tag: "PASSIVSEITE",
+        title: "Mittelherkunft",
+        desc: "Zeigt auf der Passivseite der Bilanz, woher die finanziellen Mittel des Unternehmens stammen.",
+        example: "Antwortet auf die Frage: „Woher kommt das Geld?“ (Eigenkapital vom Eigentümer oder Fremdkapital von Gläubigern)."
+      },
+      "auf Ziel": {
+        tag: "BUCHUNGSSPRACHE",
+        title: "Kauf / Verkauf „auf Ziel“",
+        desc: "Bedeutet, dass eine Ware oder Leistung sofort geliefert, aber erst später auf Rechnung bezahlt wird (Zahlungsziel).",
+        example: "Beim Einkauf auf Ziel steigen unsere Schulden auf dem Passivkonto „Verbindlichkeiten a.LL“ im Haben."
+      },
+      "Eingangsrechnung": {
+        tag: "BELEG (EINKAUF)",
+        title: "Eingangsrechnung (ER)",
+        desc: "Eine Rechnung, die wir von einem Lieferanten erhalten, weil wir Waren, Rohstoffe oder Geräte eingekauft haben.",
+        example: "Solange die Eingangsrechnung noch nicht bezahlt ist, steht der Betrag auf dem Konto „Verbindlichkeiten a.LL“."
+      },
+      "Banküberweisung": {
+        tag: "ZAHLUNGSVORGANG",
+        title: "Banküberweisung",
+        desc: "Bargeldlose Zahlung über das geschäftliche Bankkonto.",
+        example: "Überweisen wir Geld an einen Lieferanten, nimmt unser Aktivkonto „Bank“ im HABEN ab."
+      },
+      "Bankauszug": {
+        tag: "BUCHUNGSBELEG",
+        title: "Bankauszug (Kontoauszug)",
+        desc: "Offizieller Beleg der Bank über alle Gutschriften und Abbuchungen auf dem Geschäftskonto.",
+        example: "Grundregel: Keine Buchung ohne Beleg! Eine Überweisung oder Tilgung wird erst gebucht, wenn der Bankauszug vorliegt."
+      },
+      "Anfangsbestand": {
+        tag: "T-KONTO (AB)",
+        title: "Anfangsbestand (AB)",
+        desc: "Der Wert eines Bestandskontos zu Beginn des Geschäftsjahres (übernommen aus der Eröffnungsbilanz).",
+        example: "Bei Aktivkonten steht der AB immer links im SOLL, bei Passivkonten immer rechts im HABEN."
+      },
+      "Schlussbestand": {
+        tag: "T-KONTO (SB / SALDO)",
+        title: "Schlussbestand (SB)",
+        desc: "Der verbleibende Endbestand auf einem Konto am Ende der Periode, der zum Ausgleich auf der kleineren Kontoseite eingetragen wird.",
+        example: "Bei Aktivkonten steht der SB rechts im HABEN, bei Passivkonten links im SOLL."
+      },
+      "Schlussbestände": {
+        tag: "JAHRESABSCHLUSS",
+        title: "Schlussbestände (SB)",
+        desc: "Die Endsalden aller Bestandskonten am Jahresende, die mit den gezählten Werten der Inventur abgeglichen werden.",
+        example: "Sie werden in das Schlussbilanzkonto (SBK) übertragen."
+      },
+      "Saldo": {
+        tag: "KONTENABSCHLUSS",
+        title: "Saldo",
+        desc: "Der Differenzbetrag zwischen der größeren und der kleineren Seite eines T-Kontos.",
+        example: "Durch das Eintragen des Saldos auf der schwächeren Seite werden beide Kontoseiten exakt gleich groß."
+      },
+      "Gegenkonto": {
+        tag: "BUCHUNGSTECHNIK",
+        title: "Gegenkonto",
+        desc: "Das jeweils andere Konto eines Buchungssatzes, das als Erklärungstext neben dem Betrag im T-Konto notiert wird.",
+        example: "Beim Buchungssatz „Waren an Verbindlichkeiten 7.200 €“ schreibt man im Konto Waren als Gegenkonto „Verbindlichkeiten a.LL“."
+      },
+      "Buchhalter-Nase": {
+        tag: "FORMVORSCHRIFT",
+        title: "Buchhalter-Nase",
+        desc: "Ein gezogener Entwertungsstrich durch freie Zeilen auf der kürzeren Seite eines abgeschlossenen T-Kontos.",
+        example: "Verhindert, dass nachträglich unbefugt Zahlen in den freien Raum eingetragen werden können."
+      },
+      "Buchhalternase": {
+        tag: "FORMVORSCHRIFT",
+        title: "Buchhalternase",
+        desc: "Ein gezogener Entwertungsstrich durch freie Zeilen auf der kürzeren Seite eines abgeschlossenen T-Kontos.",
+        example: "Sorgt für Manipulationsschutz und dafür, dass beide Summenzeilen auf exakt derselben Höhe stehen."
+      },
+      "Aktivtausch": {
+        tag: "BILANZVERÄNDERUNG",
+        title: "Aktivtausch",
+        desc: "Ein Geschäftsfall betrifft ausschließlich zwei Aktivkonten: Ein Aktivposten nimmt zu (+), ein anderer nimmt um denselben Betrag ab (-).",
+        example: "Beispiel: Bareinzahlung auf die Bank (Bank + im Soll, Kasse - im Haben). Die Bilanzsumme bleibt unverändert!"
+      },
+      "Passivtausch": {
+        tag: "BILANZVERÄNDERUNG",
+        title: "Passivtausch",
+        desc: "Ein Geschäftsfall betrifft nur die Passivseite: Ein Passivposten steigt (+), ein anderer Passivposten sinkt um denselben Betrag (-).",
+        example: "Beispiel: Umwandlung einer Lieferantenschuld (Verbindlichkeiten -) in ein langfristiges Darlehen (Darlehen +). Bilanzsumme bleibt gleich."
+      },
+      "Aktiv-Passiv-Mehrung": {
+        tag: "BILANZVERLÄNGERUNG",
+        title: "Aktiv-Passiv-Mehrung",
+        desc: "Sowohl ein Aktivkonto als auch ein Passivkonto nehmen um denselben Betrag zu (+ / +). Die Bilanzsumme wächst.",
+        example: "Beispiel: Warenkauf auf Ziel (Waren +7.200 € auf der Aktivseite, Verbindlichkeiten a.LL +7.200 € auf der Passivseite)."
+      },
+      "Bilanzverlängerung": {
+        tag: "AKTIV-PASSIV-MEHRUNG",
+        title: "Bilanzverlängerung",
+        desc: "Andere Bezeichnung für die Aktiv-Passiv-Mehrung: Vermögen (Aktiva) und Kapital (Passiva) steigen gleichzeitig.",
+        example: "Die Bilanzsumme erhöht sich um den gebuchten Betrag."
+      },
+      "Aktiv-Passiv-Minderung": {
+        tag: "BILANZVERKÜRZUNG",
+        title: "Aktiv-Passiv-Minderung",
+        desc: "Sowohl ein Aktivkonto als auch ein Passivkonto nehmen um denselben Betrag ab (- / -). Die Bilanzsumme sinkt.",
+        example: "Beispiel: Tilgung eines Darlehens oder Zahlung einer Lieferantenrechnung per Banküberweisung."
+      },
+      "Bilanzverkürzung": {
+        tag: "AKTIV-PASSIV-MINDERUNG",
+        title: "Bilanzverkürzung",
+        desc: "Andere Bezeichnung für die Aktiv-Passiv-Minderung: Ein Vermögensposten und ein Schuldenposten nehmen gleichzeitig ab.",
+        example: "Die Bilanzsumme schrumpft um den gezahlten Betrag."
+      },
+      "Inventur": {
+        tag: "BESTANDSAUFNAHME",
+        title: "Inventur",
+        desc: "Die Tätigkeit der vollständigen Bestandsaufnahme aller Vermögensteile und Schulden zu einem bestimmten Stichtag.",
+        example: "Körperliche Inventur = Zählen, Messen, Wiegen (z. B. Waren, Kasse). Buchinventur = Prüfen von Kontoauszügen und Belegen."
+      },
+      "Inventar": {
+        tag: "BESTANDSVERZEICHNIS",
+        title: "Inventar",
+        desc: "Das ausführliche, schriftliche Bestandsverzeichnis, das als Ergebnis der Inventur aufgestellt wird (mit Mengen- und Wertangaben).",
+        example: "Gliedert sich untereinander in: A. Vermögen, B. Schulden und C. Ermittlung des Reinvermögens (Eigenkapital)."
+      },
+      "Buchinventur": {
+        tag: "INVENTURART",
+        title: "Buchinventur",
+        desc: "Bestandsaufnahme von nicht-körperlichen Werten (z. B. Bankguthaben, Forderungen, Verbindlichkeiten, Darlehen) anhand von Belegen.",
+        example: "Da man Bankguthaben oder Schulden nicht anfassen und zählen kann, prüft man Kontoauszüge und Rechnungslisten."
+      },
+      "Schlussbilanzkonto": {
+        tag: "ABSCHLUSSKONTO (SBK)",
+        title: "Schlussbilanzkonto (SBK)",
+        desc: "Das Sammelkonto am Jahresende, in das die Schlussbestände aller aktiven und passiven Bestandskonten übertragen werden.",
+        example: "Im SBK stehen – genau wie in der Bilanz – alle Endbestände der Aktivkonten links (Soll) und die der Passivkonten rechts (Haben)."
+      },
+      "SBK": {
+        tag: "ABSCHLUSSKONTO",
+        title: "SBK (Schlussbilanzkonto)",
+        desc: "Abkürzung für Schlussbilanzkonto. Über dieses Konto werden am Ende des Geschäftsjahres alle Bestandskonten abgeschlossen.",
+        example: "Abschluss Aktivkonto: „SBK an Aktivkonto“ | Abschluss Passivkonto: „Passivkonto an SBK“."
+      },
+      "GuV-Konto": {
+        tag: "GEWINN- & VERLUSTRECHNUNG",
+        title: "GuV-Konto (Gewinn- und Verlustkonto)",
+        desc: "Das Abschlusskonto für alle Erfolgskonten. Es stellt sämtliche Aufwendungen (Soll) und Erträge (Haben) gegenüber, um den Gewinn oder Verlust zu ermitteln.",
+        example: "Sind die Erträge größer als die Aufwendungen, entsteht ein Gewinn, der das Eigenkapital erhöht."
+      },
+      "GuV-Kontos": {
+        tag: "GEWINN- & VERLUSTRECHNUNG",
+        title: "GuV-Konto",
+        desc: "Auf dem Gewinn- und Verlustkonto werden am Jahresende links alle Aufwendungen und rechts alle Erträge gesammelt.",
+        example: "Der Saldo des GuV-Kontos zeigt den Jahreserfolg und wird auf das Konto Eigenkapital abgeschlossen."
+      },
+      "GuV": {
+        tag: "GEWINN- & VERLUSTRECHNUNG",
+        title: "GuV (Gewinn- und Verlustrechnung)",
+        desc: "Gegenüberstellung von Aufwendungen (links im Soll) und Erträgen (rechts im Haben) zur Ermittlung des Unternehmenserfolgs.",
+        example: "Erträge > Aufwendungen = Gewinn (Eigenkapitalmehrung)."
+      },
+      "Reinvermögen": {
+        tag: "EIGENKAPITAL",
+        title: "Reinvermögen (Eigenkapital)",
+        desc: "Der Teil des Vermögens, der nach Abzug aller Schulden tatsächlich schuldenfrei dem Eigentümer gehört.",
+        example: "Formel: Reinvermögen (Eigenkapital) = Gesamtvermögen (Aktiva) minus Schulden (Fremdkapital)."
+      },
+      "Reinvermögens": {
+        tag: "EIGENKAPITAL",
+        title: "Reinvermögen (Eigenkapital)",
+        desc: "Differenz zwischen dem gesamten Vermögen und den gesamten Schulden eines Unternehmens.",
+        example: "Wird im Inventar unter Punkt C berechnet und entspricht dem Eigenkapital in der Bilanz."
+      },
+      "Löhne und Gehälter": {
+        tag: "AUFWANDSKONTO (6000)",
+        title: "Löhne und Gehälter",
+        desc: "Aufwandskonto für die Vergütung der Mitarbeiterinnen und Mitarbeiter des Unternehmens.",
+        example: "Bei Überweisung der Gehälter bucht man: Löhne und Gehälter (Soll) an Bank (Haben)."
+      },
+      "Löhne & Gehälter": {
+        tag: "AUFWANDSKONTO (6000)",
+        title: "Löhne & Gehälter",
+        desc: "Personalaufwendungen des Betriebs, die den Gewinn und damit das Eigenkapital mindern.",
+        example: "Wird als Aufwand immer links im SOLL gebucht."
+      },
+      "Mietaufwendungen": {
+        tag: "AUFWANDSKONTO (6800)",
+        title: "Mietaufwendungen",
+        desc: "Aufwandskonto für gezahlte Mieten von Büro-, Lager- oder Geschäftsräumen.",
+        example: "Wird im SOLL gebucht, da Mietzahlungen das Eigenkapital mindern."
+      },
+      "Büromaterial": {
+        tag: "AUFWANDSKONTO (7600)",
+        title: "Büromaterial",
+        desc: "Aufwandskonto für verbrauchtes Material im Büro (z. B. Druckerpapier, Stifte, Ordner).",
+        example: "Als Aufwand wird Büromaterial immer links im SOLL erfasst."
+      },
+      "Rohstoffe": {
+        tag: "UMLAUFVERMÖGEN / AUFWAND",
+        title: "Rohstoffe",
+        desc: "Grundmaterialien, die als Hauptbestandteil direkt in das neue Produkt eingehen (z. B. Holz bei einer Möbelfabrik).",
+        example: "Zählen im Lager zum Umlaufvermögen (Aktivkonto) bzw. beim Verbrauch zu den Aufwendungen für Rohstoffe (Soll)."
+      },
+      "Fertigerzeugnisse": {
+        tag: "AKTIVKONTO / ERTRAG",
+        title: "Fertigerzeugnisse",
+        desc: "Vom Unternehmen selbst hergestellte, verkaufsfertige Produkte.",
+        example: "Beim Verkauf von Fertigerzeugnissen entstehen Umsatzerlöse (Ertrag im Haben)."
+      },
+      "Fertigerzeugnissen": {
+        tag: "PRODUKTE",
+        title: "Fertigerzeugnisse",
+        desc: "Im eigenen Betrieb produzierte und verkaufsbereite Erzeugnisse.",
+        example: "Der Verkaufserlös wird auf dem Ertragskonto „Umsatzerlöse“ im Haben erfasst."
+      },
+      "Doppik": {
+        tag: "DOPPELTE BUCHFÜHRUNG",
+        title: "Doppik (Doppelte Buchführung)",
+        desc: "Jeder Geschäftsfall wird doppelt erfasst: Zuerst zeitlich im Grundbuch (Buchungssatz) und sachlich im Hauptbuch (T-Konten) auf mindestens zwei Konten (Soll = Haben).",
+        example: "Eiserne Grundregel: Keine Buchung ohne Gegenbuchung!"
+      }
+    };
+
+    const FACHBEGRIFFE_TERMS = Object.keys(FACHBEGRIFFE_LEXIKON);
+
     function escapeRegExp(str) {
       return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     }
 
     const COMBINED_TERMS_REGEX = new RegExp(
-      `(?<![\\wÄÖÜäöüß])(${[...AKTIV_TERMS, ...PASSIV_TERMS]
+      `(?<![\\wÄÖÜäöüß])(${[...AKTIV_TERMS, ...PASSIV_TERMS, ...FACHBEGRIFFE_TERMS]
         .sort((a, b) => b.length - a.length)
         .map(escapeRegExp)
         .join("|")})(?![\\wÄÖÜäöüß])`,
@@ -2614,6 +3066,7 @@
     );
 
     const AKTIV_SET = new Set(AKTIV_TERMS);
+    const PASSIV_SET = new Set(PASSIV_TERMS);
 
     function highlightAccountingTerms(text) {
       if (!text) return "";
@@ -2621,8 +3074,43 @@
         if (AKTIV_SET.has(match)) {
           return `<span class="hl-aktiv">${match}</span>`;
         }
-        return `<span class="hl-passiv">${match}</span>`;
+        if (PASSIV_SET.has(match)) {
+          return `<span class="hl-passiv">${match}</span>`;
+        }
+        const safeKey = match.replace(/'/g, "\\'");
+        return `<span class="hl-fachbegriff" onclick="openGlossaryTerm(event, '${safeKey}')" title="Klicken für Erklärung zu „${match}“">${match}</span>`;
       });
+    }
+
+    function openGlossaryTerm(event, termKey) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      const entry = FACHBEGRIFFE_LEXIKON[termKey];
+      if (!entry) return;
+
+      const modal = document.getElementById("glossary-modal");
+      const tagEl = document.getElementById("glossary-modal-tag");
+      const titleEl = document.getElementById("glossary-modal-title");
+      const descEl = document.getElementById("glossary-modal-desc");
+      const exEl = document.getElementById("glossary-modal-example");
+
+      if (tagEl) tagEl.textContent = entry.tag;
+      if (titleEl) titleEl.textContent = entry.title;
+      if (descEl) descEl.innerHTML = entry.desc;
+      if (exEl) exEl.innerHTML = entry.example;
+
+      if (modal) {
+        modal.classList.remove("hidden");
+        refreshIcons();
+      }
+    }
+
+    function closeGlossaryModal(event) {
+      if (event) event.stopPropagation();
+      const modal = document.getElementById("glossary-modal");
+      if (modal) modal.classList.add("hidden");
     }
 
     let isRechnungswesenOpen = false;
@@ -2940,10 +3428,14 @@
       // Apply Monochrome or Default Theme
       if (state.theme === "monochrome") {
         document.documentElement.classList.add("theme-monochrome");
+        document.documentElement.classList.remove("bg-slate-950");
         document.body.classList.add("theme-monochrome");
+        document.body.classList.remove("bg-slate-950");
       } else {
         document.documentElement.classList.remove("theme-monochrome");
+        document.documentElement.classList.add("bg-slate-950");
         document.body.classList.remove("theme-monochrome");
+        document.body.classList.add("bg-slate-950");
       }
 
       updateThemeButtonsUI();
