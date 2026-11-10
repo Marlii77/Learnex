@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Learnex V5 </title>
+  <title>Learnex V5</title>
 
   <!-- App Logo & Favicon für Handy (iOS / Android Home-Bildschirm) & Browser -->
   <link rel="icon" type="image/jpeg" href="Icon.jpg">
@@ -42,13 +42,22 @@
   <!-- Application Structure Plan: Bento-Grid V5 Glassy Dashboard with Floating Header Pill Navigation, Interactive Quiz Engine with Fisher-Yates Shuffle, 3-Day T-Konten Intensive Trainer for Marlon, Searchable IKR Account Table, and Glass Achievements Grid. -->
 
   <style>
-    /* Infinite Moving Grid Background */
-    .bg-grid-pattern {
+    /* Infinite Moving Grid Background (Full-Screen Fixed Layer + Body) */
+    .bg-grid-pattern,
+    .bg-grid-fixed-layer {
       background-size: 40px 40px;
       background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
       animation: gridMove 30s linear infinite;
+    }
+    .bg-grid-fixed-layer {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
     }
     @keyframes gridMove {
       0% { background-position: 0 0; }
@@ -361,14 +370,22 @@
     body.theme-monochrome {
       background-color: #ffffff !important;
       color: #0f172a !important;
+      min-height: 100vh;
+      width: 100%;
     }
 
-    body.theme-monochrome.bg-grid-pattern {
-      background-color: #ffffff !important;
+    html.theme-monochrome,
+    body.theme-monochrome.bg-grid-pattern,
+    body.theme-monochrome .bg-grid-fixed-layer {
+      background-color: transparent !important;
       background-size: 40px 40px !important;
       background-image:
-        linear-gradient(to right, rgba(15, 23, 42, 0.06) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(15, 23, 42, 0.06) 1px, transparent 1px) !important;
+        linear-gradient(to right, rgba(15, 23, 42, 0.11) 1.5px, transparent 1.5px),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.11) 1.5px, transparent 1.5px) !important;
+    }
+
+    html.theme-monochrome {
+      background-color: #ffffff !important;
     }
 
     body.theme-monochrome .ambient-orb-1,
@@ -434,7 +451,10 @@
     }
   </style>
 </head>
-<body class="h-full text-slate-100 font-sans antialiased bg-slate-950 bg-grid-pattern relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+<body class="min-h-screen w-full text-slate-100 font-sans antialiased bg-slate-950 bg-grid-pattern relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+
+  <!-- Full-Screen Fixed Grid Layer (Garantiert 100% Bildschirmabdeckung auf PC & Mobile) -->
+  <div class="bg-grid-fixed-layer"></div>
 
   <!-- Ambient Orbs -->
   <div class="ambient-orb-1"></div>
@@ -451,7 +471,7 @@
         <!-- Brand Logo & Badge -->
         <div class="flex items-center space-x-2.5 pl-1.5 sm:pl-3 shrink-0">
           <div id="brand-logo-box" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f5d000] flex items-center justify-center shadow-lg shadow-amber-500/25 overflow-hidden transition-transform duration-300 hover:rotate-12 border border-white/15">
-            <img src="Icon.jpg" alt="Learnex Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <img src="Icon.jpg" alt="Learnex V5 Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
             <!-- Direkter Vektor-Fallback des Enten-Logos für die Vorschau, falls Icon.jpg lokal noch nicht im selben Ordner liegt -->
             <svg viewBox="0 0 100 100" class="hidden w-full h-full" xmlns="http://www.w3.org/2000/svg">
               <rect width="100" height="100" fill="#f5d000"/>
@@ -471,8 +491,7 @@
           </div>
           <div class="hidden sm:block">
             <div class="flex items-center space-x-2">
-              <span class="font-extrabold text-white tracking-tight text-base">Learnex</span>
-              <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-indigo-200 uppercase tracking-widest">V5 Liquid</span>
+              <span class="font-extrabold text-white tracking-tight text-base">Learnex V5</span>
             </div>
           </div>
         </div>
@@ -1161,23 +1180,27 @@
       <section id="view-kontenplan" class="hidden space-y-6 animate-view-enter">
         
         <div class="glass-v5 rounded-3xl p-6 space-y-4">
-          <div>
-            <h2 class="text-xl font-bold text-white tracking-tight">IKR Kontenplan (Industriekontenrahmen)</h2>
-            <p class="text-xs text-slate-400">Schnellsuche für alle relevanten Kontenklassen, Nummern und Kontenarten.</p>
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <h2 class="text-xl font-bold text-white tracking-tight">IKR Kontenplan (Industriekontenrahmen)</h2>
+              <p class="text-xs text-slate-400">Vollständige Übersicht aller Kontenklassen (0 bis 9), Nummern und Kontenarten.</p>
+            </div>
+            <span id="konten-count-badge" class="text-xs font-bold px-3 py-1 rounded-full glass-pill text-indigo-300">Alle Konten</span>
           </div>
 
           <!-- Search & Category Filters -->
           <div class="flex flex-col sm:flex-row gap-3">
             <div class="relative flex-1">
               <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-3.5"></i>
-              <input type="text" id="konten-search-input" oninput="renderFilteredKonten()" placeholder="Konto suchen (z. B. 2800 Bank, Kasse, Umsatzerlöse)..." class="w-full bg-slate-900/80 border border-white/10 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+              <input type="text" id="konten-search-input" oninput="renderFilteredKonten()" placeholder="Konto suchen (z. B. 0840 Fuhrpark, 2800 Bank, 4400, 6200 Löhne)..." class="w-full bg-slate-900/80 border border-white/10 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
             </div>
             <div class="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar">
               <button onclick="setKontenCat('all', this)" class="konten-cat-btn bg-indigo-600 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Alle</button>
-              <button onclick="setKontenCat('aktiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aktivkonten</button>
-              <button onclick="setKontenCat('passiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Passivkonten</button>
-              <button onclick="setKontenCat('ertrag', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Erträge</button>
-              <button onclick="setKontenCat('aufwand', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aufwendungen</button>
+              <button onclick="setKontenCat('aktiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aktivkonten (Kl. 0–2)</button>
+              <button onclick="setKontenCat('passiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Passivkonten (Kl. 3–4)</button>
+              <button onclick="setKontenCat('ertrag', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Erträge (Kl. 5)</button>
+              <button onclick="setKontenCat('aufwand', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aufwendungen (Kl. 6–7)</button>
+              <button onclick="setKontenCat('abschluss', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Ergebnis &amp; KLR (Kl. 8–9)</button>
             </div>
           </div>
         </div>
@@ -2602,19 +2625,323 @@
     ];
 
     const IKR_DATA = [
-      { nr: "0800", name: "Bebaute Grundstücke", klasse: "0 Anlagewerte", art: "Aktiv", cat: "aktiv" },
-      { nr: "0840", name: "Fuhrpark", klasse: "0 Anlagewerte", art: "Aktiv", cat: "aktiv" },
-      { nr: "0870", name: "Büromaschinen & BGA", klasse: "0 Anlagewerte", art: "Aktiv", cat: "aktiv" },
-      { nr: "2400", name: "Forderungen a.LL", klasse: "2 Umlaufvermögen", art: "Aktiv", cat: "aktiv" },
-      { nr: "2800", name: "Bank", klasse: "2 Umlaufvermögen", art: "Aktiv", cat: "aktiv" },
-      { nr: "2880", name: "Kasse", klasse: "2 Umlaufvermögen", art: "Aktiv", cat: "aktiv" },
-      { nr: "3000", name: "Eigenkapital", klasse: "3 Eigenkapital", art: "Passiv", cat: "passiv" },
-      { nr: "4250", name: "Bankverbindlichkeiten", klasse: "4 Fremdkapital", art: "Passiv", cat: "passiv" },
-      { nr: "4400", name: "Verbindlichkeiten a.LL", klasse: "4 Fremdkapital", art: "Passiv", cat: "passiv" },
-      { nr: "5000", name: "Umsatzerlöse", klasse: "5 Erträge", art: "Ertrag", cat: "ertrag" },
-      { nr: "6000", name: "Löhne und Gehälter", klasse: "6 Aufwendungen", art: "Aufwand", cat: "aufwand" },
-      { nr: "6800", name: "Mietaufwendungen", klasse: "6 Aufwendungen", art: "Aufwand", cat: "aufwand" },
-      { nr: "7600", name: "Büromaterial", klasse: "7 Aufwendungen", art: "Aufwand", cat: "aufwand" }
+      // Kontenklasse 0: Immaterielle Vermögensgegenstände und Sachanlagen (AKTIVA)
+      { nr: "0200", name: "Konzessionen, gewerbliche Schutzrechte und ähnliche Rechte", klasse: "0 Immaterielle Vermögensgegenstände & Sachanlagen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0300", name: "Geschäfts- oder Firmenwert", klasse: "0 Immaterielle Vermögensgegenstände & Sachanlagen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0500", name: "Unbebaute Grundstücke", klasse: "0 Sachanlagen (Grundstücke & Bauten)", art: "Aktiv", cat: "aktiv" },
+      { nr: "0510", name: "Bebaute Grundstücke", klasse: "0 Sachanlagen (Grundstücke & Bauten)", art: "Aktiv", cat: "aktiv" },
+      { nr: "0520", name: "Gebäude (Sammelkonto)", klasse: "0 Sachanlagen (Grundstücke & Bauten)", art: "Aktiv", cat: "aktiv" },
+      { nr: "0530", name: "Betriebsgebäude", klasse: "0 Sachanlagen (Grundstücke & Bauten)", art: "Aktiv", cat: "aktiv" },
+      { nr: "0540", name: "Verwaltungsgebäude", klasse: "0 Sachanlagen (Grundstücke & Bauten)", art: "Aktiv", cat: "aktiv" },
+      { nr: "0550", name: "Andere Bauten", klasse: "0 Sachanlagen (Grundstücke & Bauten)", art: "Aktiv", cat: "aktiv" },
+      { nr: "0560", name: "Grundstückseinrichtungen", klasse: "0 Sachanlagen (Grundstücke & Bauten)", art: "Aktiv", cat: "aktiv" },
+      { nr: "0570", name: "Gebäudeeinrichtungen", klasse: "0 Sachanlagen (Grundstücke & Bauten)", art: "Aktiv", cat: "aktiv" },
+      { nr: "0590", name: "Wohngebäude", klasse: "0 Sachanlagen (Grundstücke & Bauten)", art: "Aktiv", cat: "aktiv" },
+      { nr: "0700", name: "Technische Anlagen und Maschinen (Sammelkonto / Energieversorgung)", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0710", name: "Anlagen der Materiallagerung und -bereitstellung", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0720", name: "Anlagen und Maschinen der mechanischen Materialbearbeitung, -verarbeitung und -umwandlung", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0730", name: "Anlagen für Wärme-, Kälte- und chemische Prozesse sowie ähnliche Anlagen", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0740", name: "Anlagen für Arbeitssicherheit und Umweltschutz", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0750", name: "Transportanlagen und ähnliche Betriebsvorrichtungen", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0760", name: "Verpackungsanlagen und -maschinen", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0770", name: "Sonstige Anlagen und Maschinen", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0780", name: "Reservemaschinen und -anlagenteile", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0790", name: "Geringwertige Anlagen und Maschinen", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0791", name: "GWG-Sammelposten Anlagen und Maschinen Jahr 1", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0795", name: "GWG-Sammelposten Anlagen und Maschinen Jahr 5", klasse: "0 Technische Anlagen und Maschinen", art: "Aktiv", cat: "aktiv" },
+      { nr: "0800", name: "Andere Anlagen / Betriebs- und Geschäftsausstattung (Sammelkonto)", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0810", name: "Werkstätteneinrichtung", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0820", name: "Werkzeuge, Werksgeräte und Modelle, Prüf- und Messmittel", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0830", name: "Lager- und Transporteinrichtungen", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0840", name: "Fuhrpark", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0850", name: "Sonstige Betriebsausstattung", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0860", name: "Büromaschinen, Organisationsmittel und Kommunikationsanlagen", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0870", name: "Büromöbel und sonstige Geschäftsausstattung (BGA)", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0880", name: "Reserveteile für Betriebs- und Geschäftsausstattung", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0890", name: "Geringwertige Vermögensgegenstände der Betriebs- und Geschäftsausstattung (GWG)", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0891", name: "GWG-Sammelposten BGA Jahr 1", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0895", name: "GWG-Sammelposten BGA Jahr 5", klasse: "0 Andere Anlagen, Betriebs- u. Geschäftsausstattung", art: "Aktiv", cat: "aktiv" },
+      { nr: "0900", name: "Geleistete Anzahlungen auf Sachanlagen", klasse: "0 Geleistete Anzahlungen und Anlagen im Bau", art: "Aktiv", cat: "aktiv" },
+      { nr: "0950", name: "Anlagen im Bau", klasse: "0 Geleistete Anzahlungen und Anlagen im Bau", art: "Aktiv", cat: "aktiv" },
+
+      // Kontenklasse 1: Finanzanlagen (AKTIVA)
+      { nr: "1300", name: "Beteiligungen", klasse: "1 Finanzanlagen", art: "Aktiv", cat: "aktiv" },
+      { nr: "1500", name: "Wertpapiere des Anlagevermögens", klasse: "1 Finanzanlagen", art: "Aktiv", cat: "aktiv" },
+      { nr: "1600", name: "Sonstige Finanzanlagen", klasse: "1 Finanzanlagen", art: "Aktiv", cat: "aktiv" },
+
+      // Kontenklasse 2: Umlaufvermögen und aktive Rechnungsabgrenzung (AKTIVA)
+      { nr: "2000", name: "Rohstoffe / Fertigungsmaterial", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2001", name: "Bezugskosten (Rohstoffe)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2002", name: "Nachlässe (Rohstoffe)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2010", name: "Vorprodukte / Fremdbauteile", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2011", name: "Bezugskosten (Vorprodukte)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2012", name: "Nachlässe (Vorprodukte)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2020", name: "Hilfsstoffe", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2021", name: "Bezugskosten (Hilfsstoffe)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2022", name: "Nachlässe (Hilfsstoffe)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2030", name: "Betriebsstoffe", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2031", name: "Bezugskosten (Betriebsstoffe)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2032", name: "Nachlässe (Betriebsstoffe)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2070", name: "Sonstiges Material", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2071", name: "Bezugskosten (Sonstiges Material)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2072", name: "Nachlässe (Sonstiges Material)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2100", name: "Unfertige Erzeugnisse", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2190", name: "Unfertige Leistungen", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2200", name: "Fertige Erzeugnisse", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2280", name: "Waren (Handelswaren)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2281", name: "Bezugskosten (Waren)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2282", name: "Nachlässe (Waren)", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2300", name: "Geleistete Anzahlungen auf Vorräte", klasse: "2 Vorräte (Umlaufvermögen)", art: "Aktiv", cat: "aktiv" },
+      { nr: "2400", name: "Forderungen aus Lieferungen und Leistungen (Forderungen a.LL)", klasse: "2 Forderungen u. sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2420", name: "Kaufpreisforderungen", klasse: "2 Forderungen u. sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2421", name: "Umsatzsteuerforderungen", klasse: "2 Forderungen u. sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2450", name: "Wechselforderungen aus Lieferungen und Leistungen (Besitzwechsel)", klasse: "2 Forderungen u. sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2470", name: "Zweifelhafte Forderungen", klasse: "2 Forderungen u. sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2500", name: "Innergemeinschaftlicher Erwerb", klasse: "2 Innergemeinschaftlicher Erwerb / Einfuhr", art: "Aktiv", cat: "aktiv" },
+      { nr: "2501", name: "Bezugskosten (Innergemeinschaftlicher Erwerb)", klasse: "2 Innergemeinschaftlicher Erwerb / Einfuhr", art: "Aktiv", cat: "aktiv" },
+      { nr: "2502", name: "Nachlässe (Innergemeinschaftlicher Erwerb)", klasse: "2 Innergemeinschaftlicher Erwerb / Einfuhr", art: "Aktiv", cat: "aktiv" },
+      { nr: "2510", name: "Gütereinfuhr", klasse: "2 Innergemeinschaftlicher Erwerb / Einfuhr", art: "Aktiv", cat: "aktiv" },
+      { nr: "2511", name: "Bezugskosten (Gütereinfuhr)", klasse: "2 Innergemeinschaftlicher Erwerb / Einfuhr", art: "Aktiv", cat: "aktiv" },
+      { nr: "2512", name: "Nachlässe (Gütereinfuhr)", klasse: "2 Innergemeinschaftlicher Erwerb / Einfuhr", art: "Aktiv", cat: "aktiv" },
+      { nr: "2600", name: "Vorsteuer", klasse: "2 Sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2602", name: "Vorsteuer (19%) für innergemeinschaftlichen Erwerb (i. E.)", klasse: "2 Sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2604", name: "Einfuhrumsatzsteuer", klasse: "2 Sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2630", name: "Sonstige Forderungen an Finanzbehörden", klasse: "2 Sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2640", name: "SV-Vorauszahlung", klasse: "2 Sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2650", name: "Forderungen an Mitarbeiter", klasse: "2 Sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2690", name: "Übrige sonstige Forderungen", klasse: "2 Sonstige Vermögensgegenstände", art: "Aktiv", cat: "aktiv" },
+      { nr: "2700", name: "Wertpapiere des Umlaufvermögens", klasse: "2 Wertpapiere des Umlaufvermögens", art: "Aktiv", cat: "aktiv" },
+      { nr: "2800", name: "Guthaben bei Kreditinstituten (Bank)", klasse: "2 Flüssige Mittel", art: "Aktiv", cat: "aktiv" },
+      { nr: "2850", name: "Postbank", klasse: "2 Flüssige Mittel", art: "Aktiv", cat: "aktiv" },
+      { nr: "2860", name: "Schecks", klasse: "2 Flüssige Mittel", art: "Aktiv", cat: "aktiv" },
+      { nr: "2870", name: "Bundesbank", klasse: "2 Flüssige Mittel", art: "Aktiv", cat: "aktiv" },
+      { nr: "2880", name: "Kasse", klasse: "2 Flüssige Mittel", art: "Aktiv", cat: "aktiv" },
+      { nr: "2890", name: "Nebenkassen", klasse: "2 Flüssige Mittel", art: "Aktiv", cat: "aktiv" },
+      { nr: "2900", name: "Aktive Jahresabgrenzung (ARA)", klasse: "2 Aktive Rechnungsabgrenzung", art: "Aktiv", cat: "aktiv" },
+      { nr: "2920", name: "Umsatzsteuer auf erhaltene Anzahlungen", klasse: "2 Aktive Rechnungsabgrenzung", art: "Aktiv", cat: "aktiv" },
+      { nr: "2930", name: "Disagio", klasse: "2 Aktive Rechnungsabgrenzung", art: "Aktiv", cat: "aktiv" },
+      { nr: "2990", name: "Nicht durch Eigenkapital gedeckter Fehlbetrag", klasse: "2 Aktive Rechnungsabgrenzung", art: "Aktiv", cat: "aktiv" },
+
+      // Kontenklasse 3: Eigenkapital und Rückstellungen (PASSIVA)
+      { nr: "3000", name: "Eigenkapital / Gezeichnetes Kapital (Kapital Gesellschafter A)", klasse: "3 Eigenkapital und Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3001", name: "Privatkonto (Privatkonto A)", klasse: "3 Eigenkapital und Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3010", name: "Kapital Gesellschafter B", klasse: "3 Eigenkapital und Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3011", name: "Privatkonto B", klasse: "3 Eigenkapital und Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3070", name: "Kommanditkapital Gesellschafter C", klasse: "3 Eigenkapital und Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3080", name: "Kommanditkapital Gesellschafter D", klasse: "3 Eigenkapital und Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3100", name: "Kapitalrücklage", klasse: "3 Eigenkapital und Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3210", name: "Gesetzliche Rücklagen", klasse: "3 Gewinnrücklagen", art: "Passiv", cat: "passiv" },
+      { nr: "3230", name: "Satzungsmäßige Rücklagen", klasse: "3 Gewinnrücklagen", art: "Passiv", cat: "passiv" },
+      { nr: "3240", name: "Andere Gewinnrücklagen", klasse: "3 Gewinnrücklagen", art: "Passiv", cat: "passiv" },
+      { nr: "3300", name: "Ergebnisverwendung (Sammelkonto)", klasse: "3 Ergebnisverwendung", art: "Passiv", cat: "passiv" },
+      { nr: "3310", name: "Jahresergebnis des Vorjahres", klasse: "3 Ergebnisverwendung", art: "Passiv", cat: "passiv" },
+      { nr: "3320", name: "Ergebnisvortrag aus früheren Perioden", klasse: "3 Ergebnisverwendung", art: "Passiv", cat: "passiv" },
+      { nr: "3340", name: "Veränderung der Rücklagen", klasse: "3 Ergebnisverwendung", art: "Passiv", cat: "passiv" },
+      { nr: "3350", name: "Bilanzgewinn / Bilanzverlust", klasse: "3 Ergebnisverwendung", art: "Passiv", cat: "passiv" },
+      { nr: "3360", name: "Ergebnisausschüttung", klasse: "3 Ergebnisverwendung", art: "Passiv", cat: "passiv" },
+      { nr: "3390", name: "Ergebnisvortrag auf neue Rechnung", klasse: "3 Ergebnisverwendung", art: "Passiv", cat: "passiv" },
+      { nr: "3400", name: "Jahresüberschuss / Jahresfehlbetrag", klasse: "3 Jahresüberschuss / Jahresfehlbetrag", art: "Passiv", cat: "passiv" },
+      { nr: "3500", name: "Sonderposten mit Rücklageanteil", klasse: "3 Sonderposten mit Rücklageanteil", art: "Passiv", cat: "passiv" },
+      { nr: "3610", name: "Wertberichtigungen zu Sachanlagen", klasse: "3 Wertberichtigungen", art: "Passiv", cat: "passiv" },
+      { nr: "3650", name: "Wertberichtigungen zu Finanzanlagen", klasse: "3 Wertberichtigungen", art: "Passiv", cat: "passiv" },
+      { nr: "3670", name: "Einzelwertberichtigung zu Forderungen (EWB)", klasse: "3 Wertberichtigungen", art: "Passiv", cat: "passiv" },
+      { nr: "3680", name: "Pauschalwertberichtigung zu Forderungen (PWB)", klasse: "3 Wertberichtigungen", art: "Passiv", cat: "passiv" },
+      { nr: "3700", name: "Rückstellungen für Pensionen und ähnliche Verpflichtungen", klasse: "3 Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3800", name: "Steuerrückstellungen", klasse: "3 Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3900", name: "Sonstige Rückstellungen (Sammelkonto)", klasse: "3 Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3910", name: "Rückstellungen für Gewährleistung", klasse: "3 Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3930", name: "Rückstellungen für andere ungewisse Verbindlichkeiten", klasse: "3 Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3970", name: "Rückstellungen für drohende Verluste aus schwebenden Geschäften", klasse: "3 Rückstellungen", art: "Passiv", cat: "passiv" },
+      { nr: "3990", name: "Rückstellungen für Aufwendungen", klasse: "3 Rückstellungen", art: "Passiv", cat: "passiv" },
+
+      // Kontenklasse 4: Verbindlichkeiten und passive Rechnungsabgrenzung (PASSIVA)
+      { nr: "4100", name: "Anleihen", klasse: "4 Verbindlichkeiten u. passive Rechnungsabgrenzung", art: "Passiv", cat: "passiv" },
+      { nr: "4210", name: "Kurzfristige Bankverbindlichkeiten", klasse: "4 Verbindlichkeiten gegenüber Kreditinstituten", art: "Passiv", cat: "passiv" },
+      { nr: "4230", name: "Mittelfristige Bankverbindlichkeiten", klasse: "4 Verbindlichkeiten gegenüber Kreditinstituten", art: "Passiv", cat: "passiv" },
+      { nr: "4250", name: "Langfristige Bankverbindlichkeiten (Darlehensschulden)", klasse: "4 Verbindlichkeiten gegenüber Kreditinstituten", art: "Passiv", cat: "passiv" },
+      { nr: "4300", name: "Erhaltene Anzahlungen auf Bestellungen", klasse: "4 Erhaltene Anzahlungen", art: "Passiv", cat: "passiv" },
+      { nr: "4400", name: "Verbindlichkeiten aus Lieferungen und Leistungen (Verbindlichkeiten a.LL)", klasse: "4 Verbindlichkeiten aus Lieferungen u. Leistungen", art: "Passiv", cat: "passiv" },
+      { nr: "4420", name: "Kaufpreisverbindlichkeiten", klasse: "4 Verbindlichkeiten aus Lieferungen u. Leistungen", art: "Passiv", cat: "passiv" },
+      { nr: "4800", name: "Umsatzsteuer", klasse: "4 Sonstige Verbindlichkeiten", art: "Passiv", cat: "passiv" },
+      { nr: "4802", name: "Umsatzsteuer (19%) für innergemeinschaftlichen Erwerb (i. E.)", klasse: "4 Sonstige Verbindlichkeiten", art: "Passiv", cat: "passiv" },
+      { nr: "4820", name: "Zollverbindlichkeiten", klasse: "4 Sonstige Verbindlichkeiten", art: "Passiv", cat: "passiv" },
+      { nr: "4830", name: "Sonstige Verbindlichkeiten gegenüber Finanzbehörden (FB-Verbindlichkeiten)", klasse: "4 Sonstige Verbindlichkeiten", art: "Passiv", cat: "passiv" },
+      { nr: "4850", name: "Verbindlichkeiten gegenüber Mitarbeitern", klasse: "4 Sonstige Verbindlichkeiten", art: "Passiv", cat: "passiv" },
+      { nr: "4860", name: "Verbindlichkeiten aus vermögenswirksamen Leistungen (VL)", klasse: "4 Sonstige Verbindlichkeiten", art: "Passiv", cat: "passiv" },
+      { nr: "4870", name: "Verbindlichkeiten gegenüber Gesellschaftern (Dividende)", klasse: "4 Sonstige Verbindlichkeiten", art: "Passiv", cat: "passiv" },
+      { nr: "4890", name: "Übrige sonstige Verbindlichkeiten", klasse: "4 Sonstige Verbindlichkeiten", art: "Passiv", cat: "passiv" },
+      { nr: "4900", name: "Passive Jahresabgrenzung (PRA)", klasse: "4 Passive Rechnungsabgrenzung", art: "Passiv", cat: "passiv" },
+
+      // Kontenklasse 5: Erträge (ERTRÄGE)
+      { nr: "5000", name: "Umsatzerlöse für eigene Erzeugnisse", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5001", name: "Erlösberichtigungen (eigene Erzeugnisse)", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5050", name: "Umsatzerlöse für andere eigene Leistungen", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5051", name: "Erlösberichtigungen (andere eigene Leistungen)", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5060", name: "Erlöse aus innergemeinschaftlicher Lieferung (i. L.)", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5061", name: "Erlösberichtigungen (i. L.)", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5070", name: "Erlöse aus Güterausfuhr", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5071", name: "Erlösberichtigungen (Güterausfuhr)", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5080", name: "Erlöse aus Vermietung und Verpachtung", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5081", name: "Miet- und Pachterträge", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5082", name: "Leasingerträge", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5090", name: "Sonstige Nebenerlöse (z. B. aus Provisionen oder Lizenzen)", klasse: "5 Umsatzerlöse für eigene Erzeugnisse", art: "Ertrag", cat: "ertrag" },
+      { nr: "5100", name: "Umsatzerlöse für Waren", klasse: "5 Umsatzerlöse für Waren", art: "Ertrag", cat: "ertrag" },
+      { nr: "5101", name: "Erlösberichtigungen (Waren)", klasse: "5 Umsatzerlöse für Waren", art: "Ertrag", cat: "ertrag" },
+      { nr: "5190", name: "Sonstige Umsatzerlöse", klasse: "5 Umsatzerlöse für Waren", art: "Ertrag", cat: "ertrag" },
+      { nr: "5191", name: "Erlösberichtigungen (sonstige Umsatzerlöse)", klasse: "5 Umsatzerlöse für Waren", art: "Ertrag", cat: "ertrag" },
+      { nr: "5200", name: "Bestandsveränderungen", klasse: "5 Bestandsveränderungen", art: "Ertrag", cat: "ertrag" },
+      { nr: "5201", name: "Bestandsveränderungen an unfertigen Erzeugnissen und nicht abgerechneten Leistungen", klasse: "5 Bestandsveränderungen", art: "Ertrag", cat: "ertrag" },
+      { nr: "5202", name: "Bestandsveränderungen an fertigen Erzeugnissen", klasse: "5 Bestandsveränderungen", art: "Ertrag", cat: "ertrag" },
+      { nr: "5300", name: "Aktivierte Eigenleistungen", klasse: "5 Andere aktivierte Eigenleistungen", art: "Ertrag", cat: "ertrag" },
+      { nr: "5410", name: "Sonstige Erlöse (z. B. aus Anlagenabgängen)", klasse: "5 Sonstige betriebliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5420", name: "Entnahme von Gegenständen und sonstigen Leistungen", klasse: "5 Sonstige betriebliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5430", name: "Andere sonstige betriebliche Erträge (z. B. Kursgewinne, Sachbezüge, außergewöhnl. Erträge)", klasse: "5 Sonstige betriebliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5431", name: "Erträge aus Versicherungsentschädigungen", klasse: "5 Sonstige betriebliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5440", name: "Erträge aus Werterhöhungen von Gegenständen des Anlagevermögens (Zuschreibungen)", klasse: "5 Sonstige betriebliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5441", name: "Erträge aus Zuschreibungen zum Umlaufvermögen", klasse: "5 Sonstige betriebliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5450", name: "Erträge aus der Auflösung oder Herabsetzung von Wertberichtigungen auf Forderungen", klasse: "5 Sonstige betriebliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5455", name: "Erträge aus abgeschriebenen Forderungen", klasse: "5 Sonstige betriebliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5460", name: "Erträge aus dem Abgang von Vermögensgegenständen", klasse: "5 Sonstige betriebliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5480", name: "Erträge aus der Auflösung von Rückstellungen", klasse: "5 Sonstige betriebliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5490", name: "Periodenfremde Erträge", klasse: "5 Sonstige betriebliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5500", name: "Erträge aus Beteiligungen", klasse: "5 Erträge aus Beteiligungen", art: "Ertrag", cat: "ertrag" },
+      { nr: "5600", name: "Erträge aus anderen Finanzanlagen", klasse: "5 Erträge aus anderen Wertpapieren u. Ausleihungen", art: "Ertrag", cat: "ertrag" },
+      { nr: "5710", name: "Zinserträge", klasse: "5 Sonstige Zinsen und ähnliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5780", name: "Erträge aus Wertpapieren des Umlaufvermögens", klasse: "5 Sonstige Zinsen und ähnliche Erträge", art: "Ertrag", cat: "ertrag" },
+      { nr: "5790", name: "Sonstige zinsähnliche Erträge", klasse: "5 Sonstige Zinsen und ähnliche Erträge", art: "Ertrag", cat: "ertrag" },
+
+      // Kontenklasse 6: Betriebliche Aufwendungen (AUFWENDUNGEN)
+      { nr: "6000", name: "Aufwendungen für Rohstoffe / Fertigungsmaterial", klasse: "6 Materialaufwand", art: "Aufwand", cat: "aufwand" },
+      { nr: "6001", name: "Bezugskosten (Rohstoffe)", klasse: "6 Materialaufwand", art: "Aufwand", cat: "aufwand" },
+      { nr: "6002", name: "Nachlässe (Rohstoffe)", klasse: "6 Materialaufwand", art: "Aufwand", cat: "aufwand" },
+      { nr: "6010", name: "Aufwendungen für Vorprodukte / Fremdbauteile", klasse: "6 Materialaufwand", art: "Aufwand", cat: "aufwand" },
+      { nr: "6020", name: "Aufwendungen für Hilfsstoffe", klasse: "6 Materialaufwand", art: "Aufwand", cat: "aufwand" },
+      { nr: "6030", name: "Aufwendungen für Betriebsstoffe / Verbrauchswerkzeuge", klasse: "6 Materialaufwand", art: "Aufwand", cat: "aufwand" },
+      { nr: "6040", name: "Aufwendungen für Verpackungsmaterial", klasse: "6 Materialaufwand", art: "Aufwand", cat: "aufwand" },
+      { nr: "6050", name: "Aufwendungen für Energie und Treibstoffe", klasse: "6 Materialaufwand", art: "Aufwand", cat: "aufwand" },
+      { nr: "6060", name: "Aufwendungen für Reparaturmaterial", klasse: "6 Materialaufwand", art: "Aufwand", cat: "aufwand" },
+      { nr: "6070", name: "Aufwendungen für sonstiges Material", klasse: "6 Materialaufwand", art: "Aufwand", cat: "aufwand" },
+      { nr: "6080", name: "Aufwendungen für Waren", klasse: "6 Materialaufwand", art: "Aufwand", cat: "aufwand" },
+      { nr: "6100", name: "Fremdleistungen für Erzeugnisse und andere Umsatzleistungen", klasse: "6 Aufwendungen für bezogene Leistungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6140", name: "Frachten und Fremdlager", klasse: "6 Aufwendungen für bezogene Leistungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6150", name: "Vertriebsprovisionen", klasse: "6 Aufwendungen für bezogene Leistungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6160", name: "Fremdinstandhaltung", klasse: "6 Aufwendungen für bezogene Leistungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6170", name: "Sonstige Aufwendungen für bezogene Leistungen", klasse: "6 Aufwendungen für bezogene Leistungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6200", name: "Löhne einschl. tariflicher, vertraglicher oder arbeitsbedingter Zulagen", klasse: "6 Personalaufwand (Löhne)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6210", name: "Urlaubs- und Weihnachtsgeld (Lohnbereich)", klasse: "6 Personalaufwand (Löhne)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6220", name: "Sonstige tarifliche oder vertragliche Aufwendungen für Lohnempfänger", klasse: "6 Personalaufwand (Löhne)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6230", name: "Freiwillige Zuwendungen (Lohnbereich)", klasse: "6 Personalaufwand (Löhne)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6250", name: "Sachbezüge (Lohnbereich)", klasse: "6 Personalaufwand (Löhne)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6260", name: "Vergütungen an gewerbliche Auszubildende", klasse: "6 Personalaufwand (Löhne)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6300", name: "Gehälter und Zulagen", klasse: "6 Personalaufwand (Gehälter)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6310", name: "Urlaubs- und Weihnachtsgeld (Gehaltsbereich)", klasse: "6 Personalaufwand (Gehälter)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6320", name: "Sonstige tarifliche oder vertragliche Aufwendungen (Gehaltsbereich)", klasse: "6 Personalaufwand (Gehälter)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6330", name: "Freiwillige Zuwendungen (Gehaltsbereich)", klasse: "6 Personalaufwand (Gehälter)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6350", name: "Sachbezüge (Gehaltsbereich)", klasse: "6 Personalaufwand (Gehälter)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6360", name: "Vergütungen an Auszubildende (Gehaltsbereich)", klasse: "6 Personalaufwand (Gehälter)", art: "Aufwand", cat: "aufwand" },
+      { nr: "6400", name: "Arbeitgeberanteil zur Sozialversicherung (Lohnbereich / Sammelkonto)", klasse: "6 Soziale Abgaben u. Altersversorgung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6410", name: "Arbeitgeberanteil zur Sozialversicherung (Gehaltsbereich)", klasse: "6 Soziale Abgaben u. Altersversorgung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6420", name: "Beiträge zur Berufsgenossenschaft", klasse: "6 Soziale Abgaben u. Altersversorgung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6440", name: "Aufwendungen für Altersversorgung", klasse: "6 Soziale Abgaben u. Altersversorgung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6490", name: "Aufwendungen für Unterstützung", klasse: "6 Soziale Abgaben u. Altersversorgung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6495", name: "Sonstige soziale Aufwendungen", klasse: "6 Soziale Abgaben u. Altersversorgung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6510", name: "Abschreibungen auf immaterielle Vermögensgegenstände des Anlagevermögens", klasse: "6 Abschreibungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6520", name: "Abschreibungen auf Sachanlagen", klasse: "6 Abschreibungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6540", name: "Abschreibungen auf geringwertige Wirtschaftsgüter (GWG)", klasse: "6 Abschreibungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6541", name: "Abschreibungen auf GWG-Sammelposten Jahr 1", klasse: "6 Abschreibungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6545", name: "Abschreibungen auf GWG-Sammelposten Jahr 5", klasse: "6 Abschreibungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6550", name: "Außerplanmäßige Abschreibungen auf Sachanlagen", klasse: "6 Abschreibungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6570", name: "Unüblich hohe Abschreibungen auf Umlaufvermögen", klasse: "6 Abschreibungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6600", name: "Aufwendungen für Personaleinstellung", klasse: "6 Sonstige Personalaufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6610", name: "Aufwendungen für übernommene Fahrtkosten", klasse: "6 Sonstige Personalaufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6620", name: "Aufwendungen für Werksarzt und Arbeitssicherheit", klasse: "6 Sonstige Personalaufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6630", name: "Personenbezogene Versicherungen", klasse: "6 Sonstige Personalaufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6640", name: "Aufwendungen für Fort- und Weiterbildung", klasse: "6 Sonstige Personalaufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6650", name: "Aufwendungen für Dienstjubiläen", klasse: "6 Sonstige Personalaufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6660", name: "Aufwendungen für Belegschaftsveranstaltungen", klasse: "6 Sonstige Personalaufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6670", name: "Aufwendungen für Werksküche und Sozialeinrichtungen", klasse: "6 Sonstige Personalaufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6680", name: "Ausgleichsabgabe nach dem Schwerbehindertengesetz", klasse: "6 Sonstige Personalaufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6690", name: "Übrige sonstige Personalaufwendungen", klasse: "6 Sonstige Personalaufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "6700", name: "Mietaufwendungen, Pachten", klasse: "6 Aufwendungen für Rechte und Dienste", art: "Aufwand", cat: "aufwand" },
+      { nr: "6710", name: "Leasingaufwendungen", klasse: "6 Aufwendungen für Rechte und Dienste", art: "Aufwand", cat: "aufwand" },
+      { nr: "6720", name: "Lizenzen und Konzessionen", klasse: "6 Aufwendungen für Rechte und Dienste", art: "Aufwand", cat: "aufwand" },
+      { nr: "6730", name: "Gebühren", klasse: "6 Aufwendungen für Rechte und Dienste", art: "Aufwand", cat: "aufwand" },
+      { nr: "6750", name: "Kosten des Geldverkehrs", klasse: "6 Aufwendungen für Rechte und Dienste", art: "Aufwand", cat: "aufwand" },
+      { nr: "6760", name: "Provisionsaufwendungen (außer Vertriebsprovisionen)", klasse: "6 Aufwendungen für Rechte und Dienste", art: "Aufwand", cat: "aufwand" },
+      { nr: "6770", name: "Rechts- und Beratungskosten", klasse: "6 Aufwendungen für Rechte und Dienste", art: "Aufwand", cat: "aufwand" },
+      { nr: "6800", name: "Büromaterial", klasse: "6 Aufwendungen für Kommunikation, Reisen, Werbung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6810", name: "Zeitungen und Fachliteratur", klasse: "6 Aufwendungen für Kommunikation, Reisen, Werbung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6820", name: "Portokosten", klasse: "6 Aufwendungen für Kommunikation, Reisen, Werbung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6830", name: "Kosten der Telekommunikation", klasse: "6 Aufwendungen für Kommunikation, Reisen, Werbung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6850", name: "Reisekosten", klasse: "6 Aufwendungen für Kommunikation, Reisen, Werbung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6860", name: "Bewirtung und Präsentation", klasse: "6 Aufwendungen für Kommunikation, Reisen, Werbung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6870", name: "Werbung", klasse: "6 Aufwendungen für Kommunikation, Reisen, Werbung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6880", name: "Spenden", klasse: "6 Aufwendungen für Kommunikation, Reisen, Werbung", art: "Aufwand", cat: "aufwand" },
+      { nr: "6900", name: "Versicherungsbeiträge", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+      { nr: "6920", name: "Beiträge zu Wirtschaftsverbänden und Berufsvertretungen", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+      { nr: "6930", name: "Verluste aus Schadensfällen", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+      { nr: "6940", name: "Sonstige Aufwendungen (z. B. Kursverluste, Kassenfehlbeträge, außergewöhnl. Aufwendungen)", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+      { nr: "6950", name: "Abschreibungen auf Forderungen", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+      { nr: "6951", name: "Abschreibungen auf Forderungen wegen Uneinbringlichkeit", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+      { nr: "6952", name: "Einstellung in Einzelwertberichtigung (EWB)", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+      { nr: "6953", name: "Einstellung in Pauschalwertberichtigung (PWB)", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+      { nr: "6960", name: "Verluste aus dem Abgang von Vermögensgegenständen", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+      { nr: "6979", name: "Anlagenabgänge", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+      { nr: "6980", name: "Zuführungen zu Rückstellungen für Gewährleistung", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+      { nr: "6990", name: "Periodenfremde Aufwendungen", klasse: "6 Beiträge, Wertkorrekturen u. periodenfremde Aufw.", art: "Aufwand", cat: "aufwand" },
+
+      // Kontenklasse 7: Weitere Aufwendungen (AUFWENDUNGEN)
+      { nr: "7020", name: "Grundsteuer", klasse: "7 Betriebliche Steuern", art: "Aufwand", cat: "aufwand" },
+      { nr: "7021", name: "Grundsteuer – Vorjahre", klasse: "7 Betriebliche Steuern", art: "Aufwand", cat: "aufwand" },
+      { nr: "7030", name: "Kraftfahrzeugsteuer", klasse: "7 Betriebliche Steuern", art: "Aufwand", cat: "aufwand" },
+      { nr: "7031", name: "Kraftfahrzeugsteuer – Vorjahre", klasse: "7 Betriebliche Steuern", art: "Aufwand", cat: "aufwand" },
+      { nr: "7032", name: "Steuererstattungen für Kfz-Steuer – Vorjahre", klasse: "7 Betriebliche Steuern", art: "Aufwand", cat: "aufwand" },
+      { nr: "7070", name: "Ausfuhrzölle", klasse: "7 Betriebliche Steuern", art: "Aufwand", cat: "aufwand" },
+      { nr: "7080", name: "Verbrauchsteuern", klasse: "7 Betriebliche Steuern", art: "Aufwand", cat: "aufwand" },
+      { nr: "7090", name: "Sonstige betriebliche Steuern", klasse: "7 Betriebliche Steuern", art: "Aufwand", cat: "aufwand" },
+      { nr: "7400", name: "Abschreibungen auf Finanzanlagen", klasse: "7 Abschreibungen auf Finanzanlagen u. Wertpapiere", art: "Aufwand", cat: "aufwand" },
+      { nr: "7420", name: "Abschreibungen auf Wertpapiere des Umlaufvermögens", klasse: "7 Abschreibungen auf Finanzanlagen u. Wertpapiere", art: "Aufwand", cat: "aufwand" },
+      { nr: "7450", name: "Verluste aus dem Abgang von Finanzanlagen", klasse: "7 Abschreibungen auf Finanzanlagen u. Wertpapiere", art: "Aufwand", cat: "aufwand" },
+      { nr: "7460", name: "Verluste aus dem Abgang von Wertpapieren des Umlaufvermögens", klasse: "7 Abschreibungen auf Finanzanlagen u. Wertpapiere", art: "Aufwand", cat: "aufwand" },
+      { nr: "7510", name: "Zinsaufwendungen", klasse: "7 Zinsen und ähnliche Aufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "7590", name: "Sonstige zinsähnliche Aufwendungen", klasse: "7 Zinsen und ähnliche Aufwendungen", art: "Aufwand", cat: "aufwand" },
+      { nr: "7700", name: "Gewerbesteuer", klasse: "7 Steuern vom Einkommen und Ertrag", art: "Aufwand", cat: "aufwand" },
+      { nr: "7701", name: "Gewerbesteuer – Vorjahre", klasse: "7 Steuern vom Einkommen und Ertrag", art: "Aufwand", cat: "aufwand" },
+      { nr: "7702", name: "Steuererstattungen für Gewerbesteuer – Vorjahre", klasse: "7 Steuern vom Einkommen und Ertrag", art: "Aufwand", cat: "aufwand" },
+      { nr: "7710", name: "Körperschaftsteuer einschl. Solidaritätszuschlag", klasse: "7 Steuern vom Einkommen und Ertrag", art: "Aufwand", cat: "aufwand" },
+      { nr: "7711", name: "Körperschaftsteuer – Vorjahre", klasse: "7 Steuern vom Einkommen und Ertrag", art: "Aufwand", cat: "aufwand" },
+      { nr: "7712", name: "Steuererstattungen für Körperschaftsteuer – Vorjahre", klasse: "7 Steuern vom Einkommen und Ertrag", art: "Aufwand", cat: "aufwand" },
+      { nr: "7720", name: "Kapitalertragsteuer", klasse: "7 Steuern vom Einkommen und Ertrag", art: "Aufwand", cat: "aufwand" },
+      { nr: "7800", name: "Diverse Aufwendungen", klasse: "7 Diverse Aufwendungen", art: "Aufwand", cat: "aufwand" },
+
+      // Kontenklasse 8: Ergebnisrechnungen (ERGEBNIS & ABSCHLUSS)
+      { nr: "8000", name: "Eröffnungsbilanzkonto (EBK)", klasse: "8 Ergebnisrechnungen (Eröffnung/Abschluss)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8010", name: "Schlussbilanzkonto (SBK)", klasse: "8 Ergebnisrechnungen (Eröffnung/Abschluss)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8020", name: "GuV-Konto Gesamtkostenverfahren", klasse: "8 Ergebnisrechnungen (Eröffnung/Abschluss)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8030", name: "GuV-Konto Umsatzkostenverfahren", klasse: "8 Ergebnisrechnungen (Eröffnung/Abschluss)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8050", name: "Saldenvorträge (Sammelkonto)", klasse: "8 Ergebnisrechnungen (Eröffnung/Abschluss)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8100", name: "Herstellungskosten (Umsatzkostenverfahren)", klasse: "8 Kostenbereiche für die GuV (UKV)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8200", name: "Vertriebskosten (Umsatzkostenverfahren)", klasse: "8 Kostenbereiche für die GuV (UKV)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8300", name: "Allgemeine Verwaltungskosten (Umsatzkostenverfahren)", klasse: "8 Kostenbereiche für die GuV (UKV)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8400", name: "Sonstige betriebliche Aufwendungen (Umsatzkostenverfahren)", klasse: "8 Kostenbereiche für die GuV (UKV)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8500", name: "Korrekturkonten zu den Erträgen der Kontenklasse 5", klasse: "8 Kurzfristige Erfolgsrechnung (KER)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8600", name: "Korrekturkonten zu den Aufwendungen der Kontenklasse 6", klasse: "8 Kurzfristige Erfolgsrechnung (KER)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8700", name: "Korrekturkonten zu den Aufwendungen der Kontenklasse 7", klasse: "8 Kurzfristige Erfolgsrechnung (KER)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8800", name: "Kurzfristige Erfolgsrechnung (KER) – Gesamtkostenverfahren", klasse: "8 Kurzfristige Erfolgsrechnung (KER)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8810", name: "Kurzfristige Erfolgsrechnung (KER) – Umsatzkostenverfahren", klasse: "8 Kurzfristige Erfolgsrechnung (KER)", art: "Abschluss", cat: "abschluss" },
+      { nr: "8900", name: "Aktive Rechnungsabgrenzung (innerjährig)", klasse: "8 Innerjährige Rechnungsabgrenzung", art: "Abschluss", cat: "abschluss" },
+
+      // Kontenklasse 9: Kosten- und Leistungsrechnung (KLR)
+      { nr: "9000", name: "Unternehmensbezogene Abgrenzungen (neutrale Aufwendungen u. Erträge)", klasse: "9 Kosten- und Leistungsrechnung (KLR)", art: "KLR", cat: "abschluss" },
+      { nr: "9100", name: "Kostenrechnerische Korrekturen", klasse: "9 Kosten- und Leistungsrechnung (KLR)", art: "KLR", cat: "abschluss" },
+      { nr: "9200", name: "Kostenarten und Leistungsarten", klasse: "9 Kosten- und Leistungsrechnung (KLR)", art: "KLR", cat: "abschluss" },
+      { nr: "9300", name: "Kostenstellen", klasse: "9 Kosten- und Leistungsrechnung (KLR)", art: "KLR", cat: "abschluss" },
+      { nr: "9400", name: "Kostenträger", klasse: "9 Kosten- und Leistungsrechnung (KLR)", art: "KLR", cat: "abschluss" },
+      { nr: "9500", name: "Fertige Erzeugnisse (KLR)", klasse: "9 Kosten- und Leistungsrechnung (KLR)", art: "KLR", cat: "abschluss" },
+      { nr: "9600", name: "Interne Lieferungen und Leistungen sowie deren Kosten", klasse: "9 Kosten- und Leistungsrechnung (KLR)", art: "KLR", cat: "abschluss" },
+      { nr: "9700", name: "Umsatzkosten", klasse: "9 Kosten- und Leistungsrechnung (KLR)", art: "KLR", cat: "abschluss" },
+      { nr: "9800", name: "Umsatzleistungen", klasse: "9 Kosten- und Leistungsrechnung (KLR)", art: "KLR", cat: "abschluss" },
+      { nr: "9900", name: "Ergebnisausweise", klasse: "9 Kosten- und Leistungsrechnung (KLR)", art: "KLR", cat: "abschluss" }
     ];
 
     const ACHIEVEMENTS_DATA = [
@@ -4266,11 +4593,13 @@
       tbody.innerHTML = "";
       const searchEl = document.getElementById("konten-search-input");
       const query = searchEl ? searchEl.value.toLowerCase() : "";
+      let visibleCount = 0;
 
       IKR_DATA.forEach(k => {
         if (state.activeKontenCat !== "all" && k.cat !== state.activeKontenCat) return;
-        if (query && !k.nr.toLowerCase().includes(query) && !k.name.toLowerCase().includes(query)) return;
+        if (query && !k.nr.toLowerCase().includes(query) && !k.name.toLowerCase().includes(query) && !k.klasse.toLowerCase().includes(query)) return;
 
+        visibleCount++;
         const tr = document.createElement("tr");
         tr.className = "hover:bg-white/5 transition";
         tr.innerHTML = `
@@ -4283,12 +4612,18 @@
         `;
         tbody.appendChild(tr);
       });
+
+      const countBadge = document.getElementById("konten-count-badge");
+      if (countBadge) {
+        countBadge.textContent = `${visibleCount} von ${IKR_DATA.length} Konten`;
+      }
     }
 
     function getArtBadgeStyle(art) {
       if (art === "Aktiv") return "bg-emerald-500/20 text-emerald-300";
       if (art === "Passiv") return "bg-rose-500/20 text-rose-300";
       if (art === "Ertrag") return "bg-indigo-500/20 text-indigo-300";
+      if (art === "Abschluss" || art === "KLR") return "bg-cyan-500/20 text-cyan-300";
       return "bg-amber-500/20 text-amber-300";
     }
 
