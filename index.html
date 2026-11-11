@@ -86,13 +86,24 @@
       filter: blur(85px); animation: orbFloat1 22s ease-in-out infinite reverse; pointer-events: none; z-index: 0;
     }
 
-    /* Glass V5 Design Tokens */
+    /* 3D-Parallax-Tiefe für Hintergrund-Orbs & Grid */
+    #parallax-orb-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+
+    /* Glass V5 Design Tokens + Echtglas-Frosted-Textur (macOS Micro-Grain) */
     .glass-v5 {
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background-color: rgba(255, 255, 255, 0.04);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.038'/%3E%3C/svg%3E");
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.10);
     }
     
     .glass-v5-hover {
@@ -169,6 +180,158 @@
     }
     .glow-emerald-pulse {
       animation: emeraldPulse 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Sanfter Shake-Effekt für falsche Antworten */
+    @keyframes wrongShake {
+      0%, 100% { transform: translateX(0); }
+      18% { transform: translateX(-8px) rotate(-0.6deg); }
+      36% { transform: translateX(8px) rotate(0.6deg); }
+      54% { transform: translateX(-6px) rotate(-0.3deg); }
+      72% { transform: translateX(6px) rotate(0.3deg); }
+      90% { transform: translateX(-3px); }
+    }
+    .animate-wrong-shake {
+      animation: wrongShake 0.48s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    /* Interaktiver Spotlight-Glanz & 3D-Tilt auf Kacheln */
+    .glass-v5 {
+      --mouse-x: 50%;
+      --mouse-y: 50%;
+      --spot-opacity: 0;
+    }
+    .glass-v5::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        420px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 255, 255, 0.12),
+        rgba(99, 102, 241, 0.05) 35%,
+        transparent 70%
+      );
+      opacity: var(--spot-opacity, 0);
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .glass-v5 > * {
+      position: relative;
+      z-index: 2;
+    }
+    .glass-v5-hover {
+      --tilt-x: 0deg;
+      --tilt-y: 0deg;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .glass-v5-hover:hover {
+      transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-3px) scale(1.006);
+    }
+
+    /* Gleitende "Liquid Pill"-Navigation im Header */
+    #top-nav-bar {
+      position: relative;
+    }
+    .nav-liquid-slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 36px;
+      width: 0;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.07) 100%);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.35),
+        0 0 18px rgba(99, 102, 241, 0.25),
+        inset 0 1px 1px rgba(255, 255, 255, 0.45);
+      transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        height 0.3s ease,
+        opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+    }
+    #top-nav-bar .nav-pill {
+      position: relative;
+      z-index: 2;
+    }
+    #top-nav-bar.liquid-ready .nav-pill-active {
+      background: transparent !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+
+    /* Live-Level-Bar Shimmer direkt unter dem Header */
+    @keyframes xpBarShimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .xp-live-bar-fill {
+      background: linear-gradient(90deg, #6366f1, #38bdf8, #10b981, #f59e0b, #6366f1);
+      background-size: 300% 100%;
+      animation: xpBarShimmer 6s ease infinite;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.55);
+      transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Fließender Neon-Fortschrittsbalken im Quiz */
+    .quiz-neon-track {
+      position: relative;
+      height: 6px;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      border-radius: 9999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .quiz-neon-fill {
+      position: relative;
+      height: 100%;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #6366f1, #22d3ee, #10b981, #6366f1);
+      background-size: 250% 100%;
+      animation: xpBarShimmer 3.5s linear infinite;
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.75), 0 0 6px rgba(16, 185, 129, 0.6);
+      transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .quiz-neon-fill::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 9999px;
+      background: #ffffff;
+      box-shadow: 0 0 12px 3px rgba(56, 189, 248, 0.95);
+    }
+
+    /* Cinematic Level-Up Overlay Animationen */
+    @keyframes levelUpScaleIn {
+      0% { opacity: 0; transform: scale(0.75) translateY(30px); filter: blur(12px); }
+      60% { opacity: 1; transform: scale(1.04) translateY(-4px); filter: blur(0); }
+      100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    }
+    @keyframes levelUpRaysSpin {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.12); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+    .animate-levelup-card {
+      animation: levelUpScaleIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-levelup-rays {
+      animation: levelUpRaysSpin 18s linear infinite;
     }
 
     /* Smooth View & Card Animations */
@@ -574,23 +737,173 @@
       border-color: rgba(251, 191, 36, 0.45) !important;
       box-shadow: 0 8px 22px rgba(249, 115, 22, 0.28), 0 0 15px rgba(250, 204, 21, 0.2) !important;
     }
+    body.theme-duck .nav-liquid-slider {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.28), rgba(249, 115, 22, 0.22)) !important;
+      border-color: rgba(251, 191, 36, 0.5) !important;
+      box-shadow: 0 8px 22px rgba(249, 115, 22, 0.32), inset 0 1px 1px rgba(254, 240, 138, 0.5) !important;
+    }
+
+    /* ==========================================
+       VISIONOS SPATIAL GLASS THEME (Spatial Titanium Pearl & Specular Frosted Glass)
+       ========================================== */
+    html.theme-visionos,
+    body.theme-visionos {
+      background: radial-gradient(circle at 50% 0%, #263248 0%, #111827 52%, #070a12 100%) !important;
+      color: #f8fafc !important;
+    }
+    body.theme-visionos .ambient-orb-1 {
+      background: radial-gradient(circle, rgba(226, 232, 240, 0.20) 0%, rgba(148, 163, 184, 0.06) 50%, transparent 70%) !important;
+    }
+    body.theme-visionos .ambient-orb-2 {
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, rgba(125, 211, 252, 0.05) 50%, transparent 70%) !important;
+    }
+    body.theme-visionos .ambient-orb-3 {
+      background: radial-gradient(circle, rgba(248, 250, 252, 0.14) 0%, transparent 70%) !important;
+    }
+    body.theme-visionos .glass-v5 {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+      backdrop-filter: blur(40px) saturate(210%) !important;
+      -webkit-backdrop-filter: blur(40px) saturate(210%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.24) !important;
+      box-shadow:
+        0 28px 65px rgba(0, 0, 0, 0.45),
+        inset 0 1.5px 1.5px rgba(255, 255, 255, 0.45),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.12) !important;
+    }
+    body.theme-visionos .glass-pill {
+      background: rgba(255, 255, 255, 0.10) !important;
+      backdrop-filter: blur(28px) saturate(200%) !important;
+      -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.22) !important;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+    }
+    body.theme-visionos .nav-liquid-slider {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.12)) !important;
+      border-color: rgba(255, 255, 255, 0.55) !important;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 255, 255, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.65) !important;
+    }
+
+    /* ==========================================
+       MIDNIGHT AURORA THEME (Northern Lights Emerald / Violet / Cyan Iridescence)
+       ========================================== */
+    html.theme-aurora,
+    body.theme-aurora {
+      background: radial-gradient(ellipse at top, #041b1d 0%, #060919 55%, #02040a 100%) !important;
+    }
+    body.theme-aurora .ambient-orb-1 {
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, rgba(6, 182, 212, 0.10) 45%, transparent 70%) !important;
+    }
+    body.theme-aurora .ambient-orb-2 {
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.22) 0%, rgba(236, 72, 153, 0.08) 45%, transparent 70%) !important;
+    }
+    body.theme-aurora .ambient-orb-3 {
+      background: radial-gradient(circle, rgba(34, 211, 238, 0.18) 0%, rgba(16, 185, 129, 0.07) 45%, transparent 70%) !important;
+    }
+    body.theme-aurora .glass-v5 {
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.06) 0%, rgba(15, 23, 42, 0.55) 50%, rgba(168, 85, 247, 0.06) 100%) !important;
+      border: 1px solid rgba(52, 211, 153, 0.20) !important;
+      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.55), 0 0 28px rgba(16, 185, 129, 0.08), inset 0 1px 1px rgba(167, 243, 208, 0.22) !important;
+    }
+    body.theme-aurora .glass-v5-hover:hover {
+      border-color: rgba(45, 212, 191, 0.42) !important;
+      box-shadow: 0 28px 65px rgba(0, 0, 0, 0.65), 0 0 36px rgba(45, 212, 191, 0.22) !important;
+    }
+    body.theme-aurora .nav-liquid-slider {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.30), rgba(139, 92, 246, 0.26)) !important;
+      border-color: rgba(52, 211, 153, 0.55) !important;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3), 0 0 18px rgba(168, 85, 247, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.45) !important;
+    }
+
+    /* ==========================================
+       SUNSET GOLD THEME (Warm Horizon Crimson, Amber & Liquid Gold Glass)
+       ========================================== */
+    html.theme-sunset,
+    body.theme-sunset {
+      background: radial-gradient(ellipse at top, #2a0f18 0%, #140810 55%, #080407 100%) !important;
+      color: #fffbeb !important;
+    }
+    body.theme-sunset .ambient-orb-1 {
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.26) 0%, rgba(217, 119, 6, 0.09) 45%, transparent 70%) !important;
+    }
+    body.theme-sunset .ambient-orb-2 {
+      background: radial-gradient(circle, rgba(244, 63, 94, 0.24) 0%, rgba(225, 29, 72, 0.08) 45%, transparent 70%) !important;
+    }
+    body.theme-sunset .ambient-orb-3 {
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.20) 0%, rgba(249, 115, 22, 0.07) 45%, transparent 70%) !important;
+    }
+    body.theme-sunset .glass-v5 {
+      background-color: rgba(45, 18, 26, 0.52) !important;
+      border: 1px solid rgba(251, 191, 36, 0.24) !important;
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.58), 0 0 28px rgba(245, 158, 11, 0.10), inset 0 1px 1px rgba(254, 243, 199, 0.28) !important;
+    }
+    body.theme-sunset .glass-v5-hover:hover {
+      border-color: rgba(251, 191, 36, 0.48) !important;
+      box-shadow: 0 28px 65px rgba(0, 0, 0, 0.68), 0 0 36px rgba(245, 158, 11, 0.26) !important;
+    }
+    body.theme-sunset .nav-liquid-slider {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.34), rgba(244, 63, 94, 0.28)) !important;
+      border-color: rgba(251, 191, 36, 0.58) !important;
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.35), 0 0 18px rgba(244, 63, 94, 0.28), inset 0 1px 1px rgba(254, 243, 199, 0.5) !important;
+    }
+
+    /* ==========================================
+       CYBERPUNK NEON THEME (Synthwave Night, Electric Magenta & Laser Cyan Glow)
+       ========================================== */
+    html.theme-cyberpunk,
+    body.theme-cyberpunk {
+      background: radial-gradient(ellipse at top, #16052b 0%, #090316 55%, #030108 100%) !important;
+      color: #f0f9ff !important;
+    }
+    body.theme-cyberpunk .bg-grid-fixed-layer {
+      background-image:
+        linear-gradient(to right, rgba(236, 72, 153, 0.09) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(34, 211, 238, 0.09) 1px, transparent 1px) !important;
+    }
+    body.theme-cyberpunk .ambient-orb-1 {
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.28) 0%, rgba(168, 85, 247, 0.12) 45%, transparent 70%) !important;
+    }
+    body.theme-cyberpunk .ambient-orb-2 {
+      background: radial-gradient(circle, rgba(34, 211, 238, 0.26) 0%, rgba(59, 130, 246, 0.10) 45%, transparent 70%) !important;
+    }
+    body.theme-cyberpunk .ambient-orb-3 {
+      background: radial-gradient(circle, rgba(217, 70, 239, 0.20) 0%, rgba(6, 182, 212, 0.08) 45%, transparent 70%) !important;
+    }
+    body.theme-cyberpunk .glass-v5 {
+      background-color: rgba(18, 6, 36, 0.62) !important;
+      border: 1px solid rgba(236, 72, 153, 0.32) !important;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.68), 0 0 26px rgba(236, 72, 153, 0.15), inset 0 1px 1px rgba(34, 211, 238, 0.35) !important;
+    }
+    body.theme-cyberpunk .glass-v5-hover:hover {
+      border-color: rgba(34, 211, 238, 0.65) !important;
+      box-shadow: 0 28px 65px rgba(0, 0, 0, 0.75), 0 0 38px rgba(34, 211, 238, 0.35), 0 0 20px rgba(236, 72, 153, 0.3) !important;
+    }
+    body.theme-cyberpunk .nav-liquid-slider {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.38), rgba(34, 211, 238, 0.32)) !important;
+      border-color: rgba(34, 211, 238, 0.7) !important;
+      box-shadow: 0 0 24px rgba(236, 72, 153, 0.45), 0 0 16px rgba(34, 211, 238, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;
+    }
   </style>
 </head>
 <body class="min-h-screen w-full text-slate-100 font-sans antialiased bg-slate-950 relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
 
   <!-- Full-Screen Fixed Grid Layer (Einziges Grid, bleibt beim Scrollen fest stehen) -->
-  <div class="bg-grid-fixed-layer"></div>
+  <div id="parallax-grid-layer" class="bg-grid-fixed-layer"></div>
 
-  <!-- Ambient Orbs -->
-  <div class="ambient-orb-1"></div>
-  <div class="ambient-orb-2"></div>
-  <div class="ambient-orb-3"></div>
+  <!-- 3D-Parallax Ambient Orbs Layer -->
+  <div id="parallax-orb-layer">
+    <div class="ambient-orb-1"></div>
+    <div class="ambient-orb-2"></div>
+    <div class="ambient-orb-3"></div>
+  </div>
+
+  <!-- Schwebende Lichtfunken (Ambient Light Sparks Canvas) -->
+  <canvas id="ambient-sparks-canvas" class="pointer-events-none fixed inset-0 z-0"></canvas>
 
   <!-- Main Wrapper -->
   <div class="relative z-10 flex flex-col min-h-screen">
 
     <!-- FLOATING PILL HEADER NAVIGATION (Mobile Optimized + Touch Swipeable) -->
-    <header class="sticky top-3 sm:top-4 z-40 px-2.5 sm:px-8 max-w-7xl w-full mx-auto">
+    <header class="sticky top-3 sm:top-4 z-40 px-2.5 sm:px-8 max-w-7xl w-full mx-auto space-y-1.5">
       <div class="glass-v5 rounded-full p-1.5 sm:p-2 flex items-center justify-between gap-1 sm:gap-2 shadow-2xl">
         
         <!-- Brand Logo & Badge -->
@@ -609,20 +922,19 @@
               <!-- Schnabel -->
               <path d="M 24 61 C 32 58, 39 51, 44 45 C 49 40, 58 41, 65 46 C 72 51, 79 44, 86 48 C 91 52, 88 64, 77 72 C 63 82, 41 82, 26 75 C 20 72, 19 63, 24 61 Z" fill="#f15623" stroke="#d93211" stroke-width="3.5" stroke-linejoin="round"/>
               <!-- Schnabel-Glanz -->
-              <path d="M 38 64 C 44 61, 49 54, 51 49" fill="none" stroke="#fab088" stroke-width="3.8" stroke-linecap="round"/>
-              <!-- Lächeln -->
-              <path d="M 29 68 C 46 77, 68 71, 82 52" fill="none" stroke="#660809" stroke-width="3.8" stroke-linecap="round"/>
+              <path d="M 37 64 C 44 59, 49 52, 51 47" fill="none" stroke="#ffab85" stroke-width="3.2" stroke-linecap="round"/>
+              <!-- Mundlinie -->
+              <path d="M 29 68 C 46 75, 65 73, 82 53" fill="none" stroke="#6d0e04" stroke-width="3.5" stroke-linecap="round"/>
             </svg>
           </div>
           <div class="hidden sm:block">
-            <div class="flex items-center space-x-2">
-              <span class="font-extrabold text-white tracking-tight text-base">Learnex V5</span>
-            </div>
+            <span class="font-extrabold text-white tracking-tight text-sm sm:text-base">Learnex V5</span>
           </div>
         </div>
 
-        <!-- Navigation Pills (Swipeable left/right on small screens, icons-only on mobile) -->
-        <nav class="flex items-center space-x-1 sm:space-x-2 overflow-x-auto no-scrollbar py-0.5 px-1 min-w-0 flex-1 justify-center">
+        <!-- Navigation Pills (Swipeable left/right on small screens, icons-only on mobile + Gleitender Liquid-Pill-Indikator) -->
+        <nav id="top-nav-bar" class="flex items-center space-x-1 sm:space-x-2 overflow-x-auto no-scrollbar py-0.5 px-1 min-w-0 flex-1 justify-center relative">
+          <div id="nav-sliding-pill" class="nav-liquid-slider"></div>
           <button onclick="switchView('dashboard')" id="nav-dashboard" title="Dashboard" class="nav-pill nav-pill-active px-2.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-300 hover:text-white flex items-center space-x-2 shrink-0">
             <i data-lucide="layout-grid" class="w-4 h-4 shrink-0"></i>
             <span class="hidden md:inline">Dashboard</span>
@@ -667,6 +979,17 @@
           </button>
         </div>
 
+      </div>
+
+      <!-- Schimmernde Live-Level-Bar direkt unter dem Header -->
+      <div class="max-w-3xl mx-auto px-4">
+        <div class="glass-pill rounded-full px-3 py-1 flex items-center space-x-3 shadow-lg">
+          <span id="header-xp-level-badge" class="text-[10px] font-extrabold text-amber-300 uppercase tracking-wider shrink-0">Lvl 1</span>
+          <div class="flex-1 h-1.5 bg-slate-900/80 rounded-full overflow-hidden border border-white/10">
+            <div id="header-xp-bar-fill" class="xp-live-bar-fill h-full rounded-full" style="width: 5%"></div>
+          </div>
+          <span id="header-xp-bar-text" class="text-[10px] font-mono font-bold text-slate-300 shrink-0">0 / 300 XP</span>
+        </div>
       </div>
     </header>
 
@@ -1305,19 +1628,29 @@
           <div id="lernen-quiz-wrapper" class="hidden space-y-6">
             <div id="quiz-card" class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden transition-all duration-300">
               
-              <!-- Quiz Top Info Bar inkl. Gelb-Orangenem Zurück-Icon -->
-              <div class="flex items-center justify-between border-b border-white/10 pb-4 flex-wrap gap-2">
-                <div class="flex items-center space-x-3">
-                  <span id="quiz-category-tag" class="text-[10px] font-extrabold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-widest">
-                    1. AKTIV ODER PASSIV?
-                  </span>
-                  <span class="text-xs text-slate-400 font-medium" id="quiz-step-counter">Frage 1 von 5</span>
+              <!-- Quiz Top Info Bar inkl. Gelb-Orangenem Zurück-Icon & Fließendem Neon-Fortschrittsbalken -->
+              <div class="space-y-3 border-b border-white/10 pb-4">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <div class="flex items-center space-x-3">
+                    <span id="quiz-category-tag" class="text-[10px] font-extrabold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-widest">
+                      1. AKTIV ODER PASSIV?
+                    </span>
+                    <span class="text-xs text-slate-400 font-medium" id="quiz-step-counter">Frage 1 von 5</span>
+                  </div>
+                  <div class="flex items-center space-x-2.5">
+                    <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1.5 rounded-full border border-amber-500/30" id="quiz-reward-xp">+50 XP</span>
+                    <button onclick="backToModuleOverview()" title="Zurück zur Modul-Übersicht" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                      <i data-lucide="corner-up-left" class="w-4 h-4"></i>
+                    </button>
+                  </div>
                 </div>
-                <div class="flex items-center space-x-2.5">
-                  <span class="text-xs font-bold text-amber-400 glass-pill px-3 py-1.5 rounded-full border border-amber-500/30" id="quiz-reward-xp">+50 XP</span>
-                  <button onclick="backToModuleOverview()" title="Zurück zur Modul-Übersicht" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
-                    <i data-lucide="corner-up-left" class="w-4 h-4"></i>
-                  </button>
+
+                <!-- Fließender Neon-Fortschrittsbalken -->
+                <div class="flex items-center space-x-3">
+                  <div class="quiz-neon-track flex-1">
+                    <div id="quiz-neon-progress-fill" class="quiz-neon-fill" style="width: 20%"></div>
+                  </div>
+                  <span id="quiz-neon-progress-pct" class="text-[10px] font-mono font-extrabold text-cyan-300 shrink-0">20%</span>
                 </div>
               </div>
 
@@ -2068,20 +2401,15 @@
                 Standard
               </button>
             </div>
-            <p class="text-[11px] text-slate-400">Eigenes Profilbild oder Initialen-Icon</p>
+            <input type="text" id="settings-name-input" placeholder="Dein Name (z. B. Marlon)" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
           </div>
-        </div>
-
-        <div class="space-y-1.5">
-          <label for="settings-name-input" class="text-[11px] font-semibold text-slate-300">Dein Anzeigename</label>
-          <input type="text" id="settings-name-input" placeholder="Marlon" class="w-full bg-slate-900/90 border border-white/15 rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
         </div>
       </div>
 
-      <!-- 2. Design-Farbe (Obsidian V5, Duck & Monochrom) -->
+      <!-- 2. Design-Farbe (7 Themes inkl. Sunset Gold & Cyberpunk Neon) -->
       <div class="space-y-2.5 border-t border-white/10 pt-4">
-        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Design-Modus</label>
-        <div class="grid grid-cols-3 gap-2">
+        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Design-Modus (7 Themes)</label>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
           <button type="button" onclick="setAppTheme('default')" id="theme-btn-default" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2 bg-indigo-600/20 border-indigo-400">
             <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-slate-950 via-indigo-600 to-emerald-400 border border-white/20 shrink-0"></div>
             <div class="min-w-0">
@@ -2103,6 +2431,38 @@
             <div class="min-w-0">
               <div class="text-xs font-bold text-white truncate">Monochrom</div>
               <div class="text-[10px] text-slate-400 truncate">Weiß / Glas</div>
+            </div>
+          </button>
+
+          <button type="button" onclick="setAppTheme('visionos')" id="theme-btn-visionos" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2 glass-pill border-white/10 hover:bg-white/10">
+            <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-slate-400 via-sky-200 to-white border border-white/40 shrink-0"></div>
+            <div class="min-w-0">
+              <div class="text-xs font-bold text-white truncate">VisionOS</div>
+              <div class="text-[10px] text-sky-200 truncate">Spatial Glass</div>
+            </div>
+          </button>
+
+          <button type="button" onclick="setAppTheme('aurora')" id="theme-btn-aurora" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2 glass-pill border-white/10 hover:bg-white/10">
+            <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-emerald-400 via-cyan-400 to-purple-500 border border-white/30 shrink-0"></div>
+            <div class="min-w-0">
+              <div class="text-xs font-bold text-white truncate">Aurora</div>
+              <div class="text-[10px] text-emerald-300 truncate">Polarlicht</div>
+            </div>
+          </button>
+
+          <button type="button" onclick="setAppTheme('sunset')" id="theme-btn-sunset" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2 glass-pill border-white/10 hover:bg-white/10">
+            <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-rose-600 via-amber-500 to-yellow-300 border border-white/30 shrink-0"></div>
+            <div class="min-w-0">
+              <div class="text-xs font-bold text-white truncate">Sunset Gold</div>
+              <div class="text-[10px] text-amber-200 truncate">Abendgold</div>
+            </div>
+          </button>
+
+          <button type="button" onclick="setAppTheme('cyberpunk')" id="theme-btn-cyberpunk" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2 glass-pill border-white/10 hover:bg-white/10 col-span-2 sm:col-span-3">
+            <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-fuchsia-500 via-purple-600 to-cyan-400 border border-cyan-300/50 shrink-0"></div>
+            <div class="min-w-0">
+              <div class="text-xs font-bold text-white truncate">Cyberpunk Neon</div>
+              <div class="text-[10px] text-cyan-300 truncate">Synthwave Magenta &amp; Laser-Cyan</div>
             </div>
           </button>
         </div>
@@ -2279,6 +2639,42 @@
 
   <!-- Dynamic XP Float Notification Layer -->
   <div id="xp-float-container" class="pointer-events-none fixed bottom-12 right-12 z-50 flex flex-col space-y-2"></div>
+
+  <!-- Cinematic Level-Up Fullscreen Glass Overlay -->
+  <div id="levelup-cinematic-modal" onclick="closeCinematicLevelUp()" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-xl p-4">
+    <div onclick="event.stopPropagation()" class="glass-v5 animate-levelup-card rounded-3xl p-8 sm:p-10 max-w-md w-full text-center space-y-6 border border-amber-400/50 shadow-2xl shadow-amber-500/25 relative overflow-hidden">
+      <!-- Rotierender Lichtkranz im Hintergrund -->
+      <div class=" -inset-24 bg-[conic-gradient(from_0deg,transparent,rgba(251,191,36,0.18),transparent,rgba(56,189,248,0.18),transparent)] animate-levelup-rays pointer-events-none absolute"></div>
+
+      <div class="relative z-10 space-y-4">
+        <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-amber-500 via-yellow-400 to-emerald-400 p-0.5 mx-auto shadow-2xl shadow-amber-500/40">
+          <div class="w-full h-full bg-slate-950/90 rounded-[22px] flex items-center justify-center">
+            <i data-lucide="crown" class="w-12 h-12 text-amber-400"></i>
+          </div>
+        </div>
+
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[11px] font-extrabold uppercase tracking-widest">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span>LEVEL UP ERREICHT!</span>
+        </div>
+
+        <div class="space-y-1">
+          <h2 id="levelup-modal-number" class="text-4xl sm:text-5xl font-black text-white tracking-tight">LEVEL 2</h2>
+          <p id="levelup-modal-title" class="text-sm sm:text-base font-bold text-indigo-300">Stufe 2 - Buchungs-Kenner</p>
+        </div>
+
+        <p class="text-xs text-slate-300 leading-relaxed max-w-xs mx-auto">
+          Stark, <span id="levelup-user-name" class="text-white font-bold">Marlon</span>! Du hast die nächste Meisterschaftsstufe freigeschaltet.
+        </p>
+
+        <div class="pt-2">
+          <button type="button" onclick="closeCinematicLevelUp()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-indigo-600 hover:from-amber-400 hover:to-indigo-500 text-white font-extrabold text-xs uppercase tracking-wider transition shadow-xl shadow-amber-500/25">
+            Weiter aufsteigen
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- JS APPLICATION ENGINE -->
   <script>
@@ -6193,7 +6589,7 @@
       ensureTodayEntry();
       updateCurrentDateBadge();
       applyUserProfileAndTheme();
-      updateHeaderAndKPIs();
+      updateHeaderAndKPIs(true);
       initActivityChart();
       updateMasteryProgressUI();
       renderFilteredKonten();
@@ -6206,7 +6602,228 @@
       renderTKPills();
       loadTKontoCase(0);
       startLiveStudyTimer();
+      initSpotlightAndTilt();
+      initParallaxDepth();
+      initAmbientSparks();
+      setTimeout(() => updateSlidingNavPill(), 60);
       refreshIcons();
+    }
+
+    // 3D-Parallax-Tiefe für Hintergrund-Lichter & Grid (Maus + Mobile Gyro/Touch)
+    let parallaxInitialized = false;
+    function initParallaxDepth() {
+      if (parallaxInitialized) return;
+      parallaxInitialized = true;
+
+      const orbLayer = document.getElementById("parallax-orb-layer");
+      const gridLayer = document.getElementById("parallax-grid-layer");
+
+      const applyParallaxOffset = (normX, normY) => {
+        if (orbLayer) {
+          const moveX = -normX * 34;
+          const moveY = -normY * 34;
+          orbLayer.style.transform = `translate3d(${moveX.toFixed(1)}px, ${moveY.toFixed(1)}px, 0)`;
+        }
+        if (gridLayer) {
+          const gX = -normX * 12;
+          const gY = -normY * 12;
+          gridLayer.style.transform = `translate3d(${gX.toFixed(1)}px, ${gY.toFixed(1)}px, 0) scale(1.03)`;
+        }
+      };
+
+      window.addEventListener("mousemove", (e) => {
+        const nx = (e.clientX / window.innerWidth) - 0.5;
+        const ny = (e.clientY / window.innerHeight) - 0.5;
+        applyParallaxOffset(nx, ny);
+      }, { passive: true });
+
+      window.addEventListener("deviceorientation", (e) => {
+        if (e.gamma === null || e.beta === null) return;
+        const nx = Math.max(-0.5, Math.min(0.5, e.gamma / 60));
+        const ny = Math.max(-0.5, Math.min(0.5, (e.beta - 45) / 60));
+        applyParallaxOffset(nx, ny);
+      }, { passive: true });
+    }
+
+    // Cinematic Level-Up Overlay anzeigen & schließen
+    function showCinematicLevelUp(newLvl) {
+      const modal = document.getElementById("levelup-cinematic-modal");
+      const numEl = document.getElementById("levelup-modal-number");
+      const titleEl = document.getElementById("levelup-modal-title");
+      const userEl = document.getElementById("levelup-user-name");
+      if (!modal) return;
+
+      if (numEl) numEl.textContent = `LEVEL ${newLvl}`;
+      if (titleEl) titleEl.textContent = `Stufe ${getLevelTitle(newLvl)}`;
+      if (userEl) userEl.textContent = state.userName || "Marlon";
+
+      modal.classList.remove("hidden");
+      triggerParticleBurst();
+      refreshIcons();
+    }
+
+    function closeCinematicLevelUp() {
+      const modal = document.getElementById("levelup-cinematic-modal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    // Gleitende "Liquid Pill"-Navigation berechnen & positionieren
+    function updateSlidingNavPill() {
+      const nav = document.getElementById("top-nav-bar");
+      const slider = document.getElementById("nav-sliding-pill");
+      const activeBtn = nav ? nav.querySelector(".nav-pill-active") : null;
+      if (!nav || !slider || !activeBtn) return;
+
+      nav.classList.add("liquid-ready");
+      const left = activeBtn.offsetLeft;
+      const top = activeBtn.offsetTop;
+      const width = activeBtn.offsetWidth;
+      const height = activeBtn.offsetHeight;
+
+      slider.style.width = `${width}px`;
+      slider.style.height = `${height}px`;
+      slider.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+      slider.style.opacity = "1";
+    }
+
+    window.addEventListener("resize", () => {
+      updateSlidingNavPill();
+    });
+
+    // Interaktiver Spotlight-Glanz & 3D-Tilt auf allen Glas-Kacheln (per Event-Delegation)
+    let spotlightInitialized = false;
+    function initSpotlightAndTilt() {
+      if (spotlightInitialized) return;
+      spotlightInitialized = true;
+
+      const handlePointerMove = (e) => {
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const card = e.target.closest ? e.target.closest(".glass-v5") : null;
+        if (!card) return;
+
+        const rect = card.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        card.style.setProperty("--mouse-x", `${x}px`);
+        card.style.setProperty("--mouse-y", `${y}px`);
+        card.style.setProperty("--spot-opacity", "1");
+
+        if (card.classList.contains("glass-v5-hover")) {
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const maxTilt = 3.8;
+          const tiltY = ((x - centerX) / centerX) * maxTilt;
+          const tiltX = -((y - centerY) / centerY) * maxTilt;
+          card.style.setProperty("--tilt-x", `${tiltX.toFixed(2)}deg`);
+          card.style.setProperty("--tilt-y", `${tiltY.toFixed(2)}deg`);
+        }
+      };
+
+      document.addEventListener("mousemove", handlePointerMove, { passive: true });
+      document.addEventListener("touchmove", handlePointerMove, { passive: true });
+
+      document.addEventListener("mouseover", (e) => {
+        const fromCard = e.relatedTarget && e.relatedTarget.closest ? e.relatedTarget.closest(".glass-v5") : null;
+        const toCard = e.target && e.target.closest ? e.target.closest(".glass-v5") : null;
+        if (fromCard && fromCard !== toCard) {
+          fromCard.style.setProperty("--spot-opacity", "0");
+          fromCard.style.setProperty("--tilt-x", "0deg");
+          fromCard.style.setProperty("--tilt-y", "0deg");
+        }
+      });
+    }
+
+    // Schwebende Hintergrund-Lichtfunken (Ambient Sparks Canvas)
+    let sparksStarted = false;
+    function initAmbientSparks() {
+      if (sparksStarted) return;
+      const canvas = document.getElementById("ambient-sparks-canvas");
+      if (!canvas) return;
+      sparksStarted = true;
+      const ctx = canvas.getContext("2d");
+
+      const resizeCanvas = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      };
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      const sparks = Array.from({ length: 34 }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 2 + 0.8,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: -Math.random() * 0.45 - 0.12,
+        alpha: Math.random() * 0.55 + 0.15,
+        phase: Math.random() * Math.PI * 2
+      }));
+
+      function getSparkPalette() {
+        if (state.theme === "duck") return ["250, 204, 21", "249, 115, 22", "253, 224, 71"];
+        if (state.theme === "sunset") return ["251, 191, 36", "244, 63, 94", "249, 115, 22"];
+        if (state.theme === "cyberpunk") return ["236, 72, 153", "34, 211, 238", "168, 85, 247"];
+        if (state.theme === "aurora") return ["52, 211, 153", "34, 211, 238", "192, 132, 252"];
+        if (state.theme === "visionos") return ["248, 250, 252", "186, 230, 253", "226, 232, 240"];
+        if (state.theme === "monochrome") return ["15, 23, 42", "51, 65, 85"];
+        return ["99, 102, 241", "56, 189, 248", "16, 185, 129"];
+      }
+
+      function renderSparks() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const palette = getSparkPalette();
+        sparks.forEach((s, idx) => {
+          s.x += s.vx;
+          s.y += s.vy;
+          s.phase += 0.025;
+          if (s.y < -10) s.y = canvas.height + 10;
+          if (s.x < -10) s.x = canvas.width + 10;
+          if (s.x > canvas.width + 10) s.x = -10;
+
+          const pulse = (Math.sin(s.phase) + 1) * 0.5;
+          const a = s.alpha * (0.45 + pulse * 0.55);
+          const rgb = palette[idx % palette.length];
+
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${rgb}, ${a.toFixed(3)})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(renderSparks);
+      }
+      renderSparks();
+    }
+
+    // Sanfter Shake-Effekt bei Fehlern
+    function triggerWrongShake(el) {
+      if (!el) return;
+      el.classList.remove("animate-wrong-shake");
+      void el.offsetWidth;
+      el.classList.add("animate-wrong-shake");
+    }
+
+    // Zahlen-Count-Up-Animation für KPIs
+    const kpiPrevValues = { xp: 0, acc: 100, streak: 1 };
+    function animateCountUp(el, startVal, endVal, suffix = "", duration = 550) {
+      if (!el) return;
+      if (startVal === endVal) {
+        el.textContent = `${endVal}${suffix}`;
+        return;
+      }
+      const startTime = performance.now();
+      function step(now) {
+        const progress = Math.min(1, (now - startTime) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(startVal + (endVal - startVal) * eased);
+        el.textContent = `${current}${suffix}`;
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = `${endVal}${suffix}`;
+        }
+      }
+      requestAnimationFrame(step);
     }
 
     function ensureTodayEntry() {
@@ -6348,9 +6965,10 @@
       document.querySelectorAll(".nav-pill").forEach(btn => btn.classList.remove("nav-pill-active"));
       const activeBtn = document.getElementById("nav-" + viewId);
       if (activeBtn) activeBtn.classList.add("nav-pill-active");
+      updateSlidingNavPill();
 
       if (viewId === "dashboard") {
-        updateHeaderAndKPIs();
+        updateHeaderAndKPIs(true);
         initActivityChart();
         updateMasteryProgressUI();
       } else {
@@ -6413,24 +7031,44 @@
         if (setInit) setInit.classList.remove("hidden");
       }
 
-      document.documentElement.classList.remove("theme-monochrome", "theme-duck");
-      document.body.classList.remove("theme-monochrome", "theme-duck");
+      document.documentElement.classList.remove("theme-monochrome", "theme-duck", "theme-visionos", "theme-aurora", "theme-sunset", "theme-cyberpunk");
+      document.body.classList.remove("theme-monochrome", "theme-duck", "theme-visionos", "theme-aurora", "theme-sunset", "theme-cyberpunk");
       if (state.theme === "monochrome") {
         document.documentElement.classList.add("theme-monochrome");
         document.body.classList.add("theme-monochrome");
       } else if (state.theme === "duck") {
         document.documentElement.classList.add("theme-duck");
         document.body.classList.add("theme-duck");
+      } else if (state.theme === "visionos") {
+        document.documentElement.classList.add("theme-visionos");
+        document.body.classList.add("theme-visionos");
+      } else if (state.theme === "aurora") {
+        document.documentElement.classList.add("theme-aurora");
+        document.body.classList.add("theme-aurora");
+      } else if (state.theme === "sunset") {
+        document.documentElement.classList.add("theme-sunset");
+        document.body.classList.add("theme-sunset");
+      } else if (state.theme === "cyberpunk") {
+        document.documentElement.classList.add("theme-cyberpunk");
+        document.body.classList.add("theme-cyberpunk");
       }
 
-      const btnDefault = document.getElementById("theme-btn-default");
-      const btnDuck = document.getElementById("theme-btn-duck");
-      const btnMono = document.getElementById("theme-btn-monochrome");
+      const themeButtons = {
+        default: document.getElementById("theme-btn-default"),
+        duck: document.getElementById("theme-btn-duck"),
+        monochrome: document.getElementById("theme-btn-monochrome"),
+        visionos: document.getElementById("theme-btn-visionos"),
+        aurora: document.getElementById("theme-btn-aurora"),
+        sunset: document.getElementById("theme-btn-sunset"),
+        cyberpunk: document.getElementById("theme-btn-cyberpunk")
+      };
       const activeClass = "p-3 rounded-2xl border text-left transition flex items-center space-x-2 bg-indigo-600/20 border-indigo-400";
       const inactiveClass = "p-3 rounded-2xl border text-left transition flex items-center space-x-2 glass-pill border-white/10 hover:bg-white/10";
-      if (btnDefault) btnDefault.className = state.theme === "default" ? activeClass : inactiveClass;
-      if (btnDuck) btnDuck.className = state.theme === "duck" ? activeClass : inactiveClass;
-      if (btnMono) btnMono.className = state.theme === "monochrome" ? activeClass : inactiveClass;
+      Object.entries(themeButtons).forEach(([key, btn]) => {
+        if (!btn) return;
+        const extraSpan = key === "cyberpunk" ? " col-span-2 sm:col-span-3" : "";
+        btn.className = (state.theme === key ? activeClass : inactiveClass) + extraSpan;
+      });
 
       document.body.classList.toggle("hide-glossary-hl", state.showBlueGlossary === false);
       document.body.classList.toggle("hide-akpa-hl", state.showAktivPassivColors === false);
@@ -6498,41 +7136,6 @@
       } else {
         btn.className = "w-11 h-6 rounded-full bg-slate-800 border border-white/15 p-0.5 transition flex items-center shrink-0";
         knob.className = "w-4 h-4 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0";
-      }
-    }
-
-    function rerenderDynamicTextViews() {
-      renderQuizQuestion();
-      renderWorksheetRows();
-      renderFilteredKonten();
-      renderCurrentFlashcard();
-      loadTKontoCase(state.currentTKCaseIndex || 0);
-    }
-
-    function toggleGlossaryHighlightSetting() {
-      state.showBlueGlossary = !(state.showBlueGlossary !== false);
-      saveState();
-      applyUserProfileAndTheme();
-      rerenderDynamicTextViews();
-    }
-
-    function toggleAktivPassivHighlightSetting() {
-      state.showAktivPassivColors = !(state.showAktivPassivColors !== false);
-      saveState();
-      applyUserProfileAndTheme();
-      rerenderDynamicTextViews();
-    }
-
-    function updateAutoAdvanceToggleUI() {
-      const btn = document.getElementById("auto-advance-toggle-btn");
-      const knob = document.getElementById("auto-advance-knob");
-      if (!btn || !knob) return;
-      if (state.autoAdvanceCorrect) {
-        btn.className = "w-12 h-7 rounded-full bg-emerald-500/30 border border-emerald-400 p-1 transition flex items-center shrink-0";
-        knob.className = "w-5 h-5 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md";
-      } else {
-        btn.className = "w-12 h-7 rounded-full bg-slate-800 border border-white/15 p-1 transition flex items-center shrink-0";
-        knob.className = "w-5 h-5 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0";
       }
     }
 
@@ -6818,16 +7421,15 @@
       setPomodoroMode(pomoMode);
     }
 
-    // KPIs, Charts & XP
     function getLevelTitle(lvl) {
       if (lvl <= 1) return "1 - Einsteiger";
       if (lvl === 2) return "2 - Buchungs-Kenner";
       if (lvl === 3) return "3 - Bilanz-Experte";
       if (lvl === 4) return "4 - Konten-Profi";
-      return `${lvl} - IHK-Meister`;
+      return `${lvl} - Rechnungswesen-Meister`;
     }
 
-    function updateHeaderAndKPIs() {
+    function updateHeaderAndKPIs(animateFromZero = false) {
       ensureTodayEntry();
       state.level = Math.max(1, Math.floor((state.xp || 0) / 300) + 1);
       const streak = calculateCurrentStreak();
@@ -6841,15 +7443,31 @@
       const kpiStreak = document.getElementById("kpi-streak");
 
       if (pillLvl) pillLvl.textContent = `Lvl ${state.level} • ${state.xp} XP`;
-      if (kpiXp) kpiXp.textContent = `${state.xp} XP`;
+      if (kpiXp) animateCountUp(kpiXp, animateFromZero ? 0 : kpiPrevValues.xp, state.xp || 0, " XP");
       if (kpiLvlTitle) kpiLvlTitle.textContent = getLevelTitle(state.level);
-      if (kpiAcc) kpiAcc.textContent = `${acc}%`;
+      if (kpiAcc) animateCountUp(kpiAcc, animateFromZero ? 0 : kpiPrevValues.acc, acc, "%");
       if (kpiAccSub) {
         kpiAccSub.innerHTML = state.totalAnswered > 0
           ? `<i data-lucide="check-check" class="w-4 h-4"></i><span>${state.totalCorrect} von ${state.totalAnswered} richtig</span>`
           : `<i data-lucide="check-check" class="w-4 h-4"></i><span>Bereit für die erste Aufgabe</span>`;
       }
-      if (kpiStreak) kpiStreak.textContent = streak === 1 ? "1 Tag" : `${streak} Tage`;
+      if (kpiStreak) {
+        animateCountUp(kpiStreak, animateFromZero ? 0 : kpiPrevValues.streak, streak, streak === 1 ? " Tag" : " Tage");
+      }
+
+      kpiPrevValues.xp = state.xp || 0;
+      kpiPrevValues.acc = acc;
+      kpiPrevValues.streak = streak;
+
+      // Update Live-Level-Bar direkt unter dem Header
+      const xpInLevel = (state.xp || 0) % 300;
+      const xpBarPct = Math.max(4, Math.min(100, Math.round((xpInLevel / 300) * 100)));
+      const barFill = document.getElementById("header-xp-bar-fill");
+      const barText = document.getElementById("header-xp-bar-text");
+      const lvlBadge = document.getElementById("header-xp-level-badge");
+      if (barFill) barFill.style.width = `${xpBarPct}%`;
+      if (barText) barText.textContent = `${xpInLevel} / 300 XP bis Lvl ${state.level + 1}`;
+      if (lvlBadge) lvlBadge.textContent = `Lvl ${state.level}`;
 
       updateStudyTimeKPIOnly();
     }
@@ -6865,6 +7483,7 @@
     function awardXP(amount) {
       ensureTodayEntry();
       const today = getDateKey();
+      const prevLevel = Math.max(1, Math.floor((state.xp || 0) / 300) + 1);
       state.xp = (state.xp || 0) + amount;
       state.dailyStats[today].xp = (state.dailyStats[today].xp || 0) + amount;
       state.level = Math.max(1, Math.floor(state.xp / 300) + 1);
@@ -6874,6 +7493,9 @@
       if (activityChartInstance) initActivityChart();
       triggerXPFloatNotification(amount);
       triggerParticleBurst();
+      if (state.level > prevLevel) {
+        setTimeout(() => showCinematicLevelUp(state.level), 350);
+      }
     }
 
     function triggerXPFloatNotification(amount) {
@@ -7098,6 +7720,13 @@
       document.getElementById("quiz-reward-xp").textContent = `+${q.xp} XP`;
       document.getElementById("quiz-question-title").innerHTML = highlightAccountingTerms(q.question);
 
+      // Update fließender Neon-Fortschrittsbalken im Quiz
+      const stepPct = Math.round(((state.activeQuizIndex + 1) / activeShuffledQuestions.length) * 100);
+      const neonFill = document.getElementById("quiz-neon-progress-fill");
+      const neonPct = document.getElementById("quiz-neon-progress-pct");
+      if (neonFill) neonFill.style.width = `${stepPct}%`;
+      if (neonPct) neonPct.textContent = `${stepPct}%`;
+
       const fbBox = document.getElementById("quiz-feedback-box");
       fbBox.classList.add("hidden");
       fbBox.classList.remove("glow-emerald-pulse");
@@ -7148,6 +7777,7 @@
           btn.className = "w-full text-left bg-emerald-950/80 border border-emerald-500 p-4 rounded-2xl text-xs font-semibold text-emerald-200 flex items-center justify-between shadow-xl shadow-emerald-500/10 glow-emerald-pulse";
         } else if (idx === optIdx) {
           btn.className = "w-full text-left bg-rose-950/80 border border-rose-500 p-4 rounded-2xl text-xs font-semibold text-rose-200 flex items-center justify-between";
+          triggerWrongShake(btn);
         } else {
           btn.className = "w-full text-left glass-pill p-4 rounded-2xl text-xs text-slate-500 opacity-40 flex items-center justify-between";
         }
@@ -7167,6 +7797,7 @@
         fbBox.className = "p-5 rounded-2xl border bg-rose-950/60 border-rose-500/50 space-y-1.5";
         fbTitle.className = "font-bold text-xs text-rose-400 flex items-center space-x-2";
         fbTitle.innerHTML = `<i data-lucide="x-circle" class="w-4 h-4"></i><span>Leider nicht korrekt (im Fehler-Trainer gespeichert)</span>`;
+        triggerWrongShake(fbBox);
       }
       fbText.innerHTML = highlightAccountingTerms(q.explanation);
 
@@ -7435,6 +8066,7 @@
           rowEl.className = "glass-pill p-4 sm:p-5 rounded-2xl border border-rose-500/60 bg-rose-950/20 space-y-3 transition";
           hintEl.className = "text-[11px] text-rose-300 pt-1";
           hintEl.innerHTML = `✗ Noch nicht ganz: Überprüfe Konten (${highlightAccountingTerms(item.hint)}) und den Betrag (${item.amount} €).`;
+          triggerWrongShake(rowEl);
         }
       });
 
@@ -7696,7 +8328,10 @@
             hintEl.innerHTML = `✓ Vollkommen richtig gebucht und saldiert! (${acc.hint})`;
           }
         } else {
-          if (card) card.className = "glass-pill p-5 rounded-2xl space-y-4 border border-rose-500 bg-rose-950/20";
+          if (card) {
+            card.className = "glass-pill p-5 rounded-2xl space-y-4 border border-rose-500 bg-rose-950/20";
+            triggerWrongShake(card);
+          }
           if (hintEl) {
             hintEl.className = "text-[11px] text-rose-300 pt-1 border-t border-white/5";
             hintEl.innerHTML = `✗ Überprüfe die Beträge: ${highlightAccountingTerms(acc.hint)}`;
@@ -7820,6 +8455,7 @@
         fbTitle.className = "font-bold text-xs text-rose-400 flex items-center space-x-2";
         fbTitle.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4"></i><span>Soll/Haben noch nicht ausgeglichen</span>`;
         fbText.textContent = `Überprüfe die Aktiv-/Passivregeln. Erforderlich für Konto 1: SOLL=${c.c1Soll} € / HABEN=${c.c1Haben} €.`;
+        triggerWrongShake(fb);
       }
       setTimeout(() => lucide.createIcons(), 30);
     }
