@@ -288,6 +288,33 @@
       transform: translateY(0) scale(0.98);
     }
 
+    /* Deaktivierungs-Klassen für Blaue Fachbegriffe & Grün/Rote Konten-Effekte */
+    body.hide-glossary-hl .hl-fachbegriff {
+      color: inherit !important;
+      font-weight: inherit !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: transparent !important;
+      border-bottom: none !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+      animation: none !important;
+      cursor: inherit !important;
+      transform: none !important;
+    }
+
+    body.hide-akpa-hl .hl-aktiv,
+    body.hide-akpa-hl .hl-passiv {
+      color: inherit !important;
+      -webkit-text-fill-color: currentColor !important;
+      font-weight: inherit !important;
+      padding: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+      animation: none !important;
+    }
+
     /* Popup Animation für die Fachbegriff-Erklärung */
     @keyframes glossaryPop {
       0% {
@@ -2052,81 +2079,100 @@
       </div>
 
       <!-- 2. Design-Farbe (Obsidian V5, Duck & Monochrom) -->
-      <div class="space-y-3 border-t border-white/10 pt-4">
+      <div class="space-y-2.5 border-t border-white/10 pt-4">
         <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Design-Modus</label>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          <button type="button" onclick="setAppTheme('default')" id="theme-btn-default" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 bg-indigo-600/20 border-indigo-400">
-            <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-slate-950 via-indigo-600 to-emerald-400 border border-white/20 shrink-0"></div>
-            <div>
-              <div class="text-xs font-bold text-white">Obsidian V5</div>
-              <div class="text-[10px] text-slate-300">Standard</div>
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" onclick="setAppTheme('default')" id="theme-btn-default" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2 bg-indigo-600/20 border-indigo-400">
+            <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-slate-950 via-indigo-600 to-emerald-400 border border-white/20 shrink-0"></div>
+            <div class="min-w-0">
+              <div class="text-xs font-bold text-white truncate">Obsidian</div>
+              <div class="text-[10px] text-slate-400 truncate">Standard</div>
             </div>
           </button>
 
-          <button type="button" onclick="setAppTheme('duck')" id="theme-btn-duck" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 glass-pill border-white/10 hover:bg-white/10">
-            <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-yellow-400 via-amber-500 to-orange-500 border border-white/30 shrink-0"></div>
-            <div>
-              <div class="text-xs font-bold text-white">Duck</div>
-              <div class="text-[10px] text-slate-300">Gelb-Orange</div>
+          <button type="button" onclick="setAppTheme('duck')" id="theme-btn-duck" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2 glass-pill border-white/10 hover:bg-white/10">
+            <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-amber-400 via-yellow-400 to-orange-500 border border-white/20 shrink-0"></div>
+            <div class="min-w-0">
+              <div class="text-xs font-bold text-white truncate">Duck</div>
+              <div class="text-[10px] text-amber-300 truncate">Gelb-Orange</div>
             </div>
           </button>
 
-          <button type="button" onclick="setAppTheme('monochrome')" id="theme-btn-monochrome" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 glass-pill border-white/10 hover:bg-white/10">
-            <div class="w-6 h-6 rounded-full bg-white border border-slate-400 flex items-center justify-center shrink-0">
-              <div class="w-3 h-3 rounded-full bg-slate-900"></div>
-            </div>
-            <div>
-              <div class="text-xs font-bold text-white">Monochrom</div>
-              <div class="text-[10px] text-slate-300">Liquid Glass</div>
+          <button type="button" onclick="setAppTheme('monochrome')" id="theme-btn-monochrome" class="p-3 rounded-2xl border text-left transition flex items-center space-x-2 glass-pill border-white/10 hover:bg-white/10">
+            <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-white via-slate-300 to-slate-900 border border-white/20 shrink-0"></div>
+            <div class="min-w-0">
+              <div class="text-xs font-bold text-white truncate">Monochrom</div>
+              <div class="text-[10px] text-slate-400 truncate">Weiß / Glas</div>
             </div>
           </button>
         </div>
       </div>
 
-      <!-- 2b. Quiz-Verhalten (Automatisch weiter & Sound-Effekte) -->
-      <div class="space-y-3 border-t border-white/10 pt-4">
-        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Quiz-Komfort &amp; Audio</label>
-        <div class="flex items-center justify-between glass-pill p-3.5 rounded-2xl border border-white/10">
+      <!-- 2b. Quiz-Verhalten (Kompakte Schalter ohne lange Texte) -->
+      <div class="space-y-2 border-t border-white/10 pt-4">
+        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Komfort &amp; Anzeige</label>
+
+        <div class="flex items-center justify-between glass-pill px-3.5 py-2.5 rounded-2xl border border-white/10">
           <div class="pr-3">
             <div class="text-xs font-bold text-white">Automatisch weiter</div>
-            <div class="text-[11px] text-slate-400">Bei richtiger Antwort direkt zur nächsten Frage springen</div>
+            <div class="text-[10px] text-slate-400">Nach richtiger Antwort direkt weiter</div>
           </div>
-          <button type="button" onclick="toggleAutoAdvanceSetting()" id="auto-advance-toggle-btn" class="w-12 h-7 rounded-full bg-slate-800 border border-white/15 p-1 transition flex items-center shrink-0">
-            <span id="auto-advance-knob" class="w-5 h-5 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0"></span>
+          <button type="button" onclick="toggleAutoAdvanceSetting()" id="auto-advance-toggle-btn" class="w-11 h-6 rounded-full bg-slate-800 border border-white/15 p-0.5 transition flex items-center shrink-0">
+            <span id="auto-advance-knob" class="w-4 h-4 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0"></span>
           </button>
         </div>
 
-        <div class="flex items-center justify-between glass-pill p-3.5 rounded-2xl border border-white/10">
+        <div class="flex items-center justify-between glass-pill px-3.5 py-2.5 rounded-2xl border border-white/10">
+          <div class="pr-3">
+            <div class="text-xs font-bold text-white">Blaue Info-Begriffe</div>
+            <div class="text-[10px] text-slate-400">Klick-Erklärungen für Fachwörter</div>
+          </div>
+          <button type="button" onclick="toggleGlossaryHighlightSetting()" id="glossary-hl-toggle-btn" class="w-11 h-6 rounded-full bg-emerald-500/30 border border-emerald-400 p-0.5 transition flex items-center shrink-0">
+            <span id="glossary-hl-knob" class="w-4 h-4 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md"></span>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between glass-pill px-3.5 py-2.5 rounded-2xl border border-white/10">
+          <div class="pr-3">
+            <div class="text-xs font-bold text-white">Grün/Rote Konten</div>
+            <div class="text-[10px] text-slate-400">Aktiv (grün) &amp; Passiv (rot) markieren</div>
+          </div>
+          <button type="button" onclick="toggleAktivPassivHighlightSetting()" id="akpa-hl-toggle-btn" class="w-11 h-6 rounded-full bg-emerald-500/30 border border-emerald-400 p-0.5 transition flex items-center shrink-0">
+            <span id="akpa-hl-knob" class="w-4 h-4 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md"></span>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between glass-pill px-3.5 py-2.5 rounded-2xl border border-white/10">
           <div class="pr-3">
             <div class="text-xs font-bold text-white">Sound-Effekte</div>
-            <div class="text-[11px] text-slate-400">Dezente Klänge bei richtigen Antworten &amp; Level-Up</div>
+            <div class="text-[10px] text-slate-400">Töne bei Treffern &amp; Level-Up</div>
           </div>
-          <button type="button" onclick="toggleSoundSetting()" id="sound-toggle-btn" class="w-12 h-7 rounded-full bg-emerald-500/30 border border-emerald-400 p-1 transition flex items-center shrink-0">
-            <span id="sound-knob" class="w-5 h-5 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md"></span>
+          <button type="button" onclick="toggleSoundSetting()" id="sound-toggle-btn" class="w-11 h-6 rounded-full bg-emerald-500/30 border border-emerald-400 p-0.5 transition flex items-center shrink-0">
+            <span id="sound-knob" class="w-4 h-4 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md"></span>
           </button>
         </div>
       </div>
 
-      <!-- 2c. Speicherstand-Transfer (PC <-> Handy Sync per Code oder Datei) -->
-      <div class="space-y-3 border-t border-white/10 pt-4">
-        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Handy &amp; PC Sync (Speicherstand-Transfer)</label>
-        <div class="glass-pill p-4 rounded-2xl border border-white/10 space-y-3">
-          <p class="text-[11px] text-slate-300 leading-relaxed">
-            Kopiere deinen Sync-Code oder exportiere eine Datei, um deinen Fortschritt sofort zwischen PC und Smartphone zu übertragen.
+      <!-- 2c. Speicherstand-Transfer (PC <-> Handy Sync) -->
+      <div class="space-y-2.5 border-t border-white/10 pt-4">
+        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Handy &amp; PC Sync</label>
+        <div class="glass-pill p-3.5 rounded-2xl border border-white/10 space-y-2.5">
+          <p class="text-[11px] text-slate-400">
+            Fortschritt per Code oder Datei übertragen:
           </p>
           <div class="grid grid-cols-2 gap-2">
             <button type="button" onclick="copySyncCodeToClipboard()" class="px-3 py-2 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/40 border border-indigo-400/40 text-indigo-200 text-xs font-bold transition flex items-center justify-center space-x-1.5">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <i data-lucide="copy" class="w-3.5 h-3.5 shrink-0"></i>
               <span>Code kopieren</span>
             </button>
             <button type="button" onclick="downloadSyncFile()" class="px-3 py-2 rounded-xl glass-pill hover:bg-white/10 text-slate-200 text-xs font-bold transition flex items-center justify-center space-x-1.5">
-              <i data-lucide="download" class="w-3.5 h-3.5"></i>
-              <span>Datei speichern</span>
+              <i data-lucide="download" class="w-3.5 h-3.5 shrink-0"></i>
+              <span>Backup-Datei</span>
             </button>
           </div>
-          <div class="flex items-center space-x-2 pt-1">
-            <input type="text" id="sync-code-input" placeholder="Sync-Code hier einfügen..." class="flex-1 bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
-            <button type="button" onclick="importFromSyncCodeInput()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shrink-0">
+          <div class="flex items-center space-x-2">
+            <input type="text" id="sync-code-input" placeholder="Sync-Code einfügen..." class="min-w-0 flex-1 bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <button type="button" onclick="importFromSyncCodeInput()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shrink-0">
               Laden
             </button>
             <label for="sync-file-input" title="Backup-Datei laden" class="cursor-pointer p-2 rounded-xl glass-pill hover:bg-white/10 text-slate-300 hover:text-white shrink-0">
@@ -2139,38 +2185,38 @@
       </div>
 
       <!-- 3. Fortschritt zurücksetzen -->
-      <div class="space-y-3 border-t border-white/10 pt-4">
+      <div class="space-y-2.5 border-t border-white/10 pt-4">
         <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Lernfortschritt</label>
         
-        <div id="reset-default-box" class="flex items-center justify-between glass-pill p-3.5 rounded-2xl border border-white/10">
+        <div id="reset-default-box" class="flex items-center justify-between glass-pill px-3.5 py-2.5 rounded-2xl border border-white/10 gap-3">
           <div>
             <div class="text-xs font-bold text-white">Fortschritt zurücksetzen</div>
-            <div class="text-[11px] text-slate-400">XP, Level und Fragen-Historie auf 0 setzen</div>
+            <div class="text-[10px] text-slate-400">XP, Level &amp; Historie auf 0 setzen</div>
           </div>
-          <button type="button" onclick="showInlineResetConfirm()" class="px-3.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 text-xs font-bold transition flex items-center space-x-1.5 shrink-0">
+          <button type="button" onclick="showInlineResetConfirm()" class="px-3 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 text-xs font-bold transition flex items-center space-x-1.5 shrink-0">
             <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
-            <span>Zurücksetzen</span>
+            <span>Reset</span>
           </button>
         </div>
 
         <!-- Inline Bestätigung -->
-        <div id="reset-confirm-box" class="hidden p-4 rounded-2xl bg-rose-950/60 border border-rose-500/40 space-y-3">
+        <div id="reset-confirm-box" class="hidden p-3.5 rounded-2xl bg-rose-950/60 border border-rose-500/40 space-y-2.5">
           <p class="text-xs text-rose-200 font-medium">
-            Möchtest du deine XP und deinen Lernfortschritt wirklich unwiderruflich zurücksetzen?
+            Fortschritt wirklich komplett auf 0 setzen?
           </p>
           <div class="flex items-center justify-end space-x-2">
             <button type="button" onclick="hideInlineResetConfirm()" class="px-3 py-1.5 rounded-xl glass-pill text-xs text-slate-300 hover:text-white">
               Abbrechen
             </button>
             <button type="button" onclick="confirmResetAppState()" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white">
-              Ja, jetzt löschen
+              Ja, löschen
             </button>
           </div>
         </div>
       </div>
 
       <!-- Modal Footer -->
-      <div class="flex items-center justify-end space-x-3 border-t border-white/10 pt-4">
+      <div class="flex items-center justify-end border-t border-white/10 pt-4">
         <button type="button" onclick="saveSettingsFromModal()" class="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs transition shadow-lg shadow-indigo-600/20 flex items-center justify-center space-x-2">
           <i data-lucide="check" class="w-4 h-4"></i>
           <span>Einstellungen speichern</span>
@@ -5194,6 +5240,8 @@
       avatarDataUrl: "",
       theme: "default",
       autoAdvanceCorrect: false,
+      showBlueGlossary: true,
+      showAktivPassivColors: true,
       soundEnabled: true,
       xp: 0,
       level: 1,
@@ -5742,17 +5790,21 @@
       if (!text) return "";
       return String(text).replace(COMBINED_TERMS_REGEX, (match) => {
         if (AKTIV_SET.has(match)) {
+          if (state.showAktivPassivColors === false) return match;
           return `<span class="hl-aktiv">${match}</span>`;
         }
         if (PASSIV_SET.has(match)) {
+          if (state.showAktivPassivColors === false) return match;
           return `<span class="hl-passiv">${match}</span>`;
         }
+        if (state.showBlueGlossary === false) return match;
         const safeKey = match.replace(/'/g, "\\'");
         return `<span class="hl-fachbegriff" onclick="openGlossaryTerm(event, '${safeKey}')" title="Klicken für Erklärung zu „${match}“">${match}</span>`;
       });
     }
 
     function openGlossaryTerm(event, termKey) {
+      if (state.showBlueGlossary === false) return;
       if (event) {
         event.stopPropagation();
         event.preventDefault();
@@ -6174,6 +6226,8 @@
       if (typeof state.totalAnswered !== "number") state.totalAnswered = 0;
       if (typeof state.totalCorrect !== "number") state.totalCorrect = 0;
       if (typeof state.autoAdvanceCorrect !== "boolean") state.autoAdvanceCorrect = false;
+      if (typeof state.showBlueGlossary !== "boolean") state.showBlueGlossary = true;
+      if (typeof state.showAktivPassivColors !== "boolean") state.showAktivPassivColors = true;
       if (typeof state.soundEnabled !== "boolean") state.soundEnabled = true;
     }
 
@@ -6372,14 +6426,101 @@
       const btnDefault = document.getElementById("theme-btn-default");
       const btnDuck = document.getElementById("theme-btn-duck");
       const btnMono = document.getElementById("theme-btn-monochrome");
-      const activeClass = "p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 bg-indigo-600/20 border-indigo-400";
-      const inactiveClass = "p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 glass-pill border-white/10 hover:bg-white/10";
+      const activeClass = "p-3 rounded-2xl border text-left transition flex items-center space-x-2 bg-indigo-600/20 border-indigo-400";
+      const inactiveClass = "p-3 rounded-2xl border text-left transition flex items-center space-x-2 glass-pill border-white/10 hover:bg-white/10";
       if (btnDefault) btnDefault.className = state.theme === "default" ? activeClass : inactiveClass;
       if (btnDuck) btnDuck.className = state.theme === "duck" ? activeClass : inactiveClass;
       if (btnMono) btnMono.className = state.theme === "monochrome" ? activeClass : inactiveClass;
 
+      document.body.classList.toggle("hide-glossary-hl", state.showBlueGlossary === false);
+      document.body.classList.toggle("hide-akpa-hl", state.showAktivPassivColors === false);
+
       updateAutoAdvanceToggleUI();
+      updateTextHighlightTogglesUI();
       updateSoundToggleUI();
+    }
+
+    function updateTextHighlightTogglesUI() {
+      const gBtn = document.getElementById("glossary-hl-toggle-btn");
+      const gKnob = document.getElementById("glossary-hl-knob");
+      if (gBtn && gKnob) {
+        if (state.showBlueGlossary !== false) {
+          gBtn.className = "w-11 h-6 rounded-full bg-emerald-500/30 border border-emerald-400 p-0.5 transition flex items-center shrink-0";
+          gKnob.className = "w-4 h-4 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md";
+        } else {
+          gBtn.className = "w-11 h-6 rounded-full bg-slate-800 border border-white/15 p-0.5 transition flex items-center shrink-0";
+          gKnob.className = "w-4 h-4 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0";
+        }
+      }
+
+      const akBtn = document.getElementById("akpa-hl-toggle-btn");
+      const akKnob = document.getElementById("akpa-hl-knob");
+      if (akBtn && akKnob) {
+        if (state.showAktivPassivColors !== false) {
+          akBtn.className = "w-11 h-6 rounded-full bg-emerald-500/30 border border-emerald-400 p-0.5 transition flex items-center shrink-0";
+          akKnob.className = "w-4 h-4 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md";
+        } else {
+          akBtn.className = "w-11 h-6 rounded-full bg-slate-800 border border-white/15 p-0.5 transition flex items-center shrink-0";
+          akKnob.className = "w-4 h-4 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0";
+        }
+      }
+    }
+
+    function rerenderDynamicTextViews() {
+      renderQuizQuestion();
+      renderWorksheetRows();
+      renderFilteredKonten();
+      renderCurrentFlashcard();
+      loadTKontoCase(state.currentTKCaseIndex || 0);
+    }
+
+    function toggleGlossaryHighlightSetting() {
+      state.showBlueGlossary = !(state.showBlueGlossary !== false);
+      saveState();
+      applyUserProfileAndTheme();
+      rerenderDynamicTextViews();
+    }
+
+    function toggleAktivPassivHighlightSetting() {
+      state.showAktivPassivColors = !(state.showAktivPassivColors !== false);
+      saveState();
+      applyUserProfileAndTheme();
+      rerenderDynamicTextViews();
+    }
+
+    function updateAutoAdvanceToggleUI() {
+      const btn = document.getElementById("auto-advance-toggle-btn");
+      const knob = document.getElementById("auto-advance-knob");
+      if (!btn || !knob) return;
+      if (state.autoAdvanceCorrect) {
+        btn.className = "w-11 h-6 rounded-full bg-emerald-500/30 border border-emerald-400 p-0.5 transition flex items-center shrink-0";
+        knob.className = "w-4 h-4 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md";
+      } else {
+        btn.className = "w-11 h-6 rounded-full bg-slate-800 border border-white/15 p-0.5 transition flex items-center shrink-0";
+        knob.className = "w-4 h-4 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0";
+      }
+    }
+
+    function rerenderDynamicTextViews() {
+      renderQuizQuestion();
+      renderWorksheetRows();
+      renderFilteredKonten();
+      renderCurrentFlashcard();
+      loadTKontoCase(state.currentTKCaseIndex || 0);
+    }
+
+    function toggleGlossaryHighlightSetting() {
+      state.showBlueGlossary = !(state.showBlueGlossary !== false);
+      saveState();
+      applyUserProfileAndTheme();
+      rerenderDynamicTextViews();
+    }
+
+    function toggleAktivPassivHighlightSetting() {
+      state.showAktivPassivColors = !(state.showAktivPassivColors !== false);
+      saveState();
+      applyUserProfileAndTheme();
+      rerenderDynamicTextViews();
     }
 
     function updateAutoAdvanceToggleUI() {
@@ -6469,6 +6610,8 @@
         avatarDataUrl: "",
         theme: keepTheme,
         autoAdvanceCorrect: false,
+        showBlueGlossary: true,
+        showAktivPassivColors: true,
         soundEnabled: true,
         xp: 0,
         level: 1,
@@ -7326,11 +7469,11 @@
       if (!btn || !knob) return;
 
       if (state.soundEnabled) {
-        btn.className = "w-12 h-7 rounded-full bg-emerald-500/30 border border-emerald-400 p-1 transition flex items-center shrink-0";
-        knob.className = "w-5 h-5 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md";
+        btn.className = "w-11 h-6 rounded-full bg-emerald-500/30 border border-emerald-400 p-0.5 transition flex items-center shrink-0";
+        knob.className = "w-4 h-4 rounded-full bg-emerald-400 transition-transform duration-300 transform translate-x-5 shadow-md";
       } else {
-        btn.className = "w-12 h-7 rounded-full bg-slate-800 border border-white/15 p-1 transition flex items-center shrink-0";
-        knob.className = "w-5 h-5 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0";
+        btn.className = "w-11 h-6 rounded-full bg-slate-800 border border-white/15 p-0.5 transition flex items-center shrink-0";
+        knob.className = "w-4 h-4 rounded-full bg-slate-400 transition-transform duration-300 transform translate-x-0";
       }
     }
 
