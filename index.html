@@ -1933,7 +1933,7 @@
       <!-- ========================================== -->
       <section id="view-tkonten" class="hidden space-y-6 animate-view-enter">
         
-        <!-- Header & Mode Switcher Banner -->
+        <!-- Header, 3 Große Mode-Kacheln & Kompakte Regel-Pills (Aktivkonten, Passivkonten, Schlussbestand) -->
         <div class="glass-v5 rounded-3xl p-6 border border-amber-500/30 space-y-5">
           <div class="flex items-center justify-between flex-wrap gap-3 border-b border-white/10 pb-4">
             <div class="flex items-center space-x-3">
@@ -1942,257 +1942,346 @@
               </div>
               <div>
                 <h2 class="text-xl font-bold text-white tracking-tight">T-Konten Zentrum &amp; Aufgabenblätter für <span id="tkonten-user-name">Marlon</span></h2>
-                <p class="text-xs text-slate-400">8 komplette T-Konten-Aufgabenblätter sowie 12 Einzel-Fallstudien mit Sofort-Prüfung.</p>
+                <p class="text-xs text-slate-400">Wähle einen Trainingsmodus und klicke unten auf Aktivkonten, Passivkonten oder Schlussbestand für die Regeln.</p>
               </div>
-            </div>
-
-            <!-- Umschalter: T-Konten Aufgabenblätter (8 Stück) vs. Einzel-Fallstudien (12 Stück) -->
-            <div class="flex items-center space-x-2">
-              <button onclick="switchTKontenSubMode('sheets')" id="tk-mode-btn-sheets" class="px-4 py-2 rounded-2xl bg-amber-500 text-slate-950 font-extrabold text-xs transition flex items-center space-x-1.5 shadow-lg shadow-amber-500/20">
-                <i data-lucide="layout-grid" class="w-4 h-4"></i>
-                <span>T-Konten Aufgabenblätter (8)</span>
-              </button>
-              <button onclick="switchTKontenSubMode('single')" id="tk-mode-btn-single" class="px-4 py-2 rounded-2xl glass-pill text-slate-300 hover:text-white font-bold text-xs transition flex items-center space-x-1.5">
-                <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
-                <span>Einzel-Fälle (12)</span>
-              </button>
             </div>
           </div>
 
-          <!-- Rule Cards Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
-            <div class="glass-pill p-4 rounded-2xl space-y-1.5">
-              <div class="flex items-center space-x-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
-                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                <span>Aktivkonten (Bestand)</span>
+          <!-- 3 Große Mode-Kacheln oben (T-Konten Aufgabenblätter (8), Einzel-Fälle (12), Übungsklausur (60 Min)) -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Große Kachel 1: T-Konten Aufgabenblätter (8) -->
+            <button onclick="switchTKontenSubMode('sheets')" id="tk-mode-btn-sheets" class="glass-v5 glass-v5-hover p-5 rounded-2xl text-left flex flex-col justify-between space-y-3 border border-amber-400/60 bg-amber-500/15 transition group">
+              <div class="flex items-center justify-between w-full">
+                <div class="p-3 rounded-2xl icon-box-clean text-amber-300">
+                  <i data-lucide="layout-grid" class="w-6 h-6 icon-anim"></i>
+                </div>
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 uppercase">8 Blätter</span>
               </div>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                <strong class="text-white">Anfangsbestand &amp; Zugänge im SOLL</strong> (links), <strong class="text-white">Abgänge &amp; SB im HABEN</strong> (rechts). Beisp.: <span class="hl-aktiv">Kasse</span>, <span class="hl-aktiv">Bank</span>, <span class="hl-aktiv">Waren</span>.
-              </p>
+              <div>
+                <div class="text-base font-extrabold text-white">T-Konten Aufgabenblätter (8)</div>
+                <p class="text-xs text-slate-300 mt-1 leading-relaxed">Komplette Aufgabenblätter mit mehreren Geschäftsfällen, Anfangsbeständen &amp; Saldierung.</p>
+              </div>
+            </button>
+
+            <!-- Große Kachel 2: Einzel-Fälle (12) -->
+            <button onclick="switchTKontenSubMode('single')" id="tk-mode-btn-single" class="glass-v5 glass-v5-hover p-5 rounded-2xl text-left flex flex-col justify-between space-y-3 border border-white/10 transition group">
+              <div class="flex items-center justify-between w-full">
+                <div class="p-3 rounded-2xl icon-box-clean text-cyan-300">
+                  <i data-lucide="zap" class="w-6 h-6 icon-anim"></i>
+                </div>
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 uppercase">12 Fälle</span>
+              </div>
+              <div>
+                <div class="text-base font-extrabold text-white">Einzel-Fälle (12)</div>
+                <p class="text-xs text-slate-300 mt-1 leading-relaxed">Schnelle Einzelbuchungen direkt im Soll &amp; Haben zweier T-Konten mit Sofort-Check.</p>
+              </div>
+            </button>
+
+            <!-- Große Kachel 3: Übungsklausur (60 Min) -->
+            <button onclick="switchTKontenSubMode('exam')" id="tk-mode-btn-exam" class="glass-v5 glass-v5-hover p-5 rounded-2xl text-left flex flex-col justify-between space-y-3 border border-emerald-500/30 transition group">
+              <div class="flex items-center justify-between w-full">
+                <div class="p-3 rounded-2xl icon-box-clean text-emerald-300">
+                  <i data-lucide="file-check-2" class="w-6 h-6 icon-anim"></i>
+                </div>
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 uppercase">3 Klausuren</span>
+              </div>
+              <div>
+                <div class="text-base font-extrabold text-white">Übungsklausuren (3 Stück)</div>
+                <p class="text-xs text-slate-300 mt-1 leading-relaxed">3 komplette Klassenarbeiten (OHG, KG &amp; GmbH, Bilanz &amp; T-Konten) mit Noten-Auswertung.</p>
+              </div>
+            </button>
+          </div>
+
+          <!-- Kompakte klickbare Felder für Aktivkonten, Passivkonten & Schlussbestand (genau da, wo vorher die kleinen Buttons waren) -->
+          <div class="space-y-3 border-t border-white/10 pt-4">
+            <div class="flex items-center flex-wrap gap-2">
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1">Regel-Spickzettel:</span>
+              <button onclick="toggleTKRuleDetail('aktiv')" id="tk-rule-pill-aktiv" class="px-3.5 py-1.5 rounded-2xl glass-pill hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-bold text-xs transition flex items-center space-x-1.5">
+                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span>Aktivkonten</span>
+              </button>
+              <button onclick="toggleTKRuleDetail('passiv')" id="tk-rule-pill-passiv" class="px-3.5 py-1.5 rounded-2xl glass-pill hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 font-bold text-xs transition flex items-center space-x-1.5">
+                <i data-lucide="arrow-down-right" class="w-3.5 h-3.5 text-rose-400"></i>
+                <span>Passivkonten</span>
+              </button>
+              <button onclick="toggleTKRuleDetail('sb')" id="tk-rule-pill-sb" class="px-3.5 py-1.5 rounded-2xl glass-pill hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 font-bold text-xs transition flex items-center space-x-1.5">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-indigo-400"></i>
+                <span>Schlussbestand</span>
+              </button>
             </div>
 
-            <div class="glass-pill p-4 rounded-2xl space-y-1.5">
-              <div class="flex items-center space-x-2 text-rose-400 font-bold text-xs uppercase tracking-wider">
-                <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
-                <span>Passivkonten (Kapital)</span>
+            <!-- Ausklappbares Lese-Feld für den angeklickten Regelbereich -->
+            <div id="tk-rule-detail-box" class="hidden glass-pill p-4 rounded-2xl border border-white/15 text-xs text-slate-200 space-y-1.5 relative">
+              <div class="flex items-center justify-between">
+                <div id="tk-rule-detail-title" class="font-extrabold text-sm text-white"></div>
+                <button onclick="closeTKRuleDetail()" class="p-1 rounded-full hover:bg-white/10 text-slate-400 hover:text-white">
+                  <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                </button>
               </div>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                <strong class="text-white">Anfangsbestand &amp; Zugänge im HABEN</strong> (rechts), <strong class="text-white">Abgänge &amp; SB im SOLL</strong> (links). Beisp.: <span class="hl-passiv">Verbindlichkeiten a.LL</span>, <span class="hl-passiv">Darlehen</span>.
-              </p>
-            </div>
-
-            <div class="glass-pill p-4 rounded-2xl space-y-1.5">
-              <div class="flex items-center space-x-2 text-indigo-400 font-bold text-xs uppercase tracking-wider">
-                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                <span>Schlussbestand (Saldo)</span>
-              </div>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                Größere Kontoseite minus kleinere Kontoseite = <strong class="text-white">Schlussbestand (SB)</strong> auf der schwächeren Seite eintragen.
-              </p>
+              <p id="tk-rule-detail-text" class="leading-relaxed text-slate-300"></p>
             </div>
           </div>
         </div>
 
         <!-- ========================================== -->
-        <!-- TEIL A: 8 SELBST ERFUNDENE T-KONTEN AUFGABENBLÄTTER (KACHEL-ÜBERSICHT & WORKBENCH) -->
+        <!-- TEIL C: ÜBUNGSKLAUSUREN BWL MIT RECHNUNGSWESEN (3 KLAUSUREN À 60 PUNKTE) -->
         <!-- ========================================== -->
-        <div id="tk-sheets-mode-wrapper" class="space-y-6">
-          
-          <!-- Kachel-Übersicht der 8 T-Konten-Aufgabenblätter -->
-          <div id="tk-sheets-hub" class="glass-v5 rounded-3xl p-6 space-y-5">
-            <div class="flex items-center justify-between flex-wrap gap-2">
-              <div>
-                <h3 class="text-base sm:text-lg font-extrabold text-white">Wähle ein T-Konten-Aufgabenblatt (Blatt 1 bis 8)</h3>
-                <p class="text-xs text-slate-400">Jedes Blatt enthält ein Praxisszenario mit mehreren T-Konten, Anfangsbeständen, Buchungen und Saldierung.</p>
-              </div>
-              <span id="tk-sheets-solved-badge" class="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300">0 von 8 gelöst</span>
-            </div>
+        <div id="tk-exam-mode-wrapper" class="hidden space-y-6">
 
-            <div id="tk-sheets-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <!-- Dynamisch durch renderTKSheetsHub() befüllt -->
+          <!-- Klausur-Auswahl (3 unterschiedliche Klausuren) -->
+          <div class="glass-v5 rounded-3xl p-5 sm:p-6 space-y-3 border border-emerald-500/30">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <span class="text-xs font-extrabold text-emerald-300 uppercase tracking-wider">Wähle eine Übungsklausur (je 60 Punkte)</span>
+              <span class="text-[11px] text-slate-400">Rechtsform &bull; Bilanz &bull; Bestandskonten</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <button onclick="selectExamVariant('exam1')" id="exam-var-btn-exam1" class="p-4 rounded-2xl text-left border border-emerald-400 bg-emerald-500/15 transition space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-400 text-slate-950 uppercase">Klausur 1 (Original)</span>
+                  <span class="text-[11px] font-bold text-emerald-300">OHG</span>
+                </div>
+                <div class="text-sm font-extrabold text-white pt-1">Hölscher Holzspielzeug e. K.</div>
+                <p class="text-[11px] text-slate-300">OHG-Gründung, 5 % Zins &amp; Konto 2800 Bank</p>
+              </button>
+
+              <button onclick="selectExamVariant('exam2')" id="exam-var-btn-exam2" class="p-4 rounded-2xl text-left glass-pill border border-white/10 hover:bg-white/10 transition space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 uppercase">Klausur 2 (Variante A)</span>
+                  <span class="text-[11px] font-bold text-cyan-300">KG</span>
+                </div>
+                <div class="text-sm font-extrabold text-white pt-1">Bergmann Bio-Bäckerei e. K.</div>
+                <p class="text-[11px] text-slate-300">KG mit Kommanditist, 4 % Zins &amp; Konto 2800 Bank</p>
+              </button>
+
+              <button onclick="selectExamVariant('exam3')" id="exam-var-btn-exam3" class="p-4 rounded-2xl text-left glass-pill border border-white/10 hover:bg-white/10 transition space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 uppercase">Klausur 3 (Variante B)</span>
+                  <span class="text-[11px] font-bold text-amber-300">GmbH</span>
+                </div>
+                <div class="text-sm font-extrabold text-white pt-1">Weber E-Bike Manufaktur e. K.</div>
+                <p class="text-[11px] text-slate-300">GmbH-Gründung, 6 % Zins &amp; Konto 4400 Verbindlichkeiten</p>
+              </button>
             </div>
           </div>
 
-          <!-- Aktives T-Konten-Aufgabenblatt (erscheint nach Klick auf eine der 8 Kacheln) -->
-          <div id="tk-active-sheet-view" class="hidden space-y-6">
-            <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-6 border border-amber-500/30">
-              <div class="flex items-center justify-between flex-wrap gap-3 border-b border-white/10 pb-4">
-                <div>
-                  <span id="tks-badge" class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 uppercase tracking-widest">
-                    T-KONTEN AUFGABENBLATT 1 VON 8
-                  </span>
-                  <h3 id="tks-title" class="text-xl font-extrabold text-white mt-2">Blatt 1: Flüssige Mittel &amp; Zahlungsverkehr</h3>
-                  <p id="tks-desc" class="text-xs text-slate-300 mt-1"></p>
-                </div>
-                <div class="flex items-center space-x-2.5">
-                  <span id="tks-xp-badge" class="text-xs font-bold text-amber-400 glass-pill px-3 py-1.5 rounded-full border border-amber-500/30">+150 XP</span>
-                  <button onclick="backToTKSheetsHub()" title="Zurück zu allen T-Konten-Blättern" class="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
-                    <i data-lucide="corner-up-left" class="w-4 h-4"></i>
-                  </button>
-                </div>
+          <!-- Deckblatt & Ausgangssituation -->
+          <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-5 border border-emerald-500/30">
+            <div class="flex items-center justify-between flex-wrap gap-3 border-b border-white/10 pb-4">
+              <div>
+                <span id="exam-header-badge" class="text-[10px] font-extrabold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-widest">
+                  KLAUSUR 1 &bull; KLASSE 11 HBFS &bull; 60 PUNKTE
+                </span>
+                <h3 id="exam-header-title" class="text-xl font-extrabold text-white mt-2">Übungsklausur 1: Hölscher Holzspielzeug e. K.</h3>
+                <p id="exam-header-sub" class="text-xs text-slate-300 mt-1">Inhaberin: Mia Hölscher (Telgte) &bull; Partner-Einstieg: Tischlermeister Can Demir &bull; Bank: Volksbank Münsterland Nord</p>
               </div>
-
-              <!-- Geschäftsfälle-Liste des T-Konten-Blatts -->
-              <div class="space-y-2">
-                <div class="text-xs font-extrabold text-amber-300 uppercase tracking-wider">Geschäftsfälle zum Buchen auf den T-Konten:</div>
-                <div id="tks-cases-list" class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                  <!-- Dynamisch befüllt -->
-                </div>
-              </div>
-
-              <!-- Interaktive T-Konten des Aufgabenblatts -->
-              <div class="space-y-2 pt-2">
-                <div class="flex items-center justify-between flex-wrap gap-2">
-                  <span class="text-xs font-extrabold text-indigo-300 uppercase tracking-wider">Hauptbuch – Trage Zugänge, Abgänge und den Schlussbestand (SB) ein:</span>
-                  <button onclick="showTKSheetHints()" class="text-xs text-amber-300 hover:text-white glass-pill px-3 py-1.5 rounded-xl transition flex items-center space-x-1.5">
-                    <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
-                    <span>Rechenhilfe einblenden</span>
-                  </button>
-                </div>
-                <div id="tks-accounts-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-5 pt-2">
-                  <!-- Dynamisch gerenderte T-Konten -->
-                </div>
-              </div>
-
-              <div id="tks-feedback-box" class="hidden p-4 rounded-2xl border text-xs"></div>
-
-              <div class="flex items-center justify-between border-t border-white/10 pt-4">
-                <button onclick="resetCurrentTKSheet()" class="text-xs text-slate-400 hover:text-white transition">Eingaben leeren</button>
-                <button onclick="validateCurrentTKSheet()" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 flex items-center space-x-2">
-                  <i data-lucide="check-circle-2" class="w-4 h-4"></i>
-                  <span>T-Konten-Blatt prüfen</span>
+              <div class="flex items-center space-x-2">
+                <span id="exam-score-badge" class="text-xs font-extrabold px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">0 / 60 Punkte</span>
+                <button onclick="toggleExamAnlagen()" class="px-3.5 py-2 rounded-2xl glass-pill hover:bg-white/10 text-cyan-300 text-xs font-bold transition flex items-center space-x-1.5">
+                  <i data-lucide="folder-open" class="w-4 h-4 text-cyan-400"></i>
+                  <span>Anlagen 1–4 ein-/ausblenden</span>
                 </button>
               </div>
             </div>
-          </div>
 
-        </div>
-
-        <!-- ========================================== -->
-        <!-- TEIL B: EINZEL-FALLSTUDIEN (12 SCHNELL-FÄLLE) -->
-        <!-- ========================================== -->
-        <div id="tk-single-mode-wrapper" class="hidden glass-v5 rounded-3xl p-6 sm:p-8 space-y-6">
-          <div class="flex items-center justify-between flex-wrap gap-2 border-b border-white/10 pb-4">
-            <div>
-              <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 uppercase tracking-widest" id="tk-case-badge">
-                FALLSTUDIE 1 VON 12
-              </span>
-              <h3 class="text-lg font-bold text-white mt-2" id="tk-case-title">Kauf einer Büromaschine auf Ziel</h3>
-            </div>
-            <div id="tk-pills-container" class="flex items-center flex-wrap gap-1.5">
-              <!-- Dynamisch erzeugte Fall-Buttons 1-12 -->
-            </div>
-          </div>
-
-          <p class="text-xs text-slate-300 leading-relaxed" id="tk-case-desc">
-            Das Unternehmen kauft einen neuen Großkopierer im Wert von 4.500 € auf Ziel (Verbindlichkeiten a.LL). Führe den korrekten Buchungssatz durch.
-          </p>
-
-          <!-- Interactive T-Account Visualizer Board -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-            
-            <!-- T-Konto 1 -->
-            <div class="glass-pill p-5 rounded-2xl space-y-4 border border-indigo-500/30">
-              <div class="text-center font-extrabold text-indigo-300 border-b border-white/10 pb-2 text-sm uppercase tracking-wider" id="tk-label-1">
-                Konto 1
+            <!-- Einklappbare Anlagen 1 bis 4 (dynamisch je nach gewählter Klausur) -->
+            <div id="exam-anlagen-box" class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs">
+              <div class="glass-pill p-4 rounded-2xl border border-white/10 space-y-2">
+                <div id="exam-anlage1-title" class="font-extrabold text-indigo-300 uppercase">Anlage 1: Gesprächsnotiz</div>
+                <ul id="exam-anlage1-list" class="list-disc pl-4 space-y-1 text-slate-300"></ul>
               </div>
-              <div class="grid grid-cols-2 gap-4 text-center">
-                <div class="space-y-2 border-r border-white/10 pr-2">
-                  <div class="text-[11px] font-bold text-indigo-400 uppercase">SOLL (Links)</div>
-                  <input type="number" id="tk-input-1-soll" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
-                </div>
-                <div class="space-y-2 pl-2">
-                  <div class="text-[11px] font-bold text-slate-400 uppercase">HABEN (Rechts)</div>
-                  <input type="number" id="tk-input-1-haben" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
+
+              <div class="glass-pill p-4 rounded-2xl border border-white/10 space-y-2">
+                <div id="exam-anlage2-title" class="font-extrabold text-emerald-300 uppercase">Anlage 2: Inventurergebnisse</div>
+                <div id="exam-anlage2-grid" class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-300"></div>
+              </div>
+
+              <div class="glass-pill p-4 rounded-2xl border border-white/10 space-y-2 lg:col-span-2">
+                <div id="exam-anlage3-title" class="font-extrabold text-amber-300 uppercase">Anlage 3: Belege &amp; Anlage 4: Kontenplan-Auszug</div>
+                <div id="exam-anlage3-grid" class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] text-slate-300"></div>
+                <div class="text-[11px] text-cyan-300 pt-1 border-t border-white/5">
+                  <strong>Konten (Anlage 4):</strong> 0530 Betriebsgebäude | 0700 TA | 0840 Fuhrpark | 0870 BGA | 2000 Rohstoffe | 2200 Fertige Erzeugnisse | 2400 Forderungen (FO) | 2800 Bank (BK) | 2880 Kasse | 3000 Eigenkapital | 4250 Darlehen | 4400 Verbindlichkeiten (VE)
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- T-Konto 2 -->
-            <div class="glass-pill p-5 rounded-2xl border border-amber-500/30 space-y-4">
-              <div class="text-center font-extrabold text-amber-300 border-b border-white/10 pb-2 text-sm uppercase tracking-wider" id="tk-label-2">
-                Konto 2
+          <!-- AUFGABE 1: RECHTSFORM & GEWINNVERTEILUNG (18 PUNKTE) -->
+          <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-5">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+              <h4 id="exam-task1-title" class="text-base sm:text-lg font-extrabold text-white">Aufgabe 1: Rechtsform &amp; Gewinnverteilung (18 Punkte)</h4>
+              <span class="text-xs font-bold text-indigo-300">Richtzeit: 18 Min</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div class="glass-pill p-4 rounded-2xl space-y-2">
+                <label class="font-bold text-white block">1.1 &amp; 1.2 Welche Rechtsform passt zu Anlage 1?</label>
+                <select id="exam-q1-rechtsform" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+                  <option value="">Bitte Rechtsform wählen...</option>
+                  <option value="OHG">Offene Handelsgesellschaft (OHG)</option>
+                  <option value="KG">Kommanditgesellschaft (KG)</option>
+                  <option value="GmbH">Gesellschaft mit beschränkter Haftung (GmbH)</option>
+                </select>
+                <p id="exam-task1-liability-hint" class="text-[11px] text-slate-400">Haftung in der OHG: unmittelbar, unbeschränkt (auch Privatvermögen) und gesamtschuldnerisch.</p>
               </div>
-              <div class="grid grid-cols-2 gap-4 text-center">
-                <div class="space-y-2 border-r border-white/10 pr-2">
-                  <div class="text-[11px] font-bold text-slate-400 uppercase">SOLL (Links)</div>
-                  <input type="number" id="tk-input-2-soll" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
-                </div>
-                <div class="space-y-2 pl-2">
-                  <div class="text-[11px] font-bold text-amber-400 uppercase">HABEN (Rechts)</div>
-                  <input type="number" id="tk-input-2-haben" placeholder="0 €" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-center text-white focus:outline-none focus:border-indigo-500">
-                </div>
+
+              <div class="glass-pill p-4 rounded-2xl space-y-2">
+                <label class="font-bold text-white block">1.4 Zulässige Firma mit gesetzlichem Rechtsformzusatz</label>
+                <select id="exam-q1-firma" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500"></select>
+                <p id="exam-task1-firma-hint" class="text-[11px] text-slate-400">Nach § 19 HGB muss die Firma den passenden Rechtsformzusatz enthalten.</p>
               </div>
             </div>
 
-          </div>
-
-          <!-- T-Konten Validation Feedback Box -->
-          <div id="tk-feedback-box" class="hidden p-4 rounded-2xl border space-y-1">
-            <div id="tk-feedback-title" class="font-bold text-xs flex items-center space-x-2"></div>
-            <p id="tk-feedback-text" class="text-xs leading-relaxed text-slate-300"></p>
-          </div>
-
-          <!-- Submit / Stepper Buttons -->
-          <div class="flex items-center justify-between border-t border-white/10 pt-4">
-            <button onclick="resetTKontoInputs()" class="text-xs text-slate-400 hover:text-white transition">Eingaben zurücksetzen</button>
-            <button onclick="validateTKontoCase()" id="btn-tk-submit" class="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 flex items-center space-x-2">
-              <i data-lucide="check-circle" class="w-4 h-4"></i>
-              <span>Buchungssatz prüfen</span>
-            </button>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ========================================== -->
-      <!-- SECTION 4: IKR KONTENPLAN -->
-      <!-- ========================================== -->
-      <section id="view-kontenplan" class="hidden space-y-6 animate-view-enter">
-        
-        <div class="glass-v5 rounded-3xl p-6 space-y-4">
-          <div class="flex items-center justify-between flex-wrap gap-2">
-            <div>
-              <h2 class="text-xl font-bold text-white tracking-tight">IKR Kontenplan (Industriekontenrahmen)</h2>
-              <p class="text-xs text-slate-400">Komplettübersicht aller Kontenklassen 0 bis 9 (inkl. Schnellsuche).</p>
-            </div>
-            <span id="konten-count-badge" class="text-xs font-bold px-3 py-1 rounded-full glass-pill text-indigo-300">Alle Konten</span>
-          </div>
-
-          <!-- Search & Category Filters -->
-          <div class="flex flex-col sm:flex-row gap-3">
-            <div class="relative flex-1">
-              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-3.5"></i>
-              <input type="text" id="konten-search-input" oninput="renderFilteredKonten()" placeholder="Konto suchen (z. B. 2800 Bank, 0840 Fuhrpark, 4400 Verbindlichkeiten)..." class="w-full bg-slate-900/80 border border-white/10 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
-            </div>
-            <div class="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar">
-              <button onclick="setKontenCat('all', this)" class="konten-cat-btn bg-indigo-600 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Alle</button>
-              <button onclick="setKontenCat('aktiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aktivkonten</button>
-              <button onclick="setKontenCat('passiv', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Passivkonten</button>
-              <button onclick="setKontenCat('ertrag', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Erträge</button>
-              <button onclick="setKontenCat('aufwand', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Aufwendungen</button>
-              <button onclick="setKontenCat('abschluss', this)" class="konten-cat-btn glass-pill text-slate-400 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0">Ergebnis / KLR</button>
+            <!-- 1.3 Gewinnverteilungstabelle -->
+            <div class="glass-pill p-4 sm:p-5 rounded-2xl space-y-3 border border-indigo-500/25">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <span id="exam-profit-header" class="text-xs font-extrabold text-indigo-300 uppercase">1.3 Gewinnverteilung</span>
+                <button onclick="fillExamHint1()" class="text-[11px] text-amber-300 hover:text-white underline">Rechenhilfe</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left">
+                  <thead class="text-slate-400 border-b border-white/10">
+                    <tr>
+                      <th class="py-2 pr-3">Gesellschafter/in</th>
+                      <th class="py-2 px-3">Kapitalanteil</th>
+                      <th id="exam-profit-zins-col" class="py-2 px-3">Zinsanteil (€)</th>
+                      <th id="exam-profit-rest-col" class="py-2 px-3">Restgewinn (€)</th>
+                      <th class="py-2 pl-3">Gesamtgewinn (€)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-white/5">
+                    <tr>
+                      <td id="exam-p1-name" class="py-2.5 pr-3 font-bold text-white">Mia Hölscher</td>
+                      <td id="exam-p1-cap" class="py-2.5 px-3 font-mono text-slate-300">247.000 €</td>
+                      <td class="py-2.5 px-3"><input type="number" id="exam-mia-zins" placeholder="0" class="w-28 bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-1.5 text-right font-mono text-white"></td>
+                      <td class="py-2.5 px-3"><input type="number" id="exam-mia-rest" placeholder="0" class="w-28 bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-1.5 text-right font-mono text-white"></td>
+                      <td class="py-2.5 pl-3"><input type="number" id="exam-mia-gesamt" placeholder="0" class="w-28 bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-1.5 text-right font-mono text-white"></td>
+                    </tr>
+                    <tr>
+                      <td id="exam-p2-name" class="py-2.5 pr-3 font-bold text-white">Can Demir</td>
+                      <td id="exam-p2-cap" class="py-2.5 px-3 font-mono text-slate-300">60.000 €</td>
+                      <td class="py-2.5 px-3"><input type="number" id="exam-can-zins" placeholder="0" class="w-28 bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-1.5 text-right font-mono text-white"></td>
+                      <td class="py-2.5 px-3"><input type="number" id="exam-can-rest" placeholder="0" class="w-28 bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-1.5 text-right font-mono text-white"></td>
+                      <td class="py-2.5 pl-3"><input type="number" id="exam-can-gesamt" placeholder="0" class="w-28 bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-1.5 text-right font-mono text-white"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div id="exam-hint-1" class="hidden text-[11px] text-cyan-300"></div>
             </div>
           </div>
-        </div>
 
-        <!-- Glass Table -->
-        <div class="glass-v5 rounded-3xl overflow-hidden">
-          <div class="overflow-x-auto custom-scrollbar max-h-[540px]">
-            <table class="w-full text-left text-xs">
-              <thead class="bg-slate-900/95 text-slate-400 text-[11px] uppercase tracking-wider border-b border-white/10 sticky top-0 z-10">
-                <tr>
-                  <th class="px-6 py-4 font-semibold">Konto-Nr.</th>
-                  <th class="px-6 py-4 font-semibold">Bezeichnung</th>
-                  <th class="px-6 py-4 font-semibold">Kontenklasse</th>
-                  <th class="px-6 py-4 font-semibold">Kategorie</th>
-                </tr>
-              </thead>
-              <tbody id="kontenplan-tbody" class="divide-y divide-white/5 text-slate-300">
-                <!-- Dynamically rendered rows -->
-              </tbody>
-            </table>
+          <!-- AUFGABE 2: BILANZ ERSTELLEN UND AUSWERTEN (20 PUNKTE) -->
+          <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-5">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+              <h4 id="exam-task2-title" class="text-base sm:text-lg font-extrabold text-white">Aufgabe 2: Bilanz erstellen &amp; auswerten (20 Punkte)</h4>
+              <span class="text-xs font-bold text-emerald-300">Richtzeit: 20 Min</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div class="glass-pill p-4 rounded-2xl space-y-1.5">
+                <label class="font-bold text-emerald-300 block">2.2 Bilanzsumme (€)</label>
+                <input type="number" id="exam-bilanzsumme" placeholder="Bilanzsumme €" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-right font-mono text-white">
+                <span id="exam-bs-hint" class="text-[10px] text-slate-400 block">Ohne Privatvermögen!</span>
+              </div>
+
+              <div class="glass-pill p-4 rounded-2xl space-y-1.5">
+                <label class="font-bold text-indigo-300 block">2.2 Eigenkapital (€)</label>
+                <input type="number" id="exam-eigenkapital" placeholder="Eigenkapital €" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-right font-mono text-white">
+                <span class="text-[10px] text-slate-400 block">Aktiva minus Fremdkapital</span>
+              </div>
+
+              <div class="glass-pill p-4 rounded-2xl space-y-1.5">
+                <label class="font-bold text-amber-300 block">2.3 Eigenkapitalquote (%)</label>
+                <input type="number" step="0.1" id="exam-ek-quote" placeholder="z. B. 60.2" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-right font-mono text-white">
+                <span class="text-[10px] text-slate-400 block">Auf 1 Nachkommastelle</span>
+              </div>
+
+              <div class="glass-pill p-4 rounded-2xl space-y-1.5">
+                <label class="font-bold text-rose-300 block">2.2 Nicht übernommene Position</label>
+                <select id="exam-excluded-item" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-2 text-xs text-white"></select>
+                <span class="text-[10px] text-slate-400 block">Privatvermögen gehört nicht in die Bilanz</span>
+              </div>
+            </div>
+
+            <!-- 2.4 Auswirkung auf Bilanzsumme -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+              <div class="glass-pill p-3.5 rounded-2xl space-y-1.5">
+                <div id="exam-bv-a-label" class="font-semibold text-slate-200">2.4 a) Kauf von Lacken auf Ziel (3.000 €)</div>
+                <select id="exam-bv-a" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+                  <option value="">Bilanzsumme...</option>
+                  <option value="erhoeht">erhöht sich (Aktiv-Passiv-Mehrung)</option>
+                  <option value="gleich">bleibt gleich (Aktivtausch / Passivtausch)</option>
+                  <option value="vermindert">vermindert sich (Aktiv-Passiv-Minderung)</option>
+                </select>
+              </div>
+              <div class="glass-pill p-3.5 rounded-2xl space-y-1.5">
+                <div id="exam-bv-b-label" class="font-semibold text-slate-200">2.4 b) Bareinzahlung auf Bank (500 €)</div>
+                <select id="exam-bv-b" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+                  <option value="">Bilanzsumme...</option>
+                  <option value="erhoeht">erhöht sich (Aktiv-Passiv-Mehrung)</option>
+                  <option value="gleich">bleibt gleich (Aktivtausch / Passivtausch)</option>
+                  <option value="vermindert">vermindert sich (Aktiv-Passiv-Minderung)</option>
+                </select>
+              </div>
+              <div class="glass-pill p-3.5 rounded-2xl space-y-1.5">
+                <div id="exam-bv-c-label" class="font-semibold text-slate-200">2.4 c) Tilgung Darlehen per Bank (4.000 €)</div>
+                <select id="exam-bv-c" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+                  <option value="">Bilanzsumme...</option>
+                  <option value="erhoeht">erhöht sich (Aktiv-Passiv-Mehrung)</option>
+                  <option value="gleich">bleibt gleich (Aktivtausch / Passivtausch)</option>
+                  <option value="vermindert">vermindert sich (Aktiv-Passiv-Minderung)</option>
+                </select>
+              </div>
+            </div>
           </div>
+
+          <!-- AUFGABE 3: BUCHUNGSSÄTZE, T-KONTO & FEHLERKORREKTUR (22 PUNKTE) -->
+          <div class="glass-v5 rounded-3xl p-6 sm:p-8 space-y-5">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+              <h4 id="exam-task3-title" class="text-base sm:text-lg font-extrabold text-white">Aufgabe 3: Belege buchen &amp; T-Konto abschließen (22 Punkte)</h4>
+              <span class="text-xs font-bold text-amber-300">Richtzeit: 22 Min</span>
+            </div>
+
+            <!-- 3.1 Belege 1-6 -->
+            <div id="exam-belege-container" class="space-y-3">
+              <!-- Dynamisch durch renderExamVariant() befüllt -->
+            </div>
+
+            <!-- 3.2 T-Konto Abschluss & 3.3 Fehlerkorrektur -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
+              <div class="glass-pill p-5 rounded-2xl border border-cyan-500/30 space-y-3">
+                <div id="exam-tk-title" class="text-xs font-extrabold text-cyan-300 uppercase">3.2 T-Konto 2800 Guthaben bei Kreditinstituten</div>
+                <p id="exam-tk-desc" class="text-[11px] text-slate-400">AB = 14.200 € | Soll-Zugang = 3.600 € | Haben-Abgänge = 7.200 €.</p>
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Kontensumme Soll / Haben (€)</label>
+                    <input type="number" id="exam-tk2800-summe" placeholder="Summe €" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2 text-right font-mono text-white">
+                  </div>
+                  <div>
+                    <label id="exam-tk-sb-label" class="text-[10px] font-bold text-amber-300 uppercase block mb-1">Schlussbestand (SB) (€)</label>
+                    <input type="number" id="exam-tk2800-sb" placeholder="SB €" class="w-full bg-slate-900/90 border border-amber-500/30 rounded-xl px-3 py-2 text-right font-mono text-white">
+                  </div>
+                </div>
+              </div>
+
+              <div class="glass-pill p-5 rounded-2xl border border-rose-500/30 space-y-3">
+                <div id="exam-err-title" class="text-xs font-extrabold text-rose-300 uppercase">3.3 Fehleranalyse &amp; Korrektur</div>
+                <p id="exam-err-desc" class="text-[11px] text-slate-300">Mitpraktikant buchte spiegelverkehrt. Wie wird der Fehler korrigiert?</p>
+                <select id="exam-q3-korrektur" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white"></select>
+              </div>
+            </div>
+
+            <div id="exam-feedback-box" class="hidden p-5 rounded-2xl border text-xs space-y-1.5"></div>
+
+            <div class="flex items-center justify-between border-t border-white/10 pt-4">
+              <button onclick="resetExamWorkbench()" class="text-xs text-slate-400 hover:text-white transition">Klausur zurücksetzen</button>
+              <button onclick="evaluateExamWorkbench()" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-600 hover:from-emerald-400 hover:to-cyan-500 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-emerald-500/20 flex items-center space-x-2">
+                <i data-lucide="award" class="w-4 h-4"></i>
+                <span>Übungsklausur auswerten (Note &amp; Punkte)</span>
+              </button>
+            </div>
+          </div>
+
         </div>
 
       </section>
@@ -6601,6 +6690,7 @@
       renderTKSheetsHub();
       renderTKPills();
       loadTKontoCase(0);
+      selectExamVariant("exam1");
       startLiveStudyTimer();
       initSpotlightAndTilt();
       initParallaxDepth();
@@ -8121,28 +8211,548 @@
     // ==========================================
 
     let currentTKSheetId = "tks1";
+    let activeTKRuleKey = null;
+
+    const TK_RULES_CONTENT = {
+      aktiv: {
+        title: "Aktivkonten (Bestandskonten auf der Aktivseite)",
+        text: "Bei Aktivkonten (z. B. Kasse, Bank, Waren, Forderungen a.LL, Fuhrpark, BGA) stehen der Anfangsbestand (AB) und alle Zugänge (+) immer links im SOLL. Alle Abgänge (-) sowie der Schlussbestand (SB) stehen immer rechts im HABEN."
+      },
+      passiv: {
+        title: "Passivkonten (Kapital- & Schuldenkonten auf der Passivseite)",
+        text: "Bei Passivkonten (z. B. Eigenkapital, Darlehensschulden, Verbindlichkeiten a.LL) stehen der Anfangsbestand (AB) und alle Zugänge (+) immer rechts im HABEN. Alle Abgänge (-) sowie der Schlussbestand (SB) stehen immer links im SOLL."
+      },
+      sb: {
+        title: "Schlussbestand (Saldo) & Abschluss eines T-Kontos",
+        text: "Bilde zuerst die Summe der größeren Kontoseite. Ziehe davon die Beträge der kleineren Kontoseite ab – diese Differenz ist der Schlussbestand (SB), der zum Ausgleich auf der schwächeren Seite eingetragen wird. Beide Summenzeilen sind danach exakt gleich groß!"
+      }
+    };
+
+    function toggleTKRuleDetail(ruleKey) {
+      const box = document.getElementById("tk-rule-detail-box");
+      const titleEl = document.getElementById("tk-rule-detail-title");
+      const textEl = document.getElementById("tk-rule-detail-text");
+      if (!box || !TK_RULES_CONTENT[ruleKey]) return;
+
+      if (activeTKRuleKey === ruleKey && !box.classList.contains("hidden")) {
+        closeTKRuleDetail();
+        return;
+      }
+
+      activeTKRuleKey = ruleKey;
+      const rule = TK_RULES_CONTENT[ruleKey];
+      if (titleEl) titleEl.innerHTML = highlightAccountingTerms(rule.title);
+      if (textEl) textEl.innerHTML = highlightAccountingTerms(rule.text);
+      box.classList.remove("hidden");
+      refreshIcons();
+    }
+
+    function closeTKRuleDetail() {
+      activeTKRuleKey = null;
+      const box = document.getElementById("tk-rule-detail-box");
+      if (box) box.classList.add("hidden");
+    }
 
     function switchTKontenSubMode(mode) {
       const sheetsWrap = document.getElementById("tk-sheets-mode-wrapper");
       const singleWrap = document.getElementById("tk-single-mode-wrapper");
+      const examWrap = document.getElementById("tk-exam-mode-wrapper");
       const btnSheets = document.getElementById("tk-mode-btn-sheets");
       const btnSingle = document.getElementById("tk-mode-btn-single");
+      const btnExam = document.getElementById("tk-mode-btn-exam");
+
+      const activeTileClass = "glass-v5 glass-v5-hover p-5 rounded-2xl text-left flex flex-col justify-between space-y-3 border border-amber-400/70 bg-amber-500/15 transition group shadow-lg shadow-amber-500/10";
+      const inactiveTileClass = "glass-v5 glass-v5-hover p-5 rounded-2xl text-left flex flex-col justify-between space-y-3 border border-white/10 transition group opacity-85 hover:opacity-100";
+
+      if (sheetsWrap) sheetsWrap.classList.add("hidden");
+      if (singleWrap) singleWrap.classList.add("hidden");
+      if (examWrap) examWrap.classList.add("hidden");
+      if (btnSheets) btnSheets.className = inactiveTileClass;
+      if (btnSingle) btnSingle.className = inactiveTileClass;
+      if (btnExam) btnExam.className = inactiveTileClass;
 
       if (mode === "single") {
-        if (sheetsWrap) sheetsWrap.classList.add("hidden");
         if (singleWrap) singleWrap.classList.remove("hidden");
-        if (btnSingle) btnSingle.className = "px-4 py-2 rounded-2xl bg-amber-500 text-slate-950 font-extrabold text-xs transition flex items-center space-x-1.5 shadow-lg shadow-amber-500/20";
-        if (btnSheets) btnSheets.className = "px-4 py-2 rounded-2xl glass-pill text-slate-300 hover:text-white font-bold text-xs transition flex items-center space-x-1.5";
+        if (btnSingle) btnSingle.className = activeTileClass;
         renderTKPills();
         loadTKontoCase(state.currentTKCaseIndex || 0);
+      } else if (mode === "exam") {
+        if (examWrap) examWrap.classList.remove("hidden");
+        if (btnExam) btnExam.className = "glass-v5 glass-v5-hover p-5 rounded-2xl text-left flex flex-col justify-between space-y-3 border border-emerald-400/70 bg-emerald-500/15 transition group shadow-lg shadow-emerald-500/10";
+        selectExamVariant(currentExamVariantId || "exam1");
       } else {
-        if (singleWrap) singleWrap.classList.add("hidden");
         if (sheetsWrap) sheetsWrap.classList.remove("hidden");
-        if (btnSheets) btnSheets.className = "px-4 py-2 rounded-2xl bg-amber-500 text-slate-950 font-extrabold text-xs transition flex items-center space-x-1.5 shadow-lg shadow-amber-500/20";
-        if (btnSingle) btnSingle.className = "px-4 py-2 rounded-2xl glass-pill text-slate-300 hover:text-white font-bold text-xs transition flex items-center space-x-1.5";
+        if (btnSheets) btnSheets.className = activeTileClass;
         backToTKSheetsHub();
       }
       refreshIcons();
+    }
+
+    // ==========================================
+    // 3 ÜBUNGSKLAUSUREN (ORIGINAL + 2 VARIANTEN À 60 PUNKTE)
+    // ==========================================
+    let currentExamVariantId = "exam1";
+
+    const EXAM_VARIANTS = {
+      exam1: {
+        id: "exam1",
+        badge: "KLAUSUR 1 • KLASSE 11 HBFS • 60 PUNKTE",
+        title: "Übungsklausur 1: Hölscher Holzspielzeug e. K.",
+        sub: "Inhaberin: Mia Hölscher (Telgte) • Partner-Einstieg: Tischlermeister Can Demir • Bank: Volksbank Münsterland Nord",
+        anlage1Title: "Anlage 1: Gesprächsnotiz vom 03.11.2025 (Mia Hölscher & Can Demir)",
+        anlage1Points: [
+          "Can bringt <strong>60.000 €</strong> aus Ersparnissen ein, arbeitet voll in der Fertigung mit und will gleichberechtigt mitentscheiden.",
+          "Beide haften persönlich und unbeschränkt mit dem Privatvermögen (erleichtert Kreditentscheidung der Volksbank).",
+          "Schnelle, unkomplizierte, kostengünstige Gründung ohne Notar und ohne festes Mindestkapital.",
+          "Gewinnverteilung: <strong>5 % Verzinsung</strong> der Kapitaleinlage (Mia: 247.000 €, Can: 60.000 €), Restgewinn <strong>nach Köpfen (1:1)</strong>."
+        ],
+        anlage2Title: "Anlage 2: Inventurergebnisse zum 31.12.2025 (ungeordnet)",
+        anlage2Items: [
+          "1. Verbindlichkeiten a.LL: <strong class='text-rose-300'>29.400 €</strong>",
+          "7. CNC-Fräse & Lackieranlage: <strong class='text-emerald-300'>74.000 €</strong>",
+          "2. Fertige Holzspielzeuge: <strong class='text-emerald-300'>33.000 €</strong>",
+          "<span class='text-amber-300'>8. Pkw privat genutzt: <strong>15.000 €</strong></span>",
+          "3. Betriebsgebäude: <strong class='text-emerald-300'>190.000 €</strong>",
+          "9. Forderungen an Kunden: <strong class='text-emerald-300'>17.800 €</strong>",
+          "4. Geschäftskasse: <strong class='text-emerald-300'>900 €</strong>",
+          "10. Transporter: <strong class='text-emerald-300'>22.000 €</strong>",
+          "5. Buchenholz & Lacke: <strong class='text-emerald-300'>26.500 €</strong>",
+          "11. Guthaben Volksbank: <strong class='text-emerald-300'>14.200 €</strong>",
+          "6. Darlehen Volksbank: <strong class='text-rose-300'>120.000 €</strong>",
+          "12. Büro-/Werkstattausst.: <strong class='text-emerald-300'>18.000 €</strong>"
+        ],
+        anlage3Title: "Anlage 3: Belege Januar 2026 & Anlage 4: Kontenplan-Auszug",
+        task1Title: "Aufgabe 1: Rechtsform & OHG-Gewinnverteilung (18 Punkte)",
+        correctRechtsform: "OHG",
+        liabilityHint: "Haftung in der OHG: unmittelbar, unbeschränkt (auch Privatvermögen) und gesamtschuldnerisch.",
+        firmaOptions: [
+          { val: "", label: "Bitte zulässige Firma wählen..." },
+          { val: "OK", label: "Hölscher & Demir Holzspielzeug OHG" },
+          { val: "F1", label: "Hölscher Holzspielzeug e. K." },
+          { val: "F2", label: "Hölscher Holzspielzeug GmbH" }
+        ],
+        firmaHint: "Nach § 19 HGB muss die Firma den Rechtsformzusatz „OHG“ enthalten.",
+        profitHeader: "1.3 Gewinnverteilung 2026 (Gewinn: 82.000 € | 5 % Kapitalverzinsung + Rest 1:1 nach Köpfen)",
+        zinsColLabel: "5 % Zinsanteil (€)",
+        restColLabel: "Restgewinn 1:1 (€)",
+        p1: { name: "Mia Hölscher", cap: "247.000 €", zins: 12350, rest: 33325, gesamt: 45675 },
+        p2: { name: "Can Demir", cap: "60.000 €", zins: 3000, rest: 33325, gesamt: 36325 },
+        profitHint: "💡 5 % von 247.000 € = 12.350 € | 5 % von 60.000 € = 3.000 € | Zinsen = 15.350 € → Restgewinn = 82.000 € − 15.350 € = 66.650 € (÷ 2 = je 33.325 €).",
+        task2Title: "Aufgabe 2: Bilanz zum 31.12.2025 erstellen & auswerten (20 Punkte)",
+        bsHint: "Ohne Privat-Pkw (15.000 €)!",
+        bilanzsumme: 375400,
+        eigenkapital: 226000,
+        ekQuote: 60.2,
+        excludedOptions: [
+          { val: "", label: "Welche Position fehlt?" },
+          { val: "OK", label: "Nr. 8 Privat-Pkw (15.000 €)" },
+          { val: "F1", label: "Nr. 4 Geschäftskasse (900 €)" },
+          { val: "F2", label: "Nr. 5 Buchenholz & Lacke" }
+        ],
+        bvA: { label: "2.4 a) Kauf von Lacken auf Ziel (3.000 €)", ans: "erhoeht" },
+        bvB: { label: "2.4 b) Bareinzahlung auf Bank (500 €)", ans: "gleich" },
+        bvC: { label: "2.4 c) Tilgung Darlehen per Bank (4.000 €)", ans: "vermindert" },
+        task3Title: "Aufgabe 3: Januar-Belege buchen & T-Konto 2800 Bank abschließen (22 Punkte)",
+        belege: [
+          { nr: 1, title: "Beleg 1 (05.01.): ER Buchenholz auf Ziel (4.800 €)", soll: "2000", haben: "4400", betrag: 4800, bv: "APM" },
+          { nr: 2, title: "Beleg 2 (08.01.): Bankgutschrift Kunde Krause (3.600 €)", soll: "2800", haben: "2400", betrag: 3600, bv: "AT" },
+          { nr: 3, title: "Beleg 3 (12.01.): Banküberweisung an Lackfabrik Ahlen (5.200 €)", soll: "4400", haben: "2800", betrag: 5200, bv: "APMi" },
+          { nr: 4, title: "Beleg 4 (15.01.): Kauf Büro-Laptop sofort per Bank (1.400 €)", soll: "0870", haben: "2800", betrag: 1400, bv: "AT" },
+          { nr: 5, title: "Beleg 5 (20.01.): Umwandlung Lieferantenschuld in Darlehen (8.000 €)", soll: "4400", haben: "4250", betrag: 8000, bv: "PT" },
+          { nr: 6, title: "Beleg 6 (28.01.): Barabhebung vom Bankkonto für Kasse (600 €)", soll: "2880", haben: "2800", betrag: 600, bv: "AT" }
+        ],
+        tkTitle: "3.2 T-Konto 2800 Guthaben bei Kreditinstituten (Januar 2026)",
+        tkDesc: "AB = 14.200 € | Soll-Zugang Beleg 2 = 3.600 € | Haben-Abgänge: Beleg 3 (5.200 €) + Beleg 4 (1.400 €) + Beleg 6 (600 €).",
+        tkSbLabel: "Schlussbestand (SB) im Haben (€)",
+        tkSumme: 17800,
+        tkSb: 10600,
+        errTitle: "3.3 Fehleranalyse & Korrektur (Beleg 3: 5.200 €)",
+        errDesc: "Mitpraktikant buchte spiegelverkehrt: <em>2800 Bank an 4400 Verbindlichkeiten a.LL 5.200 €</em> (beide Konten um 5.200 € zu hoch, Gesamtfehler 10.400 €). Wie wird korrigiert?",
+        errOptions: [
+          { val: "", label: "Korrekturbuchung wählen..." },
+          { val: "OK", label: "1. Storno (4400 an 2800: 5.200 €) + 2. Richtige Buchung (4400 an 2800: 5.200 €) bzw. doppelt (10.400 €)" },
+          { val: "F1", label: "Gar nichts buchen, gleicht sich von selbst aus" },
+          { val: "F2", label: "Über das Konto 2880 Kasse ausgleichen" }
+        ],
+        summaryNote: "Musterwerte: Bilanzsumme <strong>375.400 €</strong> (ohne Privat-Pkw 15.000 €) | Eigenkapital <strong>226.000 €</strong> (60,2 %) | Schlussbestand Konto 2800 Bank: <strong>10.600 €</strong> (Summe 17.800 €)."
+      },
+
+      exam2: {
+        id: "exam2",
+        badge: "KLAUSUR 2 • VARIANTE A • 60 PUNKTE",
+        title: "Übungsklausur 2: Bergmann Bio-Bäckerei e. K.",
+        sub: "Inhaber: Lukas Bergmann (Münster) • Kapitalgeberin: Elena Vogt • Bank: Sparkasse Münsterland Ost",
+        anlage1Title: "Anlage 1: Gesprächsnotiz (Lukas Bergmann & Elena Vogt)",
+        anlage1Points: [
+          "Elena Vogt beteiligt sich mit <strong>80.000 €</strong> als Kapitalgeberin, will aber <strong>nicht im Tagesgeschäft mitarbeiten</strong> und nur bis zu ihrer Einlage haften.",
+          "Lukas Bergmann führt die Geschäfte allein weiter und haftet weiterhin unbeschränkt mit seinem gesamten Privatvermögen.",
+          "Schnelle, kostengünstige Gründung ohne Notar und ohne gesetzliches Mindestkapital erwünscht.",
+          "Gewinnverteilung (Jahresgewinn <strong>92.000 €</strong>): <strong>4 % Verzinsung</strong> der Kapitalanteile (Lukas: 252.000 €, Elena: 80.000 €), Restgewinn im Verhältnis <strong>2 : 1</strong> (Lukas : Elena)."
+        ],
+        anlage2Title: "Anlage 2: Inventurergebnisse zum 31.12.2025 (ungeordnet)",
+        anlage2Items: [
+          "1. Backstuben-Gebäude: <strong class='text-emerald-300'>220.000 €</strong>",
+          "7. Lieferwagen-Flotte: <strong class='text-emerald-300'>35.000 €</strong>",
+          "2. Backöfen & Knetmaschinen: <strong class='text-emerald-300'>85.000 €</strong>",
+          "<span class='text-amber-300'>8. Private Ferienwohnung Inhaber: <strong>45.000 €</strong></span>",
+          "3. Mehl, Bio-Butter & Hefe: <strong class='text-emerald-300'>18.500 €</strong>",
+          "9. Forderungen an Bio-Märkte: <strong class='text-emerald-300'>24.000 €</strong>",
+          "4. Fertige Backwaren/Gebäck: <strong class='text-emerald-300'>6.500 €</strong>",
+          "10. Guthaben Sparkasse: <strong class='text-emerald-300'>16.800 €</strong>",
+          "5. Ladeneinrichtung (BGA): <strong class='text-emerald-300'>12.000 €</strong>",
+          "11. Darlehen Sparkasse: <strong class='text-rose-300'>130.000 €</strong>",
+          "6. Bargeld in Ladenkasse: <strong class='text-emerald-300'>2.200 €</strong>",
+          "12. Verbindlichkeiten Mühle a.LL: <strong class='text-rose-300'>38.000 €</strong>"
+        ],
+        anlage3Title: "Anlage 3: Belege Februar 2026 & Anlage 4: Kontenplan-Auszug",
+        task1Title: "Aufgabe 1: Rechtsform & KG-Gewinnverteilung (18 Punkte)",
+        correctRechtsform: "KG",
+        liabilityHint: "KG: Komplementär (Lukas) haftet unbeschränkt, Kommanditistin (Elena) haftet nur bis zur Höhe ihrer Einlage (80.000 €).",
+        firmaOptions: [
+          { val: "", label: "Bitte zulässige Firma wählen..." },
+          { val: "OK", label: "Bergmann Bio-Bäckerei KG" },
+          { val: "F1", label: "Bergmann & Vogt Bio-Bäckerei e. K." },
+          { val: "F2", label: "Bergmann Bio-Bäckerei AG" }
+        ],
+        firmaHint: "Nach § 19 HGB muss eine Kommanditgesellschaft den Zusatz „KG“ tragen (Kommanditisten dürfen nicht in der Firma stehen).",
+        profitHeader: "1.3 Gewinnverteilung 2026 (Gewinn: 92.000 € | 4 % Kapitalverzinsung + Rest 2 : 1)",
+        zinsColLabel: "4 % Zinsanteil (€)",
+        restColLabel: "Restgewinn 2:1 (€)",
+        p1: { name: "Lukas Bergmann (Komplementär)", cap: "252.000 €", zins: 10080, rest: 52480, gesamt: 62560 },
+        p2: { name: "Elena Vogt (Kommanditistin)", cap: "80.000 €", zins: 3200, rest: 26240, gesamt: 29440 },
+        profitHint: "💡 4 % von 252.000 € = 10.080 € | 4 % von 80.000 € = 3.200 € | Zinsen = 13.280 € → Restgewinn = 92.000 € − 13.280 € = 78.720 € (÷ 3 = 26.240 € → Lukas 52.480 €, Elena 26.240 €).",
+        task2Title: "Aufgabe 2: Bilanz zum 31.12.2025 erstellen & auswerten (20 Punkte)",
+        bsHint: "Ohne private Ferienwohnung (45.000 €)!",
+        bilanzsumme: 420000,
+        eigenkapital: 252000,
+        ekQuote: 60.0,
+        excludedOptions: [
+          { val: "", label: "Welche Position fehlt?" },
+          { val: "OK", label: "Nr. 8 Private Ferienwohnung (45.000 €)" },
+          { val: "F1", label: "Nr. 7 Lieferwagen-Flotte (35.000 €)" },
+          { val: "F2", label: "Nr. 3 Mehl & Bio-Butter (18.500 €)" }
+        ],
+        bvA: { label: "2.4 a) Bareinzahlung aus Kasse auf Bank (1.500 €)", ans: "gleich" },
+        bvB: { label: "2.4 b) Kauf eines neuen Ofens auf Ziel (9.000 €)", ans: "erhoeht" },
+        bvC: { label: "2.4 c) Zahlung einer Lieferantenrechnung per Bank (2.500 €)", ans: "vermindert" },
+        task3Title: "Aufgabe 3: Februar-Belege buchen & T-Konto 2800 Bank abschließen (22 Punkte)",
+        belege: [
+          { nr: 1, title: "Beleg 1 (04.02.): ER Bio-Mühle für Dinkelmehl auf Ziel (3.200 €)", soll: "2000", haben: "4400", betrag: 3200, bv: "APM" },
+          { nr: 2, title: "Beleg 2 (09.02.): Bankgutschrift Bio-Markt Grünling (6.400 €)", soll: "2800", haben: "2400", betrag: 6400, bv: "AT" },
+          { nr: 3, title: "Beleg 3 (14.02.): Banküberweisung an Verpackungswerk (4.100 €)", soll: "4400", haben: "2800", betrag: 4100, bv: "APMi" },
+          { nr: 4, title: "Beleg 4 (18.02.): Kauf Kassenterminal für Laden per Bank (2.800 €)", soll: "0870", haben: "2800", betrag: 2800, bv: "AT" },
+          { nr: 5, title: "Beleg 5 (22.02.): Umwandlung Lieferantenschuld in Darlehen (10.000 €)", soll: "4400", haben: "4250", betrag: 10000, bv: "PT" },
+          { nr: 6, title: "Beleg 6 (27.02.): Barabhebung vom Bankkonto für Ladenkasse (2.000 €)", soll: "2880", haben: "2800", betrag: 2000, bv: "AT" }
+        ],
+        tkTitle: "3.2 T-Konto 2800 Guthaben bei Kreditinstituten (Februar 2026)",
+        tkDesc: "AB = 16.800 € | Soll-Zugang Beleg 2 = 6.400 € | Haben-Abgänge: Beleg 3 (4.100 €) + Beleg 4 (2.800 €) + Beleg 6 (2.000 €).",
+        tkSbLabel: "Schlussbestand (SB) im Haben (€)",
+        tkSumme: 23200,
+        tkSb: 14300,
+        errTitle: "3.3 Fehleranalyse & Korrektur (Beleg 2: 6.400 €)",
+        errDesc: "Azubi buchte Beleg 2 falsch herum: <em>2400 Forderungen a.LL an 2800 Bank 6.400 €</em> (Forderungen um 6.400 € zu hoch, Bank um 6.400 € zu niedrig). Wie wird korrigiert?",
+        errOptions: [
+          { val: "", label: "Korrekturbuchung wählen..." },
+          { val: "OK", label: "Storno + richtige Buchung: 2800 Bank an 2400 Forderungen a.LL über 12.800 € (oder zweimal 6.400 €)" },
+          { val: "F1", label: "2400 Forderungen an 2800 Bank über 6.400 € nachbuchen" },
+          { val: "F2", label: "Differenz auf Konto 3000 Eigenkapital buchen" }
+        ],
+        summaryNote: "Musterwerte: Bilanzsumme <strong>420.000 €</strong> (ohne Ferienwohnung 45.000 €) | Eigenkapital <strong>252.000 €</strong> (60,0 %) | Schlussbestand Konto 2800 Bank: <strong>14.300 €</strong> (Summe 23.200 €)."
+      },
+
+      exam3: {
+        id: "exam3",
+        badge: "KLAUSUR 3 • VARIANTE B • 60 PUNKTE",
+        title: "Übungsklausur 3: Weber E-Bike Manufaktur e. K.",
+        sub: "Inhaberin: Sarah Weber (Bielefeld) • Investor: Dr. Jonas Klein • Bank: Commerzbank Bielefeld",
+        anlage1Title: "Anlage 1: Gesprächsnotiz (Sarah Weber & Dr. Jonas Klein)",
+        anlage1Points: [
+          "Dr. Jonas Klein bringt <strong>150.000 €</strong> ein; beide wollen <strong>jegliche persönliche Haftung mit ihrem Privatvermögen ausschließen</strong> (Haftungsbeschränkung auf das Gesellschaftsvermögen).",
+          "Beide sind bereit, einen <strong>Notartermin</strong> wahrzunehmen und das gesetzliche <strong>Mindeststammkapital von 25.000 €</strong> aufzubringen.",
+          "Sarah Weber soll als Geschäftsführerin bestellt werden.",
+          "Gewinnverteilung (Jahresgewinn <strong>110.000 €</strong>): <strong>6 % Verzinsung</strong> der Stammeinlagen (Sarah: 350.000 €, Jonas: 150.000 €), Restgewinn im Verhältnis <strong>3 : 2</strong> (Sarah : Jonas)."
+        ],
+        anlage2Title: "Anlage 2: Inventurergebnisse zum 31.12.2025 (ungeordnet)",
+        anlage2Items: [
+          "1. Montagehalle Bielefeld: <strong class='text-emerald-300'>260.000 €</strong>",
+          "7. Service-Transporter: <strong class='text-emerald-300'>38.000 €</strong>",
+          "2. Schweißroboter & Prüfstand: <strong class='text-emerald-300'>110.000 €</strong>",
+          "<span class='text-amber-300'>8. Privates Rennrad & E-Bike Inhaberin: <strong>9.500 €</strong></span>",
+          "3. Alu-Rahmen, Akkus & Motoren: <strong class='text-emerald-300'>44.000 €</strong>",
+          "9. Forderungen an Fahrradhändler: <strong class='text-emerald-300'>29.500 €</strong>",
+          "4. Fertige E-Bikes im Versandlager: <strong class='text-emerald-300'>21.000 €</strong>",
+          "10. Guthaben Commerzbank: <strong class='text-emerald-300'>17.300 €</strong>",
+          "5. IT-Systeme & Büroausstattung: <strong class='text-emerald-300'>19.000 €</strong>",
+          "11. Langfristiges Bankdarlehen: <strong class='text-rose-300'>160.000 €</strong>",
+          "6. Kassenbestand Verwaltung: <strong class='text-emerald-300'>1.200 €</strong>",
+          "12. Verbindlichkeiten Zulieferer a.LL: <strong class='text-rose-300'>29.000 €</strong>"
+        ],
+        anlage3Title: "Anlage 3: Belege März 2026 & Anlage 4: Kontenplan-Auszug",
+        task1Title: "Aufgabe 1: Rechtsform & GmbH-Gewinnverteilung (18 Punkte)",
+        correctRechtsform: "GmbH",
+        liabilityHint: "GmbH (Kapitalgesellschaft): Haftung ist auf das Gesellschaftsvermögen beschränkt – kein Durchgriff auf das Privatvermögen der Gesellschafter.",
+        firmaOptions: [
+          { val: "", label: "Bitte zulässige Firma wählen..." },
+          { val: "OK", label: "Weber & Klein E-Bike Manufaktur GmbH" },
+          { val: "F1", label: "Weber E-Bike Manufaktur OHG" },
+          { val: "F2", label: "Weber E-Bike Manufaktur e. K." }
+        ],
+        firmaHint: "Nach § 4 GmbHG muss die Firma zwingend den Zusatz „Gesellschaft mit beschränkter Haftung“ oder „GmbH“ enthalten.",
+        profitHeader: "1.3 Gewinnverteilung 2026 (Gewinn: 110.000 € | 6 % Kapitalverzinsung + Rest 3 : 2)",
+        zinsColLabel: "6 % Zinsanteil (€)",
+        restColLabel: "Restgewinn 3:2 (€)",
+        p1: { name: "Sarah Weber (60 % Rest)", cap: "350.000 €", zins: 21000, rest: 48000, gesamt: 69000 },
+        p2: { name: "Dr. Jonas Klein (40 % Rest)", cap: "150.000 €", zins: 9000, rest: 32000, gesamt: 41000 },
+        profitHint: "💡 6 % von 350.000 € = 21.000 € | 6 % von 150.000 € = 9.000 € | Zinsen = 30.000 € → Restgewinn = 110.000 € − 30.000 € = 80.000 € (÷ 5 = 16.000 € → Sarah 3× = 48.000 €, Jonas 2× = 32.000 €).",
+        task2Title: "Aufgabe 2: Bilanz zum 31.12.2025 erstellen & auswerten (20 Punkte)",
+        bsHint: "Ohne privates Rennrad/E-Bike (9.500 €)!",
+        bilanzsumme: 540000,
+        eigenkapital: 351000,
+        ekQuote: 65.0,
+        excludedOptions: [
+          { val: "", label: "Welche Position fehlt?" },
+          { val: "OK", label: "Nr. 8 Privates Rennrad & E-Bike (9.500 €)" },
+          { val: "F1", label: "Nr. 4 Fertige E-Bikes im Lager (21.000 €)" },
+          { val: "F2", label: "Nr. 7 Service-Transporter (38.000 €)" }
+        ],
+        bvA: { label: "2.4 a) Tilgung Bankdarlehen per Überweisung (10.000 €)", ans: "vermindert" },
+        bvB: { label: "2.4 b) Umwandlung Lieferantenschuld in Darlehen (5.000 €)", ans: "gleich" },
+        bvC: { label: "2.4 c) Einkauf von E-Bike-Akkus auf Ziel (7.500 €)", ans: "erhoeht" },
+        task3Title: "Aufgabe 3: März-Belege buchen & T-Konto 4400 Verbindlichkeiten abschließen (22 Punkte)",
+        belege: [
+          { nr: 1, title: "Beleg 1 (03.03.): ER Bosch Antriebstechnik für Akkus auf Ziel (9.400 €)", soll: "2000", haben: "4400", betrag: 9400, bv: "APM" },
+          { nr: 2, title: "Beleg 2 (07.03.): Bankgutschrift Radhaus Süd begleicht Rechnung (8.200 €)", soll: "2800", haben: "2400", betrag: 8200, bv: "AT" },
+          { nr: 3, title: "Beleg 3 (11.03.): Banküberweisung an Zulieferer Alu-Rahmen (7.600 €)", soll: "4400", haben: "2800", betrag: 7600, bv: "APMi" },
+          { nr: 4, title: "Beleg 4 (16.03.): Kauf CAD-Arbeitsplatzrechner per Bank (3.100 €)", soll: "0870", haben: "2800", betrag: 3100, bv: "AT" },
+          { nr: 5, title: "Beleg 5 (21.03.): Umwandlung Lieferantenschuld in Darlehen (9.000 €)", soll: "4400", haben: "4250", betrag: 9000, bv: "PT" },
+          { nr: 6, title: "Beleg 6 (29.03.): Bareinzahlung aus Kasse auf Commerzbank (800 €)", soll: "2800", haben: "2880", betrag: 800, bv: "AT" }
+        ],
+        tkTitle: "3.2 T-Konto 4400 Verbindlichkeiten aus Lieferungen und Leistungen (März 2026)",
+        tkDesc: "AB im Haben = 29.000 € | Haben-Zugang Beleg 1 = 9.400 € | Soll-Abgänge: Beleg 3 (7.600 €) + Beleg 5 (9.000 €).",
+        tkSbLabel: "Schlussbestand (SB) im Soll (€)",
+        tkSumme: 38400,
+        tkSb: 21800,
+        errTitle: "3.3 Fehleranalyse & Korrektur (Beleg 1: 9.400 €)",
+        errDesc: "Praktikantin buchte Beleg 1 falsch herum: <em>4400 Verbindlichkeiten a.LL an 2000 Rohstoffe 9.400 €</em> (beide Konten um 9.400 € zu niedrig, Gesamtfehler 18.800 €). Wie wird korrigiert?",
+        errOptions: [
+          { val: "", label: "Korrekturbuchung wählen..." },
+          { val: "OK", label: "Storno + richtige Buchung: 2000 Rohstoffe an 4400 Verbindlichkeiten a.LL über 18.800 € (oder zweimal 9.400 €)" },
+          { val: "F1", label: "4400 Verbindlichkeiten an 2000 Rohstoffe über 9.400 € nochmals buchen" },
+          { val: "F2", label: "Nur den Betrag auf 0 € ändern" }
+        ],
+        summaryNote: "Musterwerte: Bilanzsumme <strong>540.000 €</strong> (ohne privates E-Bike 9.500 €) | Eigenkapital <strong>351.000 €</strong> (65,0 %) | Schlussbestand Konto 4400 Verbindlichkeiten: <strong>21.800 €</strong> (Summe 38.400 €)."
+      }
+    };
+
+    const EXAM_KONTEN_OPTS = [
+      { val: "", label: "Konto..." },
+      { val: "0530", label: "0530 Betriebsgebäude" },
+      { val: "0700", label: "0700 Techn. Anlagen (TA)" },
+      { val: "0840", label: "0840 Fuhrpark" },
+      { val: "0870", label: "0870 BGA" },
+      { val: "2000", label: "2000 Rohstoffe" },
+      { val: "2200", label: "2200 Fertige Erzeugnisse" },
+      { val: "2400", label: "2400 Forderungen (FO)" },
+      { val: "2800", label: "2800 Bank (BK)" },
+      { val: "2880", label: "2880 Kasse" },
+      { val: "3000", label: "3000 Eigenkapital" },
+      { val: "4250", label: "4250 Darlehen" },
+      { val: "4400", label: "4400 Verbindlichkeiten (VE)" }
+    ];
+
+    function toggleExamAnlagen() {
+      const box = document.getElementById("exam-anlagen-box");
+      if (box) box.classList.toggle("hidden");
+    }
+
+    function fillExamHint1() {
+      const h = document.getElementById("exam-hint-1");
+      if (h) h.classList.remove("hidden");
+    }
+
+    function selectExamVariant(variantId) {
+      currentExamVariantId = EXAM_VARIANTS[variantId] ? variantId : "exam1";
+      const ex = EXAM_VARIANTS[currentExamVariantId];
+
+      // Update Variant Selector Buttons
+      ["exam1", "exam2", "exam3"].forEach(id => {
+        const btn = document.getElementById(`exam-var-btn-${id}`);
+        if (!btn) return;
+        btn.className = id === currentExamVariantId
+          ? "p-4 rounded-2xl text-left border border-emerald-400 bg-emerald-500/15 transition space-y-1 shadow-lg shadow-emerald-500/10"
+          : "p-4 rounded-2xl text-left glass-pill border border-white/10 hover:bg-white/10 transition space-y-1 opacity-80 hover:opacity-100";
+      });
+
+      // Header & Anlagen
+      document.getElementById("exam-header-badge").textContent = ex.badge;
+      document.getElementById("exam-header-title").textContent = ex.title;
+      document.getElementById("exam-header-sub").textContent = ex.sub;
+      document.getElementById("exam-anlage1-title").textContent = ex.anlage1Title;
+      document.getElementById("exam-anlage1-list").innerHTML = ex.anlage1Points.map(p => `<li>${p}</li>`).join("");
+      document.getElementById("exam-anlage2-title").textContent = ex.anlage2Title;
+      document.getElementById("exam-anlage2-grid").innerHTML = ex.anlage2Items.map(i => `<span>${i}</span>`).join("");
+      document.getElementById("exam-anlage3-title").textContent = ex.anlage3Title;
+      document.getElementById("exam-anlage3-grid").innerHTML = ex.belege.map(b => `<div><strong>${b.title.split(":")[0]}:</strong> ${b.title.split(": ")[1]}</div>`).join("");
+
+      // Aufgabe 1
+      document.getElementById("exam-task1-title").textContent = ex.task1Title;
+      document.getElementById("exam-task1-liability-hint").textContent = ex.liabilityHint;
+      document.getElementById("exam-q1-firma").innerHTML = ex.firmaOptions.map(o => `<option value="${o.val}" class="bg-slate-900 text-white">${o.label}</option>`).join("");
+      document.getElementById("exam-task1-firma-hint").textContent = ex.firmaHint;
+      document.getElementById("exam-profit-header").textContent = ex.profitHeader;
+      document.getElementById("exam-profit-zins-col").textContent = ex.zinsColLabel;
+      document.getElementById("exam-profit-rest-col").textContent = ex.restColLabel;
+      document.getElementById("exam-p1-name").textContent = ex.p1.name;
+      document.getElementById("exam-p1-cap").textContent = ex.p1.cap;
+      document.getElementById("exam-p2-name").textContent = ex.p2.name;
+      document.getElementById("exam-p2-cap").textContent = ex.p2.cap;
+      const hint1 = document.getElementById("exam-hint-1");
+      if (hint1) {
+        hint1.textContent = ex.profitHint;
+        hint1.classList.add("hidden");
+      }
+
+      // Aufgabe 2
+      document.getElementById("exam-task2-title").textContent = ex.task2Title;
+      document.getElementById("exam-bs-hint").textContent = ex.bsHint;
+      document.getElementById("exam-excluded-item").innerHTML = ex.excludedOptions.map(o => `<option value="${o.val}" class="bg-slate-900 text-white">${o.label}</option>`).join("");
+      document.getElementById("exam-bv-a-label").textContent = ex.bvA.label;
+      document.getElementById("exam-bv-b-label").textContent = ex.bvB.label;
+      document.getElementById("exam-bv-c-label").textContent = ex.bvC.label;
+
+      // Aufgabe 3
+      document.getElementById("exam-task3-title").textContent = ex.task3Title;
+      document.getElementById("exam-tk-title").textContent = ex.tkTitle;
+      document.getElementById("exam-tk-desc").textContent = ex.tkDesc;
+      document.getElementById("exam-tk-sb-label").textContent = ex.tkSbLabel;
+      document.getElementById("exam-err-title").textContent = ex.errTitle;
+      document.getElementById("exam-err-desc").innerHTML = ex.errDesc;
+      document.getElementById("exam-q3-korrektur").innerHTML = ex.errOptions.map(o => `<option value="${o.val}" class="bg-slate-900 text-white">${o.label}</option>`).join("");
+
+      resetExamWorkbench();
+    }
+
+    function renderExamBelege() {
+      const container = document.getElementById("exam-belege-container");
+      if (!container) return;
+      const ex = EXAM_VARIANTS[currentExamVariantId] || EXAM_VARIANTS.exam1;
+      const optHtml = EXAM_KONTEN_OPTS.map(o => `<option value="${o.val}" class="bg-slate-900 text-white">${o.label}</option>`).join("");
+
+      container.innerHTML = ex.belege.map((b, i) => `
+        <div id="exam-beleg-row-${i}" class="glass-pill p-4 rounded-2xl border border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-center text-xs">
+          <div class="lg:col-span-4 font-bold text-white">${b.title}</div>
+          <div class="lg:col-span-2">
+            <select id="exam-b-soll-${i}" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-2 text-xs text-white">${optHtml}</select>
+          </div>
+          <div class="lg:col-span-2">
+            <select id="exam-b-haben-${i}" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-2 text-xs text-white">${optHtml}</select>
+          </div>
+          <div class="lg:col-span-2">
+            <input type="number" id="exam-b-val-${i}" placeholder="Betrag €" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-2 text-right font-mono text-white">
+          </div>
+          <div class="lg:col-span-2">
+            <select id="exam-b-bv-${i}" class="w-full bg-slate-900/90 border border-white/15 rounded-xl px-2.5 py-2 text-xs text-white">
+              <option value="">Veränderung...</option>
+              <option value="AT">Aktivtausch</option>
+              <option value="PT">Passivtausch</option>
+              <option value="APM">Aktiv-Passiv-Mehrung</option>
+              <option value="APMi">Aktiv-Passiv-Minderung</option>
+            </select>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function resetExamWorkbench() {
+      renderExamBelege();
+      ["exam-q1-rechtsform", "exam-q1-firma", "exam-mia-zins", "exam-mia-rest", "exam-mia-gesamt",
+       "exam-can-zins", "exam-can-rest", "exam-can-gesamt", "exam-bilanzsumme", "exam-eigenkapital",
+       "exam-ek-quote", "exam-excluded-item", "exam-bv-a", "exam-bv-b", "exam-bv-c",
+       "exam-tk2800-summe", "exam-tk2800-sb", "exam-q3-korrektur"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+      const fb = document.getElementById("exam-feedback-box");
+      if (fb) fb.classList.add("hidden");
+      const badge = document.getElementById("exam-score-badge");
+      if (badge) badge.textContent = "0 / 60 Punkte";
+    }
+
+    function evaluateExamWorkbench() {
+      resetQuestionTimer();
+      const ex = EXAM_VARIANTS[currentExamVariantId] || EXAM_VARIANTS.exam1;
+      let pts = 0;
+
+      // Aufgabe 1 (18 Punkte)
+      if (document.getElementById("exam-q1-rechtsform").value === ex.correctRechtsform) pts += 8;
+      if (document.getElementById("exam-q1-firma").value === "OK") pts += 4;
+      if ((parseInt(document.getElementById("exam-mia-zins").value) || 0) === ex.p1.zins) pts += 1;
+      if ((parseInt(document.getElementById("exam-mia-rest").value) || 0) === ex.p1.rest) pts += 1;
+      if ((parseInt(document.getElementById("exam-mia-gesamt").value) || 0) === ex.p1.gesamt) pts += 1;
+      if ((parseInt(document.getElementById("exam-can-zins").value) || 0) === ex.p2.zins) pts += 1;
+      if ((parseInt(document.getElementById("exam-can-rest").value) || 0) === ex.p2.rest) pts += 1;
+      if ((parseInt(document.getElementById("exam-can-gesamt").value) || 0) === ex.p2.gesamt) pts += 1;
+
+      // Aufgabe 2 (20 Punkte)
+      if ((parseInt(document.getElementById("exam-bilanzsumme").value) || 0) === ex.bilanzsumme) pts += 6;
+      if ((parseInt(document.getElementById("exam-eigenkapital").value) || 0) === ex.eigenkapital) pts += 4;
+      const ekq = parseFloat(String(document.getElementById("exam-ek-quote").value).replace(",", ".")) || 0;
+      if (Math.abs(ekq - ex.ekQuote) <= 0.15) pts += 3;
+      if (document.getElementById("exam-excluded-item").value === "OK") pts += 4;
+      if (document.getElementById("exam-bv-a").value === ex.bvA.ans) pts += 1;
+      if (document.getElementById("exam-bv-b").value === ex.bvB.ans) pts += 1;
+      if (document.getElementById("exam-bv-c").value === ex.bvC.ans) pts += 1;
+
+      // Aufgabe 3 (22 Punkte)
+      ex.belege.forEach((b, i) => {
+        const s = document.getElementById(`exam-b-soll-${i}`).value;
+        const h = document.getElementById(`exam-b-haben-${i}`).value;
+        const v = parseInt(document.getElementById(`exam-b-val-${i}`).value) || 0;
+        const bv = document.getElementById(`exam-b-bv-${i}`).value;
+        const row = document.getElementById(`exam-beleg-row-${i}`);
+        const ok = (s === b.soll && h === b.haben && v === b.betrag && bv === b.bv);
+        if (ok) {
+          pts += 2.5;
+          if (row) row.className = "glass-pill p-4 rounded-2xl border border-emerald-500/60 bg-emerald-950/20 grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-center text-xs";
+        } else {
+          if (row) row.className = "glass-pill p-4 rounded-2xl border border-rose-500/60 bg-rose-950/20 grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-center text-xs";
+        }
+      });
+
+      if ((parseInt(document.getElementById("exam-tk2800-summe").value) || 0) === ex.tkSumme) pts += 2;
+      if ((parseInt(document.getElementById("exam-tk2800-sb").value) || 0) === ex.tkSb) pts += 2;
+      if (document.getElementById("exam-q3-korrektur").value === "OK") pts += 3;
+
+      const finalPts = Math.round(pts);
+      const pct = Math.round((finalPts / 60) * 100);
+      let note = "6 (Ungenügend)";
+      if (pct >= 92) note = "1 (Sehr gut)";
+      else if (pct >= 81) note = "2 (Gut)";
+      else if (pct >= 67) note = "3 (Befriedigend)";
+      else if (pct >= 50) note = "4 (Ausreichend)";
+      else if (pct >= 30) note = "5 (Mangelhaft)";
+
+      const badge = document.getElementById("exam-score-badge");
+      if (badge) badge.textContent = `${finalPts} / 60 Punkte • Note ${note.split(" ")[0]}`;
+
+      const fb = document.getElementById("exam-feedback-box");
+      if (fb) {
+        fb.classList.remove("hidden");
+        const passed = pct >= 50;
+        fb.className = passed
+          ? "p-5 rounded-2xl border border-emerald-500/50 bg-emerald-950/60 text-emerald-200 text-xs space-y-1.5 glow-emerald-pulse"
+          : "p-5 rounded-2xl border border-amber-500/50 bg-amber-950/50 text-amber-200 text-xs space-y-1.5";
+        fb.innerHTML = `
+          <div class="font-extrabold text-sm">Klausur-Ergebnis: ${finalPts} von 60 Punkten (${pct} %) &bull; Note: ${note}</div>
+          <div>${ex.summaryNote}</div>
+        `;
+      }
+
+      if (finalPts > 0) {
+        playAppSound("correct");
+        awardXP(finalPts * 5);
+      }
+      recordAnswerMetric(pct >= 50);
     }
 
     function renderTKSheetsHub() {
