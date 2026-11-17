@@ -96,14 +96,72 @@
       will-change: transform;
     }
 
-    /* Glass V5 Design Tokens + Echtglas-Frosted-Textur (macOS Micro-Grain) */
+    /* Tabular Nums für alle Zahlen, Euro-Beträge, KPIs & Timer */
+    .tabular-nums-pro,
+    .font-mono,
+    #kpi-study-time,
+    #kpi-accuracy,
+    #kpi-total-xp,
+    #kpi-streak,
+    #ring-percent-text,
+    #exam-score-badge,
+    #pomo-big-display {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Glass V5 Design Tokens + Linear / Spatial Pro Tiefenstaffelung & Specular Top-Highlight */
     .glass-v5 {
-      background-color: rgba(255, 255, 255, 0.04);
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.038'/%3E%3C/svg%3E");
-      backdrop-filter: blur(22px) saturate(160%);
-      -webkit-backdrop-filter: blur(22px) saturate(160%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+      background-color: rgba(15, 23, 42, 0.48);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      backdrop-filter: blur(24px) saturate(165%);
+      -webkit-backdrop-filter: blur(24px) saturate(165%);
+      border: 1px solid rgba(255, 255, 255, 0.065);
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+    
+    .glass-v5-hover {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-v5-hover:hover {
+      background-color: rgba(30, 41, 59, 0.56);
+      border-color: rgba(255, 255, 255, 0.16);
+      border-top-color: rgba(255, 255, 255, 0.32);
+      transform: translateY(-3px);
+      box-shadow: 0 28px 65px rgba(0, 0, 0, 0.62), 0 0 32px rgba(99, 102, 241, 0.22);
+    }
+
+    .glass-pill {
+      background: rgba(15, 23, 42, 0.46);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.075);
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    /* Dynamic Island Status-Banner im Header */
+    .dynamic-island-pill {
+      background: rgba(5, 8, 18, 0.88);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-top: 1px solid rgba(255, 255, 255, 0.26);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: all 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .dynamic-island-pill.is-expanded {
+      transform: scale(1.04);
+      border-color: rgba(251, 191, 36, 0.45);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.68), 0 0 24px rgba(245, 158, 11, 0.28);
+    }
+
+    /* SVG Avatar XP Leuchtring */
+    .avatar-xp-ring-svg {
+      transform: rotate(-90deg);
+      filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.65));
+    }
+    .avatar-xp-ring-arc {
+      transition: stroke-dashoffset 0.75s cubic-bezier(0.22, 1, 0.36, 1);
     }
     
     .glass-v5-hover {
@@ -269,18 +327,10 @@
       box-shadow: none !important;
     }
 
-    /* Live-Level-Bar Shimmer direkt unter dem Header */
     @keyframes xpBarShimmer {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
-    }
-    .xp-live-bar-fill {
-      background: linear-gradient(90deg, #6366f1, #38bdf8, #10b981, #f59e0b, #6366f1);
-      background-size: 300% 100%;
-      animation: xpBarShimmer 6s ease infinite;
-      box-shadow: 0 0 14px rgba(56, 189, 248, 0.55);
-      transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     /* Fließender Neon-Fortschrittsbalken im Quiz */
@@ -902,37 +952,35 @@
   <!-- Main Wrapper -->
   <div class="relative z-10 flex flex-col min-h-screen">
 
-    <!-- FLOATING PILL HEADER NAVIGATION (Mobile Optimized + Touch Swipeable) -->
-    <header class="sticky top-3 sm:top-4 z-40 px-2.5 sm:px-8 max-w-7xl w-full mx-auto space-y-1.5">
-      <div class="glass-v5 rounded-full p-1.5 sm:p-2 flex items-center justify-between gap-1 sm:gap-2 shadow-2xl">
+    <!-- FLOATING PILL HEADER NAVIGATION (Spatial Pro + Dynamic Island + Avatar XP Ring) -->
+    <header class="sticky top-3 sm:top-4 z-40 px-2.5 sm:px-8 max-w-7xl w-full mx-auto">
+      <div class="glass-v5 rounded-full p-1.5 sm:p-2 flex items-center justify-between gap-1.5 sm:gap-2.5 shadow-2xl">
         
-        <!-- Brand Logo & Badge -->
-        <div class="flex items-center space-x-2.5 pl-1.5 sm:pl-3 shrink-0">
-          <div id="brand-logo-box" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f5d000] flex items-center justify-center shadow-lg shadow-amber-500/25 overflow-hidden transition-transform duration-300 hover:rotate-12 border border-white/15">
+        <!-- Brand Logo & Dynamic Island Status-Pille -->
+        <div class="flex items-center space-x-2 pl-1 sm:pl-2.5 shrink-0">
+          <div id="brand-logo-box" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#f5d000] flex items-center justify-center shadow-lg shadow-amber-500/25 overflow-hidden transition-transform duration-300 hover:rotate-12 border border-white/15 shrink-0">
             <img src="Icon.jpg" alt="Learnex V5 Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-            <!-- Direkter Vektor-Fallback des Enten-Logos für die Vorschau, falls Icon.jpg lokal noch nicht im selben Ordner liegt -->
+            <!-- Direkter Vektor-Fallback des Enten-Logos -->
             <svg viewBox="0 0 100 100" class="hidden w-full h-full" xmlns="http://www.w3.org/2000/svg">
               <rect width="100" height="100" fill="#f5d000"/>
-              <!-- Linkes Auge -->
               <ellipse cx="19" cy="44" rx="7.2" ry="8.8" transform="rotate(-12 19 44)" fill="#050505"/>
               <ellipse cx="16.2" cy="43" rx="2.3" ry="3" transform="rotate(-12 16.2 43)" fill="#ffffff"/>
-              <!-- Rechtes Auge -->
               <ellipse cx="73" cy="29" rx="7.2" ry="8.8" transform="rotate(-12 73 29)" fill="#050505"/>
               <ellipse cx="70.2" cy="28" rx="2.3" ry="3" transform="rotate(-12 70.2 28)" fill="#ffffff"/>
-              <!-- Schnabel -->
               <path d="M 24 61 C 32 58, 39 51, 44 45 C 49 40, 58 41, 65 46 C 72 51, 79 44, 86 48 C 91 52, 88 64, 77 72 C 63 82, 41 82, 26 75 C 20 72, 19 63, 24 61 Z" fill="#f15623" stroke="#d93211" stroke-width="3.5" stroke-linejoin="round"/>
-              <!-- Schnabel-Glanz -->
               <path d="M 37 64 C 44 59, 49 52, 51 47" fill="none" stroke="#ffab85" stroke-width="3.2" stroke-linecap="round"/>
-              <!-- Mundlinie -->
               <path d="M 29 68 C 46 75, 65 73, 82 53" fill="none" stroke="#6d0e04" stroke-width="3.5" stroke-linecap="round"/>
             </svg>
           </div>
-          <div class="hidden sm:block">
-            <span class="font-extrabold text-white tracking-tight text-sm sm:text-base">Learnex V5</span>
-          </div>
+
+          <!-- Dynamic Island Status-Banner -->
+          <button type="button" onclick="togglePomodoroModal(event)" id="dynamic-island-banner" title="Status & Fokus-Timer" class="dynamic-island-pill px-3 py-1.5 rounded-full flex items-center space-x-2 text-left max-w-[175px] sm:max-w-[240px] overflow-hidden shrink-0">
+            <span id="dynamic-island-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+            <span id="dynamic-island-text" class="text-[11px] font-bold text-slate-100 truncate tabular-nums-pro">Lvl 1 &bull; 1 Tag Streak</span>
+          </button>
         </div>
 
-        <!-- Navigation Pills (Swipeable left/right on small screens, icons-only on mobile + Gleitender Liquid-Pill-Indikator) -->
+        <!-- Navigation Pills (Swipeable left/right on small screens + Gleitender Liquid-Pill-Indikator) -->
         <nav id="top-nav-bar" class="flex items-center space-x-1 sm:space-x-2 overflow-x-auto no-scrollbar py-0.5 px-1 min-w-0 flex-1 justify-center relative">
           <div id="nav-sliding-pill" class="nav-liquid-slider"></div>
           <button onclick="switchView('dashboard')" id="nav-dashboard" title="Dashboard" class="nav-pill nav-pill-active px-2.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition text-slate-300 hover:text-white flex items-center space-x-2 shrink-0">
@@ -962,16 +1010,29 @@
           </button>
         </nav>
 
-        <!-- User Profile Pill & Settings Button -->
+        <!-- User Profile Pill mit integriertem SVG XP-Leuchtring am Profilbild -->
         <div class="flex items-center space-x-1.5 sm:space-x-2 pr-1 shrink-0">
-          <button onclick="openSettingsModal()" title="Profil & Einstellungen" class="glass-pill px-2 sm:px-3 py-1 sm:py-1.5 rounded-full flex items-center space-x-2 hover:bg-white/10 transition">
-            <div id="user-avatar-box" class="w-7 h-7 rounded-full bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 font-bold text-xs shadow-md overflow-hidden shrink-0">
-              <span id="user-avatar-initial">M</span>
-              <img id="user-avatar-img" src="" alt="Profilbild" class="hidden w-full h-full object-cover">
+          <button onclick="openSettingsModal()" title="Profil & Level-Fortschritt" class="glass-pill px-2 sm:px-3 py-1 rounded-full flex items-center space-x-2.5 hover:bg-white/10 transition">
+            <div class="relative w-9 h-9 flex items-center justify-center shrink-0">
+              <svg class="avatar-xp-ring-svg absolute inset-0 w-9 h-9" viewBox="0 0 36 36">
+                <defs>
+                  <linearGradient id="avatarXpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#6366f1"/>
+                    <stop offset="50%" stop-color="#38bdf8"/>
+                    <stop offset="100%" stop-color="#10b981"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="18" cy="18" r="15.5" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2.6"/>
+                <circle id="avatar-xp-ring-progress" class="avatar-xp-ring-arc" cx="18" cy="18" r="15.5" fill="none" stroke="url(#avatarXpGrad)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="97.39" stroke-dashoffset="92"/>
+              </svg>
+              <div id="user-avatar-box" class="w-7 h-7 rounded-full bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 font-bold text-xs shadow-md overflow-hidden">
+                <span id="user-avatar-initial">M</span>
+                <img id="user-avatar-img" src="" alt="Profilbild" class="hidden w-full h-full object-cover">
+              </div>
             </div>
             <div class="hidden xl:block text-left">
               <div class="text-xs font-bold text-white leading-none" id="header-user-name">Marlon</div>
-              <div class="text-[10px] text-indigo-300 font-medium leading-tight mt-0.5" id="user-pill-level">Lvl 1 &bull; 0 XP</div>
+              <div class="text-[10px] text-indigo-300 font-medium leading-tight mt-0.5 tabular-nums-pro" id="user-pill-level">Lvl 1 &bull; 0 / 300 XP</div>
             </div>
           </button>
           <button onclick="openSettingsModal()" title="Einstellungen öffnen" class="p-2 rounded-full glass-pill hover:bg-white/15 text-slate-300 hover:text-white transition duration-300 hover:rotate-90 shrink-0">
@@ -979,17 +1040,6 @@
           </button>
         </div>
 
-      </div>
-
-      <!-- Schimmernde Live-Level-Bar direkt unter dem Header -->
-      <div class="max-w-3xl mx-auto px-4">
-        <div class="glass-pill rounded-full px-3 py-1 flex items-center space-x-3 shadow-lg">
-          <span id="header-xp-level-badge" class="text-[10px] font-extrabold text-amber-300 uppercase tracking-wider shrink-0">Lvl 1</span>
-          <div class="flex-1 h-1.5 bg-slate-900/80 rounded-full overflow-hidden border border-white/10">
-            <div id="header-xp-bar-fill" class="xp-live-bar-fill h-full rounded-full" style="width: 5%"></div>
-          </div>
-          <span id="header-xp-bar-text" class="text-[10px] font-mono font-bold text-slate-300 shrink-0">0 / 300 XP</span>
-        </div>
       </div>
     </header>
 
@@ -1002,7 +1052,7 @@
       <section id="view-dashboard" class="space-y-6 animate-view-enter">
         
         <!-- Welcome Header Banner -->
-        <div class="glass-v5 rounded-3xl p-6 sm:p-8 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="glass-v5 rounded-3xl p-6 sm:p-8 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 border-t border-white/25">
           <div class="space-y-2 relative z-10">
             <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full glass-pill text-indigo-300 text-xs font-medium">
               <i data-lucide="calendar-clock" class="w-3.5 h-3.5 text-amber-400"></i>
@@ -1031,11 +1081,11 @@
           </div>
         </div>
 
-        <!-- Top 4 KPI Glass Cards (Clean Icons without colored borders + Real Live Data) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Top 4 KPI Glass Cards (Clean Icons + Spatial Pro Padding & Tabular Nums) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           
           <!-- KPI 1: Lernzeit Heute (Live Timer) -->
-          <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
+          <div class="glass-v5 glass-v5-hover rounded-3xl p-6 flex flex-col justify-between space-y-4">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Lernzeit Heute</span>
               <div class="p-2.5 rounded-2xl icon-box-clean text-indigo-400">
@@ -1043,7 +1093,7 @@
               </div>
             </div>
             <div>
-              <div class="text-3xl font-black text-white tracking-tight font-mono" id="kpi-study-time">0 Min 00s</div>
+              <div class="text-3xl font-black text-white tracking-tight font-mono tabular-nums-pro" id="kpi-study-time">0 Min 00s</div>
               <div class="flex items-center space-x-1.5 text-xs text-emerald-400 font-semibold mt-1" id="kpi-study-sub">
                 <i data-lucide="activity" class="w-4 h-4"></i>
                 <span>Live-Stoppuhr aktiv</span>
@@ -1052,7 +1102,7 @@
           </div>
 
           <!-- KPI 2: Erfolgsquote (Real Accuracy) -->
-          <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
+          <div class="glass-v5 glass-v5-hover rounded-3xl p-6 flex flex-col justify-between space-y-4">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Erfolgsquote</span>
               <div class="p-2.5 rounded-2xl icon-box-clean text-emerald-400">
@@ -1060,7 +1110,7 @@
               </div>
             </div>
             <div>
-              <div class="text-3xl font-black text-white tracking-tight" id="kpi-accuracy">100%</div>
+              <div class="text-3xl font-black text-white tracking-tight tabular-nums-pro" id="kpi-accuracy">100%</div>
               <div class="flex items-center space-x-1.5 text-xs text-emerald-400 font-semibold mt-1" id="kpi-accuracy-sub">
                 <i data-lucide="check-check" class="w-4 h-4"></i>
                 <span>Bereit für die erste Aufgabe</span>
@@ -1069,7 +1119,7 @@
           </div>
 
           <!-- KPI 3: Total XP -->
-          <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
+          <div class="glass-v5 glass-v5-hover rounded-3xl p-6 flex flex-col justify-between space-y-4">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Erfahrungspunkte</span>
               <div class="p-2.5 rounded-2xl icon-box-clean text-amber-400">
@@ -1077,7 +1127,7 @@
               </div>
             </div>
             <div>
-              <div class="text-3xl font-black text-white tracking-tight" id="kpi-total-xp">0 XP</div>
+              <div class="text-3xl font-black text-white tracking-tight tabular-nums-pro" id="kpi-total-xp">0 XP</div>
               <div class="text-xs text-slate-400 font-semibold mt-1">
                 Stufe <span class="text-amber-300 font-bold" id="kpi-level-title">1 - Einsteiger</span>
               </div>
@@ -1085,7 +1135,7 @@
           </div>
 
           <!-- KPI 4: Tages-Streak (Real Consecutive Days) -->
-          <div class="glass-v5 glass-v5-hover rounded-3xl p-5 flex flex-col justify-between space-y-4">
+          <div class="glass-v5 glass-v5-hover rounded-3xl p-6 flex flex-col justify-between space-y-4">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tages-Streak</span>
               <div class="p-2.5 rounded-2xl icon-box-clean text-rose-400">
@@ -1093,7 +1143,7 @@
               </div>
             </div>
             <div>
-              <div class="text-3xl font-black text-white tracking-tight" id="kpi-streak">1 Tag</div>
+              <div class="text-3xl font-black text-white tracking-tight tabular-nums-pro" id="kpi-streak">1 Tag</div>
               <div class="flex items-center space-x-1 text-xs text-rose-400 font-semibold mt-1" id="kpi-streak-sub">
                 <i data-lucide="sparkles" class="w-4 h-4"></i>
                 <span>Heute aktiv gelernt!</span>
@@ -6631,6 +6681,61 @@
       activeKontenCat: "all"
     };
 
+    // ==========================================
+    // SCHRITT 1: ZENTRALE NULL-SAFETY-HELFER & STATE-VALIDIERUNG
+    // ==========================================
+    function $el(id) {
+      return id ? document.getElementById(id) : null;
+    }
+
+    function safeSetText(id, value) {
+      const el = $el(id);
+      if (el) el.textContent = value;
+    }
+
+    function safeSetHTML(id, html) {
+      const el = $el(id);
+      if (el) el.innerHTML = html;
+    }
+
+    function safeAddClass(id, ...classes) {
+      const el = $el(id);
+      if (el) el.classList.add(...classes);
+    }
+
+    function safeRemoveClass(id, ...classes) {
+      const el = $el(id);
+      if (el) el.classList.remove(...classes);
+    }
+
+    const VALID_THEMES = new Set(["default", "duck", "monochrome", "visionos", "aurora", "sunset", "cyberpunk"]);
+
+    function sanitizeAppState() {
+      if (!state || typeof state !== "object") state = {};
+      if (typeof state.userName !== "string" || !state.userName.trim()) state.userName = "Marlon";
+      if (typeof state.avatarDataUrl !== "string") state.avatarDataUrl = "";
+      if (!VALID_THEMES.has(state.theme)) state.theme = "default";
+      if (typeof state.autoAdvanceCorrect !== "boolean") state.autoAdvanceCorrect = false;
+      if (typeof state.showBlueGlossary !== "boolean") state.showBlueGlossary = true;
+      if (typeof state.showAktivPassivColors !== "boolean") state.showAktivPassivColors = true;
+      if (typeof state.soundEnabled !== "boolean") state.soundEnabled = true;
+      if (typeof state.xp !== "number" || Number.isNaN(state.xp) || state.xp < 0) state.xp = 0;
+      if (typeof state.level !== "number" || Number.isNaN(state.level) || state.level < 1) state.level = 1;
+      if (typeof state.totalAnswered !== "number" || Number.isNaN(state.totalAnswered)) state.totalAnswered = 0;
+      if (typeof state.totalCorrect !== "number" || Number.isNaN(state.totalCorrect)) state.totalCorrect = 0;
+      if (!state.dailyStats || typeof state.dailyStats !== "object") state.dailyStats = {};
+      if (!Array.isArray(state.solvedTKIds)) state.solvedTKIds = [];
+      if (!Array.isArray(state.solvedTKSheetIds)) state.solvedTKSheetIds = [];
+      if (!Array.isArray(state.solvedWSRows)) state.solvedWSRows = [];
+      if (!Array.isArray(state.seenQuestions)) state.seenQuestions = [];
+      if (!Array.isArray(state.wrongQuestionIds)) state.wrongQuestionIds = [];
+      if (!Array.isArray(state.knownFlashcardIds)) state.knownFlashcardIds = [];
+      if (typeof state.activeQuizIndex !== "number" || state.activeQuizIndex < 0) state.activeQuizIndex = 0;
+      if (!Array.isArray(state.quizAnswers)) state.quizAnswers = [];
+      if (typeof state.currentTKCaseIndex !== "number" || state.currentTKCaseIndex < 0) state.currentTKCaseIndex = 0;
+      if (typeof state.activeKontenCat !== "string") state.activeKontenCat = "all";
+    }
+
     let activeShuffledQuestions = [];
     let activityChartInstance = null;
     let studyTimerInterval = null;
@@ -8062,25 +8167,13 @@
     }
 
     function ensureTodayEntry() {
+      sanitizeAppState();
       const today = getDateKey();
-      if (!state.dailyStats || typeof state.dailyStats !== "object") {
-        state.dailyStats = {};
-      }
-      if (!state.dailyStats[today]) {
+      if (!state.dailyStats[today] || typeof state.dailyStats[today] !== "object") {
         state.dailyStats[today] = { seconds: 0, xp: 0 };
       }
-      if (!Array.isArray(state.solvedTKIds)) state.solvedTKIds = [];
-      if (!Array.isArray(state.solvedTKSheetIds)) state.solvedTKSheetIds = [];
-      if (!Array.isArray(state.solvedWSRows)) state.solvedWSRows = [];
-      if (!Array.isArray(state.seenQuestions)) state.seenQuestions = [];
-      if (!Array.isArray(state.wrongQuestionIds)) state.wrongQuestionIds = [];
-      if (!Array.isArray(state.knownFlashcardIds)) state.knownFlashcardIds = [];
-      if (typeof state.totalAnswered !== "number") state.totalAnswered = 0;
-      if (typeof state.totalCorrect !== "number") state.totalCorrect = 0;
-      if (typeof state.autoAdvanceCorrect !== "boolean") state.autoAdvanceCorrect = false;
-      if (typeof state.showBlueGlossary !== "boolean") state.showBlueGlossary = true;
-      if (typeof state.showAktivPassivColors !== "boolean") state.showAktivPassivColors = true;
-      if (typeof state.soundEnabled !== "boolean") state.soundEnabled = true;
+      if (typeof state.dailyStats[today].seconds !== "number") state.dailyStats[today].seconds = 0;
+      if (typeof state.dailyStats[today].xp !== "number") state.dailyStats[today].xp = 0;
     }
 
     function updateCurrentDateBadge() {
@@ -8216,6 +8309,7 @@
     // Local Storage State
     function saveState() {
       try {
+        sanitizeAppState();
         localStorage.setItem("learnex_v5_app_state", JSON.stringify(state));
       } catch (e) {}
     }
@@ -8225,9 +8319,12 @@
         const saved = localStorage.getItem("learnex_v5_app_state");
         if (saved) {
           const parsed = JSON.parse(saved);
-          state = { ...state, ...parsed };
+          if (parsed && typeof parsed === "object") {
+            state = { ...state, ...parsed };
+          }
         }
       } catch (e) {}
+      sanitizeAppState();
     }
 
     // ==========================================
@@ -8664,20 +8761,58 @@
       return `${lvl} - Rechnungswesen-Meister`;
     }
 
+    let dynamicIslandTimeout = null;
+    function setDynamicIslandIdle() {
+      const pill = $el("dynamic-island-banner");
+      const dot = $el("dynamic-island-dot");
+      const txt = $el("dynamic-island-text");
+      if (!pill || !txt) return;
+      pill.classList.remove("is-expanded");
+      const streak = calculateCurrentStreak();
+      const lvl = state.level || 1;
+      if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0";
+      txt.textContent = `Lvl ${lvl} • ${streak} ${streak === 1 ? "Tag" : "Tage"} Streak`;
+    }
+
+    function showDynamicIslandEvent(message, tone = "amber", durationMs = 2600) {
+      const pill = $el("dynamic-island-banner");
+      const dot = $el("dynamic-island-dot");
+      const txt = $el("dynamic-island-text");
+      if (!pill || !txt) return;
+
+      if (dynamicIslandTimeout) clearTimeout(dynamicIslandTimeout);
+      pill.classList.add("is-expanded");
+      if (dot) {
+        const dotMap = {
+          amber: "w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0",
+          emerald: "w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0",
+          cyan: "w-2 h-2 rounded-full bg-cyan-400 animate-ping shrink-0",
+          rose: "w-2 h-2 rounded-full bg-rose-400 animate-ping shrink-0"
+        };
+        dot.className = dotMap[tone] || dotMap.amber;
+      }
+      txt.textContent = message;
+
+      dynamicIslandTimeout = setTimeout(() => {
+        setDynamicIslandIdle();
+      }, durationMs);
+    }
+
     function updateHeaderAndKPIs(animateFromZero = false) {
       ensureTodayEntry();
       state.level = Math.max(1, Math.floor((state.xp || 0) / 300) + 1);
       const streak = calculateCurrentStreak();
       const acc = state.totalAnswered > 0 ? Math.round((state.totalCorrect / state.totalAnswered) * 100) : 100;
+      const xpInLevel = (state.xp || 0) % 300;
 
-      const pillLvl = document.getElementById("user-pill-level");
-      const kpiXp = document.getElementById("kpi-total-xp");
-      const kpiLvlTitle = document.getElementById("kpi-level-title");
-      const kpiAcc = document.getElementById("kpi-accuracy");
-      const kpiAccSub = document.getElementById("kpi-accuracy-sub");
-      const kpiStreak = document.getElementById("kpi-streak");
+      const pillLvl = $el("user-pill-level");
+      const kpiXp = $el("kpi-total-xp");
+      const kpiLvlTitle = $el("kpi-level-title");
+      const kpiAcc = $el("kpi-accuracy");
+      const kpiAccSub = $el("kpi-accuracy-sub");
+      const kpiStreak = $el("kpi-streak");
 
-      if (pillLvl) pillLvl.textContent = `Lvl ${state.level} • ${state.xp} XP`;
+      if (pillLvl) pillLvl.textContent = `Lvl ${state.level} • ${xpInLevel} / 300 XP`;
       if (kpiXp) animateCountUp(kpiXp, animateFromZero ? 0 : kpiPrevValues.xp, state.xp || 0, " XP");
       if (kpiLvlTitle) kpiLvlTitle.textContent = getLevelTitle(state.level);
       if (kpiAcc) animateCountUp(kpiAcc, animateFromZero ? 0 : kpiPrevValues.acc, acc, "%");
@@ -8694,15 +8829,18 @@
       kpiPrevValues.acc = acc;
       kpiPrevValues.streak = streak;
 
-      // Update Live-Level-Bar direkt unter dem Header
-      const xpInLevel = (state.xp || 0) % 300;
-      const xpBarPct = Math.max(4, Math.min(100, Math.round((xpInLevel / 300) * 100)));
-      const barFill = document.getElementById("header-xp-bar-fill");
-      const barText = document.getElementById("header-xp-bar-text");
-      const lvlBadge = document.getElementById("header-xp-level-badge");
-      if (barFill) barFill.style.width = `${xpBarPct}%`;
-      if (barText) barText.textContent = `${xpInLevel} / 300 XP bis Lvl ${state.level + 1}`;
-      if (lvlBadge) lvlBadge.textContent = `Lvl ${state.level}`;
+      // Update SVG XP-Leuchtring direkt um das Profilbild (Umfang 2 * PI * 15.5 ≈ 97.39)
+      const ringArc = $el("avatar-xp-ring-progress");
+      if (ringArc) {
+        const circumference = 97.39;
+        const progressRatio = Math.max(0.05, Math.min(1, xpInLevel / 300));
+        ringArc.style.strokeDashoffset = (circumference * (1 - progressRatio)).toFixed(2);
+      }
+
+      const islandPill = $el("dynamic-island-banner");
+      if (islandPill && !islandPill.classList.contains("is-expanded")) {
+        setDynamicIslandIdle();
+      }
 
       updateStudyTimeKPIOnly();
     }
@@ -8729,7 +8867,10 @@
       triggerXPFloatNotification(amount);
       triggerParticleBurst();
       if (state.level > prevLevel) {
+        showDynamicIslandEvent(`Level Up! Stufe ${state.level} erreicht`, "emerald", 3600);
         setTimeout(() => showCinematicLevelUp(state.level), 350);
+      } else {
+        showDynamicIslandEvent(`+${amount} XP gesammelt!`, "amber", 2400);
       }
     }
 
@@ -8957,30 +9098,38 @@
 
     function renderQuizQuestion() {
       if (!activeShuffledQuestions.length) return;
+      if (state.activeQuizIndex >= activeShuffledQuestions.length) {
+        state.activeQuizIndex = 0;
+      }
       resetQuestionTimer();
       const q = activeShuffledQuestions[state.activeQuizIndex];
+      if (!q) return;
 
-      document.getElementById("quiz-category-tag").textContent = q.catTag;
-      document.getElementById("quiz-step-counter").textContent = `Frage ${state.activeQuizIndex + 1} von ${activeShuffledQuestions.length}`;
-      document.getElementById("quiz-reward-xp").textContent = `+${q.xp} XP`;
-      document.getElementById("quiz-question-title").innerHTML = highlightAccountingTerms(q.question);
+      safeSetText("quiz-category-tag", q.catTag);
+      safeSetText("quiz-step-counter", `Frage ${state.activeQuizIndex + 1} von ${activeShuffledQuestions.length}`);
+      safeSetText("quiz-reward-xp", `+${q.xp} XP`);
+      safeSetHTML("quiz-question-title", highlightAccountingTerms(q.question));
 
       // Update fließender Neon-Fortschrittsbalken im Quiz
       const stepPct = Math.round(((state.activeQuizIndex + 1) / activeShuffledQuestions.length) * 100);
-      const neonFill = document.getElementById("quiz-neon-progress-fill");
-      const neonPct = document.getElementById("quiz-neon-progress-pct");
+      const neonFill = $el("quiz-neon-progress-fill");
       if (neonFill) neonFill.style.width = `${stepPct}%`;
-      if (neonPct) neonPct.textContent = `${stepPct}%`;
+      safeSetText("quiz-neon-progress-pct", `${stepPct}%`);
 
-      const fbBox = document.getElementById("quiz-feedback-box");
-      fbBox.classList.add("hidden");
-      fbBox.classList.remove("glow-emerald-pulse");
+      const fbBox = $el("quiz-feedback-box");
+      if (fbBox) {
+        fbBox.classList.add("hidden");
+        fbBox.classList.remove("glow-emerald-pulse");
+      }
 
-      const btnNext = document.getElementById("btn-quiz-next");
-      btnNext.disabled = true;
-      btnNext.className = "px-6 py-2.5 rounded-2xl bg-slate-800 text-slate-500 font-bold text-xs border border-white/10 transition cursor-not-allowed flex items-center space-x-2";
+      const btnNext = $el("btn-quiz-next");
+      if (btnNext) {
+        btnNext.disabled = true;
+        btnNext.className = "px-6 py-2.5 rounded-2xl bg-slate-800 text-slate-500 font-bold text-xs border border-white/10 transition cursor-not-allowed flex items-center space-x-2";
+      }
 
-      const grid = document.getElementById("quiz-options-grid");
+      const grid = $el("quiz-options-grid");
+      if (!grid) return;
       grid.innerHTML = "";
 
       q.options.forEach((optText, idx) => {
@@ -8997,7 +9146,8 @@
 
     function selectQuizOption(optIdx) {
       const q = activeShuffledQuestions[state.activeQuizIndex];
-      const grid = document.getElementById("quiz-options-grid");
+      const grid = $el("quiz-options-grid");
+      if (!q || !grid) return;
       const isCorrect = (optIdx === q.correct);
 
       if (!state.seenQuestions.includes(q.id)) {
@@ -9028,29 +9178,38 @@
         }
       });
 
-      const fbBox = document.getElementById("quiz-feedback-box");
-      const fbTitle = document.getElementById("quiz-feedback-title");
-      const fbText = document.getElementById("quiz-feedback-text");
+      const fbBox = $el("quiz-feedback-box");
+      const fbTitle = $el("quiz-feedback-title");
+      const fbText = $el("quiz-feedback-text");
 
-      fbBox.classList.remove("hidden");
-      if (isCorrect) {
-        fbBox.className = "p-5 rounded-2xl border bg-emerald-950/60 border-emerald-500/50 space-y-1.5 glow-emerald-pulse";
-        fbTitle.className = "font-bold text-xs text-emerald-400 flex items-center space-x-2";
-        fbTitle.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>Hervorragend gelöst, ${state.userName}! +${q.xp} XP</span>`;
-        awardXP(q.xp);
-      } else {
-        fbBox.className = "p-5 rounded-2xl border bg-rose-950/60 border-rose-500/50 space-y-1.5";
-        fbTitle.className = "font-bold text-xs text-rose-400 flex items-center space-x-2";
-        fbTitle.innerHTML = `<i data-lucide="x-circle" class="w-4 h-4"></i><span>Leider nicht korrekt (im Fehler-Trainer gespeichert)</span>`;
-        triggerWrongShake(fbBox);
+      if (fbBox) {
+        fbBox.classList.remove("hidden");
+        if (isCorrect) {
+          fbBox.className = "p-5 rounded-2xl border bg-emerald-950/60 border-emerald-500/50 space-y-1.5 glow-emerald-pulse";
+        } else {
+          fbBox.className = "p-5 rounded-2xl border bg-rose-950/60 border-rose-500/50 space-y-1.5";
+          triggerWrongShake(fbBox);
+        }
       }
-      fbText.innerHTML = highlightAccountingTerms(q.explanation);
+      if (fbTitle) {
+        if (isCorrect) {
+          fbTitle.className = "font-bold text-xs text-emerald-400 flex items-center space-x-2";
+          fbTitle.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>Hervorragend gelöst, ${state.userName}! +${q.xp} XP</span>`;
+        } else {
+          fbTitle.className = "font-bold text-xs text-rose-400 flex items-center space-x-2";
+          fbTitle.innerHTML = `<i data-lucide="x-circle" class="w-4 h-4"></i><span>Leider nicht korrekt (im Fehler-Trainer gespeichert)</span>`;
+        }
+      }
+      if (fbText) fbText.innerHTML = highlightAccountingTerms(q.explanation);
+      if (isCorrect) awardXP(q.xp);
 
       state.quizAnswers.push({ isCorrect, xp: isCorrect ? q.xp : 0 });
 
-      const btnNext = document.getElementById("btn-quiz-next");
-      btnNext.disabled = false;
-      btnNext.className = "px-6 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20 transition cursor-pointer flex items-center space-x-2";
+      const btnNext = $el("btn-quiz-next");
+      if (btnNext) {
+        btnNext.disabled = false;
+        btnNext.className = "px-6 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20 transition cursor-pointer flex items-center space-x-2";
+      }
 
       refreshIcons();
 
@@ -9080,23 +9239,23 @@
     }
 
     function finishQuizSummary() {
-      document.getElementById("quiz-card").classList.add("hidden");
-      document.getElementById("quiz-summary-card").classList.remove("hidden");
+      safeAddClass("quiz-card", "hidden");
+      safeRemoveClass("quiz-summary-card", "hidden");
 
       const correctCount = state.quizAnswers.filter(a => a.isCorrect).length;
       const total = activeShuffledQuestions.length;
       const pct = total > 0 ? Math.round((correctCount / total) * 100) : 0;
       const totalXP = state.quizAnswers.reduce((sum, a) => sum + a.xp, 0);
 
-      document.getElementById("summary-percentage-text").textContent = `Du hast ${pct}% der Fragen in diesem Durchlauf korrekt gelöst.`;
-      document.getElementById("summary-correct-badge").textContent = `${correctCount} von ${total}`;
-      document.getElementById("summary-total-xp-gained").textContent = `+${totalXP} XP`;
+      safeSetText("summary-percentage-text", `Du hast ${pct}% der Fragen in diesem Durchlauf korrekt gelöst.`);
+      safeSetText("summary-correct-badge", `${correctCount} von ${total}`);
+      safeSetText("summary-total-xp-gained", `+${totalXP} XP`);
       refreshIcons();
     }
 
     function restartQuizSession() {
-      document.getElementById("quiz-summary-card").classList.add("hidden");
-      document.getElementById("quiz-card").classList.remove("hidden");
+      safeAddClass("quiz-summary-card", "hidden");
+      safeRemoveClass("quiz-card", "hidden");
       setupQuizSession();
     }
 
@@ -9283,12 +9442,16 @@
       }
 
       WORKSHEET_CASES.forEach((item, idx) => {
-        const sAcc = document.getElementById(`ws-soll-acc-${idx}`).value;
-        const hAcc = document.getElementById(`ws-haben-acc-${idx}`).value;
-        const sVal = parseInt(document.getElementById(`ws-soll-val-${idx}`).value) || 0;
-        const hVal = parseInt(document.getElementById(`ws-haben-val-${idx}`).value) || 0;
-        const rowEl = document.getElementById(`ws-row-${idx}`);
-        const hintEl = document.getElementById(`ws-hint-${idx}`);
+        const sAccEl = $el(`ws-soll-acc-${idx}`);
+        const hAccEl = $el(`ws-haben-acc-${idx}`);
+        const sValEl = $el(`ws-soll-val-${idx}`);
+        const hValEl = $el(`ws-haben-val-${idx}`);
+        const sAcc = sAccEl ? sAccEl.value : "";
+        const hAcc = hAccEl ? hAccEl.value : "";
+        const sVal = sValEl ? (parseInt(sValEl.value) || 0) : 0;
+        const hVal = hValEl ? (parseInt(hValEl.value) || 0) : 0;
+        const rowEl = $el(`ws-row-${idx}`);
+        const hintEl = $el(`ws-hint-${idx}`);
 
         const isRowCorrect = (
           sAcc === item.sollAccount &&
@@ -9297,40 +9460,48 @@
           hVal === item.amount
         );
 
-        hintEl.classList.remove("hidden");
+        if (hintEl) hintEl.classList.remove("hidden");
         if (isRowCorrect) {
           correctCount++;
           const uniqueRowKey = `${currentWorksheetId}_${item.nr}`;
           if (!state.solvedWSRows.includes(uniqueRowKey)) {
             state.solvedWSRows.push(uniqueRowKey);
           }
-          rowEl.className = "glass-pill p-4 sm:p-5 rounded-2xl border border-emerald-500/60 bg-emerald-950/20 space-y-3 transition";
-          hintEl.className = "text-[11px] text-emerald-400 font-semibold pt-1";
-          hintEl.innerHTML = `✓ Richtig: ${highlightAccountingTerms(item.sollAccount)} ${item.amountFormatted} € an ${highlightAccountingTerms(item.habenAccount)} ${item.amountFormatted} €`;
+          if (rowEl) rowEl.className = "glass-pill p-4 sm:p-5 rounded-2xl border border-emerald-500/60 bg-emerald-950/20 space-y-3 transition";
+          if (hintEl) {
+            hintEl.className = "text-[11px] text-emerald-400 font-semibold pt-1";
+            hintEl.innerHTML = `✓ Richtig: ${highlightAccountingTerms(item.sollAccount)} ${item.amountFormatted} € an ${highlightAccountingTerms(item.habenAccount)} ${item.amountFormatted} €`;
+          }
         } else {
-          rowEl.className = "glass-pill p-4 sm:p-5 rounded-2xl border border-rose-500/60 bg-rose-950/20 space-y-3 transition";
-          hintEl.className = "text-[11px] text-rose-300 pt-1";
-          hintEl.innerHTML = `✗ Noch nicht ganz: Überprüfe Konten (${highlightAccountingTerms(item.hint)}) und den Betrag (${item.amount} €).`;
-          triggerWrongShake(rowEl);
+          if (rowEl) {
+            rowEl.className = "glass-pill p-4 sm:p-5 rounded-2xl border border-rose-500/60 bg-rose-950/20 space-y-3 transition";
+            triggerWrongShake(rowEl);
+          }
+          if (hintEl) {
+            hintEl.className = "text-[11px] text-rose-300 pt-1";
+            hintEl.innerHTML = `✗ Noch nicht ganz: Überprüfe Konten (${highlightAccountingTerms(item.hint)}) und den Betrag (${item.amount} €).`;
+          }
         }
       });
 
       const allComplete = (correctCount === WORKSHEET_CASES.length && ekIsCorrect);
       recordAnswerMetric(allComplete);
 
-      const fb = document.getElementById("worksheet-feedback");
-      fb.classList.remove("hidden");
-      if (allComplete) {
-        playAppSound("correct");
-        const bonusXP = WORKSHEET_CASES.length * 50 + (sheet.needsEKCalc ? 50 : 0);
-        fb.className = "p-5 rounded-2xl border border-emerald-500/50 bg-emerald-950/60 text-emerald-200 text-xs font-bold glow-emerald-pulse";
-        fb.textContent = `Genial, ${state.userName}! Alle Aufgaben auf diesem Aufgabenblatt sind vollkommen richtig gelöst! (+${bonusXP} XP)`;
-        awardXP(bonusXP);
-      } else {
-        playAppSound("wrong");
-        fb.className = "p-5 rounded-2xl border border-amber-500/50 bg-amber-950/50 text-amber-200 text-xs font-semibold";
-        fb.textContent = `Du hast ${correctCount} von ${WORKSHEET_CASES.length} Buchungssätzen richtig${sheet.needsEKCalc ? (ekIsCorrect ? " (Eigenkapital stimmt!)" : " (prüfe auch das Eigenkapital oben)") : ""}. Schau dir die rot markierten Felder noch einmal an!`;
-        if (correctCount > 0) awardXP(correctCount * 25);
+      const fb = $el("worksheet-feedback");
+      if (fb) {
+        fb.classList.remove("hidden");
+        if (allComplete) {
+          playAppSound("correct");
+          const bonusXP = WORKSHEET_CASES.length * 50 + (sheet.needsEKCalc ? 50 : 0);
+          fb.className = "p-5 rounded-2xl border border-emerald-500/50 bg-emerald-950/60 text-emerald-200 text-xs font-bold glow-emerald-pulse";
+          fb.textContent = `Genial, ${state.userName}! Alle Aufgaben auf diesem Aufgabenblatt sind vollkommen richtig gelöst! (+${bonusXP} XP)`;
+          awardXP(bonusXP);
+        } else {
+          playAppSound("wrong");
+          fb.className = "p-5 rounded-2xl border border-amber-500/50 bg-amber-950/50 text-amber-200 text-xs font-semibold";
+          fb.textContent = `Du hast ${correctCount} von ${WORKSHEET_CASES.length} Buchungssätzen richtig${sheet.needsEKCalc ? (ekIsCorrect ? " (Eigenkapital stimmt!)" : " (prüfe auch das Eigenkapital oben)") : ""}. Schau dir die rot markierten Felder noch einmal an!`;
+          if (correctCount > 0) awardXP(correctCount * 25);
+        }
       }
     }
 
@@ -9739,50 +9910,50 @@
       });
 
       // Header & Anlagen
-      document.getElementById("exam-header-badge").textContent = ex.badge;
-      document.getElementById("exam-header-title").textContent = ex.title;
-      document.getElementById("exam-header-sub").textContent = ex.sub;
-      document.getElementById("exam-anlage1-title").textContent = ex.anlage1Title;
-      document.getElementById("exam-anlage1-list").innerHTML = ex.anlage1Points.map(p => `<li>${p}</li>`).join("");
-      document.getElementById("exam-anlage2-title").textContent = ex.anlage2Title;
-      document.getElementById("exam-anlage2-grid").innerHTML = ex.anlage2Items.map(i => `<span>${i}</span>`).join("");
-      document.getElementById("exam-anlage3-title").textContent = ex.anlage3Title;
-      document.getElementById("exam-anlage3-grid").innerHTML = ex.belege.map(b => `<div><strong>${b.title.split(":")[0]}:</strong> ${b.title.split(": ")[1]}</div>`).join("");
+      safeSetText("exam-header-badge", ex.badge);
+      safeSetText("exam-header-title", ex.title);
+      safeSetText("exam-header-sub", ex.sub);
+      safeSetText("exam-anlage1-title", ex.anlage1Title);
+      safeSetHTML("exam-anlage1-list", ex.anlage1Points.map(p => `<li>${p}</li>`).join(""));
+      safeSetText("exam-anlage2-title", ex.anlage2Title);
+      safeSetHTML("exam-anlage2-grid", ex.anlage2Items.map(i => `<span>${i}</span>`).join(""));
+      safeSetText("exam-anlage3-title", ex.anlage3Title);
+      safeSetHTML("exam-anlage3-grid", ex.belege.map(b => `<div><strong>${b.title.split(":")[0]}:</strong> ${b.title.split(": ")[1]}</div>`).join(""));
 
       // Aufgabe 1
-      document.getElementById("exam-task1-title").textContent = ex.task1Title;
-      document.getElementById("exam-task1-liability-hint").textContent = ex.liabilityHint;
-      document.getElementById("exam-q1-firma").innerHTML = ex.firmaOptions.map(o => `<option value="${o.val}" class="bg-slate-900 text-white">${o.label}</option>`).join("");
-      document.getElementById("exam-task1-firma-hint").textContent = ex.firmaHint;
-      document.getElementById("exam-profit-header").textContent = ex.profitHeader;
-      document.getElementById("exam-profit-zins-col").textContent = ex.zinsColLabel;
-      document.getElementById("exam-profit-rest-col").textContent = ex.restColLabel;
-      document.getElementById("exam-p1-name").textContent = ex.p1.name;
-      document.getElementById("exam-p1-cap").textContent = ex.p1.cap;
-      document.getElementById("exam-p2-name").textContent = ex.p2.name;
-      document.getElementById("exam-p2-cap").textContent = ex.p2.cap;
-      const hint1 = document.getElementById("exam-hint-1");
+      safeSetText("exam-task1-title", ex.task1Title);
+      safeSetText("exam-task1-liability-hint", ex.liabilityHint);
+      safeSetHTML("exam-q1-firma", ex.firmaOptions.map(o => `<option value="${o.val}" class="bg-slate-900 text-white">${o.label}</option>`).join(""));
+      safeSetText("exam-task1-firma-hint", ex.firmaHint);
+      safeSetText("exam-profit-header", ex.profitHeader);
+      safeSetText("exam-profit-zins-col", ex.zinsColLabel);
+      safeSetText("exam-profit-rest-col", ex.restColLabel);
+      safeSetText("exam-p1-name", ex.p1.name);
+      safeSetText("exam-p1-cap", ex.p1.cap);
+      safeSetText("exam-p2-name", ex.p2.name);
+      safeSetText("exam-p2-cap", ex.p2.cap);
+      const hint1 = $el("exam-hint-1");
       if (hint1) {
         hint1.textContent = ex.profitHint;
         hint1.classList.add("hidden");
       }
 
       // Aufgabe 2
-      document.getElementById("exam-task2-title").textContent = ex.task2Title;
-      document.getElementById("exam-bs-hint").textContent = ex.bsHint;
-      document.getElementById("exam-excluded-item").innerHTML = ex.excludedOptions.map(o => `<option value="${o.val}" class="bg-slate-900 text-white">${o.label}</option>`).join("");
-      document.getElementById("exam-bv-a-label").textContent = ex.bvA.label;
-      document.getElementById("exam-bv-b-label").textContent = ex.bvB.label;
-      document.getElementById("exam-bv-c-label").textContent = ex.bvC.label;
+      safeSetText("exam-task2-title", ex.task2Title);
+      safeSetText("exam-bs-hint", ex.bsHint);
+      safeSetHTML("exam-excluded-item", ex.excludedOptions.map(o => `<option value="${o.val}" class="bg-slate-900 text-white">${o.label}</option>`).join(""));
+      safeSetText("exam-bv-a-label", ex.bvA.label);
+      safeSetText("exam-bv-b-label", ex.bvB.label);
+      safeSetText("exam-bv-c-label", ex.bvC.label);
 
       // Aufgabe 3
-      document.getElementById("exam-task3-title").textContent = ex.task3Title;
-      document.getElementById("exam-tk-title").textContent = ex.tkTitle;
-      document.getElementById("exam-tk-desc").textContent = ex.tkDesc;
-      document.getElementById("exam-tk-sb-label").textContent = ex.tkSbLabel;
-      document.getElementById("exam-err-title").textContent = ex.errTitle;
-      document.getElementById("exam-err-desc").innerHTML = ex.errDesc;
-      document.getElementById("exam-q3-korrektur").innerHTML = ex.errOptions.map(o => `<option value="${o.val}" class="bg-slate-900 text-white">${o.label}</option>`).join("");
+      safeSetText("exam-task3-title", ex.task3Title);
+      safeSetText("exam-tk-title", ex.tkTitle);
+      safeSetText("exam-tk-desc", ex.tkDesc);
+      safeSetText("exam-tk-sb-label", ex.tkSbLabel);
+      safeSetText("exam-err-title", ex.errTitle);
+      safeSetHTML("exam-err-desc", ex.errDesc);
+      safeSetHTML("exam-q3-korrektur", ex.errOptions.map(o => `<option value="${o.val}" class="bg-slate-900 text-white">${o.label}</option>`).join(""));
 
       resetExamWorkbench();
     }
@@ -9838,33 +10009,39 @@
       const ex = EXAM_VARIANTS[currentExamVariantId] || EXAM_VARIANTS.exam1;
       let pts = 0;
 
+      const getVal = (id) => {
+        const el = $el(id);
+        return el ? el.value : "";
+      };
+      const getInt = (id) => parseInt(getVal(id)) || 0;
+
       // Aufgabe 1 (18 Punkte)
-      if (document.getElementById("exam-q1-rechtsform").value === ex.correctRechtsform) pts += 8;
-      if (document.getElementById("exam-q1-firma").value === "OK") pts += 4;
-      if ((parseInt(document.getElementById("exam-mia-zins").value) || 0) === ex.p1.zins) pts += 1;
-      if ((parseInt(document.getElementById("exam-mia-rest").value) || 0) === ex.p1.rest) pts += 1;
-      if ((parseInt(document.getElementById("exam-mia-gesamt").value) || 0) === ex.p1.gesamt) pts += 1;
-      if ((parseInt(document.getElementById("exam-can-zins").value) || 0) === ex.p2.zins) pts += 1;
-      if ((parseInt(document.getElementById("exam-can-rest").value) || 0) === ex.p2.rest) pts += 1;
-      if ((parseInt(document.getElementById("exam-can-gesamt").value) || 0) === ex.p2.gesamt) pts += 1;
+      if (getVal("exam-q1-rechtsform") === ex.correctRechtsform) pts += 8;
+      if (getVal("exam-q1-firma") === "OK") pts += 4;
+      if (getInt("exam-mia-zins") === ex.p1.zins) pts += 1;
+      if (getInt("exam-mia-rest") === ex.p1.rest) pts += 1;
+      if (getInt("exam-mia-gesamt") === ex.p1.gesamt) pts += 1;
+      if (getInt("exam-can-zins") === ex.p2.zins) pts += 1;
+      if (getInt("exam-can-rest") === ex.p2.rest) pts += 1;
+      if (getInt("exam-can-gesamt") === ex.p2.gesamt) pts += 1;
 
       // Aufgabe 2 (20 Punkte)
-      if ((parseInt(document.getElementById("exam-bilanzsumme").value) || 0) === ex.bilanzsumme) pts += 6;
-      if ((parseInt(document.getElementById("exam-eigenkapital").value) || 0) === ex.eigenkapital) pts += 4;
-      const ekq = parseFloat(String(document.getElementById("exam-ek-quote").value).replace(",", ".")) || 0;
+      if (getInt("exam-bilanzsumme") === ex.bilanzsumme) pts += 6;
+      if (getInt("exam-eigenkapital") === ex.eigenkapital) pts += 4;
+      const ekq = parseFloat(String(getVal("exam-ek-quote")).replace(",", ".")) || 0;
       if (Math.abs(ekq - ex.ekQuote) <= 0.15) pts += 3;
-      if (document.getElementById("exam-excluded-item").value === "OK") pts += 4;
-      if (document.getElementById("exam-bv-a").value === ex.bvA.ans) pts += 1;
-      if (document.getElementById("exam-bv-b").value === ex.bvB.ans) pts += 1;
-      if (document.getElementById("exam-bv-c").value === ex.bvC.ans) pts += 1;
+      if (getVal("exam-excluded-item") === "OK") pts += 4;
+      if (getVal("exam-bv-a") === ex.bvA.ans) pts += 1;
+      if (getVal("exam-bv-b") === ex.bvB.ans) pts += 1;
+      if (getVal("exam-bv-c") === ex.bvC.ans) pts += 1;
 
       // Aufgabe 3 (22 Punkte)
       ex.belege.forEach((b, i) => {
-        const s = document.getElementById(`exam-b-soll-${i}`).value;
-        const h = document.getElementById(`exam-b-haben-${i}`).value;
-        const v = parseInt(document.getElementById(`exam-b-val-${i}`).value) || 0;
-        const bv = document.getElementById(`exam-b-bv-${i}`).value;
-        const row = document.getElementById(`exam-beleg-row-${i}`);
+        const s = getVal(`exam-b-soll-${i}`);
+        const h = getVal(`exam-b-haben-${i}`);
+        const v = getInt(`exam-b-val-${i}`);
+        const bv = getVal(`exam-b-bv-${i}`);
+        const row = $el(`exam-beleg-row-${i}`);
         const ok = (s === b.soll && h === b.haben && v === b.betrag && bv === b.bv);
         if (ok) {
           pts += 2.5;
@@ -9874,15 +10051,9 @@
         }
       });
 
-      if ((parseInt(document.getElementById("exam-tk2800-summe").value) || 0) === ex.tkSumme) pts += 2;
-      if ((parseInt(document.getElementById("exam-tk2800-sb").value) || 0) === ex.tkSb) pts += 2;
-      if (document.getElementById("exam-q3-korrektur").value === "OK") pts += 3;
-
-      const finalPts = Math.round(pts);
-      const pct = Math.round((finalPts / 60) * 100);
-      let note = "6 (Ungenügend)";
-      if (pct >= 92) note = "1 (Sehr gut)";
-      else if (pct >= 81) note = "2 (Gut)";
+      if (getInt("exam-tk2800-summe") === ex.tkSumme) pts += 2;
+      if (getInt("exam-tk2800-sb") === ex.tkSb) pts += 2;
+      if (getVal("exam-q3-korrektur") === "OK") pts += 3;
       else if (pct >= 67) note = "3 (Befriedigend)";
       else if (pct >= 50) note = "4 (Ausreichend)";
       else if (pct >= 30) note = "5 (Mangelhaft)";
@@ -9951,18 +10122,18 @@
     function openTKSheet(sheetId) {
       currentTKSheetId = sheetId;
       const sheet = TKONTEN_SHEETS_DATA.find(s => s.id === sheetId) || TKONTEN_SHEETS_DATA[0];
-      const hub = document.getElementById("tk-sheets-hub");
-      const activeView = document.getElementById("tk-active-sheet-view");
+      const hub = $el("tk-sheets-hub");
+      const activeView = $el("tk-active-sheet-view");
 
       if (hub) hub.classList.add("hidden");
       if (activeView) activeView.classList.remove("hidden");
 
-      document.getElementById("tks-badge").textContent = `T-KONTEN AUFGABENBLATT ${sheet.nr} VON ${TKONTEN_SHEETS_DATA.length} • ${sheet.level}`;
-      document.getElementById("tks-title").textContent = sheet.title;
-      document.getElementById("tks-desc").innerHTML = highlightAccountingTerms(sheet.desc);
-      document.getElementById("tks-xp-badge").textContent = `+${sheet.xp} XP`;
+      safeSetText("tks-badge", `T-KONTEN AUFGABENBLATT ${sheet.nr} VON ${TKONTEN_SHEETS_DATA.length} • ${sheet.level}`);
+      safeSetText("tks-title", sheet.title);
+      safeSetHTML("tks-desc", highlightAccountingTerms(sheet.desc));
+      safeSetText("tks-xp-badge", `+${sheet.xp} XP`);
 
-      const casesList = document.getElementById("tks-cases-list");
+      const casesList = $el("tks-cases-list");
       if (casesList) {
         casesList.innerHTML = sheet.cases.map(c => `
           <div class="glass-pill p-3.5 rounded-2xl border border-white/10 text-slate-200 leading-relaxed">
@@ -10068,11 +10239,16 @@
       const sheet = TKONTEN_SHEETS_DATA.find(s => s.id === currentTKSheetId) || TKONTEN_SHEETS_DATA[0];
       let correctAccCount = 0;
 
+      const getInt = (id) => {
+        const el = $el(id);
+        return el ? (parseInt(el.value) || 0) : 0;
+      };
+
       sheet.accounts.forEach((acc, idx) => {
-        const uSollB = parseInt(document.getElementById(`tks-soll-buchung-${idx}`).value) || 0;
-        const uSollSB = parseInt(document.getElementById(`tks-soll-sb-${idx}`).value) || 0;
-        const uHabenB = parseInt(document.getElementById(`tks-haben-buchung-${idx}`).value) || 0;
-        const uHabenSB = parseInt(document.getElementById(`tks-haben-sb-${idx}`).value) || 0;
+        const uSollB = getInt(`tks-soll-buchung-${idx}`);
+        const uSollSB = getInt(`tks-soll-sb-${idx}`);
+        const uHabenB = getInt(`tks-haben-buchung-${idx}`);
+        const uHabenSB = getInt(`tks-haben-sb-${idx}`);
 
         const isCorrect = (
           uSollB === acc.zugangSoll &&
@@ -10081,8 +10257,8 @@
           uHabenSB === acc.sbHaben
         );
 
-        const card = document.getElementById(`tks-acc-card-${idx}`);
-        const hintEl = document.getElementById(`tks-acc-hint-${idx}`);
+        const card = $el(`tks-acc-card-${idx}`);
+        const hintEl = $el(`tks-acc-hint-${idx}`);
         if (hintEl) hintEl.classList.remove("hidden");
 
         if (isCorrect) {
@@ -10107,20 +10283,22 @@
       const allDone = (correctAccCount === sheet.accounts.length);
       recordAnswerMetric(allDone);
 
-      const fb = document.getElementById("tks-feedback-box");
-      fb.classList.remove("hidden");
-      if (allDone) {
-        playAppSound("correct");
-        if (!state.solvedTKSheetIds.includes(sheet.id)) {
-          state.solvedTKSheetIds.push(sheet.id);
+      const fb = $el("tks-feedback-box");
+      if (fb) {
+        fb.classList.remove("hidden");
+        if (allDone) {
+          playAppSound("correct");
+          if (!state.solvedTKSheetIds.includes(sheet.id)) {
+            state.solvedTKSheetIds.push(sheet.id);
+          }
+          fb.className = "p-5 rounded-2xl border border-emerald-500/50 bg-emerald-950/60 text-emerald-200 text-xs font-bold glow-emerald-pulse";
+          fb.textContent = `Stark gemacht, ${state.userName}! Du hast ${sheet.title} komplett richtig abgeschlossen! (+${sheet.xp} XP)`;
+          awardXP(sheet.xp);
+        } else {
+          playAppSound("wrong");
+          fb.className = "p-5 rounded-2xl border border-rose-500/50 bg-rose-950/60 text-rose-200 text-xs font-semibold";
+          fb.textContent = `Du hast ${correctAccCount} von ${sheet.accounts.length} T-Konten komplett richtig. Schau dir die Hinweise unter den Konten an!`;
         }
-        fb.className = "p-5 rounded-2xl border border-emerald-500/50 bg-emerald-950/60 text-emerald-200 text-xs font-bold glow-emerald-pulse";
-        fb.textContent = `Stark gemacht, ${state.userName}! Du hast ${sheet.title} komplett richtig abgeschlossen! (+${sheet.xp} XP)`;
-        awardXP(sheet.xp);
-      } else {
-        playAppSound("wrong");
-        fb.className = "p-5 rounded-2xl border border-rose-500/50 bg-rose-950/60 text-rose-200 text-xs font-semibold";
-        fb.textContent = `Du hast ${correctAccCount} von ${sheet.accounts.length} T-Konten komplett richtig. Schau dir die Hinweise unter den Konten an!`;
       }
     }
 
@@ -10186,27 +10364,34 @@
 
     function validateTKontoCase() {
       const c = tkontoCases[state.currentTKCaseIndex];
-      const u1s = parseInt(document.getElementById("tk-input-1-soll").value) || 0;
-      const u1h = parseInt(document.getElementById("tk-input-1-haben").value) || 0;
-      const u2s = parseInt(document.getElementById("tk-input-2-soll").value) || 0;
-      const u2h = parseInt(document.getElementById("tk-input-2-haben").value) || 0;
+      if (!c) return;
+      const getInt = (id) => {
+        const el = $el(id);
+        return el ? (parseInt(el.value) || 0) : 0;
+      };
+      const u1s = getInt("tk-input-1-soll");
+      const u1h = getInt("tk-input-1-haben");
+      const u2s = getInt("tk-input-2-soll");
+      const u2h = getInt("tk-input-2-haben");
 
       const isCorrect = (u1s === c.c1Soll && u1h === c.c1Haben && u2s === c.c2Soll && u2h === c.c2Haben);
-      const fb = document.getElementById("tk-feedback-box");
-      const fbTitle = document.getElementById("tk-feedback-title");
-      const fbText = document.getElementById("tk-feedback-text");
+      const fb = $el("tk-feedback-box");
+      const fbTitle = $el("tk-feedback-title");
+      const fbText = $el("tk-feedback-text");
 
       recordAnswerMetric(isCorrect);
 
-      fb.classList.remove("hidden");
+      if (fb) fb.classList.remove("hidden");
       if (isCorrect) {
         if (!state.solvedTKIds.includes(c.id)) {
           state.solvedTKIds.push(c.id);
         }
-        fb.className = "p-5 rounded-2xl border bg-emerald-950/60 border-emerald-500/50 space-y-1.5 glow-emerald-pulse";
-        fbTitle.className = "font-bold text-xs text-emerald-400 flex items-center space-x-2";
-        fbTitle.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>Perfekt gebucht! +80 XP</span>`;
-        fbText.innerHTML = highlightAccountingTerms(c.explanation);
+        if (fb) fb.className = "p-5 rounded-2xl border bg-emerald-950/60 border-emerald-500/50 space-y-1.5 glow-emerald-pulse";
+        if (fbTitle) {
+          fbTitle.className = "font-bold text-xs text-emerald-400 flex items-center space-x-2";
+          fbTitle.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>Perfekt gebucht! +80 XP</span>`;
+        }
+        if (fbText) fbText.innerHTML = highlightAccountingTerms(c.explanation);
         awardXP(80);
 
         setTimeout(() => {
@@ -10216,13 +10401,17 @@
         }, 2200);
 
       } else {
-        fb.className = "p-5 rounded-2xl border bg-rose-950/60 border-rose-500/50 space-y-1.5";
-        fbTitle.className = "font-bold text-xs text-rose-400 flex items-center space-x-2";
-        fbTitle.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4"></i><span>Soll/Haben noch nicht ausgeglichen</span>`;
-        fbText.textContent = `Überprüfe die Aktiv-/Passivregeln. Erforderlich für Konto 1: SOLL=${c.c1Soll} € / HABEN=${c.c1Haben} €.`;
-        triggerWrongShake(fb);
+        if (fb) {
+          fb.className = "p-5 rounded-2xl border bg-rose-950/60 border-rose-500/50 space-y-1.5";
+          triggerWrongShake(fb);
+        }
+        if (fbTitle) {
+          fbTitle.className = "font-bold text-xs text-rose-400 flex items-center space-x-2";
+          fbTitle.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4"></i><span>Soll/Haben noch nicht ausgeglichen</span>`;
+        }
+        if (fbText) fbText.textContent = `Überprüfe die Aktiv-/Passivregeln. Erforderlich für Konto 1: SOLL=${c.c1Soll} € / HABEN=${c.c1Haben} €.`;
       }
-      setTimeout(() => lucide.createIcons(), 30);
+      refreshIcons();
     }
 
     // ==========================================
@@ -10344,11 +10533,11 @@
       if (count === 0) {
         // Falls noch keine Fehler vorliegen, gemischtes Wiederholungs-Deck starten
         filterQuizCategory("all", null);
-        document.getElementById("quiz-category-tag").textContent = "FEHLER-TRAINER (0 FEHLER • MIX-TRAINING)";
+        safeSetText("quiz-category-tag", "FEHLER-TRAINER (0 FEHLER • MIX-TRAINING)");
         return;
       }
       filterQuizCategory("mistakes", null);
-      document.getElementById("quiz-category-tag").textContent = `FEHLER-TRAINER (${count} OFFEN)`;
+      safeSetText("quiz-category-tag", `FEHLER-TRAINER (${count} OFFEN)`);
     }
 
     // ==========================================
